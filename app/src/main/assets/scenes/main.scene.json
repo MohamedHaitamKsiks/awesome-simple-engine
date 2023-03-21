@@ -1,0 +1,11 @@
+{
+  "width": 280,
+  "height": 155,
+  "backgrounds": [
+    {
+      "name": "bg_sky",
+      "scale_x": 0,
+      "scale_y": 0
+    }
+  ]
+}

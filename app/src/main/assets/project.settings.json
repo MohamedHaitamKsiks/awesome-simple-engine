@@ -1,0 +1,7 @@
+{
+  "name": "My Game",
+  "windowSize": {
+    "width": 320,
+    "height": 120
+  }
+}

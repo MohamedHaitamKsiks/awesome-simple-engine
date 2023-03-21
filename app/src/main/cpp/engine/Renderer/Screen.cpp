@@ -1,0 +1,34 @@
+//
+// Created by ksiks_wa3r on 3/20/23.
+//
+
+#include "Screen.h"
+
+namespace ASEngine {
+
+    void Screen::setSize(int _width, int _height) {
+        Screen::width = _width;
+        Screen::height = _height;
+    }
+
+    int Screen::getWidth() {
+        return Screen::width;
+    }
+
+    int Screen::getHeight() {
+        return Screen::height;
+    }
+
+    mat3 Screen::getView() {
+        mat3 view = mat3{{
+            2.0f / Screen::width, 0.0f, -1.0f,
+            0.0f, -2.0f / Screen::height, 1.0f,
+            0.0f, 0.0f, 1.0f
+        }};
+        return view;
+    }
+
+    int Screen::width = 270;
+    int Screen::height = 480;
+
+} // ASEngine

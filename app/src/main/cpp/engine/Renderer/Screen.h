@@ -1,0 +1,33 @@
+//
+// Created by ksiks_wa3r on 3/20/23.
+//
+
+#ifndef MY_APPLICATION_SCREEN_H
+#define MY_APPLICATION_SCREEN_H
+
+#include "../Math/mat3.h"
+
+namespace ASEngine {
+
+    class Screen {
+    public:
+        //size
+        static void setSize(int _width, int _height);
+        static int getWidth();
+        static int getHeight();
+
+        //get matrix
+        static mat3 getView();
+
+
+    private:
+        //size
+        static int width;
+        static int height;
+
+
+    };
+
+} // ASEngine
+
+#endif //MY_APPLICATION_SCREEN_H

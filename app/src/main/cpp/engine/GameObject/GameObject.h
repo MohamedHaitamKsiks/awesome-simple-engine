@@ -5,7 +5,7 @@
 #ifndef MY_APPLICATION_GAMEOBJECT_H
 #define MY_APPLICATION_GAMEOBJECT_H
 
-#include "vec2.h"
+#include "../Math/vec2.h"
 
 namespace ASEngine {
 

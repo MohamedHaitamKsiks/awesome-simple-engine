@@ -19,8 +19,17 @@ add_library( # Sets the name of the library.
 
         # Sets the library as a shared library.
         SHARED
-        engine/GameObject.cpp
-        engine/Renderer.cpp
+        #game object
+        engine/GameObject/GameObject.cpp
+        #resource
+        engine/Resource/Image.cpp
+        engine/Resource/Resource.cpp
+        engine/Resource/Sprite.cpp
+        engine/Resource/Material.cpp
+        #rendering
+        engine/Renderer/Renderer.cpp
+        engine/Renderer/Texture.cpp
+        engine/Renderer/Screen.cpp
         # Provides a relative path to your source file(s).
         native-lib.cpp)
 

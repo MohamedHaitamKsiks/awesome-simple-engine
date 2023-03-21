@@ -7,15 +7,7 @@
 #include <android/native_window.h>
 #include <android/native_window_jni.h>
 
-#include "engine/File.h"
-#include "engine/Image.h"
-#include "engine/vec2.h"
-#include "engine/Texture.h"
-#include "engine/Sprite.h"
-#include "engine/Resource.h"
-#include "engine/GameObject.h"
-#include "engine/Material.h"
-#include "engine/Renderer.h"
+#include "engine/asengine.h"
 
 extern "C" JNIEXPORT void JNICALL
 Java_com_example_myapplication_MyRenderer_init(
@@ -24,10 +16,31 @@ Java_com_example_myapplication_MyRenderer_init(
         jobject assetManagerJava,
         jobject surface) {
 
-    AAssetManager* assetManager = AAssetManager_fromJava(env, assetManagerJava);
     ANativeWindow* window;
     window = ANativeWindow_fromSurface(env, surface);
 
+    //init texture
+    ASEngine::Texture::init();
+
+    //init ressource manager
+    AAssetManager* assetManager = AAssetManager_fromJava(env, assetManagerJava);
+    ASEngine::Resource::init(assetManager);
+
+    //load sprite
+    ASEngine::Image image = ASEngine::Image::load("sprites/spr_run.png");
+    ASEngine::Texture texture = ASEngine::Texture::load(image);
+    ASEngine::Sprite::load("spr_run", texture, 6, ASEngine::vec2::zero());
+
+    //load default material
+    std::string vertexCode = ASEngine::Resource::loadAsText("materials/default.vert");
+    std::string fragmentCode = ASEngine::Resource::loadAsText("materials/default.frag");
+    ASEngine::Material::load("mt_default", vertexCode, fragmentCode);
+    ALOG("loaded default material");
+
+    ALOG("%s", vertexCode.c_str());
+    ALOG("%s", fragmentCode.c_str());
+
+    //init renderer
     ASEngine::Renderer::init();
 }
 
@@ -45,6 +58,5 @@ extern "C" JNIEXPORT void JNICALL
 Java_com_example_myapplication_MyRenderer_update(
         JNIEnv* env,
         jclass clazz) {
-
     ASEngine::Renderer::draw();
 }
