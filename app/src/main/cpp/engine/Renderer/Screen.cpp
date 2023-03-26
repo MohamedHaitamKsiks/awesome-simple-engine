@@ -31,4 +31,12 @@ namespace ASEngine {
     int Screen::width = 270;
     int Screen::height = 480;
 
+    vec2 Screen::getSize() {
+        return vec2{(float)width, (float)height};
+    }
+
+    vec2 Screen::getCenter() {
+        return Screen::getSize() * 0.5f ;
+    }
+
 } // ASEngine

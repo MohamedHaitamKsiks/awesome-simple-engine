@@ -1,11 +1,17 @@
 #define STB_IMAGE_IMPLEMENTATION
 
-#include <jni.h>
+
 #include <string>
+
+#include <jni.h>
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
 #include <android/native_window.h>
 #include <android/native_window_jni.h>
+#include <android/input.h>
+#include <android/native_activity.h>
+
+
 
 #include "engine/asengine.h"
 
@@ -29,16 +35,15 @@ Java_com_example_myapplication_MyRenderer_init(
     //load sprite
     ASEngine::Image image = ASEngine::Image::load("sprites/spr_run.png");
     ASEngine::Texture texture = ASEngine::Texture::load(image);
-    ASEngine::Sprite::load("spr_run", texture, 6, ASEngine::vec2::zero());
+    image.destroy();
+    ASEngine::Sprite::load("spr_run", texture, 6, ASEngine::vec2{24.0f, 24.0f});
+    ALOG("spr_run loaded");
 
     //load default material
     std::string vertexCode = ASEngine::Resource::loadAsText("materials/default.vert");
     std::string fragmentCode = ASEngine::Resource::loadAsText("materials/default.frag");
     ASEngine::Material::load("mt_default", vertexCode, fragmentCode);
     ALOG("loaded default material");
-
-    ALOG("%s", vertexCode.c_str());
-    ALOG("%s", fragmentCode.c_str());
 
     //init renderer
     ASEngine::Renderer::init();
@@ -60,3 +65,4 @@ Java_com_example_myapplication_MyRenderer_update(
         jclass clazz) {
     ASEngine::Renderer::draw();
 }
+

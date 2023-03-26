@@ -26,5 +26,11 @@
 #include "Renderer/Texture.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Screen.h"
+#include "Renderer/Color.h"
+#include "Renderer/Camera.h"
+
+//instance
+#include "GameObject/GameObject.h"
+#include "GameObject/Instance.h"
 
 #endif //MY_APPLICATION_ASENGINE_H

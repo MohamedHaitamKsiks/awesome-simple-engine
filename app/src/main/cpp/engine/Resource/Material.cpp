@@ -86,6 +86,12 @@ namespace ASEngine {
         glUniform2fv(uniformLocation, 1, values);
     }
 
+    void Material::setShaderParam(std::string param, Color value) {
+        int uniformLocation = glGetUniformLocation(glProgram, param.c_str());
+        GLfloat values[] = {value.r, value.g, value.b, value.a};
+        glUniform4fv(uniformLocation, 1, values);
+    }
+
     void Material::setShaderParam(std::string param, mat3 value) {
         int uniformLocation = glGetUniformLocation(glProgram, param.c_str());
         glUniformMatrix3fv(uniformLocation, 1, GL_TRUE, value.data);

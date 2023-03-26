@@ -16,6 +16,9 @@ namespace ASEngine {
         static int getWidth();
         static int getHeight();
 
+        static vec2 getSize();
+        static vec2 getCenter();
+
         //get matrix
         static mat3 getView();
 

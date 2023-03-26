@@ -7,6 +7,7 @@
 
 #include "../Renderer/Renderer.h"
 #include "../Renderer/Texture.h"
+#include "../Renderer/Color.h"
 #include "../log.h"
 #include "Resource.h"
 #include "../Math/mat3.h"
@@ -35,6 +36,7 @@ namespace ASEngine {
         void setShaderParam(std::string param, vec2 value);
         void setShaderParam(std::string param, mat3 value);
         void setShaderParam(std::string param, Texture value);
+        void setShaderParam(std::string param, Color value);
 
         //add material
         static void add(MaterialID materialId, Material& material);

@@ -36,14 +36,6 @@ namespace ASEngine {
             return out;
         }
 
-        //eql
-        inline vec2 operator=(vec2 v) {
-            vec2 out{};
-            out.x = v.x;
-            out.y = v.y;
-            return  out;
-        }
-
         //angle
         float angle() {
             return atan2(y, x);

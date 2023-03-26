@@ -30,6 +30,7 @@ add_library( # Sets the name of the library.
         engine/Renderer/Renderer.cpp
         engine/Renderer/Texture.cpp
         engine/Renderer/Screen.cpp
+        engine/Renderer/Camera.cpp
         # Provides a relative path to your source file(s).
         native-lib.cpp)
 

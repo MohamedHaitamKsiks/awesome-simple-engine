@@ -11,6 +11,9 @@
 #include "../log.h"
 #include "../Resource/Material.h"
 #include "../Resource/Sprite.h"
+#include "Camera.h"
+
+#include "Color.h"
 #include "Screen.h"
 
 namespace ASEngine {
@@ -24,16 +27,17 @@ namespace ASEngine {
 
         //before start quad make sure to use the correct material
         //between start and end quad we can add our params
-        /*
+
         //init quad
         static void quadStart();
         //end quad
         static void quadEnd();
 
         //draw functions
-        static void drawRectangle(vec2 position, vec2 size);
+        //static void drawRectangle(vec2 position, vec2 size, Color modulate);
         static void drawTexture(Texture texture, vec2 position, vec2 scale, float rotation);
-        static void drawSprite(SpriteID spriteId, int frame,vec2 position, vec2 scale, float rotation);*/
+        static void drawSprite(SpriteID spriteId, int frame,vec2 position, vec2 scale, float rotation);
+
     private:
         //quad mesh definition (all we need for out engine since we are mainly working with sprites)
         //vertex data

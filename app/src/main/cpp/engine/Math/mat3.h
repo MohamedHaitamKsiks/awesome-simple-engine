@@ -64,8 +64,8 @@ namespace ASEngine {
         //translate
         static mat3 translate(vec2 v) {
             mat3 b = identity();
-            b[1][2] = v.x;
-            b[0][2] = v.y;
+            b[0][2] = v.x;
+            b[1][2] = v.y;
             return b;
         }
 

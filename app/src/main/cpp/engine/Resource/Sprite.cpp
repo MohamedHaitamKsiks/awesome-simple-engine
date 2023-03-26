@@ -12,7 +12,7 @@ namespace ASEngine {
         Sprite sprite{};
         sprite.texture = _texture;
         sprite.width = _texture.width() / _frames;
-        sprite.height = _texture.height() / _frames;
+        sprite.height = _texture.height();
         sprite.frames = _frames;
         sprite.offset = _offset;
         //add sprite

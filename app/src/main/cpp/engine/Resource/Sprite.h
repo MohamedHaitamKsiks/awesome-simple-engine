@@ -21,7 +21,7 @@ namespace ASEngine {
         int frames;
         int width;
         int height;
-        vec2 offset = vec2::zero();
+        vec2 offset;
         //load
         static Sprite load(std::string _name, Texture _texture, int _frames, vec2 _offset );
         //add sprite

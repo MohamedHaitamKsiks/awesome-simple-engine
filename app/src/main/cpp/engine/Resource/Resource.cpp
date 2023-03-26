@@ -17,7 +17,6 @@ namespace ASEngine {
         return resourceId;
     }
 
-
     std::string Resource::loadAsText(std::string filePath) {
         //open asset
         AAsset* asset = AAssetManager_open(assetManager, filePath.c_str(), AASSET_MODE_BUFFER);
