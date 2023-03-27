@@ -14,7 +14,7 @@ namespace ASEngine {
 
     typedef std::string SpriteID;
 
-    class Sprite: Resource {
+    class Sprite: public Resource {
     public:
         //data
         Texture texture;

@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.1)
 
 # Declares and names the project.
 
-project("myapplication")
+project("androidsimpleengine")
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -15,12 +15,12 @@ project("myapplication")
 # Gradle automatically packages shared libraries with your APK.
 
 add_library( # Sets the name of the library.
-        myapplication
-
+        androidsimpleengine
         # Sets the library as a shared library.
         SHARED
         #game object
         engine/GameObject/GameObject.cpp
+        engine/GameObject/Instance.cpp
         #resource
         engine/Resource/Image.cpp
         engine/Resource/Resource.cpp
@@ -31,8 +31,16 @@ add_library( # Sets the name of the library.
         engine/Renderer/Texture.cpp
         engine/Renderer/Screen.cpp
         engine/Renderer/Camera.cpp
+        engine/Renderer/Context.cpp
+        engine/Renderer/Color.cpp
+        engine/Renderer/Graphics.cpp
+        #input
+        engine/InputEvent/InputEvent.cpp
+        #game objects
+        Objects/MyObject/MyObject.cpp
         # Provides a relative path to your source file(s).
-        native-lib.cpp)
+        main.cpp
+        )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -42,21 +50,40 @@ add_library( # Sets the name of the library.
 
 find_library( # Sets the name of the path variable.
         log-lib
+
         # Specifies the name of the NDK library that
         # you want CMake to locate.
-        log
-        android)
+        log)
+
+# Searches for a package provided by the game activity dependency
+
+find_package(game-activity REQUIRED CONFIG)
 
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
 
+add_subdirectory(freetype)
+
 target_link_libraries( # Specifies the target library.
-        myapplication
+        androidsimpleengine
+
+        freetype
+
+        android
+
+        # The game activity
+        game-activity::game-activity
+
+        # EGL, required for configuring the display context
+        EGL
+
+        # GL ES 3, used for the sample renderer
+        GLESv3
+
+        # for AImageDecoder, to load images from resources
+        jnigraphics
+
         # Links the target library to the log library
         # included in the NDK.
-        ${log-lib}
-        log
-        android
-        GLESv2
-        jnigraphics)
+        ${log-lib})

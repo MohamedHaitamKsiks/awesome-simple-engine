@@ -20,7 +20,7 @@ namespace ASEngine {
 
     typedef std::string MaterialID;
 
-    class Material: Resource {
+    class Material: public Resource {
     public:
         int glProgram;
         static Material current;

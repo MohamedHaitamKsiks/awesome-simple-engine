@@ -31,12 +31,28 @@ namespace ASEngine {
     int Screen::width = 270;
     int Screen::height = 480;
 
+    int Screen::windowWidth = -1;
+    int Screen::windowHeight = -1;
+
     vec2 Screen::getSize() {
         return vec2{(float)width, (float)height};
     }
 
     vec2 Screen::getCenter() {
         return Screen::getSize() * 0.5f ;
+    }
+
+    void Screen::setWindowSize(int _width, int _height) {
+        Screen::windowWidth = _width;
+        Screen::windowHeight = _height;
+    }
+
+    int Screen::getWindowWidth() {
+        return Screen::windowWidth;
+    }
+
+    int Screen::getWindowHeight() {
+        return Screen::windowHeight;
     }
 
 } // ASEngine

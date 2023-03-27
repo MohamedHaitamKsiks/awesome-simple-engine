@@ -13,7 +13,16 @@ namespace ASEngine {
         float g;
         float b;
         float a;
+
+        //colors
+        static Color white;
+        static Color red;
+        static Color blue;
+        static Color green;
+        static Color black;
+        static Color transparent;
     };
+
 
 } //ASEngine
 

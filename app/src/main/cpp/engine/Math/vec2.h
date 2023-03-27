@@ -36,6 +36,14 @@ namespace ASEngine {
             return out;
         }
 
+        //scale
+        inline vec2 operator/(float s) {
+            vec2 out{};
+            out.x = x / s;
+            out.y = y / s;
+            return out;
+        }
+
         //angle
         float angle() {
             return atan2(y, x);
@@ -46,9 +54,9 @@ namespace ASEngine {
             return  x * v.x + y * v.y;
         }
 
-        //lenght
+        //lenghts
         float length() {
-            return sqrt( x * x + y * y );
+            return sqrtf( x * x + y * y );
         }
 
         //length squared
@@ -61,6 +69,17 @@ namespace ASEngine {
             vec2 out{};
             out.x = x * cos(angle) - y * sin(angle);
             out.y = x * sin(angle) + y * cos(angle);
+            return out;
+        }
+
+        //normalized
+        vec2 normalized() {
+            if (length() == 0.0f)
+                return zero();
+
+            vec2 out{};
+            out.x = x / length();
+            out.y = y / length();
             return out;
         }
 

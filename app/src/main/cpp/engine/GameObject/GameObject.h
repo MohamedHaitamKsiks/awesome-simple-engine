@@ -6,6 +6,7 @@
 #define MY_APPLICATION_GAMEOBJECT_H
 
 #include "../Math/vec2.h"
+#include "../InputEvent/InputEvent.h"
 
 #include <string>
 
@@ -25,12 +26,13 @@ namespace ASEngine {
         float z_index = 0.0f;
         bool visible = true;
 
-        //functions for the different events for a game object (similar to gamemaker's events)
-        virtual void onCreate();
-        virtual void onUpdate(float delta);
-        virtual void onDraw();
-        virtual void onInputEvent();
 
+
+        //functions for the different events for a game object (similar to gamemaker's events)
+        virtual void onCreate() = 0;
+        virtual void onUpdate(float delta) = 0;
+        virtual void onDraw() = 0;
+        virtual void onInputEvent(InputEvent event) = 0;
     };
 
 } // ASEngine

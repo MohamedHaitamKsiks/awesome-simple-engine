@@ -16,6 +16,11 @@ namespace ASEngine {
         static int getWidth();
         static int getHeight();
 
+        //window size
+        static void setWindowSize(int _width, int _height);
+        static int getWindowWidth();
+        static int getWindowHeight();
+
         static vec2 getSize();
         static vec2 getCenter();
 
@@ -27,6 +32,10 @@ namespace ASEngine {
         //size
         static int width;
         static int height;
+
+        //real size
+        static int windowWidth;
+        static int windowHeight;
 
 
     };

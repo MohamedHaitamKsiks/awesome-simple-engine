@@ -21,6 +21,7 @@
 
 //game object
 #include "GameObject/GameObject.h"
+#include "GameObject/Instance.h"
 
 //rendering
 #include "Renderer/Texture.h"
@@ -28,9 +29,14 @@
 #include "Renderer/Screen.h"
 #include "Renderer/Color.h"
 #include "Renderer/Camera.h"
+#include "Renderer/Context.h"
+#include "Renderer/Graphics.h"
 
 //instance
 #include "GameObject/GameObject.h"
 #include "GameObject/Instance.h"
+
+//input
+#include "InputEvent/InputEvent.h"
 
 #endif //MY_APPLICATION_ASENGINE_H

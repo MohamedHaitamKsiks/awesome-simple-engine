@@ -15,7 +15,7 @@ namespace ASEngine {
 
     typedef std::string ImageID;
 
-    class Image: Resource {
+    class Image: public Resource {
     public:
         stbi_uc * pixels;
         int width;
