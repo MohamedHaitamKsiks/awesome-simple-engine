@@ -12,6 +12,7 @@
 #include "../log.h"
 #include "../Resource/Material.h"
 #include "../Resource/Sprite.h"
+#include "../Resource/Font.h"
 #include "Camera.h"
 
 #include "Color.h"
@@ -25,12 +26,11 @@ namespace ASEngine {
 		static void drawRectangle(vec2 position, vec2 size, Color modulate);
 		static void drawTexture(Texture texture, vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
 		static void drawSprite(SpriteID spriteId, int frame,vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
-
+		static void drawText(std::string text, vec2 position, FontID fontId, Color modulate = Color::white);
 	private:
-		//init quad
-		static void quadStart();
-		//end quad
-		static void quadEnd();
+
+		//draw quad
+		static void quadDraw();
 
 
 	};

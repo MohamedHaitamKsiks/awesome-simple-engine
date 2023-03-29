@@ -18,6 +18,7 @@
 #include "Resource/Sprite.h"
 #include "Resource/Resource.h"
 #include "Resource/Material.h"
+#include "Resource/Font.h"
 
 //game object
 #include "GameObject/GameObject.h"

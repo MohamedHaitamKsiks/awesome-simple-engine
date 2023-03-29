@@ -26,6 +26,7 @@ add_library( # Sets the name of the library.
         engine/Resource/Resource.cpp
         engine/Resource/Sprite.cpp
         engine/Resource/Material.cpp
+        engine/Resource/Font.cpp
         #rendering
         engine/Renderer/Renderer.cpp
         engine/Renderer/Texture.cpp

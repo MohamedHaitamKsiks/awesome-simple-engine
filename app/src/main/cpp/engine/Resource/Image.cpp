@@ -28,6 +28,7 @@ namespace ASEngine {
 
         //create image resource
         Image image{pixels, width, height};
+		image.format = IMAGE_FORMAT_RBGA;
 
         //add image to resources
         ImageID imageId = Resource::generateId();
@@ -35,7 +36,7 @@ namespace ASEngine {
 
         //free buffer
         AAsset_close(asset);
-        free(buffer);
+        delete buffer;
 
         return image;
     }
@@ -46,7 +47,7 @@ namespace ASEngine {
     }
 
     void Image::destroy() {
-        free(pixels);
+        delete pixels;
         Image::images.erase(id);
     }
 

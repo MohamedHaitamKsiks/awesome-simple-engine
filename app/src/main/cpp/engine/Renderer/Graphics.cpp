@@ -6,28 +6,12 @@
 
 namespace ASEngine {
 
-	void Graphics::quadStart() {
-		//get position attribute
-		int vPosition = glGetAttribLocation(Material::current.glProgram, "vPosition");
-		glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
-		glEnableVertexAttribArray(vPosition);
-		//get texture coordinates attribute
-		int vTextureCoord = glGetAttribLocation(Material::current.glProgram, "vTextureCoord");
-		glVertexAttribPointer(vTextureCoord, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
-		glEnableVertexAttribArray(vTextureCoord);
-		//pass view
-		Material::current.setShaderParam("view", Screen::getView());
-		//pass camera
-		Material::current.setShaderParam("camera", Camera::current->getMatrix());
-	}
-
-	void Graphics::quadEnd() {
+	void Graphics::quadDraw() {
 		// Draw the triangle
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
 	}
 
 	void Graphics::drawTexture(Texture texture, vec2 position, vec2 scale, float rotation, Color modulate) {
-		quadStart();
 		//1 frame
 		Material::current.setShaderParam("hframe", 0);
 		Material::current.setShaderParam("hframes", 1);
@@ -50,15 +34,13 @@ namespace ASEngine {
 
 		Material::current.setShaderParam("transform", transform);
 
-		quadEnd();
+		quadDraw();
 	}
 
 	void Graphics::drawSprite(SpriteID spriteId, int frame, vec2 position, vec2 scale, float rotation, Color modulate) {
+
 		//get sprite
 		Sprite sprite = spriteId;
-
-		//draw
-		quadStart();
 		//1 frame
 		Material::current.setShaderParam("hframe", frame % sprite.frames);
 		Material::current.setShaderParam("hframes", sprite.frames);
@@ -82,12 +64,15 @@ namespace ASEngine {
 
 		Material::current.setShaderParam("transform", transform);
 
-		quadEnd();
+		//pass texture
+		Material::current.setShaderParam("texture", sprite.texture);
+
+		quadDraw();
 
 	}
 
 	void Graphics::drawRectangle(vec2 position, vec2 size, Color modulate) {
-		quadStart();
+
 		//1 frame
 		Material::current.setShaderParam("hframe", 0);
 		Material::current.setShaderParam("hframes", 1);
@@ -107,6 +92,61 @@ namespace ASEngine {
 
 		Material::current.setShaderParam("transform", transform);
 
-		quadEnd();
+		quadDraw();
+	}
+
+	void Graphics::drawText(std::string text, vec2 position, FontID fontId, Color modulate) {
+		return;
+		//get font
+		Font font(fontId);
+
+		//1 frame
+		Material::current.setShaderParam("hframe", 0);
+		Material::current.setShaderParam("hframes", 1);
+		Material::current.setShaderParam("vframe", 0);
+		Material::current.setShaderParam("vframes", 1);
+
+
+		//draw every character
+		vec2 cursorPosition = vec2::zero();
+		for (auto c: text) {
+			//transform matrix
+			FontCharacter fontCharacter = font.fontCharacters[c];
+			Texture texture = fontCharacter.texture;
+
+			//image scale
+			vec2 imageScale = vec2{ (float)texture.width(), (float)texture.height() };
+			//charcter position
+			vec2 characterPosition = vec2{
+				0.0f,
+				(float)(fontCharacter.bearingY)
+			};
+
+			//transform
+			mat3 transform =
+					mat3::translate(position + cursorPosition + characterPosition) *
+					mat3::scale(imageScale) ;
+
+			Material::current.setShaderParam("transform", transform);
+
+			//pass texture
+			Material::current.setShaderParam("texture", texture);
+
+			//move cursor
+			switch (c) {
+				case ' ':
+					cursorPosition.x += (float)(font.spaceSize);
+					break;
+				case '\n':
+					cursorPosition.x = 0.0f;
+					cursorPosition.y += (float) (texture.height() + font.lineSeparation );
+					break;
+				default:
+					cursorPosition.x += (float)(texture.width() + font.separation);
+					quadDraw(); //draw
+
+			}
+
+		}
 	}
 } // ASEngine

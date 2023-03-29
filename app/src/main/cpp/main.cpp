@@ -26,7 +26,7 @@ extern "C" {
 void handle_cmd(android_app *pApp, int32_t cmd) {
     ASEngine::Image image;
     ASEngine::Texture texture;
-    std::string vertexCode;
+	std::string vertexCode;
     std::string fragmentCode;
 
     switch (cmd) {
@@ -47,12 +47,14 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
 			loadGameObjects();
 
 			//craete instance
-			ASEngine::Instance::create("MyObject");
+			for (int i = 0; i < 1000; i++)
+				ASEngine::Instance::create("MyObject");
 
             //load spr_run
             image = ASEngine::Image::load("sprites/spr_run.png");
             texture = ASEngine::Texture::load(image);
             ASEngine::Sprite::load("spr_run", texture, 6, ASEngine::vec2{24.0f, 24.0f});
+			image.destroy();
             ALOG("spr_run loaded");
 
 			//load default material
@@ -60,6 +62,10 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
 			fragmentCode = ASEngine::Resource::loadAsText("materials/default.frag");
 			ASEngine::Material::load("mt_default", vertexCode, fragmentCode);
 			ALOG("mt_default loaded");
+
+			//load font
+			ASEngine::Font::load("ft_pixel", 16, "fonts/joystix_monospace.otf", 4, 4, 16);
+
 
             break;
         case APP_CMD_TERM_WINDOW:

@@ -14,17 +14,33 @@ namespace ASEngine {
         //create GL texture
         GLuint texture;
         //load open gl texture
-        glActiveTexture(GL_TEXTURE0);
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width, image.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.pixels);
+        //image format
+        switch (image.format) {
+            case IMAGE_FORMAT_RBGA:
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width, image.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.pixels);
+                break;
+            case IMAGE_FORMAT_GRAYSCALE:
+                glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, image.width, image.height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, image.pixels);
+                break;
+            case IMAGE_FORMAT_GRAYSCALE_ALPHA:
+                glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, image.width, image.height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, image.pixels);
+                break;
+        }
+
+
+
         //create texture info
         TextureInfo info{texture, image.width, image.height};
         Texture::infoList.push_back(info);
         //return texture
-        Texture loadedTexture{Texture::textureCounter++};
+        Texture loadedTexture{Texture::textureCounter};
+        Texture::textureCounter++;
         return loadedTexture;
     }
     //destroy

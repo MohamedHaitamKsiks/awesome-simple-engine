@@ -3,7 +3,7 @@
 #
 
 
-# Copyright (C) 1996-2019 by
+# Copyright (C) 1996-2021 by
 # David Turner, Robert Wilhelm, and Werner Lemberg.
 #
 # This file is part of the FreeType project, and may only be used, modified,
@@ -103,6 +103,7 @@ ifneq ($(findstring setup,$(MAKECMDGOALS)),)
   check_platform := 1
 endif
 
+
 # Include the automatic host platform detection rules when we need to
 # check the platform.
 #
@@ -111,6 +112,17 @@ ifdef check_platform
   all modules: setup
 
   include $(TOP_DIR)/builds/detect.mk
+
+  # For builds directly from the git repository we need to copy files
+  # from `subprojects/dlg' to `src/dlg' and `include/dlg'.
+  #
+  ifeq ($(wildcard $(TOP_DIR)/src/dlg/dlg.*),)
+    ifeq ($(wildcard $(TOP_DIR)/subprojects/dlg/*),)
+      copy_submodule: check_out_submodule
+    endif
+
+    setup: copy_submodule
+  endif
 
   # This rule makes sense for Unix only to remove files created by a run of
   # the configure script which hasn't been successful (so that no
@@ -152,6 +164,23 @@ else
   include $(CONFIG_MK)
 
 endif # test check_platform
+
+
+.PHONY: check_out_submodule copy_submodule
+
+check_out_submodule:
+	$(info Checking out submodule in `subprojects/dlg')
+	git submodule init
+	git submodule update
+
+copy_submodule:
+	$(info Copying files from `subprojects/dlg' to `src/dlg' and `include/dlg')
+  ifeq ($(wildcard include/dlg),)
+	mkdir $(subst /,$(SEP),include/dlg)
+  endif
+	$(COPY) $(subst /,$(SEP),subprojects/dlg/include/dlg/output.h include/dlg)
+	$(COPY) $(subst /,$(SEP),subprojects/dlg/include/dlg/dlg.h include/dlg)
+	$(COPY) $(subst /,$(SEP),subprojects/dlg/src/dlg/dlg.c src/dlg)
 
 
 # We always need the list of modules in ftmodule.h.
@@ -208,7 +237,7 @@ patch := $(firstword $(patch))
 dist:
 	-rm -rf tmp
 	rm -f freetype-$(version).tar.gz
-	rm -f freetype-$(version).tar.bz2
+	rm -f freetype-$(version).tar.xz
 	rm -f ft$(winversion).zip
 
 	for d in `find . -wholename '*/.git' -prune \
@@ -219,7 +248,10 @@ dist:
 
 	currdir=`pwd` ; \
 	for f in `find . -wholename '*/.git' -prune \
+	                 -o -name .gitattributes \
 	                 -o -name .gitignore \
+	                 -o -name .gitlab-ci.yml \
+	                 -o -name .gitmodules \
 	                 -o -name .mailmap \
 	                 -o -type d \
 	                 -o -print` ; do \
@@ -235,7 +267,7 @@ dist:
 	tar -H ustar -chf - freetype-$(version) \
 	| gzip -9 -c > freetype-$(version).tar.gz
 	tar -H ustar -chf - freetype-$(version) \
-	| bzip2 -c > freetype-$(version).tar.bz2
+	| xz -c > freetype-$(version).tar.xz
 
 	@# Use CR/LF for zip files.
 	zip -lr9 ft$(winversion).zip freetype-$(version)
@@ -268,7 +300,10 @@ do-dist: distclean refdoc
 	cp $(CONFIG_SUB) builds/unix
 
 	@# Remove intermediate files created by the `refdoc' target.
-	rm -rf docs/reference/markdown
-	rm -f docs/reference/mkdocs.yml
+	rm -rf docs/markdown
+	rm -f docs/mkdocs.yml
+
+	@# Remove more stuff related to git.
+	rm -rf subprojects
 
 # EOF

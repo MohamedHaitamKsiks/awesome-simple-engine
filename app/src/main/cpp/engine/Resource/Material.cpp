@@ -7,6 +7,22 @@
 
 namespace ASEngine {
 
+    void Material::quadInit() {
+        //get position attribute
+        int vPosition = glGetAttribLocation(Material::current.glProgram, "vPosition");
+        glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glEnableVertexAttribArray(vPosition);
+        //get texture coordinates attribute
+        int vTextureCoord = glGetAttribLocation(Material::current.glProgram, "vTextureCoord");
+        glVertexAttribPointer(vTextureCoord, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glEnableVertexAttribArray(vTextureCoord);
+        //pass view
+        Material::current.setShaderParam("view", Screen::getView());
+        //pass camera
+        Material::current.setShaderParam("camera", Camera::current->getMatrix());
+    }
+
+
     //load shader
     GLuint Material::loadShader(GLenum shaderType, const char* shaderCode) {
         GLuint shader = glCreateShader(shaderType);
@@ -52,6 +68,7 @@ namespace ASEngine {
     void Material::use(Material& material) {
         current = material;
         glUseProgram(material.glProgram);
+        quadInit();
     };
 
     void Material::use(MaterialID materialId) {
@@ -98,7 +115,9 @@ namespace ASEngine {
     }
 
     void Material::setShaderParam(std::string param, Texture value) {
+		glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, value.glTexture());
+        //ALOG("bind texture %d", value.glTexture());
 
         int uniformLocation = glGetUniformLocation(glProgram, param.c_str());
         glUniform1i(uniformLocation, 0);

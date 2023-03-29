@@ -13,13 +13,22 @@
 
 namespace ASEngine {
 
+    enum ImageFormat {
+        IMAGE_FORMAT_RBGA,
+        IMAGE_FORMAT_GRAYSCALE,
+        IMAGE_FORMAT_GRAYSCALE_ALPHA,
+        IMAGE_FORMAT_INTENSITY
+    };
+
     typedef std::string ImageID;
 
     class Image: public Resource {
+
     public:
         stbi_uc * pixels;
         int width;
         int height;
+        ImageFormat format = IMAGE_FORMAT_RBGA;
         //constructor
         Image(stbi_uc* _pixels, int _width, int _height);
 

@@ -31,12 +31,11 @@
    */
 
 
-#include <ft2build.h>
 
-#include FT_FREETYPE_H
-#include FT_INTERNAL_DEBUG_H
-#include FT_INTERNAL_STREAM_H
-#include FT_INTERNAL_OBJECTS_H
+#include <freetype/freetype.h>
+#include <freetype/internal/ftdebug.h>
+#include <freetype/internal/ftstream.h>
+#include <freetype/internal/ftobjs.h>
 
 #include "bdf.h"
 #include "bdferror.h"
@@ -79,89 +78,89 @@
 
   static const bdf_property_t  _bdf_properties[] =
   {
-    { (char *)"ADD_STYLE_NAME",          BDF_ATOM,     1, { 0 } },
-    { (char *)"AVERAGE_WIDTH",           BDF_INTEGER,  1, { 0 } },
-    { (char *)"AVG_CAPITAL_WIDTH",       BDF_INTEGER,  1, { 0 } },
-    { (char *)"AVG_LOWERCASE_WIDTH",     BDF_INTEGER,  1, { 0 } },
-    { (char *)"CAP_HEIGHT",              BDF_INTEGER,  1, { 0 } },
-    { (char *)"CHARSET_COLLECTIONS",     BDF_ATOM,     1, { 0 } },
-    { (char *)"CHARSET_ENCODING",        BDF_ATOM,     1, { 0 } },
-    { (char *)"CHARSET_REGISTRY",        BDF_ATOM,     1, { 0 } },
-    { (char *)"COMMENT",                 BDF_ATOM,     1, { 0 } },
-    { (char *)"COPYRIGHT",               BDF_ATOM,     1, { 0 } },
-    { (char *)"DEFAULT_CHAR",            BDF_CARDINAL, 1, { 0 } },
-    { (char *)"DESTINATION",             BDF_CARDINAL, 1, { 0 } },
-    { (char *)"DEVICE_FONT_NAME",        BDF_ATOM,     1, { 0 } },
-    { (char *)"END_SPACE",               BDF_INTEGER,  1, { 0 } },
-    { (char *)"FACE_NAME",               BDF_ATOM,     1, { 0 } },
-    { (char *)"FAMILY_NAME",             BDF_ATOM,     1, { 0 } },
-    { (char *)"FIGURE_WIDTH",            BDF_INTEGER,  1, { 0 } },
-    { (char *)"FONT",                    BDF_ATOM,     1, { 0 } },
-    { (char *)"FONTNAME_REGISTRY",       BDF_ATOM,     1, { 0 } },
-    { (char *)"FONT_ASCENT",             BDF_INTEGER,  1, { 0 } },
-    { (char *)"FONT_DESCENT",            BDF_INTEGER,  1, { 0 } },
-    { (char *)"FOUNDRY",                 BDF_ATOM,     1, { 0 } },
-    { (char *)"FULL_NAME",               BDF_ATOM,     1, { 0 } },
-    { (char *)"ITALIC_ANGLE",            BDF_INTEGER,  1, { 0 } },
-    { (char *)"MAX_SPACE",               BDF_INTEGER,  1, { 0 } },
-    { (char *)"MIN_SPACE",               BDF_INTEGER,  1, { 0 } },
-    { (char *)"NORM_SPACE",              BDF_INTEGER,  1, { 0 } },
-    { (char *)"NOTICE",                  BDF_ATOM,     1, { 0 } },
-    { (char *)"PIXEL_SIZE",              BDF_INTEGER,  1, { 0 } },
-    { (char *)"POINT_SIZE",              BDF_INTEGER,  1, { 0 } },
-    { (char *)"QUAD_WIDTH",              BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_ASCENT",              BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_AVERAGE_WIDTH",       BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_AVG_CAPITAL_WIDTH",   BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_AVG_LOWERCASE_WIDTH", BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_CAP_HEIGHT",          BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_DESCENT",             BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_END_SPACE",           BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_FIGURE_WIDTH",        BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_MAX_SPACE",           BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_MIN_SPACE",           BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_NORM_SPACE",          BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_PIXEL_SIZE",          BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_POINT_SIZE",          BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_PIXELSIZE",           BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_POINTSIZE",           BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_QUAD_WIDTH",          BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_SMALL_CAP_SIZE",      BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_STRIKEOUT_ASCENT",    BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_STRIKEOUT_DESCENT",   BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_SUBSCRIPT_SIZE",      BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_SUBSCRIPT_X",         BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_SUBSCRIPT_Y",         BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_SUPERSCRIPT_SIZE",    BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_SUPERSCRIPT_X",       BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_SUPERSCRIPT_Y",       BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_UNDERLINE_POSITION",  BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_UNDERLINE_THICKNESS", BDF_INTEGER,  1, { 0 } },
-    { (char *)"RAW_X_HEIGHT",            BDF_INTEGER,  1, { 0 } },
-    { (char *)"RELATIVE_SETWIDTH",       BDF_CARDINAL, 1, { 0 } },
-    { (char *)"RELATIVE_WEIGHT",         BDF_CARDINAL, 1, { 0 } },
-    { (char *)"RESOLUTION",              BDF_INTEGER,  1, { 0 } },
-    { (char *)"RESOLUTION_X",            BDF_CARDINAL, 1, { 0 } },
-    { (char *)"RESOLUTION_Y",            BDF_CARDINAL, 1, { 0 } },
-    { (char *)"SETWIDTH_NAME",           BDF_ATOM,     1, { 0 } },
-    { (char *)"SLANT",                   BDF_ATOM,     1, { 0 } },
-    { (char *)"SMALL_CAP_SIZE",          BDF_INTEGER,  1, { 0 } },
-    { (char *)"SPACING",                 BDF_ATOM,     1, { 0 } },
-    { (char *)"STRIKEOUT_ASCENT",        BDF_INTEGER,  1, { 0 } },
-    { (char *)"STRIKEOUT_DESCENT",       BDF_INTEGER,  1, { 0 } },
-    { (char *)"SUBSCRIPT_SIZE",          BDF_INTEGER,  1, { 0 } },
-    { (char *)"SUBSCRIPT_X",             BDF_INTEGER,  1, { 0 } },
-    { (char *)"SUBSCRIPT_Y",             BDF_INTEGER,  1, { 0 } },
-    { (char *)"SUPERSCRIPT_SIZE",        BDF_INTEGER,  1, { 0 } },
-    { (char *)"SUPERSCRIPT_X",           BDF_INTEGER,  1, { 0 } },
-    { (char *)"SUPERSCRIPT_Y",           BDF_INTEGER,  1, { 0 } },
-    { (char *)"UNDERLINE_POSITION",      BDF_INTEGER,  1, { 0 } },
-    { (char *)"UNDERLINE_THICKNESS",     BDF_INTEGER,  1, { 0 } },
-    { (char *)"WEIGHT",                  BDF_CARDINAL, 1, { 0 } },
-    { (char *)"WEIGHT_NAME",             BDF_ATOM,     1, { 0 } },
-    { (char *)"X_HEIGHT",                BDF_INTEGER,  1, { 0 } },
-    { (char *)"_MULE_BASELINE_OFFSET",   BDF_INTEGER,  1, { 0 } },
-    { (char *)"_MULE_RELATIVE_COMPOSE",  BDF_INTEGER,  1, { 0 } },
+    { "ADD_STYLE_NAME",          BDF_ATOM,     1, { 0 } },
+    { "AVERAGE_WIDTH",           BDF_INTEGER,  1, { 0 } },
+    { "AVG_CAPITAL_WIDTH",       BDF_INTEGER,  1, { 0 } },
+    { "AVG_LOWERCASE_WIDTH",     BDF_INTEGER,  1, { 0 } },
+    { "CAP_HEIGHT",              BDF_INTEGER,  1, { 0 } },
+    { "CHARSET_COLLECTIONS",     BDF_ATOM,     1, { 0 } },
+    { "CHARSET_ENCODING",        BDF_ATOM,     1, { 0 } },
+    { "CHARSET_REGISTRY",        BDF_ATOM,     1, { 0 } },
+    { "COMMENT",                 BDF_ATOM,     1, { 0 } },
+    { "COPYRIGHT",               BDF_ATOM,     1, { 0 } },
+    { "DEFAULT_CHAR",            BDF_CARDINAL, 1, { 0 } },
+    { "DESTINATION",             BDF_CARDINAL, 1, { 0 } },
+    { "DEVICE_FONT_NAME",        BDF_ATOM,     1, { 0 } },
+    { "END_SPACE",               BDF_INTEGER,  1, { 0 } },
+    { "FACE_NAME",               BDF_ATOM,     1, { 0 } },
+    { "FAMILY_NAME",             BDF_ATOM,     1, { 0 } },
+    { "FIGURE_WIDTH",            BDF_INTEGER,  1, { 0 } },
+    { "FONT",                    BDF_ATOM,     1, { 0 } },
+    { "FONTNAME_REGISTRY",       BDF_ATOM,     1, { 0 } },
+    { "FONT_ASCENT",             BDF_INTEGER,  1, { 0 } },
+    { "FONT_DESCENT",            BDF_INTEGER,  1, { 0 } },
+    { "FOUNDRY",                 BDF_ATOM,     1, { 0 } },
+    { "FULL_NAME",               BDF_ATOM,     1, { 0 } },
+    { "ITALIC_ANGLE",            BDF_INTEGER,  1, { 0 } },
+    { "MAX_SPACE",               BDF_INTEGER,  1, { 0 } },
+    { "MIN_SPACE",               BDF_INTEGER,  1, { 0 } },
+    { "NORM_SPACE",              BDF_INTEGER,  1, { 0 } },
+    { "NOTICE",                  BDF_ATOM,     1, { 0 } },
+    { "PIXEL_SIZE",              BDF_INTEGER,  1, { 0 } },
+    { "POINT_SIZE",              BDF_INTEGER,  1, { 0 } },
+    { "QUAD_WIDTH",              BDF_INTEGER,  1, { 0 } },
+    { "RAW_ASCENT",              BDF_INTEGER,  1, { 0 } },
+    { "RAW_AVERAGE_WIDTH",       BDF_INTEGER,  1, { 0 } },
+    { "RAW_AVG_CAPITAL_WIDTH",   BDF_INTEGER,  1, { 0 } },
+    { "RAW_AVG_LOWERCASE_WIDTH", BDF_INTEGER,  1, { 0 } },
+    { "RAW_CAP_HEIGHT",          BDF_INTEGER,  1, { 0 } },
+    { "RAW_DESCENT",             BDF_INTEGER,  1, { 0 } },
+    { "RAW_END_SPACE",           BDF_INTEGER,  1, { 0 } },
+    { "RAW_FIGURE_WIDTH",        BDF_INTEGER,  1, { 0 } },
+    { "RAW_MAX_SPACE",           BDF_INTEGER,  1, { 0 } },
+    { "RAW_MIN_SPACE",           BDF_INTEGER,  1, { 0 } },
+    { "RAW_NORM_SPACE",          BDF_INTEGER,  1, { 0 } },
+    { "RAW_PIXEL_SIZE",          BDF_INTEGER,  1, { 0 } },
+    { "RAW_POINT_SIZE",          BDF_INTEGER,  1, { 0 } },
+    { "RAW_PIXELSIZE",           BDF_INTEGER,  1, { 0 } },
+    { "RAW_POINTSIZE",           BDF_INTEGER,  1, { 0 } },
+    { "RAW_QUAD_WIDTH",          BDF_INTEGER,  1, { 0 } },
+    { "RAW_SMALL_CAP_SIZE",      BDF_INTEGER,  1, { 0 } },
+    { "RAW_STRIKEOUT_ASCENT",    BDF_INTEGER,  1, { 0 } },
+    { "RAW_STRIKEOUT_DESCENT",   BDF_INTEGER,  1, { 0 } },
+    { "RAW_SUBSCRIPT_SIZE",      BDF_INTEGER,  1, { 0 } },
+    { "RAW_SUBSCRIPT_X",         BDF_INTEGER,  1, { 0 } },
+    { "RAW_SUBSCRIPT_Y",         BDF_INTEGER,  1, { 0 } },
+    { "RAW_SUPERSCRIPT_SIZE",    BDF_INTEGER,  1, { 0 } },
+    { "RAW_SUPERSCRIPT_X",       BDF_INTEGER,  1, { 0 } },
+    { "RAW_SUPERSCRIPT_Y",       BDF_INTEGER,  1, { 0 } },
+    { "RAW_UNDERLINE_POSITION",  BDF_INTEGER,  1, { 0 } },
+    { "RAW_UNDERLINE_THICKNESS", BDF_INTEGER,  1, { 0 } },
+    { "RAW_X_HEIGHT",            BDF_INTEGER,  1, { 0 } },
+    { "RELATIVE_SETWIDTH",       BDF_CARDINAL, 1, { 0 } },
+    { "RELATIVE_WEIGHT",         BDF_CARDINAL, 1, { 0 } },
+    { "RESOLUTION",              BDF_INTEGER,  1, { 0 } },
+    { "RESOLUTION_X",            BDF_CARDINAL, 1, { 0 } },
+    { "RESOLUTION_Y",            BDF_CARDINAL, 1, { 0 } },
+    { "SETWIDTH_NAME",           BDF_ATOM,     1, { 0 } },
+    { "SLANT",                   BDF_ATOM,     1, { 0 } },
+    { "SMALL_CAP_SIZE",          BDF_INTEGER,  1, { 0 } },
+    { "SPACING",                 BDF_ATOM,     1, { 0 } },
+    { "STRIKEOUT_ASCENT",        BDF_INTEGER,  1, { 0 } },
+    { "STRIKEOUT_DESCENT",       BDF_INTEGER,  1, { 0 } },
+    { "SUBSCRIPT_SIZE",          BDF_INTEGER,  1, { 0 } },
+    { "SUBSCRIPT_X",             BDF_INTEGER,  1, { 0 } },
+    { "SUBSCRIPT_Y",             BDF_INTEGER,  1, { 0 } },
+    { "SUPERSCRIPT_SIZE",        BDF_INTEGER,  1, { 0 } },
+    { "SUPERSCRIPT_X",           BDF_INTEGER,  1, { 0 } },
+    { "SUPERSCRIPT_Y",           BDF_INTEGER,  1, { 0 } },
+    { "UNDERLINE_POSITION",      BDF_INTEGER,  1, { 0 } },
+    { "UNDERLINE_THICKNESS",     BDF_INTEGER,  1, { 0 } },
+    { "WEIGHT",                  BDF_CARDINAL, 1, { 0 } },
+    { "WEIGHT_NAME",             BDF_ATOM,     1, { 0 } },
+    { "X_HEIGHT",                BDF_INTEGER,  1, { 0 } },
+    { "_MULE_BASELINE_OFFSET",   BDF_INTEGER,  1, { 0 } },
+    { "_MULE_RELATIVE_COMPOSE",  BDF_INTEGER,  1, { 0 } },
   };
 
   static const unsigned long
@@ -186,12 +185,12 @@
                  "Added `FONT_ASCENT %hd'.\n"
 #define ACMSG2   "FONT_DESCENT property missing.  " \
                  "Added `FONT_DESCENT %hd'.\n"
-#define ACMSG3   "Font width != actual width.  Old: %hd New: %hd.\n"
+#define ACMSG3   "Font width != actual width.  Old: %d New: %d.\n"
 #define ACMSG4   "Font left bearing != actual left bearing.  " \
                  "Old: %hd New: %hd.\n"
 #define ACMSG5   "Font ascent != actual ascent.  Old: %hd New: %hd.\n"
-#define ACMSG6   "Font descent != actual descent.  Old: %hd New: %hd.\n"
-#define ACMSG7   "Font height != actual height. Old: %hd New: %hd.\n"
+#define ACMSG6   "Font descent != actual descent.  Old: %d New: %d.\n"
+#define ACMSG7   "Font height != actual height. Old: %d New: %d.\n"
 #define ACMSG8   "Glyph scalable width (SWIDTH) adjustments made.\n"
 #define ACMSG9   "SWIDTH field missing at line %ld.  Set automatically.\n"
 #define ACMSG10  "DWIDTH field missing at line %ld.  Set to glyph width.\n"
@@ -329,7 +328,7 @@
       else if ( newsize < oldsize || newsize > bigsize )
         newsize = bigsize;
 
-      if ( FT_RENEW_ARRAY( list->field, oldsize, newsize ) )
+      if ( FT_QRENEW_ARRAY( list->field, oldsize, newsize ) )
         goto Exit;
 
       list->size = newsize;
@@ -364,7 +363,7 @@
 
   /* An empty string for empty fields. */
 
-  static const char  empty[1] = { 0 };      /* XXX eliminate this */
+  static const char  empty[] = "";      /* XXX eliminate this */
 
 
   static char *
@@ -407,13 +406,14 @@
 
   static FT_Error
   _bdf_list_split( _bdf_list_t*   list,
-                   char*          separators,
+                   const char*    separators,
                    char*          line,
                    unsigned long  linelen )
   {
     unsigned long  final_empty;
     int            mult;
-    char           *sp, *ep, *end;
+    const char     *sp, *end;
+    char           *ep;
     char           seps[32];
     FT_Error       error = FT_Err_Ok;
 
@@ -473,7 +473,7 @@
       }
 
       /* Assign the field appropriately. */
-      list->field[list->used++] = ( ep > sp ) ? sp : (char*)empty;
+      list->field[list->used++] = ( ep > sp ) ? (char*)sp : (char*)empty;
 
       sp = ep;
 
@@ -538,7 +538,7 @@
     /* initial size and allocation of the input buffer */
     buf_size = 1024;
 
-    if ( FT_NEW_ARRAY( buf, buf_size ) )
+    if ( FT_QALLOC( buf, buf_size ) )
       goto Exit;
 
     cb      = callback;
@@ -599,7 +599,7 @@
           }
 
           new_size = buf_size * 2;
-          if ( FT_RENEW_ARRAY( buf, buf_size, new_size ) )
+          if ( FT_QREALLOC( buf, buf_size, new_size ) )
             goto Exit;
 
           cursor   = (ptrdiff_t)buf_size;
@@ -692,7 +692,7 @@
 
   /* Routine to convert a decimal ASCII string to an unsigned long integer. */
   static unsigned long
-  _bdf_atoul( char*  s )
+  _bdf_atoul( const char*  s )
   {
     unsigned long  v;
 
@@ -717,7 +717,7 @@
 
   /* Routine to convert a decimal ASCII string to a signed long integer. */
   static long
-  _bdf_atol( char*  s )
+  _bdf_atol( const char*  s )
   {
     long  v, neg;
 
@@ -750,7 +750,7 @@
 
   /* Routine to convert a decimal ASCII string to an unsigned short integer. */
   static unsigned short
-  _bdf_atous( char*  s )
+  _bdf_atous( const char*  s )
   {
     unsigned short  v;
 
@@ -775,7 +775,7 @@
 
   /* Routine to convert a decimal ASCII string to a signed short integer. */
   static short
-  _bdf_atos( char*  s )
+  _bdf_atos( const char*  s )
   {
     short  v, neg;
 
@@ -807,7 +807,7 @@
 
 
   /* Routine to compare two glyphs by encoding so they can be sorted. */
-  static int
+  FT_COMPARE_DEF( int )
   by_encoding( const void*  a,
                const void*  b )
   {
@@ -828,7 +828,7 @@
 
 
   static FT_Error
-  bdf_create_property( char*        name,
+  bdf_create_property( const char*  name,
                        int          format,
                        bdf_font_t*  font )
   {
@@ -844,19 +844,18 @@
     if ( ft_hash_str_lookup( name, &(font->proptbl) ) )
       goto Exit;
 
-    if ( FT_RENEW_ARRAY( font->user_props,
-                         font->nuser_props,
-                         font->nuser_props + 1 ) )
+    if ( FT_QRENEW_ARRAY( font->user_props,
+                          font->nuser_props,
+                          font->nuser_props + 1 ) )
       goto Exit;
 
     p = font->user_props + font->nuser_props;
-    FT_ZERO( p );
 
     n = ft_strlen( name ) + 1;
     if ( n > FT_ULONG_MAX )
       return FT_THROW( Invalid_Argument );
 
-    if ( FT_NEW_ARRAY( p->name, n ) )
+    if ( FT_QALLOC( p->name, n ) )
       goto Exit;
 
     FT_MEM_COPY( (char *)p->name, name, n );
@@ -942,9 +941,9 @@
     FT_Error   error  = FT_Err_Ok;
 
 
-    if ( FT_RENEW_ARRAY( font->comments,
-                         font->comments_len,
-                         font->comments_len + len + 1 ) )
+    if ( FT_QRENEW_ARRAY( font->comments,
+                          font->comments_len,
+                          font->comments_len + len + 1 ) )
       goto Exit;
 
     cp = font->comments + font->comments_len;
@@ -998,7 +997,7 @@
 
     FT_MEM_COPY( name, font->name, len );
 
-    error = _bdf_list_split( &list, (char *)"-", name, (unsigned long)len );
+    error = _bdf_list_split( &list, "-", name, (unsigned long)len );
     if ( error )
       goto Fail;
 
@@ -1097,7 +1096,7 @@
 
   static FT_Error
   _bdf_add_property( bdf_font_t*    font,
-                     char*          name,
+                     const char*    name,
                      char*          value,
                      unsigned long  lineno )
   {
@@ -1159,21 +1158,12 @@
     /* Allocate another property if this is overflowing. */
     if ( font->props_used == font->props_size )
     {
-      if ( font->props_size == 0 )
-      {
-        if ( FT_NEW_ARRAY( font->props, 1 ) )
-          goto Exit;
-      }
-      else
-      {
-        if ( FT_RENEW_ARRAY( font->props,
-                             font->props_size,
-                             font->props_size + 1 ) )
-          goto Exit;
-      }
+      if ( FT_QRENEW_ARRAY( font->props,
+                            font->props_size,
+                            font->props_size + 1 ) )
+        goto Exit;
 
       fp = font->props + font->props_size;
-      FT_ZERO( fp );
       font->props_size++;
     }
 
@@ -1336,7 +1326,7 @@
         goto Exit;
       }
 
-      error = _bdf_list_split( &p->list, (char *)" +", line, linelen );
+      error = _bdf_list_split( &p->list, " +", line, linelen );
       if ( error )
         goto Exit;
       p->cnt = font->glyphs_size = _bdf_atoul( p->list.field[1] );
@@ -1423,7 +1413,7 @@
       /* encoding can be checked for an unencoded character.      */
       FT_FREE( p->glyph_name );
 
-      error = _bdf_list_split( &p->list, (char *)" +", line, linelen );
+      error = _bdf_list_split( &p->list, " +", line, linelen );
       if ( error )
         goto Exit;
 
@@ -1438,7 +1428,7 @@
         goto Exit;
       }
 
-      if ( FT_NEW_ARRAY( p->glyph_name, slen + 1 ) )
+      if ( FT_QALLOC( p->glyph_name, slen + 1 ) )
         goto Exit;
 
       FT_MEM_COPY( p->glyph_name, s, slen + 1 );
@@ -1461,7 +1451,7 @@
         goto Exit;
       }
 
-      error = _bdf_list_split( &p->list, (char *)" +", line, linelen );
+      error = _bdf_list_split( &p->list, " +", line, linelen );
       if ( error )
         goto Exit;
 
@@ -1615,7 +1605,7 @@
     /* Expect the SWIDTH (scalable width) field next. */
     if ( _bdf_strncmp( line, "SWIDTH", 6 ) == 0 )
     {
-      error = _bdf_list_split( &p->list, (char *)" +", line, linelen );
+      error = _bdf_list_split( &p->list, " +", line, linelen );
       if ( error )
         goto Exit;
 
@@ -1628,7 +1618,7 @@
     /* Expect the DWIDTH (scalable width) field next. */
     if ( _bdf_strncmp( line, "DWIDTH", 6 ) == 0 )
     {
-      error = _bdf_list_split( &p->list, (char *)" +", line, linelen );
+      error = _bdf_list_split( &p->list, " +", line, linelen );
       if ( error )
         goto Exit;
 
@@ -1653,7 +1643,7 @@
     /* Expect the BBX field next. */
     if ( _bdf_strncmp( line, "BBX", 3 ) == 0 )
     {
-      error = _bdf_list_split( &p->list, (char *)" +", line, linelen );
+      error = _bdf_list_split( &p->list, " +", line, linelen );
       if ( error )
         goto Exit;
 
@@ -1735,7 +1725,7 @@
       else
         glyph->bytes = (unsigned short)bitmap_size;
 
-      if ( FT_NEW_ARRAY( glyph->bitmap, glyph->bytes ) )
+      if ( FT_ALLOC( glyph->bitmap, glyph->bytes ) )
         goto Exit;
 
       p->row    = 0;
@@ -1796,7 +1786,7 @@
       {
         p->font->font_ascent = p->font->bbx.ascent;
         ft_sprintf( nbuf, "%hd", p->font->bbx.ascent );
-        error = _bdf_add_property( p->font, (char *)"FONT_ASCENT",
+        error = _bdf_add_property( p->font, "FONT_ASCENT",
                                    nbuf, lineno );
         if ( error )
           goto Exit;
@@ -1808,7 +1798,7 @@
       {
         p->font->font_descent = p->font->bbx.descent;
         ft_sprintf( nbuf, "%hd", p->font->bbx.descent );
-        error = _bdf_add_property( p->font, (char *)"FONT_DESCENT",
+        error = _bdf_add_property( p->font, "FONT_DESCENT",
                                    nbuf, lineno );
         if ( error )
           goto Exit;
@@ -1846,7 +1836,7 @@
     }
     else
     {
-      error = _bdf_list_split( &p->list, (char *)" +", line, linelen );
+      error = _bdf_list_split( &p->list, " +", line, linelen );
       if ( error )
         goto Exit;
       name = p->list.field[0];
@@ -1976,7 +1966,7 @@
         goto Exit;
       }
 
-      error = _bdf_list_split( &p->list, (char *)" +", line, linelen );
+      error = _bdf_list_split( &p->list, " +", line, linelen );
       if ( error )
         goto Exit;
 
@@ -2015,7 +2005,7 @@
         goto Exit;
       }
 
-      error = _bdf_list_split( &p->list, (char *)" +", line, linelen );
+      error = _bdf_list_split( &p->list, " +", line, linelen );
       if ( error )
         goto Exit;
 
@@ -2038,7 +2028,7 @@
     /* The next thing to check for is the FONT field. */
     if ( _bdf_strncmp( line, "FONT", 4 ) == 0 )
     {
-      error = _bdf_list_split( &p->list, (char *)" +", line, linelen );
+      error = _bdf_list_split( &p->list, " +", line, linelen );
       if ( error )
         goto Exit;
       _bdf_list_shift( &p->list, 1 );
@@ -2055,7 +2045,7 @@
       /* Allowing multiple `FONT' lines (which is invalid) doesn't hurt... */
       FT_FREE( p->font->name );
 
-      if ( FT_NEW_ARRAY( p->font->name, slen + 1 ) )
+      if ( FT_QALLOC( p->font->name, slen + 1 ) )
         goto Exit;
       FT_MEM_COPY( p->font->name, s, slen + 1 );
 
@@ -2081,7 +2071,7 @@
         goto Exit;
       }
 
-      error = _bdf_list_split( &p->list, (char *)" +", line, linelen );
+      error = _bdf_list_split( &p->list, " +", line, linelen );
       if ( error )
         goto Exit;
 
@@ -2136,7 +2126,7 @@
       /* for compiling fonts.                                   */
       p->font->font_ascent = p->font->bbx.ascent;
       ft_sprintf( nbuf, "%hd", p->font->bbx.ascent );
-      error = _bdf_add_property( p->font, (char *)"FONT_ASCENT",
+      error = _bdf_add_property( p->font, "FONT_ASCENT",
                                  nbuf, lineno );
       if ( error )
         goto Exit;
@@ -2144,7 +2134,7 @@
 
       p->font->font_descent = p->font->bbx.descent;
       ft_sprintf( nbuf, "%hd", p->font->bbx.descent );
-      error = _bdf_add_property( p->font, (char *)"FONT_DESCENT",
+      error = _bdf_add_property( p->font, "FONT_DESCENT",
                                  nbuf, lineno );
       if ( error )
         goto Exit;
@@ -2289,9 +2279,9 @@
 
       if ( p->font->comments_len > 0 )
       {
-        if ( FT_RENEW_ARRAY( p->font->comments,
-                             p->font->comments_len,
-                             p->font->comments_len + 1 ) )
+        if ( FT_QRENEW_ARRAY( p->font->comments,
+                              p->font->comments_len,
+                              p->font->comments_len + 1 ) )
           goto Fail;
 
         p->font->comments[p->font->comments_len] = 0;

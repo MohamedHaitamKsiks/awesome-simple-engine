@@ -61,7 +61,8 @@ namespace ASEngine {
     private:
         //load shader
         static GLuint loadShader(GLenum shaderType, const char* shaderCode);
-
+        //init quad for graphics
+        static void quadInit();
     };
 
 } //ASEngine
