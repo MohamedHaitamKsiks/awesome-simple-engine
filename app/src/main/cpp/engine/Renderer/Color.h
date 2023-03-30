@@ -14,6 +14,10 @@ namespace ASEngine {
         float b;
         float a;
 
+        inline bool operator==(Color c){
+            return r == c.r && g == c.g && b == c.b && a == c.a;
+        }
+
         //colors
         static Color white;
         static Color red;
@@ -21,6 +25,8 @@ namespace ASEngine {
         static Color green;
         static Color black;
         static Color transparent;
+
+
     };
 
 

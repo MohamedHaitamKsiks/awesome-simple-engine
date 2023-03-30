@@ -96,6 +96,17 @@ namespace ASEngine {
             return res;
         }
 
+        //equal
+        inline bool operator==(mat3 m) {
+            for (int j = 0; j < 3; j++) {
+                for (int i = 0; i < 3; i++) {
+                    if ((*this)[j][i] != m[j][i])
+                        return false;
+                }
+            }
+            return true;
+        }
+
         //print matrix
 
         std::string toString() {

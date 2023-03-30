@@ -60,10 +60,26 @@ namespace ASEngine {
         //create material
         Material material{};
         material.glProgram = glProgram;
+		//add default unifroms
+		//transforms
+		material.addShaderParam("view", MATERIAL_PARAM_MAT3);
+		material.addShaderParam("camera", MATERIAL_PARAM_MAT3);
+		material.addShaderParam("transform", MATERIAL_PARAM_MAT3);
+		material.addShaderParam("zIndex", MATERIAL_PARAM_FLOAT);
+		//frames
+		material.addShaderParam("hframe", MATERIAL_PARAM_INT);
+		material.addShaderParam("hframes", MATERIAL_PARAM_INT);
+		material.addShaderParam("vframe", MATERIAL_PARAM_INT);
+		material.addShaderParam("vframes", MATERIAL_PARAM_INT);
+		//fragment
+		material.addShaderParam("texture", MATERIAL_PARAM_TEXTURE);
+		material.addShaderParam("modulate", MATERIAL_PARAM_COLOR);
+		material.addShaderParam("isSolidColor", MATERIAL_PARAM_INT);
         //add material
         Material::add(name, material);
         return material;
     };
+
     //use material
     void Material::use(Material& material) {
         current = material;
@@ -87,40 +103,67 @@ namespace ASEngine {
 
     //set shader params
     void Material::setShaderParam(std::string param, int value) {
-        int uniformLocation = glGetUniformLocation(glProgram, param.c_str());
-        glUniform1i(uniformLocation, value);
-
+		//get param index
+		MaterialParamID paramId = getParamID(param);
+        glUniform1i(params[paramId].uniformLocation, value);
     }
 
     void Material::setShaderParam(std::string param, float value) {
-        int uniformLocation = glGetUniformLocation(glProgram, param.c_str());
-        glUniform1f(uniformLocation, value);
+		//get param index
+		MaterialParamID paramId = getParamID(param);
+        glUniform1f(params[paramId].uniformLocation, value);
     }
 
     void Material::setShaderParam(std::string param, vec2 value) {
-        int uniformLocation = glGetUniformLocation(glProgram, param.c_str());
+		//get param index
+		MaterialParamID paramId = getParamID(param);
         GLfloat values[] = {value.x, value.y};
-        glUniform2fv(uniformLocation, 1, values);
+        glUniform2fv(params[paramId].uniformLocation, 1, values);
     }
 
     void Material::setShaderParam(std::string param, Color value) {
-        int uniformLocation = glGetUniformLocation(glProgram, param.c_str());
+		//get param index
+		MaterialParamID paramId = getParamID(param);
         GLfloat values[] = {value.r, value.g, value.b, value.a};
-        glUniform4fv(uniformLocation, 1, values);
+        glUniform4fv(params[paramId].uniformLocation, 1, values);
     }
 
     void Material::setShaderParam(std::string param, mat3 value) {
-        int uniformLocation = glGetUniformLocation(glProgram, param.c_str());
-        glUniformMatrix3fv(uniformLocation, 1, GL_TRUE, value.data);
+		//get param index
+		MaterialParamID paramId = getParamID(param);
+        glUniformMatrix3fv(params[paramId].uniformLocation, 1, GL_TRUE, value.data);
     }
+
 
     void Material::setShaderParam(std::string param, Texture value) {
+		//bind texture
+		if (lastBindedTexture.id == value.id)
+			return;
+		//get param index
+		MaterialParamID paramId = getParamID(param);
+		lastBindedTexture = value;
 		glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, value.glTexture());
-        //ALOG("bind texture %d", value.glTexture());
-
-        int uniformLocation = glGetUniformLocation(glProgram, param.c_str());
-        glUniform1i(uniformLocation, 0);
+        glUniform1i(params[paramId].uniformLocation, 0);
     }
+
+    void Material::addShaderParam(std::string param, MaterialParamType type) {
+		MaterialParamID paramId = getParamID(param);
+		int uniformLocation = glGetUniformLocation(glProgram, param.c_str());
+        params[paramId] = MaterialParam{uniformLocation, type};
+    }
+
+	MaterialParamID Material::getParamID(std::string& param) {
+		//std::stringstream ss;
+		//ss << glProgram << "_" << param;
+		return param;
+	}
+
+	//params
+	std::unordered_map<MaterialParamID, MaterialParam> Material::params = {};
+
+	//last binded texture
+	Texture Material::lastBindedTexture = Texture{!0};
+
 
 } // ASEngine

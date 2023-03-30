@@ -13,6 +13,10 @@
 #include "../Math/mat3.h"
 #include "../Math/vec2.h"
 
+#include <unordered_map>
+#include <sstream>
+#include <vector>
+
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 
@@ -20,6 +24,28 @@ namespace ASEngine {
 
     typedef std::string MaterialID;
 
+
+    //param index
+    typedef std::string MaterialParamID;
+
+    enum MaterialParamType {
+        MATERIAL_PARAM_INT,
+        MATERIAL_PARAM_FLOAT,
+        MATERIAL_PARAM_VEC2,
+        MATERIAL_PARAM_MAT3,
+        MATERIAL_PARAM_TEXTURE,
+        MATERIAL_PARAM_COLOR,
+        //number of param type
+        MATERIAL_PARAM_TYPE_NUMBER
+    };
+
+    //material param
+    struct MaterialParam {
+        int uniformLocation;
+        MaterialParamType type;
+    };
+
+    //material is only the glProgam put it in a class makes it easier for abstraction
     class Material: public Resource {
     public:
         int glProgram;
@@ -29,6 +55,9 @@ namespace ASEngine {
         //use material
         static void use(MaterialID materialId);
         static void use(Material& material);
+
+        //add params
+        void addShaderParam(std::string param, MaterialParamType type);
 
         //set params
         void setShaderParam(std::string param, int value);
@@ -59,10 +88,20 @@ namespace ASEngine {
 
         static std::unordered_map<ResourceID, Material> materials;
     private:
+
+        //get  MaterialParamID
+        MaterialParamID getParamID(std::string& param);
+
         //load shader
         static GLuint loadShader(GLenum shaderType, const char* shaderCode);
         //init quad for graphics
         static void quadInit();
+
+        //shader params
+        //link param id to data
+        static std::unordered_map<MaterialParamID, MaterialParam> params;
+        //last binded texture
+        static Texture lastBindedTexture;
     };
 
 } //ASEngine

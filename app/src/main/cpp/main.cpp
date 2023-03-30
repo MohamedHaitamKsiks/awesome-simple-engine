@@ -35,21 +35,18 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
 				break;
             //init input event
             ASEngine::InputEvent::init(pApp);
-
 			//init renderer
             pApp->userData = new ASEngine::Context(pApp);
 			ASEngine::Renderer::init();
-
             //init resource manager
             ASEngine::Resource::init(pApp->activity->assetManager);
-
 			//load game objects
 			loadGameObjects();
-
-			//craete instance
-			for (int i = 0; i < 1000; i++)
+			//create instance 1000x to test the performance of the engine
+			for (int i = 0; i < 10000; i++)
 				ASEngine::Instance::create("MyObject");
-
+			//init texture
+			Texture::init();
             //load spr_run
             image = ASEngine::Image::load("sprites/spr_run.png");
             texture = ASEngine::Texture::load(image);
@@ -93,7 +90,6 @@ void android_main(struct android_app *pApp) {
 	float delta = 0.0f;
     //log
     ALOG("Starting Game Activity");
-
 
     // register an event handler for Android events
     pApp->onAppCmd = handle_cmd;
@@ -143,6 +139,15 @@ void android_main(struct android_app *pApp) {
 
             //draw instance
             ASEngine::Instance::draw();
+
+			//draw fps
+			std::stringstream ss;
+			ss << 1.0f / delta << " FPS";
+			//ALOG("%f FPS", 1.0f / delta);
+			Graphics::drawText(ss.str(), vec2{16.0f, 16.0f}, "ft_pixel");
+			//draw text
+			Graphics::drawText("Hello World!\nHow are you doing?", vec2{16.0f, 320.0f}, "ft_pixel");
+
 
             //flush context
             context->flush();

@@ -23,6 +23,10 @@ namespace ASEngine {
     class Texture {
     public:
         uint32_t id;
+        //eq;
+        inline bool operator==(Texture texture){
+            return id == texture.id;
+        }
         //init textures
         static void init();
         //load texture from
@@ -35,6 +39,8 @@ namespace ASEngine {
         int height();
         //get gl texture
         GLuint glTexture();
+        //default texture
+        static Texture defaultTexture;
 
     private:
         static std::vector<TextureInfo> infoList;

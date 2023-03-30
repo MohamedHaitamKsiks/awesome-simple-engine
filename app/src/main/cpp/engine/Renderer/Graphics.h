@@ -27,8 +27,8 @@ namespace ASEngine {
 		static void drawTexture(Texture texture, vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
 		static void drawSprite(SpriteID spriteId, int frame,vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
 		static void drawText(std::string text, vec2 position, FontID fontId, Color modulate = Color::white);
-	private:
 
+	private:
 		//draw quad
 		static void quadDraw();
 

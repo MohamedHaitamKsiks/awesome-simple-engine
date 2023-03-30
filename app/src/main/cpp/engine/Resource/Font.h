@@ -13,6 +13,9 @@
 #include "Resource.h"
 #include "../Renderer/Texture.h"
 
+#define FONT_TEXTURE_WIDTH 16
+#define FONT_TEXTURE_HEIGHT 8
+
 /*
  * This font will be monospace for now.
  * */
@@ -21,9 +24,10 @@ namespace ASEngine {
 
 	//font caracter
 	struct FontCharacter {
-		Texture texture;
-		int advance;
+		int width;
 		int bearingY;
+		int hframe;
+		int vframe;
 	};
 
 	//font id
@@ -38,6 +42,7 @@ namespace ASEngine {
 		int separation;
 		int lineSeparation;
 		int spaceSize;
+		Texture texture;
 
 		//load
 		static Font load(std::string _name, int _size, std::string fontPath, int _separation, int _lineSeparation, int _spaceSize);

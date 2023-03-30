@@ -9,6 +9,21 @@ namespace ASEngine {
 	Font Font::load(std::string _name, int _size, std::string fontPath, int _separation, int _lineSeparation, int _spaceSize) {
 		//create font
 		Font font{};
+		//font image 16x8
+		Image fontImage{};
+		fontImage.width = FONT_TEXTURE_WIDTH * _size;
+		fontImage.height = FONT_TEXTURE_HEIGHT * _size;
+		fontImage.format = IMAGE_FORMAT_GRAYSCALE_ALPHA;
+
+		//one character size
+		const int subImageBufferSize = 2 * _size * _size * sizeof(stbi_uc);
+		const int imageBufferSize = FONT_TEXTURE_WIDTH * FONT_TEXTURE_WIDTH * subImageBufferSize;
+
+		//allocate image space
+		fontImage.pixels = new stbi_uc[imageBufferSize];
+		//fill with 0
+		for (int i = 0; i < imageBufferSize; i++)
+			fontImage.pixels[i] = 0;
 
 		//init library
 		FT_Library ft;
@@ -39,46 +54,49 @@ namespace ASEngine {
 		font.size = _size;
 		FT_Set_Pixel_Sizes(face, 0, _size);
 
-
-		//generate texture for each character
-		//I'm aware this solution is very bad
-		//I'll fix it later to put all the textures in one big texture
+		//generate one pig texture for every character and use
 		for (int i = 0; i < 128; i++) {
+			//load font char
 			if (FT_Load_Char(face, char(i), FT_LOAD_RENDER )) {
 				ALOG("Failed to load Glyph!!");
 				return Font();
 			}
 
-			//create Image
-			Image image{};
-			image.width = face->glyph->bitmap.width;
-			image.height = face->glyph->bitmap.rows;
+			//bitmapBufferSize
+			int bitmapWidth = face->glyph->bitmap.width;
+			int bitmapHeight = face->glyph->bitmap.rows;
+			int bitmapBufferSize = bitmapWidth * bitmapHeight * sizeof(stbi_uc) ;
 
-			int bitmapBufferSize = image.width * image.height * sizeof(stbi_uc) ;
+			//image frames
+			int hframe = i % FONT_TEXTURE_WIDTH;
+			int vframe = i / FONT_TEXTURE_WIDTH;
 
+			//image buffer offset
+			int imageBufferOffsetX = hframe * _size;
+			int imageBufferOffsetY = vframe * _size;
 			//pixels
 			//create image where alpha = luminance
-			image.pixels = new stbi_uc[2 * bitmapBufferSize];
 			for (int i = 0; i < bitmapBufferSize; i++) {
+				//sub image coordinates
+				int subImageCoordX = i % bitmapWidth;
+				int subImageCoordY = i / bitmapWidth;
+				//image coord
+				int imageCoordX = subImageCoordX + imageBufferOffsetX;
+				int imageCoordY = subImageCoordY + imageBufferOffsetY;
+				//pixel
 				stbi_uc pixel = face->glyph->bitmap.buffer[i];
-				image.pixels[2 * i] = 255;
-				image.pixels[2 * i + 1] = pixel;
+				//get index
+				int fontImageIndex = imageCoordX + fontImage.width * imageCoordY;
+				fontImage.pixels[2 * fontImageIndex] = 255;
+				fontImage.pixels[2 * fontImageIndex + 1] = pixel;
 			}
-
-			//image format
-			image.format = IMAGE_FORMAT_GRAYSCALE_ALPHA;
-
-			//generate texture
-			Texture texture = Texture::load(image);
-
-			//destroy image
-			image.destroy();
 
 			//add character
 			FontCharacter fontCharacter{
-				texture,
-				face->glyph->advance.x / 64, // advance is on 64th of a pixel
-				-face->glyph->bitmap_top
+				(int)face->glyph->bitmap.width,
+				-face->glyph->bitmap_top,
+				hframe,
+				vframe
 			};
 			font.fontCharacters[i] = fontCharacter;
 
@@ -87,6 +105,11 @@ namespace ASEngine {
 			font.lineSeparation = _lineSeparation;
 			font.spaceSize = _spaceSize;
 		}
+
+		//generate texture
+		font.texture = Texture::load(fontImage);
+		//destroy image
+		fontImage.destroy();
 
 		//add font
 		Font::add(_name, font);

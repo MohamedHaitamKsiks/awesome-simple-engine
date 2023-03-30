@@ -4,9 +4,15 @@
 #include "Texture.h"
 
 namespace ASEngine {
+
+    Texture Texture::defaultTexture = Texture{};
+
     //init
     void Texture::init() {
-
+        //load default texture
+        Image defaultImage = Image::load("images/no_texture.png");
+        defaultTexture = Texture::load(defaultImage);
+        defaultImage.destroy();
     };
 
     //load texture from
@@ -32,8 +38,6 @@ namespace ASEngine {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, image.width, image.height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, image.pixels);
                 break;
         }
-
-
 
         //create texture info
         TextureInfo info{texture, image.width, image.height};

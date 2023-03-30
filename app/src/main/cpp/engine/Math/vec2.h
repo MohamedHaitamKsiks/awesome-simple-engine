@@ -44,6 +44,11 @@ namespace ASEngine {
             return out;
         }
 
+        //equal
+        inline bool operator==(vec2 v) {
+            return x == v.x && y == v.y;
+        }
+
         //angle
         float angle() {
             return atan2(y, x);
