@@ -88,6 +88,9 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
 void android_main(struct android_app *pApp) {
 	//compute time
 	float delta = 0.0f;
+	float sumFps = 0.0f;
+	uint32_t frameCount = 0;
+
     //log
     ALOG("Starting Game Activity");
 
@@ -137,17 +140,36 @@ void android_main(struct android_app *pApp) {
             // Render a frame
             ASEngine::Renderer::draw();
 
+			//render black
+			ASEngine::Graphics::drawRectangle(vec2::zero(), ASEngine::Screen::getSize(), Color{0.5f, 0.5f, 0.5f, 1.0f});
+
             //draw instance
             ASEngine::Instance::draw();
 
 			//draw fps
 			std::stringstream ss;
-			ss << 1.0f / delta << " FPS";
+			//calculate fps
+			float fps;
+			if (delta != 0.0f) {
+				//sum fps
+				sumFps += 1.0f / delta;
+				frameCount++;
+			}
+
+			if (frameCount > 2000000) {
+				frameCount = 0;
+				sumFps = 0.0f;
+			}
+			//avgfps
+			float avgFps = sumFps / frameCount;
+			ss << int(avgFps) << " AVG FPS" <<'\n';
+			ss << int(1.0f / delta) << " FPS";
 			//ALOG("%f FPS", 1.0f / delta);
-			Graphics::drawText(ss.str(), vec2{16.0f, 16.0f}, "ft_pixel");
+			Graphics::drawText(ss.str(), vec2{16.0f, 18.0f}, "ft_pixel", Color::black);
+			Graphics::drawText(ss.str(), vec2{16.0f, 17.0f}, "ft_pixel");
+
 			//draw text
 			Graphics::drawText("Hello World!\nHow are you doing?", vec2{16.0f, 320.0f}, "ft_pixel");
-
 
             //flush context
             context->flush();

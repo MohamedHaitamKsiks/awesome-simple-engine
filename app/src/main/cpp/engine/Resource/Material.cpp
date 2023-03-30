@@ -103,35 +103,25 @@ namespace ASEngine {
 
     //set shader params
     void Material::setShaderParam(std::string param, int value) {
-		//get param index
-		MaterialParamID paramId = getParamID(param);
-        glUniform1i(params[paramId].uniformLocation, value);
+        glUniform1i(params[param].uniformLocation, value);
     }
 
     void Material::setShaderParam(std::string param, float value) {
-		//get param index
-		MaterialParamID paramId = getParamID(param);
-        glUniform1f(params[paramId].uniformLocation, value);
+        glUniform1f(params[param].uniformLocation, value);
     }
 
     void Material::setShaderParam(std::string param, vec2 value) {
-		//get param index
-		MaterialParamID paramId = getParamID(param);
         GLfloat values[] = {value.x, value.y};
-        glUniform2fv(params[paramId].uniformLocation, 1, values);
+        glUniform2fv(params[param].uniformLocation, 1, values);
     }
 
     void Material::setShaderParam(std::string param, Color value) {
-		//get param index
-		MaterialParamID paramId = getParamID(param);
         GLfloat values[] = {value.r, value.g, value.b, value.a};
-        glUniform4fv(params[paramId].uniformLocation, 1, values);
+        glUniform4fv(params[param].uniformLocation, 1, values);
     }
 
     void Material::setShaderParam(std::string param, mat3 value) {
-		//get param index
-		MaterialParamID paramId = getParamID(param);
-        glUniformMatrix3fv(params[paramId].uniformLocation, 1, GL_TRUE, value.data);
+        glUniformMatrix3fv(params[param].uniformLocation, 1, GL_TRUE, value.data);
     }
 
 
@@ -139,18 +129,15 @@ namespace ASEngine {
 		//bind texture
 		if (lastBindedTexture.id == value.id)
 			return;
-		//get param index
-		MaterialParamID paramId = getParamID(param);
 		lastBindedTexture = value;
 		glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, value.glTexture());
-        glUniform1i(params[paramId].uniformLocation, 0);
+        glUniform1i(params[param].uniformLocation, 0);
     }
 
     void Material::addShaderParam(std::string param, MaterialParamType type) {
-		MaterialParamID paramId = getParamID(param);
 		int uniformLocation = glGetUniformLocation(glProgram, param.c_str());
-        params[paramId] = MaterialParam{uniformLocation, type};
+        params[param] = MaterialParam{uniformLocation, type};
     }
 
 	MaterialParamID Material::getParamID(std::string& param) {

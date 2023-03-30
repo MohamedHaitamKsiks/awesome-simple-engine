@@ -7,22 +7,39 @@
 void MyObject::onCreate() {
 	ALOG("My Object Instance Created");
 	position = Screen::getCenter();
-	direction = position;
-	scale = vec2::one() * 2.0f;
+	float angle = 2.0f * 3.14f * float(rand()) / float(RAND_MAX);
+	velocity = vec2::one().rotate(angle) * 200.0f;
+	scale = vec2::zero();
 }
 
 void MyObject::onUpdate(float delta) {
-	position = position + (direction - position) * 10.0f *  delta;
-	time += delta;
-	if (delta != 0.0f)
-		fps = 1.0f / delta;
-	sumFps += fps;
-	frameCounter++;
-	if (frameCounter > 2000000) {
-		sumFps = 0.0f;
-		frameCounter = 0;
+	//collision
+	if (position.x < 0.0f) {
+		velocity.x *= -1.0f;
+		position.x = 0.0f;
 	}
-	avgFps = round(sumFps / frameCounter);
+	else if (position.x > Screen::getSize().x) {
+		velocity.x *= -1.0f;
+		position.x = Screen::getSize().x;
+	}
+
+
+	if (position.y < 0.0f) {
+		velocity.y *= -1.0f;
+		position.y = 0.0f;
+	}
+	else if (position.y > Screen::getSize().y) {
+		velocity.y *= -1.0f;
+		position.y = Screen::getSize().y;
+	}
+
+
+	//scale up
+	scale = (scale * 15.0f + vec2::one() * 2.0f) / 16.0f;
+
+	//move
+	position = position + velocity * delta;
+	time += delta;
 }
 
 void MyObject::onDraw() {
@@ -34,12 +51,8 @@ void MyObject::onDraw() {
 
 void MyObject::onInputEvent(InputEvent event) {
 	if (event.type == INPUT_EVENT_POINTER_DOWN) {
-		direction = event.pointerPosition;
-		pointerIndex = event.pointerIndex;
-			
+		velocity = (position - event.pointerPosition).normalized() * 200.0f;
+		scale = vec2::one() * 2.5f;
 	}
-	else if (event.type == INPUT_EVENT_POINTER_MOVE) {
-		if (pointerIndex == event.pointerIndex)
-			direction = event.pointerPosition;
-	}
+
 }
