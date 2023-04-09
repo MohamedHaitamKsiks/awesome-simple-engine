@@ -6,112 +6,88 @@
 
 namespace ASEngine {
 
-	void Graphics::quadDraw() {
-		// Draw the triangle
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
+	//vertex buffer object for dynamic draw
+	VertexBufferObject Graphics::vbo = VertexBufferObject();
+
+	//unifrom data
+	GraphicsUniformData Graphics::uniformData = GraphicsUniformData{};
+
+	//init vertex buffer
+	void Graphics::init() {
+		vbo.create();
 	}
 
 	void Graphics::drawTexture(Texture texture, vec2 position, vec2 scale, float rotation, Color modulate) {
-		//1 frame
-		Material::current.setShaderParam("hframe", 0);
-		Material::current.setShaderParam("hframes", 1);
-		Material::current.setShaderParam("vframe", 0);
-		Material::current.setShaderParam("vframes", 1);
-
-		//is solid
-		Material::current.setShaderParam("isSolidColor", false);
-
-		//modulate
-		Material::current.setShaderParam("modulate", modulate);
+		//set unifrom data
+		setUniformData(false, texture);
 
 		//transform matrix
 		vec2 imageScale = vec2{ (float)texture.width(), (float)texture.height() };
 		mat3 transform =
 				mat3::translate(position) *
 				mat3::rotation(rotation) *
-				mat3::scale(scale) *
-				mat3::scale(imageScale);
+				mat3::scale(scale);
 
-		Material::current.setShaderParam("transform", transform);
+		//create the quad
+		Quad quad = Quad::create(imageScale, transform, 0.0f, modulate);
+		vbo.addQuad(quad);
 
-		quadDraw();
 	}
 
 	void Graphics::drawSprite(SpriteID spriteId, int frame, vec2 position, vec2 scale, float rotation, Color modulate) {
-
 		//get sprite
 		Sprite sprite = spriteId;
-		//1 frame
-		Material::current.setShaderParam("hframe", frame % sprite.frames);
-		Material::current.setShaderParam("hframes", sprite.frames);
-		Material::current.setShaderParam("vframe", 0);
-		Material::current.setShaderParam("vframes", 1);
 
-		//is solid
-		Material::current.setShaderParam("isSolidColor", false);
-
-		//modulate
-		Material::current.setShaderParam("modulate", modulate);
+		//set unifrom data
+		setUniformData(false, sprite.texture);
 
 		//transform matrix
 		vec2 imageScale = vec2{ (float)sprite.width, (float)sprite.height };
 		mat3 transform =
-				mat3::translate(position) *
-				mat3::rotation(rotation) *
-				mat3::scale(scale) *
-				mat3::translate( vec2{-sprite.offset.x, -sprite.offset.y} ) *
-				mat3::scale(imageScale) ;
+				mat3::transform(position, scale, rotation) *
+				mat3::translate( vec2{-sprite.offset.x, -sprite.offset.y} );
 
-		Material::current.setShaderParam("transform", transform);
-
-		//pass texture
-		Material::current.setShaderParam("texture", sprite.texture);
-
-
-		quadDraw();
+		//create the quad
+		Quad quad = Quad::create(imageScale, transform, 0.0f,
+								 modulate,
+								 frame % sprite.frames, sprite.frames, 0, 1);
+		vbo.addQuad(quad);
 
 	}
 
-	void Graphics::drawRectangle(vec2 position, vec2 size, Color modulate) {
-		//1 frame
-		Material::current.setShaderParam("hframe", 0);
-		Material::current.setShaderParam("hframes", 1);
-		Material::current.setShaderParam("vframe", 0);
-		Material::current.setShaderParam("vframes", 1);
+	void Graphics::drawSprite(SpriteID spriteId, int frame, vec2 position, Color modulate) {
+		//get sprite
+		Sprite sprite = spriteId;
 
-		//is solid
-		Material::current.setShaderParam("isSolidColor", true);
-
-		//modulate
-		Material::current.setShaderParam("modulate", modulate);
+		//set unifrom data
+		setUniformData(false, sprite.texture);
 
 		//transform matrix
-		mat3 transform =
-				mat3::translate(position) *
-				mat3::scale(size);
+		vec2 imageScale = vec2{ (float)sprite.width, (float)sprite.height };
+		//create the quad
+		Quad quad = Quad::create(imageScale, position - sprite.offset, 0.0f,
+								 modulate,
+								 frame % sprite.frames, sprite.frames, 0, 1);
+		vbo.addQuad(quad);
+	}
 
-		Material::current.setShaderParam("transform", transform);
 
-		quadDraw();
+	void Graphics::drawRectangle(vec2 position, vec2 size, Color modulate) {
+		//set unifom
+		setUniformData(true, Texture::defaultTexture);
+		//create the quad
+		Quad quad = Quad::create(size, position, 0.0f, modulate);
+		vbo.addQuad(quad);
 	}
 
 	void Graphics::drawText(std::string text, vec2 position, FontID fontId, Color modulate) {
 		//get font
 		Font font(fontId);
-
-		//16x8 frames
-		Material::current.setShaderParam("hframes", FONT_TEXTURE_WIDTH);
-		Material::current.setShaderParam("vframes", FONT_TEXTURE_HEIGHT);
-
-		//is solid
-		Material::current.setShaderParam("isSolidColor", false);
-		//modulate
-		Material::current.setShaderParam("modulate", modulate);
-
 		//get texture
 		Texture texture = font.texture;
-		//pass texture
-		Material::current.setShaderParam("texture", texture);
+
+		//set unifrom data
+		setUniformData(false, texture);
 
 		//draw every character
 		vec2 cursorPosition = vec2::zero();
@@ -129,9 +105,6 @@ namespace ASEngine {
 			//transform matrix
 			FontCharacter fontCharacter = font.fontCharacters[c];
 
-			Material::current.setShaderParam("hframe", fontCharacter.hframe);
-			Material::current.setShaderParam("vframe", fontCharacter.vframe);
-
 			//image scale
 			vec2 imageScale = vec2{
 				(float)texture.width() / FONT_TEXTURE_WIDTH,
@@ -143,17 +116,58 @@ namespace ASEngine {
 				(float)(fontCharacter.bearingY)
 			};
 
-			//transform
-			mat3 transform =
-					mat3::translate(position + cursorPosition + characterPosition) *
-					mat3::scale(imageScale);
-			
-			Material::current.setShaderParam("transform", transform);
 
+			//add quad
+			Quad textQuad = Quad::create(imageScale,
+										 position + cursorPosition + characterPosition, 0.0f,
+										 modulate,
+										 fontCharacter.hframe, FONT_TEXTURE_WIDTH,
+										 fontCharacter.vframe, FONT_TEXTURE_HEIGHT);
+			vbo.addQuad(textQuad);
 			//move cursor
 			cursorPosition.x += (float)(fontCharacter.width + font.separation);
-			quadDraw(); //draw
 
 		}
+
 	}
+
+	int drawCalls = 0;
+
+	void Graphics::update() {
+		draw();
+		uniformData.firstDraw = false;
+		//ALOG("draw calls = %d", drawCalls);
+		drawCalls = 0;
+	}
+
+	bool Graphics::setUniformData(bool isSolidColor, Texture texture) {
+		if (isSolidColor != uniformData.isSolidColor || texture.id != uniformData.texture.id) {
+			if (uniformData.firstDraw)
+				draw();
+			//set unifrom data
+			Material::current.setShaderParam("isSolidColor", isSolidColor);
+			//pass texture
+			Material::current.setShaderParam("texture", texture);
+			//save uniform data
+			uniformData.isSolidColor = isSolidColor;
+			uniformData.texture = texture;
+		}
+		uniformData.firstDraw = true;
+		return false;
+	}
+
+
+
+	void Graphics::draw() {
+		//bind vertex attribute
+		Vertex::bindAttributes(Material::current.glProgram);
+		//draw remaning quads
+		vbo.bind();
+		vbo.pushData();
+		vbo.draw();
+		drawCalls++;
+	}
+
+
+
 } // ASEngine

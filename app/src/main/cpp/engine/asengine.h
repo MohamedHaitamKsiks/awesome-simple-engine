@@ -32,6 +32,9 @@
 #include "Renderer/Camera.h"
 #include "Renderer/Context.h"
 #include "Renderer/Graphics.h"
+#include "Renderer/Vertex.h"
+#include "Renderer/Quad.h"
+#include "Renderer/VertexBufferObject.h"
 
 //instance
 #include "GameObject/GameObject.h"

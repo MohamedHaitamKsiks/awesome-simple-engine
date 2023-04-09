@@ -18,6 +18,7 @@ namespace ASEngine {
         GLuint texture;
         int width;
         int height;
+        //for each texture we are going to allocate a vertex buffer
     };
 
     class Texture {
@@ -44,6 +45,7 @@ namespace ASEngine {
 
     private:
         static std::vector<TextureInfo> infoList;
+        static std::vector<uint32_t> freeInfoList;
         static uint32_t textureCounter;
     };
 

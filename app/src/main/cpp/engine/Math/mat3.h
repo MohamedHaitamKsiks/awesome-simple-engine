@@ -44,28 +44,42 @@ namespace ASEngine {
 
         // scale
         static mat3 scale(vec2 s) {
-            mat3 b = identity();
-            b[0][0] = s.x;
-            b[1][1] = s.y;
+            mat3 b = {{
+                s.x, 0.0f, 0.0f,
+                0.0f, s.y, 0.0f,
+                0.0f, 0.0f, 1.0f
+            }};
             return b;
         }
 
         //rotation
         static mat3 rotation(float angle) {
-            mat3 b = identity();
-            b[0][0] = cos(angle);
-            b[1][0] = -sin(angle);
-            b[0][1] = sin(angle);
-            b[1][1] = cos(angle);
+            mat3 b = {{
+                cos(angle) , sin(angle), 0.0f,
+                -sin(angle), cos(angle), 0.0f,
+                0.0f,        0.0f,       1.0f
+            }};
             return b;
         }
 
 
         //translate
         static mat3 translate(vec2 v) {
-            mat3 b = identity();
-            b[0][2] = v.x;
-            b[1][2] = v.y;
+            mat3 b = {{
+                1.0f, 0.0f, v.x,
+                0.0f, 1.0f, v.y,
+                0.0f, 0.0f, 1.0f
+            }};
+            return b;
+        }
+
+        //transfrom
+        static mat3 transform(vec2 translate, vec2 scale, float rotation) {
+            mat3 b = {{
+                scale.x * cos(rotation), scale.y * sin(rotation), translate.x,
+               - scale.x * sin(rotation), scale.y * cos(rotation), translate.y,
+                0.0f,                    0.0f,                    1.0f
+            }};
             return b;
         }
 
@@ -82,9 +96,21 @@ namespace ASEngine {
             return res;
         }
 
+        // matrix multiplication with vector
+        vec2 operator * (vec2 v) {
+            float vector[] = {v.x, v.y, 1.0f};
+            float res[] = {0.0f, 0.0f, 0.0f};
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 3; k++) {
+                    res[j] += (*this)[j][k] * vector[k];
+                }
+            }
+            return vec2{res[0], res[1]};
+        }
+
 
         // matrix addition
-        mat3 operator + (mat3 m) {
+        mat3 operator + (mat3 &m) {
             mat3 res;
 
             for (int j = 0; j < 3; j++) {

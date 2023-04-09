@@ -13,6 +13,8 @@ namespace ASEngine {
         Image defaultImage = Image::load("images/no_texture.png");
         defaultTexture = Texture::load(defaultImage);
         defaultImage.destroy();
+		//log
+		ALOG("Texture init complete");
     };
 
     //load texture from
@@ -41,6 +43,13 @@ namespace ASEngine {
 
         //create texture info
         TextureInfo info{texture, image.width, image.height};
+        //check if there is some free space in the infoList
+        if (Texture::freeInfoList.size()){
+            uint32_t freeId = Texture::freeInfoList[Texture::freeInfoList.size() - 1];
+            Texture::freeInfoList.pop_back();
+            Texture::infoList[freeId] = info;
+            return Texture{freeId};
+        }
         Texture::infoList.push_back(info);
         //return texture
         Texture loadedTexture{Texture::textureCounter};
@@ -49,7 +58,12 @@ namespace ASEngine {
     }
     //destroy
     void Texture::destroy() {
-        Texture::infoList.erase(Texture::infoList.begin() + id);
+        //delete gl texture
+        GLuint textures[] = {glTexture()};
+        glDeleteTextures(1, textures);
+        //instead of deleting the texture from the vector i'm going to add it to the free indecies
+        //this will not screw with the order while conserving a little bit the memory
+        Texture::freeInfoList.push_back(id);
     }
     //get width
     int Texture::width() {
@@ -65,6 +79,7 @@ namespace ASEngine {
     }
 
     std::vector<TextureInfo> Texture::infoList = {};
+    std::vector<uint32_t> Texture::freeInfoList = {};
     uint32_t Texture::textureCounter = 0;
 
 } // ASEngine

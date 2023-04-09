@@ -1,27 +1,27 @@
 //attribute
 attribute vec2 vPosition;
 attribute vec2 vTextureCoord;
+attribute float vZIndex;
+attribute vec4 vModulate;
 
 //uniform transform
 uniform mat3 view;
 uniform mat3 camera;
-uniform mat3 transform;
-uniform float zIndex;
-
-//hframes
-uniform int hframes;
-uniform int hframe;
-
-//vframes
-uniform int vframes;
-uniform int vframe;
 
 //varyings
 varying vec2 uv;
+varying vec4 modulate;
+
+//bound value from 0.0f -> infinity to 0.0f -> 1.0f
+float bound(float x) {
+    return 1.0 - 1.0 / ( 1.0 + x / 10.0 );
+}
 
 //vertex shader
 void main() {
-    vec3 position = view * camera * transform * vec3(vPosition, 1.0);
+    vec3 position = view * camera * vec3(vPosition, 1.0);
+    position.z = 1.0 - bound(vZIndex + 1.0);
     gl_Position = vec4( position, 1.0);
-    uv = vec2((vTextureCoord.x + float(hframe)) / float(hframes), (vTextureCoord.y + float(vframe)) / float(vframes));
+    uv = vTextureCoord ;
+    modulate = vModulate;
 }

@@ -130,11 +130,34 @@ namespace ASEngine {
 		Font::fonts[fontId] = font;
 	}
 
+	void Font::importAll() {
+		//load json file
+		std::string importFontsString = Resource::loadAsText("fonts/import.fonts.json");
+		//parse to json
+		nlohmann::json importedFonts = nlohmann::json::parse(importFontsString);
+		//import all fonts
+		for (int i = 0; i < importedFonts.size(); i++) {
+			//get font info
+			std::string fontName = importedFonts[i]["name"];
+			int fontSize = importedFonts[i]["size"];
+			std::string fontFilePath = importedFonts[i]["font"];
+			int fontSeparation = importedFonts[i]["separation"];
+			int fontLineSeparation = importedFonts[i]["lineSeparation"];
+			int fontSpaceSize = importedFonts[i]["spaceSize"];
+			//load font
+			Font::load(fontName, fontSize,"fonts/" + fontFilePath, fontSeparation, fontLineSeparation, fontSpaceSize);
+			//log
+			ALOG("%s loaded", fontName.c_str());
+		}
+	}
+
 	void Font::destroy() {
 		Font::fonts.erase(id);
 	}
 
 	std::unordered_map<ResourceID, Font> Font::fonts = {};
+
+
 
 
 } // ASEngine

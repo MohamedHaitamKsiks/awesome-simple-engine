@@ -12,6 +12,7 @@
 #include <string>
 #include "Resource.h"
 #include "../Renderer/Texture.h"
+#include "../Thirdparty/json.hpp"
 
 #define FONT_TEXTURE_WIDTH 16
 #define FONT_TEXTURE_HEIGHT 8
@@ -46,6 +47,7 @@ namespace ASEngine {
 
 		//load
 		static Font load(std::string _name, int _size, std::string fontPath, int _separation, int _lineSeparation, int _spaceSize);
+		static void importAll();
 		//add font
 		static void add(FontID fontId, Font& font);
 		//destroy
@@ -65,8 +67,6 @@ namespace ASEngine {
 
 	private:
 		static std::unordered_map<ResourceID, Font> fonts;
-
-	private:
 
 
 	};

@@ -1,6 +1,6 @@
 [
   {
-    "name": "default",
+    "name": "mt_default",
     "vertex": "default.vert",
     "fragment": "default.frag"
   }

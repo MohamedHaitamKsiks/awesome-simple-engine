@@ -25,8 +25,6 @@ namespace ASEngine {
          //current camera
          static Camera* current;
 
-
-
     };
 
 } // ASEngine

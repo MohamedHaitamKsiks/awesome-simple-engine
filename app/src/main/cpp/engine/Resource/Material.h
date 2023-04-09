@@ -5,13 +5,14 @@
 #ifndef MY_APPLICATION_MATERIAL_H
 #define MY_APPLICATION_MATERIAL_H
 
+#include "Resource.h"
 #include "../Renderer/Renderer.h"
 #include "../Renderer/Texture.h"
 #include "../Renderer/Color.h"
 #include "../log.h"
-#include "Resource.h"
 #include "../Math/mat3.h"
 #include "../Math/vec2.h"
+#include "../Thirdparty/json.hpp"
 
 #include <unordered_map>
 #include <sstream>
@@ -22,12 +23,11 @@
 
 namespace ASEngine {
 
+    //material id
     typedef std::string MaterialID;
-
 
     //param index
     typedef std::string MaterialParamID;
-
     enum MaterialParamType {
         MATERIAL_PARAM_INT,
         MATERIAL_PARAM_FLOAT,
@@ -45,6 +45,9 @@ namespace ASEngine {
         MaterialParamType type;
     };
 
+    typedef std::unordered_map<MaterialParamID, MaterialParam> MaterialParamsMap;
+
+
     //material is only the glProgam put it in a class makes it easier for abstraction
     class Material: public Resource {
     public:
@@ -52,6 +55,8 @@ namespace ASEngine {
         static Material current;
         //load material
         static Material load(std::string name, std::string vertexCode, std::string fragmentCode);
+        static void importAll();
+
         //use material
         static void use(MaterialID materialId);
         static void use(Material& material);
@@ -88,18 +93,11 @@ namespace ASEngine {
 
         static std::unordered_map<ResourceID, Material> materials;
     private:
-
-        //get  MaterialParamID
-        MaterialParamID getParamID(std::string& param);
-
         //load shader
         static GLuint loadShader(GLenum shaderType, const char* shaderCode);
-        //init quad for graphics
-        static void quadInit();
-
         //shader params
         //link param id to data
-        static std::unordered_map<MaterialParamID, MaterialParam> params;
+        static std::unordered_map<MaterialID, MaterialParamsMap> params;
         //last binded texture
         static Texture lastBindedTexture;
     };

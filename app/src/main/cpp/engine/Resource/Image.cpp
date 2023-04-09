@@ -48,7 +48,7 @@ namespace ASEngine {
 
     void Image::destroy() {
         delete pixels;
-        Image::images.erase(id);
+        //Image::images.erase(id);
     }
 
     std::unordered_map<ResourceID, Image> Image::images = {};

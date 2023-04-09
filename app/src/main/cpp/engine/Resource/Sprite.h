@@ -7,7 +7,9 @@
 
 #include "../Renderer/Texture.h"
 #include "../Math/vec2.h"
+#include "../Thirdparty/json.hpp"
 #include "Resource.h"
+#include "Image.h"
 
 
 namespace ASEngine {
@@ -24,6 +26,8 @@ namespace ASEngine {
         vec2 offset;
         //load
         static Sprite load(std::string _name, Texture _texture, int _frames, vec2 _offset );
+        //import from json file
+        static void importAll();
         //add sprite
         static void add(SpriteID spriteId, Sprite& sprite);
         //destroy

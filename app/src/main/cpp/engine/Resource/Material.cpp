@@ -7,22 +7,6 @@
 
 namespace ASEngine {
 
-    void Material::quadInit() {
-        //get position attribute
-        int vPosition = glGetAttribLocation(Material::current.glProgram, "vPosition");
-        glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
-        glEnableVertexAttribArray(vPosition);
-        //get texture coordinates attribute
-        int vTextureCoord = glGetAttribLocation(Material::current.glProgram, "vTextureCoord");
-        glVertexAttribPointer(vTextureCoord, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
-        glEnableVertexAttribArray(vTextureCoord);
-        //pass view
-        Material::current.setShaderParam("view", Screen::getView());
-        //pass camera
-        Material::current.setShaderParam("camera", Camera::current->getMatrix());
-    }
-
-
     //load shader
     GLuint Material::loadShader(GLenum shaderType, const char* shaderCode) {
         GLuint shader = glCreateShader(shaderType);
@@ -40,8 +24,6 @@ namespace ASEngine {
             // Write the error to a log
             ALOG("%s", message);
         }
-
-
         return shader;
     }
     //load material
@@ -59,18 +41,12 @@ namespace ASEngine {
         ALOG("glProgram created : %d", glProgram);
         //create material
         Material material{};
+		material.id = name;
         material.glProgram = glProgram;
 		//add default unifroms
 		//transforms
 		material.addShaderParam("view", MATERIAL_PARAM_MAT3);
 		material.addShaderParam("camera", MATERIAL_PARAM_MAT3);
-		material.addShaderParam("transform", MATERIAL_PARAM_MAT3);
-		material.addShaderParam("zIndex", MATERIAL_PARAM_FLOAT);
-		//frames
-		material.addShaderParam("hframe", MATERIAL_PARAM_INT);
-		material.addShaderParam("hframes", MATERIAL_PARAM_INT);
-		material.addShaderParam("vframe", MATERIAL_PARAM_INT);
-		material.addShaderParam("vframes", MATERIAL_PARAM_INT);
 		//fragment
 		material.addShaderParam("texture", MATERIAL_PARAM_TEXTURE);
 		material.addShaderParam("modulate", MATERIAL_PARAM_COLOR);
@@ -84,7 +60,10 @@ namespace ASEngine {
     void Material::use(Material& material) {
         current = material;
         glUseProgram(material.glProgram);
-        quadInit();
+		//pass view
+		Material::current.setShaderParam("view", Screen::getView());
+		//pass camera
+		Material::current.setShaderParam("camera", Camera::current->getMatrix());
     };
 
     void Material::use(MaterialID materialId) {
@@ -103,25 +82,25 @@ namespace ASEngine {
 
     //set shader params
     void Material::setShaderParam(std::string param, int value) {
-        glUniform1i(params[param].uniformLocation, value);
+        glUniform1i(params[id][param].uniformLocation, value);
     }
 
     void Material::setShaderParam(std::string param, float value) {
-        glUniform1f(params[param].uniformLocation, value);
+        glUniform1f(params[id][param].uniformLocation, value);
     }
 
     void Material::setShaderParam(std::string param, vec2 value) {
         GLfloat values[] = {value.x, value.y};
-        glUniform2fv(params[param].uniformLocation, 1, values);
+        glUniform2fv(params[id][param].uniformLocation, 1, values);
     }
 
     void Material::setShaderParam(std::string param, Color value) {
         GLfloat values[] = {value.r, value.g, value.b, value.a};
-        glUniform4fv(params[param].uniformLocation, 1, values);
+        glUniform4fv(params[id][param].uniformLocation, 1, values);
     }
 
     void Material::setShaderParam(std::string param, mat3 value) {
-        glUniformMatrix3fv(params[param].uniformLocation, 1, GL_TRUE, value.data);
+        glUniformMatrix3fv(params[id][param].uniformLocation, 1, GL_TRUE, value.data);
     }
 
 
@@ -132,25 +111,39 @@ namespace ASEngine {
 		lastBindedTexture = value;
 		glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, value.glTexture());
-        glUniform1i(params[param].uniformLocation, 0);
+        glUniform1i(params[id][param].uniformLocation, 0);
     }
 
     void Material::addShaderParam(std::string param, MaterialParamType type) {
 		int uniformLocation = glGetUniformLocation(glProgram, param.c_str());
-        params[param] = MaterialParam{uniformLocation, type};
+        params[id][param] = MaterialParam{uniformLocation, type};
     }
 
-	MaterialParamID Material::getParamID(std::string& param) {
-		//std::stringstream ss;
-		//ss << glProgram << "_" << param;
-		return param;
-	}
-
 	//params
-	std::unordered_map<MaterialParamID, MaterialParam> Material::params = {};
+	std::unordered_map<MaterialID, MaterialParamsMap> Material::params = {};
 
 	//last binded texture
-	Texture Material::lastBindedTexture = Texture{!0};
+	Texture Material::lastBindedTexture = Texture{UINT32_MAX};
+
+	//load from import
+	void Material::importAll() {
+		//load json file
+		std::string importMaterialsString = Resource::loadAsText("materials/import.materials.json");
+		//parse to json
+		nlohmann::json importMaterials = nlohmann::json::parse(importMaterialsString);
+		//import all materials
+		for (int i = 0; i < importMaterials.size(); i++) {
+			//get material info
+			std::string materialName = importMaterials[i]["name"];
+			std::string materialVertexFile = importMaterials[i]["vertex"];
+			std::string materialFragmentFile = importMaterials[i]["fragment"];
+			//load material
+			std::string vertexCode = ASEngine::Resource::loadAsText("materials/" + materialVertexFile);
+			std::string fragmentCode = ASEngine::Resource::loadAsText("materials/" + materialFragmentFile);
+			ASEngine::Material::load(materialName, vertexCode, fragmentCode);
+			ALOG("%s loaded", materialName.c_str());
+		}
+	}
 
 
 } // ASEngine

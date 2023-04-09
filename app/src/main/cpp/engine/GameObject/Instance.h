@@ -30,7 +30,6 @@ namespace ASEngine {
 		static void draw();
         //create object instance from typename
         template<class T> static GameObject* createTemplate() {
-			ALOG("instance create");
 			GameObject* instance = new T;
 			instances.push_back(instance);
 			return instance;

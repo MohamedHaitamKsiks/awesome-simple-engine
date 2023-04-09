@@ -16,6 +16,7 @@
 
 #include "Color.h"
 #include "Screen.h"
+#include "VertexBufferObject.h"
 
 namespace ASEngine {
 
@@ -24,21 +25,10 @@ namespace ASEngine {
         static void init();
         static void draw();
 
-        //before start quad make sure to use the correct material
-        //between start and end quad we can add our params
-
     private:
+        //I'm using batch rendering as a way to optimise rendering
+        //buy reducing the number of draw calls
 
-        //quad mesh definition (all we need for out engine since we are mainly working with sprites)
-        //vertex data
-        static GLfloat vertexData[];
-
-        //index data
-        static GLushort indexData[];
-
-        //buffers
-        static uint32_t vertexBuffer;
-        static uint32_t indexBuffer;
 
 
     };

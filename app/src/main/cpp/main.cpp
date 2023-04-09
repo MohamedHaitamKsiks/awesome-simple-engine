@@ -38,31 +38,25 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
 			//init renderer
             pApp->userData = new ASEngine::Context(pApp);
 			ASEngine::Renderer::init();
-            //init resource manager
-            ASEngine::Resource::init(pApp->activity->assetManager);
+			//init resource manager
+			ASEngine::Resource::init(pApp->activity->assetManager);
+			//init vbo
+			ASEngine::VertexBufferObject::init();
+			//init texture
+			Texture::init();
+			//init graphics
+			ASEngine::Graphics::init();
 			//load game objects
 			loadGameObjects();
 			//create instance 1000x to test the performance of the engine
-			for (int i = 0; i < 10000; i++)
+			for (int i = 0; i < 1000; i++)
 				ASEngine::Instance::create("MyObject");
-			//init texture
-			Texture::init();
-            //load spr_run
-            image = ASEngine::Image::load("sprites/spr_run.png");
-            texture = ASEngine::Texture::load(image);
-            ASEngine::Sprite::load("spr_run", texture, 6, ASEngine::vec2{24.0f, 24.0f});
-			image.destroy();
-            ALOG("spr_run loaded");
-
-			//load default material
-			vertexCode = ASEngine::Resource::loadAsText("materials/default.vert");
-			fragmentCode = ASEngine::Resource::loadAsText("materials/default.frag");
-			ASEngine::Material::load("mt_default", vertexCode, fragmentCode);
-			ALOG("mt_default loaded");
-
-			//load font
-			ASEngine::Font::load("ft_pixel", 16, "fonts/joystix_monospace.otf", 4, 4, 16);
-
+            //load sprites
+            Sprite::importAll();
+			//load materials
+			Material::importAll();
+			//load fonts
+			Font::importAll();
 
             break;
         case APP_CMD_TERM_WINDOW:
@@ -71,7 +65,6 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
             //
             // We have to check if userData is assigned just in case this comes in really quickly
             if (pApp->userData) {
-                //
                 auto *context = reinterpret_cast<ASEngine::Context *>(pApp->userData);
                 pApp->userData = nullptr;
                 delete context;
@@ -92,7 +85,7 @@ void android_main(struct android_app *pApp) {
 	uint32_t frameCount = 0;
 
     //log
-    ALOG("Starting Game Activity");
+    ALOG("Starting Game Activity");                //
 
     // register an event handler for Android events
     pApp->onAppCmd = handle_cmd;
@@ -100,7 +93,6 @@ void android_main(struct android_app *pApp) {
     // This sets up a typical game/event loop. It will run until the app is destroyed.
     int events;
     android_poll_source *pSource;
-
 
     do {
 		//get time now
@@ -155,7 +147,6 @@ void android_main(struct android_app *pApp) {
 				sumFps += 1.0f / delta;
 				frameCount++;
 			}
-
 			if (frameCount > 2000000) {
 				frameCount = 0;
 				sumFps = 0.0f;
@@ -164,14 +155,14 @@ void android_main(struct android_app *pApp) {
 			float avgFps = sumFps / frameCount;
 			ss << int(avgFps) << " AVG FPS" <<'\n';
 			ss << int(1.0f / delta) << " FPS";
-			//ALOG("%f FPS", 1.0f / delta);
-			Graphics::drawText(ss.str(), vec2{16.0f, 18.0f}, "ft_pixel", Color::black);
+
+			ASEngine::Graphics::drawText(ss.str(), vec2{16.0f, 18.0f}, "ft_pixel", Color::black);
 			Graphics::drawText(ss.str(), vec2{16.0f, 17.0f}, "ft_pixel");
-
 			//draw text
-			Graphics::drawText("Hello World!\nHow are you doing?", vec2{16.0f, 320.0f}, "ft_pixel");
-
-            //flush context
+			//Graphics::drawText("Hello World!\nHow are you\ndoing?", vec2{16.0f, 320.0f}, "ft_pixel");
+			//upadte graphics
+			ASEngine::Graphics::update();
+			//flush context
             context->flush();
 
 			//time

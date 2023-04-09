@@ -36,6 +36,14 @@ namespace ASEngine {
             return out;
         }
 
+        //multiply
+        inline vec2 operator*(vec2 v) {
+            vec2 out{};
+            out.x = x * v.x;
+            out.y = y * v.y;
+            return out;
+        }
+
         //scale
         inline vec2 operator/(float s) {
             vec2 out{};
@@ -96,6 +104,7 @@ namespace ASEngine {
         static vec2 one() {
             return vec2{1.0f, 1.0f};
         }
+
 
     };
 
