@@ -24,6 +24,7 @@ class MyObject: public GameObject {
 	void onUpdate(float delta);
 	void onDraw();
 	void onInputEvent(InputEvent event);
+
 };
 
 

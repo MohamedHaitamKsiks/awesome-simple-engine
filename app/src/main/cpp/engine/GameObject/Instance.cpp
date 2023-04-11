@@ -8,7 +8,7 @@ namespace ASEngine {
 
 	std::vector<GameObject*> Instance::instances = {};
 
-	std::vector<int> Instance::destroyQueue = {};
+	std::vector<GameObject*> Instance::destroyQueue = {};
 
 	GameObject *Instance::create(GameObjectID name) {
 		GameObject* instance = gameObjects[name]();
@@ -19,15 +19,8 @@ namespace ASEngine {
 
 	void Instance::destroy(GameObject *instance) {
 		//find instance index
-		int index = 0;
-		for (int i = 0; i < instances.size(); i++) {
-			if (instance == instances[i]) {
-				index = i;
-				break;
-			}
-		}
-		//queue index for delete
-		destroyQueue.push_back(index);
+		destroyQueue.push_back(instance);
+
 	}
 
 	void Instance::destroyAll() {
@@ -38,6 +31,7 @@ namespace ASEngine {
 
 	void Instance::update(float delta) {
 		for (auto instance: instances) {
+			instance->mask.position = instance->position;
 			instance->onUpdate(delta);
 		}
 		cleanDestroyQueue();
@@ -52,12 +46,11 @@ namespace ASEngine {
 
 	void Instance::cleanDestroyQueue() {
 		//free all
-		for (auto instanceIndex: destroyQueue) {
-			GameObject* instance = instances[instanceIndex];
+		for (auto instance: destroyQueue) {
 			std::remove(instances.begin(), instances.end(), instance);
-			delete instance;
+			//delete instance;
 		}
-
+		destroyQueue.clear();
 
 	}
 

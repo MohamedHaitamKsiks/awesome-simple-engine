@@ -6,9 +6,6 @@
 
 namespace ASEngine {
 
-    //bad global variabels for testing purposes
-    Camera camera{};
-
     //rendering main functions
     //init renderer
     void Renderer::init() {
@@ -19,7 +16,6 @@ namespace ASEngine {
         //set clear color
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        Camera::current = &camera;
 
     }
 

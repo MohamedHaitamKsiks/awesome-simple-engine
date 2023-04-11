@@ -56,5 +56,10 @@ namespace ASEngine {
         }
     }
 
+    //terminate sprites
+    void Sprite::terminate() {
+        sprites.clear();
+    }
+
 
 } // ASEngine

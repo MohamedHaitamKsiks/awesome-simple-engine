@@ -52,8 +52,7 @@ namespace ASEngine {
 		return quad;
 	}
 
-	Quad
-	Quad::create(vec2 size, vec2 translate, float zIndex, Color _modulate, int hframe, int hframes,
+	Quad Quad::create(vec2 size, vec2 translate, float zIndex, Color _modulate, int hframe, int hframes,
 				 int vframe, int vframes) {
 		Quad quad{};
 		//framevector

@@ -51,6 +51,11 @@ namespace ASEngine {
 
     }
 
+    void Resource::terminate() {
+        resourceCounter = 0;
+    }
+
+
     uint32_t Resource::resourceCounter = 0;
     AAssetManager* Resource::assetManager = nullptr;
 

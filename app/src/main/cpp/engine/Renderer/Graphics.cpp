@@ -17,6 +17,11 @@ namespace ASEngine {
 		vbo.create();
 	}
 
+	//terminate vertex buffer
+	void Graphics::terminate() {
+		vbo.destroy();
+	}
+
 	void Graphics::drawTexture(Texture texture, vec2 position, vec2 scale, float rotation, Color modulate) {
 		//set unifrom data
 		setUniformData(false, texture);
@@ -116,7 +121,6 @@ namespace ASEngine {
 				(float)(fontCharacter.bearingY)
 			};
 
-
 			//add quad
 			Quad textQuad = Quad::create(imageScale,
 										 position + cursorPosition + characterPosition, 0.0f,
@@ -124,6 +128,7 @@ namespace ASEngine {
 										 fontCharacter.hframe, FONT_TEXTURE_WIDTH,
 										 fontCharacter.vframe, FONT_TEXTURE_HEIGHT);
 			vbo.addQuad(textQuad);
+
 			//move cursor
 			cursorPosition.x += (float)(fontCharacter.width + font.separation);
 
@@ -167,7 +172,6 @@ namespace ASEngine {
 		vbo.draw();
 		drawCalls++;
 	}
-
 
 
 } // ASEngine

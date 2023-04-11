@@ -23,6 +23,12 @@ namespace ASEngine {
 		glGenBuffers(1, &indexBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * 6 * VBO_MAX_OBJECTS, indexData, GL_STATIC_DRAW);
+
+	}
+
+	//terminate
+	void VertexBufferObject::terminate() {
+		glDeleteBuffers(1, &indexBuffer);
 	}
 
 	//create new buffer
@@ -60,6 +66,12 @@ namespace ASEngine {
 		//copy data to the GPU
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Quad) * objectCount, vertexData);
 	}
+
+	void VertexBufferObject::destroy() {
+		glDeleteBuffers(1, &vertexBuffer);
+		delete vertexData;
+	}
+
 
 
 } // ASEngine

@@ -157,7 +157,9 @@ namespace ASEngine {
 
 	std::unordered_map<ResourceID, Font> Font::fonts = {};
 
-
+	void Font::terminate() {
+		fonts.clear();
+	}
 
 
 } // ASEngine

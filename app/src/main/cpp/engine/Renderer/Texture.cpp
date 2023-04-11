@@ -17,6 +17,21 @@ namespace ASEngine {
 		ALOG("Texture init complete");
     };
 
+    //terminate
+    void Texture::terminate() {
+        //delete all textures
+        for (int i = 0; i < infoList.size(); i++) {
+			//check if texture id is free
+			if (std::count(freeInfoList.begin(), freeInfoList.end(), i))
+				continue;
+			//if not you delete the texture
+            glDeleteTextures(1, &infoList[i].texture);
+        }
+		//erase vectors
+		infoList.clear();
+		freeInfoList.clear();
+    };
+
     //load texture from
     Texture Texture::load(Image& image) {
         //create GL texture
@@ -81,5 +96,7 @@ namespace ASEngine {
     std::vector<TextureInfo> Texture::infoList = {};
     std::vector<uint32_t> Texture::freeInfoList = {};
     uint32_t Texture::textureCounter = 0;
+
+
 
 } // ASEngine

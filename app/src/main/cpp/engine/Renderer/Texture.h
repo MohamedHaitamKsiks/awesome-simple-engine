@@ -30,6 +30,8 @@ namespace ASEngine {
         }
         //init textures
         static void init();
+        //terminate textures
+        static void terminate();
         //load texture from
         static Texture load(Image& image);
         //destroy

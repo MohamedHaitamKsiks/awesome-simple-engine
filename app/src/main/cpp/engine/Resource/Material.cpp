@@ -121,7 +121,6 @@ namespace ASEngine {
 
 	//params
 	std::unordered_map<MaterialID, MaterialParamsMap> Material::params = {};
-
 	//last binded texture
 	Texture Material::lastBindedTexture = Texture{UINT32_MAX};
 
@@ -143,6 +142,23 @@ namespace ASEngine {
 			ASEngine::Material::load(materialName, vertexCode, fragmentCode);
 			ALOG("%s loaded", materialName.c_str());
 		}
+	}
+
+	//terminate
+	void Material::terminate() {
+		//delete all materials
+		for (auto material: materials) {
+			material.second.destroy();
+		}
+		//clear all materials
+		materials.clear();
+		//clear all params
+		params.clear();
+	}
+
+	//destroy
+	void Material::destroy() {
+		glDeleteProgram(glProgram);
 	}
 
 

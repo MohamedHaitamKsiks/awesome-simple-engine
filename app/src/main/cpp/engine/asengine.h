@@ -39,8 +39,13 @@
 //instance
 #include "GameObject/GameObject.h"
 #include "GameObject/Instance.h"
+#include "GameObject/CollisionMask.h"
 
 //input
 #include "InputEvent/InputEvent.h"
+
+//application
+#include "Application/Application.h"
+
 
 #endif //MY_APPLICATION_ASENGINE_H

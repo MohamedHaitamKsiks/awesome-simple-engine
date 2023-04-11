@@ -56,7 +56,10 @@ namespace ASEngine {
         //load material
         static Material load(std::string name, std::string vertexCode, std::string fragmentCode);
         static void importAll();
-
+        //termiante materials
+        static void terminate();
+        //destroy
+        void destroy();
         //use material
         static void use(MaterialID materialId);
         static void use(Material& material);
@@ -71,6 +74,7 @@ namespace ASEngine {
         void setShaderParam(std::string param, mat3 value);
         void setShaderParam(std::string param, Texture value);
         void setShaderParam(std::string param, Color value);
+
 
         //add material
         static void add(MaterialID materialId, Material& material);
@@ -91,8 +95,10 @@ namespace ASEngine {
             *this = Material::materials[materialId];
         };
 
-        static std::unordered_map<ResourceID, Material> materials;
+
     private:
+        //materials
+        static std::unordered_map<ResourceID, Material> materials;
         //load shader
         static GLuint loadShader(GLenum shaderType, const char* shaderCode);
         //shader params

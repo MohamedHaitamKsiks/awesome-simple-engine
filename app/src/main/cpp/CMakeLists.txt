@@ -21,6 +21,7 @@ add_library( # Sets the name of the library.
         #game object
         engine/GameObject/GameObject.cpp
         engine/GameObject/Instance.cpp
+        engine/GameObject/CollisionMask.cpp
         #resource
         engine/Resource/Image.cpp
         engine/Resource/Resource.cpp
@@ -40,6 +41,8 @@ add_library( # Sets the name of the library.
         engine/Renderer/VertexBufferObject.cpp
         #input
         engine/InputEvent/InputEvent.cpp
+        #app
+        engine/Application/Application.cpp
         #game objects
         Objects/MyObject/MyObject.cpp
         # Provides a relative path to your source file(s).

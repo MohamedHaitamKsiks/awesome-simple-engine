@@ -29,6 +29,8 @@ namespace ASEngine {
 	public:
 		//init graphics
 		static void init();
+		//terminate graphics
+		static void terminate();
 		//draw functions
 		//draw rectangle
 		static void drawRectangle(vec2 position, vec2 size, Color modulate);

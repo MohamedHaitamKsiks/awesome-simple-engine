@@ -37,6 +37,9 @@ namespace ASEngine {
         //static generate id
         static ResourceID generateId();
 
+        //terminate all
+        static void terminate();
+
     private:
         static uint32_t resourceCounter;
 

@@ -46,7 +46,7 @@ namespace ASEngine {
         static std::unordered_map<std::string, GameObject* (*)()> gameObjects;
 
         //queue to clean at the end of the frame
-        static std::vector<int> destroyQueue;
+        static std::vector<GameObject*> destroyQueue;
         //clean destroy queue
         static void cleanDestroyQueue();
 

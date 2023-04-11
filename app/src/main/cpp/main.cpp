@@ -24,40 +24,18 @@ extern "C" {
  * @param cmd the command to handle
  */
 void handle_cmd(android_app *pApp, int32_t cmd) {
-    ASEngine::Image image;
-    ASEngine::Texture texture;
-	std::string vertexCode;
-    std::string fragmentCode;
+	//game app
+	ASEngine::Application* application;
 
+	//start window
     switch (cmd) {
         case APP_CMD_INIT_WINDOW:
 			if (pApp->userData != nullptr)
 				break;
-            //init input event
-            ASEngine::InputEvent::init(pApp);
-			//init renderer
-            pApp->userData = new ASEngine::Context(pApp);
-			ASEngine::Renderer::init();
-			//init resource manager
-			ASEngine::Resource::init(pApp->activity->assetManager);
-			//init vbo
-			ASEngine::VertexBufferObject::init();
-			//init texture
-			Texture::init();
-			//init graphics
-			ASEngine::Graphics::init();
-			//load game objects
-			loadGameObjects();
-			//create instance 1000x to test the performance of the engine
-			for (int i = 0; i < 1000; i++)
-				ASEngine::Instance::create("MyObject");
-            //load sprites
-            Sprite::importAll();
-			//load materials
-			Material::importAll();
-			//load fonts
-			Font::importAll();
-
+			//init application
+			application = new ASEngine::Application();
+			application->init(pApp);
+            pApp->userData = application;
             break;
         case APP_CMD_TERM_WINDOW:
             // The window is being destroyed. Use this to clean up your userData to avoid leaking
@@ -65,12 +43,11 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
             //
             // We have to check if userData is assigned just in case this comes in really quickly
             if (pApp->userData) {
-                auto *context = reinterpret_cast<ASEngine::Context *>(pApp->userData);
+                auto *application = reinterpret_cast<ASEngine::Application *>(pApp->userData);
                 pApp->userData = nullptr;
-                delete context;
+				application->terminate();
+                delete application;
             }
-            break;
-        default:
             break;
     }
 }
@@ -79,13 +56,17 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
  * This the main entry point for a native activity
  */
 void android_main(struct android_app *pApp) {
+	//load game objects
+	loadGameObjects();
+	//create instance 1000x to test the performance of the engine
+	for (int i = 0; i < 10; i++)
+		ASEngine::Instance::create("MyObject");
+
 	//compute time
 	float delta = 0.0f;
-	float sumFps = 0.0f;
-	uint32_t frameCount = 0;
 
     //log
-    ALOG("Starting Game Activity");                //
+    ALOG("Starting Game Activity");
 
     // register an event handler for Android events
     pApp->onAppCmd = handle_cmd;
@@ -111,59 +92,16 @@ void android_main(struct android_app *pApp) {
             // We know that our user data is a Renderer, so reinterpret cast it. If you change your
             // user data remember to change it here
 
-            auto *context = reinterpret_cast<ASEngine::Context *>(pApp->userData);
-            context->updateRenderArea();
+            auto *application = reinterpret_cast<ASEngine::Application *>(pApp->userData);
 
-            //update instance
-            ASEngine::Instance::update(delta);
+			//pool application event
+			application->poolAndroidInput(pApp);
 
-            //pool every input on queue
-            for(size_t i = 0; i < pApp->motionEventsCount; ++i) {
-                //pool event
-                ASEngine::InputEvent event = ASEngine::InputEvent::poolEvent(i);
-                //process event for each instance
-                for (auto instance: ASEngine::Instance::instances) {
-                    instance->onInputEvent(event);
-                }
-            }
             //clear
             android_app_clear_motion_events(pApp);
 
-            // Render a frame
-            ASEngine::Renderer::draw();
-
-			//render black
-			ASEngine::Graphics::drawRectangle(vec2::zero(), ASEngine::Screen::getSize(), Color{0.5f, 0.5f, 0.5f, 1.0f});
-
-            //draw instance
-            ASEngine::Instance::draw();
-
-			//draw fps
-			std::stringstream ss;
-			//calculate fps
-			float fps;
-			if (delta != 0.0f) {
-				//sum fps
-				sumFps += 1.0f / delta;
-				frameCount++;
-			}
-			if (frameCount > 2000000) {
-				frameCount = 0;
-				sumFps = 0.0f;
-			}
-			//avgfps
-			float avgFps = sumFps / frameCount;
-			ss << int(avgFps) << " AVG FPS" <<'\n';
-			ss << int(1.0f / delta) << " FPS";
-
-			ASEngine::Graphics::drawText(ss.str(), vec2{16.0f, 18.0f}, "ft_pixel", Color::black);
-			Graphics::drawText(ss.str(), vec2{16.0f, 17.0f}, "ft_pixel");
-			//draw text
-			//Graphics::drawText("Hello World!\nHow are you\ndoing?", vec2{16.0f, 320.0f}, "ft_pixel");
-			//upadte graphics
-			ASEngine::Graphics::update();
-			//flush context
-            context->flush();
+            //update app
+			application->update(delta);
 
 			//time
 			auto currentTime = std::chrono::high_resolution_clock::now();

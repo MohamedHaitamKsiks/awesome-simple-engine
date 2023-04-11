@@ -9,7 +9,6 @@ namespace ASEngine {
 		app = _app;
 	}
 
-
 	//pool event
 	InputEvent InputEvent::poolEvent(int eventIndex) {
 		//create event

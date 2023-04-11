@@ -99,4 +99,10 @@ namespace ASEngine {
 		assert(swapResult == EGL_TRUE);
 	}
 
+	//destroy context
+	Context::~Context() {
+		eglDestroyContext(display, context);
+		eglDestroySurface(display, surface);
+	}
+
 } // ASEngine

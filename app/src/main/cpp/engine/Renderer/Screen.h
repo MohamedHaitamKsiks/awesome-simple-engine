@@ -12,7 +12,7 @@ namespace ASEngine {
     class Screen {
     public:
         //size
-        static void setSize(int _width, int _height);
+        static void setSize(int _width, int height);
         static int getWidth();
         static int getHeight();
 

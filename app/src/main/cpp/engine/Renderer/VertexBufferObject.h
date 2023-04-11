@@ -35,10 +35,19 @@ namespace ASEngine {
 
 		//init buffer
 		static void init();
+		//terminate buffers
+		static void terminate();
+		//create buffer
 		void create();
+		//destroy buffer
+		void destroy();
+		//bind buffer
 		void bind();
+		//push data from memory to buffer
 		void pushData();
+		//add quad to memory
 		void addQuad(Quad& quad);
+		//draw buffer content
 		void draw();
 
 	private:

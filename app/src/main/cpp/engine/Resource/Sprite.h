@@ -28,6 +28,8 @@ namespace ASEngine {
         static Sprite load(std::string _name, Texture _texture, int _frames, vec2 _offset );
         //import from json file
         static void importAll();
+        //terminate
+        static void terminate();
         //add sprite
         static void add(SpriteID spriteId, Sprite& sprite);
         //destroy

@@ -48,6 +48,8 @@ namespace ASEngine {
 		//load
 		static Font load(std::string _name, int _size, std::string fontPath, int _separation, int _lineSeparation, int _spaceSize);
 		static void importAll();
+		//terminate all
+		static void terminate();
 		//add font
 		static void add(FontID fontId, Font& font);
 		//destroy

@@ -22,12 +22,8 @@ namespace ASEngine {
 
     class Renderer {
     public:
-        static void init();
-        static void draw();
-
-    private:
-        //I'm using batch rendering as a way to optimise rendering
-        //buy reducing the number of draw calls
+        void init();
+        void draw();
 
 
 

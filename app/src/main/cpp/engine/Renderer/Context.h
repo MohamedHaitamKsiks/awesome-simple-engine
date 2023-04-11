@@ -22,6 +22,7 @@ namespace ASEngine {
 	class Context {
 
 	public:
+
 		inline Context(android_app* pApp):
 			app(pApp),
 			display(EGL_NO_DISPLAY),
@@ -31,6 +32,9 @@ namespace ASEngine {
 			height(0) {
 			init();
 		}
+
+		//destroy context
+		~Context();
 
 		//update area
 		void updateRenderArea();
