@@ -7,6 +7,7 @@
 
 #include "../Math/vec2.h"
 #include "../InputEvent/InputEvent.h"
+#include "../Renderer/Graphics.h"
 
 #include "CollisionMask.h"
 
@@ -44,7 +45,7 @@ namespace ASEngine {
         //functions for the different events for a game object (similar to gamemaker's events)
         virtual void onCreate() = 0;
         virtual void onUpdate(float delta) = 0;
-        virtual void onDraw() = 0;
+        virtual void onDraw(Graphics& graphics) = 0;
         virtual void onInputEvent(InputEvent event) = 0;
     };
 

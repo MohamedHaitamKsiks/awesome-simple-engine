@@ -30,6 +30,8 @@ namespace ASEngine {
 		//erase vectors
 		infoList.clear();
 		freeInfoList.clear();
+        //texture counter
+        textureCounter = 0;
     };
 
     //load texture from
@@ -69,6 +71,8 @@ namespace ASEngine {
         //return texture
         Texture loadedTexture{Texture::textureCounter};
         Texture::textureCounter++;
+        //log
+        ALOG("Texture created: %d", texture);
         return loadedTexture;
     }
     //destroy

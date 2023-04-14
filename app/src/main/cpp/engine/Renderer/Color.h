@@ -18,6 +18,24 @@ namespace ASEngine {
             return r == c.r && g == c.g && b == c.b && a == c.a;
         }
 
+        inline Color operator*(float s) {
+            return Color{
+                r * s,
+                g * s,
+                b * s,
+                a * s
+            };
+        }
+
+        inline Color operator+(Color c) {
+            return Color{
+                    r + c.r,
+                    g + c.g,
+                    b + c.b,
+                    a + c.a
+            };
+        }
+
         //colors
         static Color white;
         static Color red;

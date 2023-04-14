@@ -37,8 +37,10 @@ namespace ASEngine {
 			float(Screen::getWindowWidth()) / float(Screen::getWidth()),
 			float(Screen::getWindowHeight()) / float(Screen::getHeight())
 		};
-		event.pointerPosition.x = motionEvent.pointers[ptrIndex].rawX / screenWindowRatio.x;
-		event.pointerPosition.y = motionEvent.pointers[ptrIndex].rawY / screenWindowRatio.x;
+		event.pointerPosition.x = GameActivityPointerAxes_getX(&motionEvent.pointers[ptrIndex]) / screenWindowRatio.x;
+		event.pointerPosition.y = GameActivityPointerAxes_getY(&motionEvent.pointers[ptrIndex]) / screenWindowRatio.y;
+
+		ALOG("Input : %f, %f", event.pointerPosition.x, event.pointerPosition.y);
 
 		//return event
 		return event;

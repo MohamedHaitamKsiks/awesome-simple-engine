@@ -27,7 +27,7 @@ namespace ASEngine {
         //instance update
         static void update(float delta);
 		//instance draw
-		static void draw();
+		static void draw(Graphics& graphics);
         //create object instance from typename
         template<class T> static GameObject* createTemplate() {
 			GameObject* instance = new T;

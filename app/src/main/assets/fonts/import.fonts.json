@@ -1,8 +1,8 @@
 [
   {
     "name": "ft_pixel",
-    "size": 16,
-    "font": "joystix_monospace.otf",
+    "size": 24,
+    "font": "nuku1.ttf",
     "separation": 4,
     "lineSeparation": 4,
     "spaceSize": 8

@@ -28,5 +28,6 @@ public class MainActivity extends GameActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
         );
+        
     }
 }

@@ -37,9 +37,9 @@ namespace ASEngine {
 		cleanDestroyQueue();
 	}
 
-	void Instance::draw() {
+	void Instance::draw(Graphics& graphics) {
 		for (auto instance: instances) {
-			instance->onDraw();
+			instance->onDraw(graphics);
 		}
 	}
 

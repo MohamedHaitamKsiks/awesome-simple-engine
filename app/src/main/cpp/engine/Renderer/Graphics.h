@@ -28,33 +28,33 @@ namespace ASEngine {
 	class Graphics {
 	public:
 		//init graphics
-		static void init();
+		void init();
 		//terminate graphics
-		static void terminate();
+		void terminate();
 		//draw functions
 		//draw rectangle
-		static void drawRectangle(vec2 position, vec2 size, Color modulate);
+		void drawRectangle(vec2 position, vec2 size, Color modulate);
 		//draw texture
-		static void drawTexture(Texture texture, vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
+		void drawTexture(Texture texture, vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
 		//draw sprite ext
-		static void drawSprite(SpriteID spriteId, int frame,vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
+		void drawSprite(SpriteID spriteId, int frame,vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
 		//draw sprite
-		static void drawSprite(SpriteID spriteId, int frame,vec2 position, Color modulate = Color::white);
+		void drawSprite(SpriteID spriteId, int frame,vec2 position, Color modulate = Color::white);
 		//draw text
-		static void drawText(std::string text, vec2 position, FontID fontId, Color modulate = Color::white);
+		void drawText(std::string text, vec2 position, FontID fontId, Color modulate = Color::white);
 		//update graphics
-		static void update();
+		void update();
 	private:
-		static VertexBufferObject vbo;
+		VertexBufferObject vbo{};
 		//uniform data
 		//we will save to detect changes
 		//changes imply we should submit what we have
 		//in the vbo to clear it
-		static GraphicsUniformData uniformData;
+		GraphicsUniformData uniformData{};
 		//set uniform data
-		static bool setUniformData(bool isSolidColor, Texture texture);
+		bool setUniformData(bool isSolidColor, Texture texture);
 		//draw vbo
-		static void draw();
+		void draw();
 
 
 	};

@@ -18,7 +18,7 @@ namespace ASEngine {
 		//init texture
 		Texture::init();
 		//init graphics
-		Graphics::init();
+		graphics.init();
 		//load sprites
 		Sprite::importAll();
 		//load materials
@@ -47,24 +47,25 @@ namespace ASEngine {
 		renderer.draw();
 
 		//draw instances
-		Instance::draw();
+		Instance::draw(graphics);
 		//fps
 		std::stringstream ss;
-		ss << int(1.0f / delta) << " FPS";
+		ss << int(1.0f / delta) << " FPS\n";
+		ss << Screen::getWindowWidth() << ", : . " << Screen::getWindowHeight();
 		//draw fps
-		Graphics::drawText(ss.str(), vec2{16.0f, 18.0f}, "ft_pixel", Color::black);
-		Graphics::drawText(ss.str(), vec2{16.0f, 17.0f}, "ft_pixel");
+		graphics.drawText(ss.str(), vec2{16.0f, 18.0f}, "ft_pixel", Color::black);
+		graphics.drawText(ss.str(), vec2{16.0f, 17.0f}, "ft_pixel");
 		//upadte graphics
-		Graphics::update();
+		graphics.update();
 		//flush context
 		context->flush();
 	}
 
 	void Application::terminate() {
-		//destroy context
-		delete context;
 		//destroy all vbo
 		VertexBufferObject::terminate();
+		//terminate graphics
+		graphics.terminate();
 		//terminate textures
 		Texture::terminate();
 		//terminate resources
@@ -72,6 +73,9 @@ namespace ASEngine {
 		Material::terminate();
 		Sprite::terminate();
 		Font::terminate();
+		Image::terminate();
+		//destroy context
+		delete context;
 		//delete camera
 		delete Camera::current;
 	}

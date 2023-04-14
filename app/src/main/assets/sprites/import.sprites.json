@@ -7,5 +7,14 @@
       "x": 16.0,
       "y": 16.0
     }
+  },
+  {
+    "name": "spr_dust",
+    "image": "dust.png",
+    "frames": 4,
+    "offset": {
+      "x": 0.0,
+      "y": 0.0
+    }
   }
 ]

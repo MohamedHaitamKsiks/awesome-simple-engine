@@ -6,12 +6,6 @@
 
 namespace ASEngine {
 
-	//vertex buffer object for dynamic draw
-	VertexBufferObject Graphics::vbo = VertexBufferObject();
-
-	//unifrom data
-	GraphicsUniformData Graphics::uniformData = GraphicsUniformData{};
-
 	//init vertex buffer
 	void Graphics::init() {
 		vbo.create();
@@ -149,10 +143,6 @@ namespace ASEngine {
 		if (isSolidColor != uniformData.isSolidColor || texture.id != uniformData.texture.id) {
 			if (uniformData.firstDraw)
 				draw();
-			//set unifrom data
-			Material::current.setShaderParam("isSolidColor", isSolidColor);
-			//pass texture
-			Material::current.setShaderParam("texture", texture);
 			//save uniform data
 			uniformData.isSolidColor = isSolidColor;
 			uniformData.texture = texture;
@@ -164,6 +154,10 @@ namespace ASEngine {
 
 
 	void Graphics::draw() {
+		//set unifrom data
+		Material::current.setShaderParam("isSolidColor", uniformData.isSolidColor);
+		//pass texture
+		Material::current.setShaderParam("texture", uniformData.texture);
 		//bind vertex attribute
 		Vertex::bindAttributes(Material::current.glProgram);
 		//draw remaning quads

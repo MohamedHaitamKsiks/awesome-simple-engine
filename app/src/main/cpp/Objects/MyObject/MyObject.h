@@ -18,11 +18,14 @@ class MyObject: public GameObject {
 	float time = 0.0f;
 	//pointer index
 	int pointerIndex;
+	//particle emitter
+	ParticleEmitter emitter{};
+	static ParticleDescriptor particleDescriptor;
 
 	//functions for the different events for a game object (similar to gamemaker's events)
 	void onCreate();
 	void onUpdate(float delta);
-	void onDraw();
+	void onDraw(Graphics& graphics);
 	void onInputEvent(InputEvent event);
 
 };

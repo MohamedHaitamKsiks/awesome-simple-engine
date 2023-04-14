@@ -40,6 +40,7 @@ namespace ASEngine {
 	private:
 		Renderer renderer{};
 		Context* context;
+		Graphics graphics{};
 		//process input
 		void onInputEvent(InputEvent& inputEvent);
 

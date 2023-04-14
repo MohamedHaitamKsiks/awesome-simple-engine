@@ -12,7 +12,7 @@ namespace ASEngine {
 
 		// Choose your render attributes
 		constexpr EGLint attribs[] = {
-				EGL_RENDERABLE_TYPE, EGL_OPENGL_ES3_BIT,
+				EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
 				EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
 				EGL_BLUE_SIZE, 8,
 				EGL_GREEN_SIZE, 8,
@@ -58,7 +58,7 @@ namespace ASEngine {
 		EGLSurface newSurface = eglCreateWindowSurface(newDisplay, config, app->window, nullptr);
 
 		// Create a GLES 2 context
-		EGLint contextAttribs[] = {EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE};
+		EGLint contextAttribs[] = {EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE};
 		EGLContext newContext = eglCreateContext(newDisplay, config, nullptr, contextAttribs);
 
 		// get some window metrics
@@ -101,8 +101,19 @@ namespace ASEngine {
 
 	//destroy context
 	Context::~Context() {
-		eglDestroyContext(display, context);
-		eglDestroySurface(display, surface);
+		if (display != EGL_NO_DISPLAY) {
+			eglMakeCurrent(display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+			if (context != EGL_NO_CONTEXT) {
+				eglDestroyContext(display, context);
+				context = EGL_NO_CONTEXT;
+			}
+			if (surface != EGL_NO_SURFACE) {
+				eglDestroySurface(display, surface);
+				surface = EGL_NO_SURFACE;
+			}
+			eglTerminate(display);
+			display = EGL_NO_DISPLAY;
+		}
 	}
 
 } // ASEngine

@@ -12,6 +12,7 @@
 #include "FileSystem/File.h"
 #include "Math/vec2.h"
 #include "Math/mat3.h"
+#include "Math/Random.h"
 
 //resources
 #include "Resource/Image.h"
@@ -46,6 +47,14 @@
 
 //application
 #include "Application/Application.h"
+
+//interpolation
+#include "Interpolation/Interpolate.h"
+
+//include particles
+#include "Particles/Particle.h"
+#include "Particles/ParticleDescriptor.h"
+#include "Particles/ParticleEmitter.h"
 
 
 #endif //MY_APPLICATION_ASENGINE_H

@@ -39,8 +39,14 @@ add_library( # Sets the name of the library.
         engine/Renderer/Vertex.cpp
         engine/Renderer/Quad.cpp
         engine/Renderer/VertexBufferObject.cpp
+        #math
+        engine/Math/Random.cpp
         #input
         engine/InputEvent/InputEvent.cpp
+        #tween
+        engine/Interpolation/Interpolate.cpp
+        #particles
+        engine/Particles/ParticleEmitter.cpp
         #app
         engine/Application/Application.cpp
         #game objects
