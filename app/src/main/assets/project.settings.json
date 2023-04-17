@@ -1,7 +1,8 @@
 {
   "name": "My Game",
   "windowSize": {
-    "width": 320,
-    "height": 120
-  }
+    "width": 180,
+    "height": 320
+  },
+  "mainScene": "sc_main"
 }

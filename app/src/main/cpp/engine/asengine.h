@@ -20,6 +20,7 @@
 #include "Resource/Resource.h"
 #include "Resource/Material.h"
 #include "Resource/Font.h"
+#include "Resource/Scene.h"
 
 //game object
 #include "GameObject/GameObject.h"
@@ -40,7 +41,6 @@
 //instance
 #include "GameObject/GameObject.h"
 #include "GameObject/Instance.h"
-#include "GameObject/CollisionMask.h"
 
 //input
 #include "InputEvent/InputEvent.h"
@@ -50,6 +50,9 @@
 
 //interpolation
 #include "Interpolation/Interpolate.h"
+
+//shape
+#include "Shape/Rectangle.h"
 
 //include particles
 #include "Particles/Particle.h"

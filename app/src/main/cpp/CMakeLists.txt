@@ -21,13 +21,15 @@ add_library( # Sets the name of the library.
         #game object
         engine/GameObject/GameObject.cpp
         engine/GameObject/Instance.cpp
-        engine/GameObject/CollisionMask.cpp
+        #shapes
+        engine/Shape/Rectangle.cpp
         #resource
         engine/Resource/Image.cpp
         engine/Resource/Resource.cpp
         engine/Resource/Sprite.cpp
         engine/Resource/Material.cpp
         engine/Resource/Font.cpp
+        engine/Resource/Scene.cpp
         #rendering
         engine/Renderer/Renderer.cpp
         engine/Renderer/Texture.cpp

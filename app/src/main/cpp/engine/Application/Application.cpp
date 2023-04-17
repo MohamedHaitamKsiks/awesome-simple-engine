@@ -6,13 +6,25 @@
 
 namespace ASEngine {
 
+
+	bool Application::firstLoad = false;
+
 	void Application::init(android_app* app) {
+		//init resource manager
+		Resource::init(app->activity->assetManager);
+		//do this once
+		if (!firstLoad) {
+			//import scenes
+			Scene::importAll();
+			//load project settings
+			loadProjectSettings();
+			//set first load
+			firstLoad = true;
+		}
 		//create context
 		context = new Context(app);
 		//init renderer
 		renderer.init();
-		//init resource manager
-		Resource::init(app->activity->assetManager);
 		//init vbo
 		VertexBufferObject::init();
 		//init texture
@@ -53,8 +65,22 @@ namespace ASEngine {
 		ss << int(1.0f / delta) << " FPS\n";
 		ss << Screen::getWindowWidth() << ", : . " << Screen::getWindowHeight();
 		//draw fps
-		graphics.drawText(ss.str(), vec2{16.0f, 18.0f}, "ft_pixel", Color::black);
-		graphics.drawText(ss.str(), vec2{16.0f, 17.0f}, "ft_pixel");
+		for (int r = 1; r <= 2; r++) {
+			if (r > 0) {
+				graphics.drawText(ss.str(), vec2{16.0f + float(r-1), 16.0f + float(r-1)}, "ft_pixel", Color::black);
+				graphics.drawText(ss.str(), vec2{16.0f - float(r-1), 16.0f - float(r-1)}, "ft_pixel", Color::black);
+				graphics.drawText(ss.str(), vec2{16.0f + float(r-1), 16.0f - float(r-1)}, "ft_pixel", Color::black);
+				graphics.drawText(ss.str(), vec2{16.0f - float(r-1), 16.0f + float(r-1)}, "ft_pixel", Color::black);
+			}
+
+			graphics.drawText(ss.str(), vec2{16.0f + float(r), 16.0f}, "ft_pixel", Color::black);
+			graphics.drawText(ss.str(), vec2{16.0f - float(r), 16.0f}, "ft_pixel", Color::black);
+			graphics.drawText(ss.str(), vec2{16.0f, 16.0f + float(r)}, "ft_pixel", Color::black);
+			graphics.drawText(ss.str(), vec2{16.0f, 16.0f - float(r)}, "ft_pixel", Color::black);
+		}
+
+
+		graphics.drawText(ss.str(), vec2{16.0f, 16.0f}, "ft_pixel");
 		//upadte graphics
 		graphics.update();
 		//flush context
@@ -88,6 +114,23 @@ namespace ASEngine {
 			//process input
 			onInputEvent(event);
 		}
+	}
+
+	void Application::loadProjectSettings() {
+		//load json file
+		std::string projectSettingsString = Resource::loadAsText("project.settings.json");
+		//parse to json
+		nlohmann::json projectSettings = nlohmann::json::parse(projectSettingsString);
+		//get settings
+		std::string projectName = projectSettings["name"];
+		//set window size
+		int projectWindowWidth = projectSettings["windowSize"]["width"];
+		int projectWindowHeight = projectSettings["windowSize"]["height"];
+		Screen::setSize(projectWindowWidth, projectWindowHeight);
+		//set main scene
+		std::string projectMainScene = projectSettings["mainScene"];
+		Scene::changeSceneTo(projectMainScene);
+
 	}
 
 } // ASEngine

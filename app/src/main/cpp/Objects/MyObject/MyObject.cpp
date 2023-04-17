@@ -8,19 +8,20 @@
 ParticleDescriptor MyObject::particleDescriptor{};
 
 void MyObject::onCreate() {
-	position = vec2{(float(rand()) / float(RAND_MAX)), float(rand()) / float(RAND_MAX)} * Screen::getSize();
 	float angle = 2.0f * 3.14f * float(rand()) / float(RAND_MAX);
 	velocity = vec2::one().rotate(angle) * 200.0f;
-	mask.size = vec2::one() * 32.0f;
-	//
+	mask.size = vec2::one() * 8.0f;
 	//particleDescriptor.velocity.min = 50.0f;
 	particleDescriptor.velocity = 100.0f;
 	particleDescriptor.frame = {0.0f, 1.0f};
 	particleDescriptor.frameRate = {8.0f, 16.0f};
+	particleDescriptor.angle = {0.0f, 2.0f * M_PI};
 	//init emitter
+	emitter.emitionRadius = 32.0f;
+	emitter.life = 0.2f;
 	emitter.explosiveness = 0.5f;
 	emitter.particleDescriptor = &particleDescriptor;
-	emitter.particlesNumber = 100;
+	emitter.particlesNumber = 10;
 	emitter.spriteId = "spr_dust";
 }
 
@@ -29,35 +30,45 @@ void MyObject::onUpdate(float delta) {
 	if (position.x < 0.0f) {
 		velocity.x *= -1.0f;
 		position.x = 0.0f;
+		emitter.position = position;
+		emitter.emit();
 
 	}
 	else if (position.x > Screen::getSize().x) {
 		velocity.x *= -1.0f;
 		position.x = Screen::getSize().x;
+		emitter.position = position;
+		emitter.emit();
 	}
 	if (position.y < 0.0f) {
 		velocity.y *= -1.0f;
 		position.y = 0.0f;
+		emitter.position = position;
+		emitter.emit();
 	}
 	else if (position.y > Screen::getSize().y) {
 		velocity.y *= -1.0f;
 		position.y = Screen::getSize().y;
+		emitter.position = position;
+		emitter.emit();
 	}
 	//scale up
 	scale = (scale * 15.0f + vec2::one() * 2.0f) / 16.0f;
 
 	//if collide with something
-	if (MyObject* object = (MyObject*)collideWithObject("MyObject", vec2{velocity.x, 0.0f} * delta)) {
+	/*if (MyObject* object = (MyObject*)collideWithObject("MyObject", vec2{velocity.x, 0.0f} * delta)) {
 		velocity.x *= -1.0f;
+		//Instance::destroy(object);
 		emitter.position = position;
 		emitter.emit();
 	}
 
 	if (MyObject* object = (MyObject*)collideWithObject("MyObject", vec2{0.0f, velocity.y} * delta)) {
 		velocity.y *= -1.0f;
+		//Instance::destroy(object);
 		emitter.position = position;
 		emitter.emit();
-	}
+	}*/
 
 	//move
 	position = position + velocity * delta;

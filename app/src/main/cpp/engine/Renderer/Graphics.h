@@ -37,11 +37,11 @@ namespace ASEngine {
 		//draw texture
 		void drawTexture(Texture texture, vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
 		//draw sprite ext
-		void drawSprite(SpriteID spriteId, int frame,vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
+		void drawSprite(const SpriteID& spriteId, int frame,vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
 		//draw sprite
-		void drawSprite(SpriteID spriteId, int frame,vec2 position, Color modulate = Color::white);
+		void drawSprite(const SpriteID& spriteId, int frame,vec2 position, Color modulate = Color::white);
 		//draw text
-		void drawText(std::string text, vec2 position, FontID fontId, Color modulate = Color::white);
+		void drawText(const std::string& text, vec2 position, const FontID& fontId, Color modulate = Color::white);
 		//update graphics
 		void update();
 	private:

@@ -56,17 +56,14 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
  * This the main entry point for a native activity
  */
 void android_main(struct android_app *pApp) {
+	//log
+	ALOG("Starting Game Activity");
+
 	//load game objects
 	loadGameObjects();
-	//create instance 1000x to test the performance of the engine
-	for (int i = 0; i < 10; i++)
-		ASEngine::Instance::create("MyObject");
 
 	//compute time
 	float delta = 0.0f;
-
-    //log
-    ALOG("Starting Game Activity");
 
     // register an event handler for Android events
     pApp->onAppCmd = handle_cmd;
@@ -74,6 +71,7 @@ void android_main(struct android_app *pApp) {
     // This sets up a typical game/event loop. It will run until the app is destroyed.
     int events;
     android_poll_source *pSource;
+
 
     do {
 		//get time now

@@ -17,12 +17,17 @@ namespace ASEngine {
 	//add particle
 	void ParticleEmitter::addParticle() {
 		//set position
-		particles[currentParticlesNumber].position = position;
+		float positionAngle = Random::rand_rangef(0.0f, 2.0f * M_PI);
+		float positionRadius = Random::rand_rangef(0.0f, emitionRadius);
+		particles[currentParticlesNumber].position = position + vec2::one().rotate(positionAngle) * positionRadius;
 
 		//set velocity
 		float velocity = Random::rand_rangef(particleDescriptor->velocity.min, particleDescriptor->velocity.max);
 		float direction =  Random::rand_rangef(particleDescriptor->direction.min, particleDescriptor->direction.max);
 		particles[currentParticlesNumber].velocity = vec2::one().rotate(direction) * velocity;
+
+		//set angle
+		particles[currentParticlesNumber].angle = Random::rand_rangef(particleDescriptor->angle.min, particleDescriptor->angle.max);
 
 		//set frame
 		float frame = Random::rand_rangef(particleDescriptor->frame.min, particleDescriptor->frame.max);
@@ -80,7 +85,7 @@ namespace ASEngine {
 			return;
 		//particles  draw
 		for (int i = 0; i < currentParticlesNumber; i++) {
-			graphics.drawSprite(spriteId, uint32_t(particles[i].frame), particles[i].position, Color::white);
+			graphics.drawSprite(spriteId, uint32_t(particles[i].frame), particles[i].position, vec2::one(), particles[i].angle, Color::white);
 		}
 	}
 

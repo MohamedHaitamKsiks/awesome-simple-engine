@@ -1,11 +1,18 @@
 {
-  "width": 280,
-  "height": 155,
-  "backgrounds": [
+  "instances": [
     {
-      "name": "bg_sky",
-      "scale_x": 0,
-      "scale_y": 0
+      "name": "MyObject",
+      "position": {
+        "x": 120,
+        "y": 120
+      }
+    },
+    {
+      "name": "MyObject",
+      "position": {
+        "x": 10,
+        "y": 10
+      }
     }
   ]
 }

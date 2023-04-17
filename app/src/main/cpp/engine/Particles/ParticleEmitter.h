@@ -25,9 +25,11 @@ namespace ASEngine {
 		bool repeat = false;
 		//lifetime in seconds
 		float life = 1.0f;
+		//emition radius
+		float emitionRadius = 0.0f;
 		//number of particles to generate
 		uint32_t particlesNumber = 1;
-		//position
+		//emitter position
 		vec2 position = vec2::zero();
 
 		//particle desciptor

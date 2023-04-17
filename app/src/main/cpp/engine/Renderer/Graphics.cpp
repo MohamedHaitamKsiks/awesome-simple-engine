@@ -33,7 +33,7 @@ namespace ASEngine {
 
 	}
 
-	void Graphics::drawSprite(SpriteID spriteId, int frame, vec2 position, vec2 scale, float rotation, Color modulate) {
+	void Graphics::drawSprite(const SpriteID& spriteId, int frame, vec2 position, vec2 scale, float rotation, Color modulate) {
 		//get sprite
 		Sprite sprite = spriteId;
 
@@ -54,7 +54,7 @@ namespace ASEngine {
 
 	}
 
-	void Graphics::drawSprite(SpriteID spriteId, int frame, vec2 position, Color modulate) {
+	void Graphics::drawSprite(const SpriteID& spriteId, int frame, vec2 position, Color modulate) {
 		//get sprite
 		Sprite sprite = spriteId;
 
@@ -79,7 +79,7 @@ namespace ASEngine {
 		vbo.addQuad(quad);
 	}
 
-	void Graphics::drawText(std::string text, vec2 position, FontID fontId, Color modulate) {
+	void Graphics::drawText(const std::string& text, vec2 position, const FontID& fontId, Color modulate) {
 		//get font
 		Font font(fontId);
 		//get texture

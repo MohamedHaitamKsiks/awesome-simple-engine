@@ -9,7 +9,7 @@
 #include "../InputEvent/InputEvent.h"
 #include "../Renderer/Graphics.h"
 
-#include "CollisionMask.h"
+#include "../Shape/Rectangle.h"
 
 #include <string>
 
@@ -28,10 +28,13 @@ namespace ASEngine {
         float rotation = 0.0f;
         float z_index = 0.0f;
         bool visible = true;
-        bool solid = false;
+        bool enable = true;
+
 
         //mask
-        CollisionMask mask = CollisionMask::empty;
+        Rectangle mask{};
+        bool collsionEnabled = true;
+        bool solid = false;
         //physics functions
         //is instance colliding with a specific other instance
         bool collideWithInstance(GameObject* object, vec2 offset);
@@ -47,6 +50,7 @@ namespace ASEngine {
         virtual void onUpdate(float delta) = 0;
         virtual void onDraw(Graphics& graphics) = 0;
         virtual void onInputEvent(InputEvent event) = 0;
+
     };
 
 } // ASEngine

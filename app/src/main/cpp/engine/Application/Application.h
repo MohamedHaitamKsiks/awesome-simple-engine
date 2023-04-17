@@ -15,11 +15,14 @@
 #include "../Resource/Font.h"
 #include "../Resource/Sprite.h"
 #include "../Resource/Image.h"
+#include "../Resource/Scene.h"
 
 #include "../GameObject/GameObject.h"
 #include "../GameObject/Instance.h"
 
 #include "../InputEvent/InputEvent.h"
+
+#include "../Thirdparty/json.hpp"
 
 
 namespace ASEngine {
@@ -43,8 +46,13 @@ namespace ASEngine {
 		Graphics graphics{};
 		//process input
 		void onInputEvent(InputEvent& inputEvent);
+		//get project setting
+		void loadProjectSettings();
+		//
+		static bool firstLoad;
 
 	};
+
 
 } // ASEngine
 

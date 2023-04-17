@@ -8,12 +8,16 @@
 namespace ASEngine {
 
 	bool GameObject::collideWithInstance(GameObject *object, vec2 offset) {
-		CollisionMask offsetMask = mask;
+		Rectangle offsetMask = mask;
 		offsetMask.position = offsetMask.position + offset;
-		return offsetMask.collideWithMask(object->mask);
+		return collsionEnabled && object->collsionEnabled && offsetMask.intersectWith(object->mask);
 	}
 
 	GameObject* GameObject::collideWithObject(GameObjectID gameObjectId, vec2 offset) {
+		//check collision enabled
+		if (!collsionEnabled)
+			return nullptr;
+		//check collision
 		for (auto instance: Instance::instances) {
 			//exclude self
 			if (instance == this)
@@ -25,6 +29,10 @@ namespace ASEngine {
 	}
 
 	GameObject* GameObject::collideWithSolid(vec2 offset) {
+		//check collision enabled
+		if (!collsionEnabled)
+			return nullptr;
+		//check collision
 		for (auto instance: Instance::instances) {
 			//exclude self
 			if (instance == this)
@@ -36,6 +44,10 @@ namespace ASEngine {
 	}
 
 	GameObject* GameObject::collideWithAll(vec2 offset) {
+		//check collision enabled
+		if (!collsionEnabled)
+			return nullptr;
+		//check collision
 		for (auto instance: Instance::instances) {
 			//exclude self
 			if (instance == this)

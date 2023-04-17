@@ -40,7 +40,7 @@ namespace ASEngine {
 		event.pointerPosition.x = GameActivityPointerAxes_getX(&motionEvent.pointers[ptrIndex]) / screenWindowRatio.x;
 		event.pointerPosition.y = GameActivityPointerAxes_getY(&motionEvent.pointers[ptrIndex]) / screenWindowRatio.y;
 
-		ALOG("Input : %f, %f", event.pointerPosition.x, event.pointerPosition.y);
+		//ALOG("Input : %f, %f", event.pointerPosition.x, event.pointerPosition.y);
 
 		//return event
 		return event;
