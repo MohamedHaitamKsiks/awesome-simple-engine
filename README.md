@@ -273,7 +273,7 @@ ParticleDescriptor descriptor{};
 desriptor.velocity = {50.0f, 100.0f};
 
 //direction always up
-direction.direction = 2.0f * M_PI;
+direction.direction = 0.5f * M_PI;
 
 
 ````
