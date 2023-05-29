@@ -68,10 +68,11 @@ namespace ASEngine {
 		//destroy all instances
 		Instance::destroyAll();
 		//instance create
-		for(auto instanceDescriptor: scene.instances) {
+		for(const auto& instanceDescriptor: scene.instances) {
 			GameObject* instance = Instance::create(instanceDescriptor.objectId);
 			instance->position = instanceDescriptor.position;
 		}
+		ALOG("change scene to %s", sceneId.c_str());
 	}
 
 	void Scene::reloadCurrentScene() {
