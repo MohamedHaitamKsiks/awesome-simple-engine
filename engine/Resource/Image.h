@@ -9,6 +9,7 @@
 #include <android/asset_manager.h>
 
 #include "../Thirdparty/stb_image.h"
+#include "../Log/Log.h"
 #include "Resource.h"
 
 namespace ASEngine {

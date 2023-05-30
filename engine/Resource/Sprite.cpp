@@ -51,7 +51,7 @@ namespace ASEngine {
             Sprite::load(spriteName, spriteTexture, spriteFrames, spriteOffset);
             //delete image
             spriteImage.destroy();
-            ALOG("%s loaded", spriteName.c_str());
+            Log::out("new sprite loaded");
         }
     }
 

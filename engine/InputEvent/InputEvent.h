@@ -7,7 +7,6 @@
 
 #include "../Math/vec2.h"
 #include "../Renderer/Screen.h"
-#include "../log.h"
 
 namespace ASEngine {
 

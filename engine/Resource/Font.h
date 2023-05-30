@@ -13,6 +13,7 @@
 #include "Resource.h"
 #include "../Renderer/Texture.h"
 #include "../Thirdparty/json.hpp"
+#include "../Log/Log.h"
 
 #define FONT_TEXTURE_WIDTH 16
 #define FONT_TEXTURE_HEIGHT 8

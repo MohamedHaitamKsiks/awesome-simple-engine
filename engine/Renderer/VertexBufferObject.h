@@ -10,6 +10,7 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 
+#include "../Log/Log.h"
 #include "Vertex.h"
 #include "Quad.h"
 

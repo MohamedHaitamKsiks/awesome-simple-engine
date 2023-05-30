@@ -8,6 +8,7 @@
 #include "../Renderer/Texture.h"
 #include "../Math/vec2.h"
 #include "../Thirdparty/json.hpp"
+#include "../Log/Log.h"
 #include "Resource.h"
 #include "Image.h"
 

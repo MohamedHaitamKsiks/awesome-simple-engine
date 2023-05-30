@@ -34,7 +34,7 @@ namespace ASEngine {
         ImageID imageId = Resource::generateId();
         Image::add(imageId, image);
 
-        ALOG("Image created : size(%d, %d)", image.width, image.height);
+        Log::out("Image created");
 
         //free buffer
         AAsset_close(asset);

@@ -5,9 +5,8 @@
 #ifndef ANDROIDSIMPLEENGINE_SCENE_H
 #define ANDROIDSIMPLEENGINE_SCENE_H
 
-//import resource
 #include "Resource.h"
-//import game object
+#include "../Log/Log.h"
 #include "../GameObject/GameObject.h"
 #include "../GameObject/Instance.h"
 

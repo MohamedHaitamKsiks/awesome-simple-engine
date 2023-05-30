@@ -22,7 +22,7 @@ namespace ASEngine {
             GLchar message[1024];
             glGetShaderInfoLog(shader, 1024, &log_length, message);
             // Write the error to a log
-            ALOG("%s", message);
+            Log::out(message);
         }
         return shader;
     }
@@ -38,7 +38,7 @@ namespace ASEngine {
         glAttachShader(glProgram, fragmentShader);
         // creates OpenGL ES program executables
         glLinkProgram(glProgram);
-        ALOG("glProgram created : %d", glProgram);
+        Log::out("glProgram created");
         //create material
         Material material{};
 		material.id = name;
@@ -139,7 +139,7 @@ namespace ASEngine {
 			std::string vertexCode = ASEngine::Resource::loadAsText("materials/" + materialVertexFile);
 			std::string fragmentCode = ASEngine::Resource::loadAsText("materials/" + materialFragmentFile);
 			ASEngine::Material::load(materialName, vertexCode, fragmentCode);
-			ALOG("%s loaded", materialName.c_str());
+			Log::out("new material loaded");
 		}
 	}
 

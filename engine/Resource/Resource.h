@@ -9,8 +9,8 @@
 #include <string>
 #include <sstream>
 
-#include "../log.h"
 #include <android/asset_manager.h>
+#include "../Log/Log.h"
 
 namespace ASEngine {
 

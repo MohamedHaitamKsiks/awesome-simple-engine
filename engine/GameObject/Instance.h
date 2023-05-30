@@ -11,7 +11,6 @@
 
 #include "GameObject.h"
 #include "../InputEvent/InputEvent.h"
-#include "../log.h"
 
 namespace ASEngine {
 

@@ -72,7 +72,7 @@ namespace ASEngine {
 			GameObject* instance = Instance::create(instanceDescriptor.objectId);
 			instance->position = instanceDescriptor.position;
 		}
-		ALOG("change scene to %s", sceneId.c_str());
+		Log::out("change scene");
 	}
 
 	void Scene::reloadCurrentScene() {

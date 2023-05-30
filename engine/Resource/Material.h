@@ -9,10 +9,10 @@
 #include "../Renderer/Renderer.h"
 #include "../Renderer/Texture.h"
 #include "../Renderer/Color.h"
-#include "../log.h"
 #include "../Math/mat3.h"
 #include "../Math/vec2.h"
 #include "../Thirdparty/json.hpp"
+#include "../Log/Log.h"
 
 #include <unordered_map>
 #include <sstream>

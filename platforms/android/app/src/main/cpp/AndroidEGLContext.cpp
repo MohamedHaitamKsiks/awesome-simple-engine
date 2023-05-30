@@ -66,7 +66,7 @@ void AndroidEGLContext::init() {
 	width = -1;
 	height = -1;
 
-	ALOG("Context initialized");
+	ASEngine::Log::out("Context initialized");
 
 }
 

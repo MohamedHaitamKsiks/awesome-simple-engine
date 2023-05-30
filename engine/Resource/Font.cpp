@@ -28,7 +28,7 @@ namespace ASEngine {
 		//init library
 		FT_Library ft;
 		if (FT_Init_FreeType(&ft)) {
-			ALOG("Could not init FreeType Library!!");
+			Log::out("Could not init FreeType Library!!");
 			return Font();
 		}
 
@@ -46,7 +46,7 @@ namespace ASEngine {
 		//craete face
 		FT_Face face;
 		if (FT_New_Memory_Face(ft, buffer, fileLength, 0, &face)) {
-			ALOG("Failed to load font!!");
+			Log::out("Failed to load font!!");
 			return Font();
 		}
 
@@ -60,7 +60,7 @@ namespace ASEngine {
 		for (int i = 0; i < 128; i++) {
 			//load font char
 			if (FT_Load_Char(face, char(i), FT_LOAD_RENDER )) {
-				ALOG("Failed to load Glyph!!");
+				Log::out("Failed to load Glyph!!");
 				return Font();
 			}
 
@@ -150,7 +150,7 @@ namespace ASEngine {
 			//load font
 			Font::load(fontName, fontSize,"fonts/" + fontFilePath, fontSeparation, fontLineSeparation, fontSpaceSize);
 			//log
-			ALOG("%s loaded", fontName.c_str());
+			Log::out("font loaded");
 		}
 	}
 

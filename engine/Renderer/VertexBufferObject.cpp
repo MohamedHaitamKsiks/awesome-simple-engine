@@ -37,7 +37,7 @@ namespace ASEngine {
 		vertexData = new Quad[VBO_MAX_OBJECTS];
 		//create the vertex buffer and alloc memory
 		glGenBuffers(1, &vertexBuffer);
-		ALOG("vertex buffer created : %d", vertexBuffer);
+		Log::out("vertex buffer created");
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Quad) * VBO_MAX_OBJECTS, nullptr, GL_DYNAMIC_DRAW);
 	}

@@ -14,7 +14,7 @@ namespace ASEngine {
         defaultTexture = Texture::load(defaultImage);
         defaultImage.destroy();
 		//log
-		ALOG("Texture init complete");
+		Log::out("Texture init complete");
     };
 
     //terminate
@@ -72,7 +72,7 @@ namespace ASEngine {
         Texture loadedTexture{Texture::textureCounter};
         Texture::textureCounter++;
         //log
-        ALOG("Texture created: %d", texture);
+        Log::out("Texture created");
         return loadedTexture;
     }
     //destroy

@@ -9,7 +9,6 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 
-#include "../log.h"
 #include "../Resource/Material.h"
 #include "../Resource/Sprite.h"
 #include "../Resource/Font.h"

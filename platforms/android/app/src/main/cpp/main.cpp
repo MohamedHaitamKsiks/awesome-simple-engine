@@ -2,7 +2,6 @@
 
 #include <jni.h>
 
-#include "engine/asengine.h"
 #include "AndroidApplication.h"
 #include "objects/loadGameObject.h"
 
@@ -56,7 +55,7 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
  * This the main entry point for a native activity
  */
 void android_main(struct android_app *pApp) {
-	ALOG("Starting Game Activity");
+	ASEngine::Log::out("Starting Game Activity");
 	loadGameObjects();
 
     // register an event handler for Android events

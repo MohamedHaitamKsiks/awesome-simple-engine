@@ -11,6 +11,7 @@
 #include <GLES2/gl2ext.h>
 
 #include "../Resource/Image.h"
+#include "../Log/Log.h"
 
 namespace ASEngine {
 

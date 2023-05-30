@@ -52,6 +52,8 @@ add_library( # Sets the name of the library.
         engine/Particles/ParticleEmitter.cpp
         #app
         engine/Application/Application.cpp
+        #log
+        engine/Log/LogAndroid.cpp
         #game objects
         objects/NewObject/NewObject.cpp
         #android app
