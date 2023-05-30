@@ -6,7 +6,6 @@
 #define MY_APPLICATION_IMAGE_H
 
 #include <string>
-#include <android/asset_manager.h>
 
 #include "../Thirdparty/stb_image.h"
 #include "../Log/Log.h"

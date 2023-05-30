@@ -14,46 +14,11 @@ project("androidsimpleengine")
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
-include_directories(engine)
 
 add_library( # Sets the name of the library.
         androidsimpleengine
         # Sets the library as a shared library.
         SHARED
-        #game object
-        engine/GameObject/GameObject.cpp
-        engine/GameObject/Instance.cpp
-        #shapes
-        engine/Shape/Rectangle.cpp
-        #resource
-        engine/Resource/Image.cpp
-        engine/Resource/Resource.cpp
-        engine/Resource/Sprite.cpp
-        engine/Resource/Material.cpp
-        engine/Resource/Font.cpp
-        engine/Resource/Scene.cpp
-        #rendering
-        engine/Renderer/Renderer.cpp
-        engine/Renderer/Texture.cpp
-        engine/Renderer/Screen.cpp
-        engine/Renderer/Camera.cpp
-        engine/Renderer/Color.cpp
-        engine/Renderer/Graphics.cpp
-        engine/Renderer/Vertex.cpp
-        engine/Renderer/Quad.cpp
-        engine/Renderer/VertexBufferObject.cpp
-        #math
-        engine/Math/Random.cpp
-        #input
-        engine/InputEvent/InputEvent.cpp
-        #tween
-        engine/Interpolation/Interpolate.cpp
-        #particles
-        engine/Particles/ParticleEmitter.cpp
-        #app
-        engine/Application/Application.cpp
-        #log
-        engine/Log/LogAndroid.cpp
         #game objects
         objects/NewObject/NewObject.cpp
         #android app
@@ -87,12 +52,14 @@ find_package(game-activity REQUIRED CONFIG)
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
 
-add_subdirectory(freetype)
+include_directories(engine)
+add_subdirectory(engine)
 
 target_link_libraries( # Specifies the target library.
+        
         androidsimpleengine
 
-        freetype
+        engine
 
         android
 

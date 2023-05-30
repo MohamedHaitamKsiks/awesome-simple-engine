@@ -53,7 +53,6 @@ if platform == "android":
 
     #copy project + engine + dependencies to .tmp
     shutil.copytree("engine", ".tmp/app/src/main/cpp/engine", dirs_exist_ok=True)
-    shutil.copytree("freetype", ".tmp/app/src/main/cpp/freetype", dirs_exist_ok=True)
     shutil.copytree(f"{projectPath}/objects", ".tmp/app/src/main/cpp/objects", dirs_exist_ok=True)
     shutil.copytree(f"{projectPath}/assets", ".tmp/app/src/main/assets", dirs_exist_ok=True)
 

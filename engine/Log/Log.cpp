@@ -1,8 +1,10 @@
-//
-// Created by ksiks_wa3r on 5/30/23.
-//
+
 
 #include "Log.h"
+
+
+#ifdef __ANDROID__
+
 #include <android/log.h>
 
 #define  LOG_TAG "ASEngine"
@@ -15,3 +17,5 @@ namespace ASEngine {
 	}
 
 } // ASEngine
+
+#endif

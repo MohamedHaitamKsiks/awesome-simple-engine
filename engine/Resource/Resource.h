@@ -9,8 +9,12 @@
 #include <string>
 #include <sstream>
 
-#include <android/asset_manager.h>
 #include "../Log/Log.h"
+
+#ifdef __ANDROID__
+#include <android/asset_manager.h>
+#endif
+
 
 namespace ASEngine {
 
@@ -18,6 +22,7 @@ namespace ASEngine {
 
     class Resource {
     public:
+    
 #ifdef __ANDROID__
         //use assets manager for android devices
         static void init(AAssetManager* _assetManager);
