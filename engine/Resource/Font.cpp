@@ -33,15 +33,8 @@ namespace ASEngine {
 		}
 
 		//load font to buffer
-		//open asset
-		AAsset* asset = AAssetManager_open(assetManager, fontPath.c_str(), AASSET_MODE_BUFFER);
-
-		// Get the length of the file using AAsset_getLength.
-		off_t fileLength = AAsset_getLength(asset);
-
-		// Read the contents of the file using AAsset_read.
-		FT_Byte * buffer = new stbi_uc[fileLength];
-		int bytesRead = AAsset_read(asset, buffer, fileLength);
+		size_t fileLength;
+		FT_Byte * buffer = (FT_Byte*) Resource::loadAsBinary(fontPath, &fileLength);
 
 		//craete face
 		FT_Face face;
@@ -122,9 +115,7 @@ namespace ASEngine {
 		FT_Done_FreeType(ft);
 
 		//free buffer
-		AAsset_close(asset);
 		delete buffer;
-
 		return font;
 	}
 

@@ -45,6 +45,8 @@ namespace ASEngine {
 			return scenes[sceneId];
 		};
 
+		void destroy() {};
+
 		//constructors
 		Scene() {};
 		Scene(const SceneID& sceneId) {

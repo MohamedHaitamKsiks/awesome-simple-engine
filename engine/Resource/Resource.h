@@ -18,27 +18,21 @@ namespace ASEngine {
 
     class Resource {
     public:
-        //asset manager
-        static AAssetManager* assetManager;
-        //data
-        ResourceID id = "";
-        //default constructos
-        Resource() {};
-
-        //init resource manager manager
+#ifdef __ANDROID__
+        //use assets manager for android devices
         static void init(AAssetManager* _assetManager);
+        static AAssetManager* assetManager;
+#endif
 
-        //load file as text
         static std::string loadAsText(const std::string& filePath);
-
-        //destroy
-        virtual void destroy();
-
-        //static generate id
+        static char* loadAsBinary(const std::string& filePath, size_t* fileLength);
         static ResourceID generateId();
-
-        //terminate all
         static void terminate();
+
+        //resource object
+        ResourceID id = "";
+        Resource() {};
+        virtual void destroy() = 0;
 
     private:
         static uint32_t resourceCounter;

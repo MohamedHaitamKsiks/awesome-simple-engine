@@ -6,15 +6,24 @@
 
 namespace ASEngine {
 
-    void Resource::init(AAssetManager *_assetManager) {
-        assetManager = _assetManager;
-    }
-
     ResourceID Resource::generateId() {
         std::ostringstream os;
         os << resourceCounter++;
         ResourceID resourceId = os.str();
         return resourceId;
+    }
+
+    void Resource::terminate() {
+        resourceCounter = 0;
+    }
+
+    uint32_t Resource::resourceCounter = 0;
+
+
+#ifdef __ANDROID__
+    AAssetManager* Resource::assetManager = nullptr;
+    void Resource::init(AAssetManager *_assetManager) {
+        assetManager = _assetManager;
     }
 
     std::string Resource::loadAsText(const std::string& filePath) {
@@ -47,18 +56,23 @@ namespace ASEngine {
         return text;
     }
 
-    void Resource::destroy() {
+    char* Resource::loadAsBinary(const std::string& filePath, size_t* fileLength) {
+        //open asset
+        AAsset* asset = AAssetManager_open(assetManager, filePath.c_str(), AASSET_MODE_BUFFER);
+
+        // Get the length of the file using AAsset_getLength.
+        *fileLength = (size_t) AAsset_getLength(asset);
+
+        // Read the contents of the file using AAsset_read.
+        char* buffer = new char[*fileLength];
+        int bytesRead = AAsset_read(asset, buffer, *fileLength);
+
+        AAsset_close(asset);
+
+        return  buffer;
 
     }
 
-    void Resource::terminate() {
-        resourceCounter = 0;
-    }
-
-
-    uint32_t Resource::resourceCounter = 0;
-    AAssetManager* Resource::assetManager = nullptr;
-
-
+#endif
 
 } // ASEngine

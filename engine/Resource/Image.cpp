@@ -12,16 +12,8 @@ namespace ASEngine {
     }
 
     Image Image::load(const std::string& imagePath) {
-        //open asset
-        AAsset* asset = AAssetManager_open(assetManager, imagePath.c_str(), AASSET_MODE_BUFFER);
-
-        // Get the length of the file using AAsset_getLength.
-        off_t fileLength = AAsset_getLength(asset);
-
-        // Read the contents of the file using AAsset_read.
-        stbi_uc* buffer = new stbi_uc[fileLength];
-        int bytesRead = AAsset_read(asset, buffer, fileLength);
-
+		size_t fileLength;
+        stbi_uc* buffer = (stbi_uc*) Resource::loadAsBinary(imagePath, &fileLength);
         //decode
         int width, height, channel;
         stbi_uc * pixels = stbi_load_from_memory(buffer, fileLength, &width, &height, &channel, STBI_rgb_alpha);
@@ -36,8 +28,6 @@ namespace ASEngine {
 
         Log::out("Image created");
 
-        //free buffer
-        AAsset_close(asset);
         delete buffer;
 
         return image;
