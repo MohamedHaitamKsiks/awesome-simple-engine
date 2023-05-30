@@ -48,14 +48,13 @@ namespace ASEngine {
 		Camera::current = new Camera();
 	}
 
-	/*
+
 	void Application::onInputEvent(InputEvent &inputEvent) {
 		//process event for each instance
 		for (auto instance: Instance::instances) {
 			instance->onInputEvent(inputEvent);
 		}
 	}
-	*/
 
 	void Application::update(float delta) {
 		//update instance
@@ -85,17 +84,6 @@ namespace ASEngine {
 		delete Camera::current;
 	}
 
-	/*
-	void Application::poolAndroidInput(android_app* app) {
-		//pool every input on queue
-		for(size_t i = 0; i < app->motionEventsCount; ++i) {
-			//pool event
-			InputEvent event = InputEvent::poolEvent(i);
-			//process input
-			onInputEvent(event);
-		}
-	}
-	 */
 
 	void Application::loadProjectSettings() {
 		//load json file

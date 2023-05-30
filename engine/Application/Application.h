@@ -39,6 +39,7 @@ namespace ASEngine {
 
 		void init();
 		void update(float delta);
+		void onInputEvent(InputEvent& inputEvent);
 		void terminate();
 	private:
 		//application platform
@@ -46,8 +47,6 @@ namespace ASEngine {
 		//graphics objects
 		Renderer renderer{};
 		Graphics graphics{};
-		//process input
-		void onInputEvent(InputEvent& inputEvent);
 		//get project setting
 		void loadProjectSettings();
 		//singleton

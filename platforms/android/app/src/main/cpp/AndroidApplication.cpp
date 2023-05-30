@@ -13,11 +13,14 @@ void AndroidApplication::init(android_app* _app) {
 
 	ASEngine::Application::create(ASEngine::PLATFORM_ANDROID);
 	ASEngine::Application::getSingleton()->init();
+
+	androidInputManager = new AndroidInputManager(app);
 }
 
 void AndroidApplication::update(float delta) {
+	androidInputManager->processAndroidInput();
+
 	context->updateRenderArea();
-	android_app_clear_motion_events(app);
 	ASEngine::Application::getSingleton()->update(delta);
 	context->flush();
 }
@@ -25,4 +28,5 @@ void AndroidApplication::update(float delta) {
 void AndroidApplication::terminate() {
 	ASEngine::Application::getSingleton()->terminate();
 	delete context;
+	delete androidInputManager;
 }
