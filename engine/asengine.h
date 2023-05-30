@@ -32,7 +32,6 @@
 #include "Renderer/Screen.h"
 #include "Renderer/Color.h"
 #include "Renderer/Camera.h"
-#include "Renderer/Context.h"
 #include "Renderer/Graphics.h"
 #include "Renderer/Vertex.h"
 #include "Renderer/Quad.h"

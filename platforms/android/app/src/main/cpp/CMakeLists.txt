@@ -37,7 +37,6 @@ add_library( # Sets the name of the library.
         engine/Renderer/Texture.cpp
         engine/Renderer/Screen.cpp
         engine/Renderer/Camera.cpp
-        engine/Renderer/Context.cpp
         engine/Renderer/Color.cpp
         engine/Renderer/Graphics.cpp
         engine/Renderer/Vertex.cpp
@@ -55,6 +54,10 @@ add_library( # Sets the name of the library.
         engine/Application/Application.cpp
         #game objects
         objects/NewObject/NewObject.cpp
+        #android app
+        AndroidApplication.cpp
+        #android context
+        AndroidEGLContext.cpp
         # Provides a relative path to your source file(s).
         main.cpp
         )

@@ -3,12 +3,13 @@
 #include <jni.h>
 
 #include "engine/asengine.h"
+#include "AndroidApplication.h"
 #include "objects/loadGameObject.h"
 
 #include <string>
-
 #include <chrono>
 #define SEC_TO_MICRO 1000000.0f;
+
 
 #include <game-activity/GameActivity.cpp>
 #include <game-text-input/gametextinput.cpp>
@@ -24,7 +25,7 @@ extern "C" {
  */
 void handle_cmd(android_app *pApp, int32_t cmd) {
 	//game app
-	ASEngine::Application* application;
+	AndroidApplication* application;
 
 	//start window
     switch (cmd) {
@@ -32,7 +33,7 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
 			if (pApp->userData != nullptr)
 				break;
 			//init application
-			application = new ASEngine::Application();
+			application = new AndroidApplication();
 			application->init(pApp);
             pApp->userData = application;
             break;
@@ -42,7 +43,7 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
             //
             // We have to check if userData is assigned just in case this comes in really quickly
             if (pApp->userData) {
-                auto *application = reinterpret_cast<ASEngine::Application *>(pApp->userData);
+                auto *application = reinterpret_cast<AndroidApplication*>(pApp->userData);
                 pApp->userData = nullptr;
 				application->terminate();
                 delete application;
@@ -55,55 +56,39 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
  * This the main entry point for a native activity
  */
 void android_main(struct android_app *pApp) {
-	//log
 	ALOG("Starting Game Activity");
-
-	//load game objects
 	loadGameObjects();
-
-	//compute time
-	float delta = 0.0f;
 
     // register an event handler for Android events
     pApp->onAppCmd = handle_cmd;
 
-    // This sets up a typical game/event loop. It will run until the app is destroyed.
-    int events;
-    android_poll_source *pSource;
-
+	// This sets up a typical game/event loop. It will run until the app is destroyed.
+	int events;
+	android_poll_source *pSource;
+	float delta = 0.0f;
 
     do {
 		//get time now
 		auto pastTime = std::chrono::high_resolution_clock::now();
 
-        // Process all pending events before running game logic.
-        if (ALooper_pollAll(0, nullptr, &events, (void **) &pSource) >= 0) {
-            if (pSource) {
-                pSource->process(pApp, pSource);
-            }
-        }
+		// Process all pending events before running game logic.
+		if (ALooper_pollAll(0, nullptr, &events, (void **) &pSource) >= 0) {
+			if (pSource) {
+				pSource->process(pApp, pSource);
+			}
+		}
 
-        // Check if any user data is associated. This is assigned in handle_cmd
+		// Check if any user data is associated. This is assigned in handle_cmd
         if (pApp->userData) {
-
-            // We know that our user data is a Renderer, so reinterpret cast it. If you change your
-            // user data remember to change it here
-
-            auto *application = reinterpret_cast<ASEngine::Application *>(pApp->userData);
-
-			//pool application event
-			application->poolAndroidInput(pApp);
-
-            //clear
-            android_app_clear_motion_events(pApp);
-
+            auto *application = reinterpret_cast<AndroidApplication *>(pApp->userData);
             //update app
 			application->update(delta);
-
-			//time
-			auto currentTime = std::chrono::high_resolution_clock::now();
-			delta = std::chrono::duration_cast<std::chrono::microseconds>( currentTime - pastTime ).count() / SEC_TO_MICRO;
         }
+
+		//compute delta
+		auto currentTime = std::chrono::high_resolution_clock::now();
+		delta = std::chrono::duration_cast<std::chrono::microseconds>( currentTime - pastTime ).count() / SEC_TO_MICRO;
+
     } while (!pApp->destroyRequested);
 }
 }

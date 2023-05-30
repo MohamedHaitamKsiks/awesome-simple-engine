@@ -5,23 +5,31 @@
 #include "Application.h"
 
 namespace ASEngine {
+	//application singletong
+	Application* Application::application = nullptr;
 
-	bool Application::firstLoad = false;
-
-	void Application::init(android_app* app) {
-		//init resource manager
-		Resource::init(app->activity->assetManager);
-		//do this once
-		if (!firstLoad) {
-			//import scenes
-			Scene::importAll();
-			//load project settings
-			loadProjectSettings();
-			//set first load
-			firstLoad = true;
+	Application::Application(Platform _platform) {
+		platform = _platform;
+		if (application){
+			delete this;
 		}
-		//create context
-		context = new Context(app);
+	}
+
+	void Application::create(Platform _platform) {
+		if (application)
+			return;
+		application = new Application(_platform);
+		//import scenes
+		Scene::importAll();
+		//load project settings
+		application->loadProjectSettings();
+	}
+
+	Application* Application::getSingleton() {
+		return application;
+	}
+
+	void Application::init() {
 		//init renderer
 		renderer.init();
 		//init vbo
@@ -38,32 +46,26 @@ namespace ASEngine {
 		Font::importAll();
 		//create default camera
 		Camera::current = new Camera();
-		//init input
-		InputEvent::init(app);
 	}
 
+	/*
 	void Application::onInputEvent(InputEvent &inputEvent) {
 		//process event for each instance
 		for (auto instance: Instance::instances) {
 			instance->onInputEvent(inputEvent);
 		}
 	}
+	*/
 
 	void Application::update(float delta) {
 		//update instance
 		Instance::update(delta);
-		//context update render area
-		context->updateRenderArea();
 		//draw
 		renderer.draw();
-
 		//draw instances
 		Instance::draw(graphics);
-		
 		//upadte graphics
 		graphics.update();
-		//flush context
-		context->flush();
 	}
 
 	void Application::terminate() {
@@ -79,12 +81,11 @@ namespace ASEngine {
 		Sprite::terminate();
 		Font::terminate();
 		Image::terminate();
-		//destroy context
-		delete context;
 		//delete camera
 		delete Camera::current;
 	}
 
+	/*
 	void Application::poolAndroidInput(android_app* app) {
 		//pool every input on queue
 		for(size_t i = 0; i < app->motionEventsCount; ++i) {
@@ -94,6 +95,7 @@ namespace ASEngine {
 			onInputEvent(event);
 		}
 	}
+	 */
 
 	void Application::loadProjectSettings() {
 		//load json file

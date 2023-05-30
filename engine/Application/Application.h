@@ -5,10 +5,8 @@
 #ifndef ANDROIDSIMPLEENGINE_APPLICATION_H
 #define ANDROIDSIMPLEENGINE_APPLICATION_H
 
-#include <game-activity/native_app_glue/android_native_app_glue.h>
 
 #include "../Renderer/Renderer.h"
-#include "../Renderer/Context.h"
 #include "../Renderer/Graphics.h"
 
 #include "../Resource/Material.h"
@@ -27,29 +25,33 @@
 
 namespace ASEngine {
 
+	enum Platform {
+		PLATFORM_ANDROID,
+		PLATFORM_DESKTOP
+	};
+
+	//application
 	class Application {
 	public:
-		//init application
-		void init(android_app* app);
+		static void create(Platform _platform);
+		static Application* getSingleton();
+		Application(Platform _platform);
 
-		//process android input
-		void poolAndroidInput(android_app* app);
-
-		//update
+		void init();
 		void update(float delta);
-
-		//terminate
 		void terminate();
 	private:
+		//application platform
+		Platform platform = PLATFORM_ANDROID;
+		//graphics objects
 		Renderer renderer{};
-		Context* context;
 		Graphics graphics{};
 		//process input
 		void onInputEvent(InputEvent& inputEvent);
 		//get project setting
 		void loadProjectSettings();
-		//
-		static bool firstLoad;
+		//singleton
+		static Application* application;
 
 	};
 

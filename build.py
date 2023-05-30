@@ -42,6 +42,7 @@ if ".tmp" in os.listdir(os.getcwd()):
 #craete and copy platfrom to .tmp
 shutil.copytree(f"platforms/{ platform }", ".tmp")
 
+
 #build for android
 if platform == "android":
     # find sdk tools
@@ -51,10 +52,10 @@ if platform == "android":
     avdName = config["android"]["avdName"]
 
     #copy project + engine + dependencies to .tmp
-    shutil.copytree("engine", ".tmp/app/src/main/cpp/engine")
-    shutil.copytree("freetype", ".tmp/app/src/main/cpp/freetype")
-    shutil.copytree(f"{projectPath}/objects", ".tmp/app/src/main/cpp/objects")
-    shutil.copytree(f"{projectPath}/assets", ".tmp/app/src/main/assets")
+    shutil.copytree("engine", ".tmp/app/src/main/cpp/engine", dirs_exist_ok=True)
+    shutil.copytree("freetype", ".tmp/app/src/main/cpp/freetype", dirs_exist_ok=True)
+    shutil.copytree(f"{projectPath}/objects", ".tmp/app/src/main/cpp/objects", dirs_exist_ok=True)
+    shutil.copytree(f"{projectPath}/assets", ".tmp/app/src/main/assets", dirs_exist_ok=True)
 
     #build debug
     os.chdir(".tmp")
