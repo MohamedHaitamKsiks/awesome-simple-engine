@@ -1,5 +1,5 @@
 /build
-/main/cpp/engine
-/main/cpp/freetype
-/main/cpp/objects
-/main/assets
+/src/main/cpp/engine
+/src/main/cpp/freetype
+/src/main/cpp/objects
+/src/main/assets
