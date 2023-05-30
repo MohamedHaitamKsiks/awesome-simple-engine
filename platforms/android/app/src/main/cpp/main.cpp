@@ -3,8 +3,7 @@
 #include <jni.h>
 
 #include "engine/asengine.h"
-#include "Objects/MyObject/MyObject.h"
-#include "Objects/loadGameObject.h"
+#include "objects/loadGameObject.h"
 
 #include <string>
 

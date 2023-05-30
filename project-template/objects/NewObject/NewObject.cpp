@@ -13,7 +13,7 @@ void NewObject::onUpdate(float delta) {
 }
 
 void NewObject::onDraw(Graphics& graphics) {
-
+    graphics.drawSprite("spr_run", 0, position);
 }
 
 void NewObject::onInputEvent(InputEvent event) {

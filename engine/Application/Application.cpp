@@ -6,7 +6,6 @@
 
 namespace ASEngine {
 
-
 	bool Application::firstLoad = false;
 
 	void Application::init(android_app* app) {
@@ -60,27 +59,7 @@ namespace ASEngine {
 
 		//draw instances
 		Instance::draw(graphics);
-		//fps
-		std::stringstream ss;
-		ss << int(1.0f / delta) << " FPS\n";
-		ss << Screen::getWindowWidth() << ", : . " << Screen::getWindowHeight();
-		//draw fps
-		for (int r = 1; r <= 2; r++) {
-			if (r > 0) {
-				graphics.drawText(ss.str(), vec2{16.0f + float(r-1), 16.0f + float(r-1)}, "ft_pixel", Color::black);
-				graphics.drawText(ss.str(), vec2{16.0f - float(r-1), 16.0f - float(r-1)}, "ft_pixel", Color::black);
-				graphics.drawText(ss.str(), vec2{16.0f + float(r-1), 16.0f - float(r-1)}, "ft_pixel", Color::black);
-				graphics.drawText(ss.str(), vec2{16.0f - float(r-1), 16.0f + float(r-1)}, "ft_pixel", Color::black);
-			}
-
-			graphics.drawText(ss.str(), vec2{16.0f + float(r), 16.0f}, "ft_pixel", Color::black);
-			graphics.drawText(ss.str(), vec2{16.0f - float(r), 16.0f}, "ft_pixel", Color::black);
-			graphics.drawText(ss.str(), vec2{16.0f, 16.0f + float(r)}, "ft_pixel", Color::black);
-			graphics.drawText(ss.str(), vec2{16.0f, 16.0f - float(r)}, "ft_pixel", Color::black);
-		}
-
-
-		graphics.drawText(ss.str(), vec2{16.0f, 16.0f}, "ft_pixel");
+		
 		//upadte graphics
 		graphics.update();
 		//flush context

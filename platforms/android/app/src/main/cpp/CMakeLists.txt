@@ -14,6 +14,8 @@ project("androidsimpleengine")
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
+include_directories(engine)
+
 add_library( # Sets the name of the library.
         androidsimpleengine
         # Sets the library as a shared library.
@@ -52,7 +54,7 @@ add_library( # Sets the name of the library.
         #app
         engine/Application/Application.cpp
         #game objects
-        Objects/MyObject/MyObject.cpp
+        objects/NewObject/NewObject.cpp
         # Provides a relative path to your source file(s).
         main.cpp
         )
