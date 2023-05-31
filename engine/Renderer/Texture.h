@@ -6,6 +6,7 @@
 #define MY_APPLICATION_TEXTURE_H
 
 #include <vector>
+#include <algorithm>
 
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>

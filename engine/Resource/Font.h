@@ -10,6 +10,8 @@
 #include FT_FREETYPE_H
 
 #include <string>
+#include <sstream>
+
 #include "Resource.h"
 #include "../Renderer/Texture.h"
 #include "../Thirdparty/json.hpp"

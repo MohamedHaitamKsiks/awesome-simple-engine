@@ -37,6 +37,8 @@ namespace ASEngine {
 		static Application* getSingleton();
 		Application(Platform _platform);
 
+		Platform getPlatform();
+
 		void init();
 		void update(float delta);
 		void onInputEvent(InputEvent& inputEvent);

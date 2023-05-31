@@ -45,7 +45,9 @@ add_library(
 )
 
 add_subdirectory(Thirdparty/freetype)
+
 target_link_libraries(
     engine
+    GLESv2 
     freetype
 )

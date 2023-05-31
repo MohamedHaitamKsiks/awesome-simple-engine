@@ -8,6 +8,7 @@
 #include "../Math/vec2.h"
 #include "Color.h"
 
+#include <cstddef>
 
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>

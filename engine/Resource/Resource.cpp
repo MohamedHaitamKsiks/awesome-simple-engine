@@ -73,6 +73,53 @@ namespace ASEngine {
 
     }
 
+//desktop implementation
+#else
+
+    std::string Resource::loadAsText(const std::string &filePath) {
+        std::fstream file;
+        file.open("assets/" + filePath);
+        Log::out("Loading " + filePath);
+
+        if (!file) {
+            Log::out("Error loading " + filePath);
+            return "";
+        }
+
+        std::string line;
+        std::string text = "";
+
+        while(std::getline(file, line)) {
+            text += line + "\n";
+        }
+
+        file.close();
+
+        return text;
+    }
+
+    char *Resource::loadAsBinary(const std::string &filePath, size_t *fileLength) {
+        std::fstream file;
+        file.open("assets/" + filePath);
+
+        if (!file) {
+            Log::out("Error loading " + filePath);
+            return nullptr;
+        }
+
+        file.seekg(0, std::ios::end);
+        *fileLength = file.tellg();
+        
+        char* buffer = new char[*fileLength];
+
+        file.seekg(0, std::ios::beg);
+        file.read(buffer, *fileLength);
+
+        file.close();
+
+        return buffer;
+    }
+
 #endif
 
 } // ASEngine

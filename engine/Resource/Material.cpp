@@ -28,7 +28,12 @@ namespace ASEngine {
     }
     //load material
     Material Material::load(const std::string& name, std::string vertexCode, std::string fragmentCode) {
-        //load shaders
+        // add precision mediump float for platform devices
+        #ifdef __ANDROID__
+        fragmentCode = "precision mediump float;\n" + fragmentCode;
+        #endif
+
+        // load shaders
         GLuint vertexShader = loadShader(GL_VERTEX_SHADER, vertexCode.c_str());
         GLuint fragmentShader = loadShader(GL_FRAGMENT_SHADER, fragmentCode.c_str());
         //create gl es program for shaders

@@ -1,4 +1,4 @@
-precision mediump float;
+
 
 uniform sampler2D texture;
 uniform int isSolidColor;

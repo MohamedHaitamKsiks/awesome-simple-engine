@@ -102,4 +102,8 @@ namespace ASEngine {
 
 	}
 
+	Platform Application::getPlatform() {
+		return platform;
+	}
+
 } // ASEngine

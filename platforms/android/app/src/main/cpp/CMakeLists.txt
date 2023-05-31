@@ -19,8 +19,6 @@ add_library( # Sets the name of the library.
         androidsimpleengine
         # Sets the library as a shared library.
         SHARED
-        #game objects
-        objects/NewObject/NewObject.cpp
         #android app
         AndroidApplication.cpp
         #android context
@@ -69,8 +67,8 @@ target_link_libraries( # Specifies the target library.
         # EGL, required for configuring the display context
         EGL
 
-        # GL ES 3, used for the sample renderer
-        GLESv3
+        # GLES 2, used for the sample renderer
+        GLESv2
 
         # for AImageDecoder, to load images from resources
         jnigraphics

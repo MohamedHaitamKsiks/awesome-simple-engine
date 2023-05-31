@@ -13,13 +13,21 @@ using namespace ASEngine;
 class NewObject: public GameObject {
 
 	//functions for the different events for a game object
-	void onCreate();
+	void onCreate() {
 
-	void onUpdate(float delta);
+	}
 
-	void onDraw(Graphics& graphics);
+	void onUpdate(float delta) {
+
+	}
+
+	void onDraw(Graphics& graphics) {
+		graphics.drawSprite("spr_run", 0, position);
+	}
 	
-	void onInputEvent(InputEvent event);
+	void onInputEvent(InputEvent event) {
+		
+	}
 
 };
 

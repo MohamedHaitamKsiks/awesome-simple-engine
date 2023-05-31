@@ -34,6 +34,7 @@ namespace ASEngine {
 
 		//load font to buffer
 		size_t fileLength;
+
 		FT_Byte * buffer = (FT_Byte*) Resource::loadAsBinary(fontPath, &fileLength);
 
 		//craete face

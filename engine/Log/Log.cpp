@@ -18,4 +18,16 @@ namespace ASEngine {
 
 } // ASEngine
 
+#else
+
+#include <iostream>
+
+namespace ASEngine {
+
+	void Log::out(const std::string &message) {
+		std::cout<< message << "\n";
+	}
+
+} // ASEngine
+
 #endif
