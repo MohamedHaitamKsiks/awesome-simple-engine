@@ -50,6 +50,7 @@ if platform == "android":
     adbPath = f"{sdkPath}/platform-tools"
     avdName = config["android"]["avdName"]
 
+
     #copy project + engine + dependencies to .tmp
     shutil.copytree("asengine", f"{tmpFileName}/app/src/main/cpp/asengine", dirs_exist_ok=True)
     shutil.copytree(f"{projectPath}/objects", f"{tmpFileName}/app/src/main/cpp/objects", dirs_exist_ok=True)
@@ -57,6 +58,10 @@ if platform == "android":
 
     #build debug
     os.chdir(tmpFileName)
+
+    #set local.properties for android
+    os.system(f"sdk.dir = {sdkPath} >> local.properties")
+
     os.system("./gradlew assembleDebug")
     os.chdir(workingDirectory)
 
