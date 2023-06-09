@@ -60,7 +60,7 @@ if platform == "android":
     os.chdir(tmpFileName)
 
     #set local.properties for android
-    os.system(f"sdk.dir = {sdkPath} >> local.properties")
+    os.system(f"echo 'sdk.dir = {sdkPath}' > local.properties")
 
     os.system("./gradlew assembleDebug")
     os.chdir(workingDirectory)
