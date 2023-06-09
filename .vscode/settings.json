@@ -1,6 +1,12 @@
 {
     "files.associations": {
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "string": "cpp",
+        "wl_platform.h": "c",
+        "cocoa_platform.h": "c",
+        "win32_platform.h": "c",
+        "null_platform.h": "c",
+        "x11_platform.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

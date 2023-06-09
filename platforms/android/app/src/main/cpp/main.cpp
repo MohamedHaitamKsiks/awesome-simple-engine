@@ -1,7 +1,8 @@
-#define STB_IMAGE_IMPLEMENTATION
+
 
 #include <jni.h>
 
+#include "engine/asengine.h"
 #include "AndroidApplication.h"
 #include "objects/loadGameObject.h"
 

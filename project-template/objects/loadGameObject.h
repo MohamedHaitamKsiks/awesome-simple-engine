@@ -6,7 +6,7 @@
 #define ASENGINE_LOADGAMEOBJECT_H
 
 #include "NewObject/NewObject.h"
-#include "../engine/asengine.h"
+#include "engine/asengine.h"
 #include <string>
 
 

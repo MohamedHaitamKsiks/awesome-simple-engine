@@ -6,11 +6,13 @@
 #define ANDROIDSIMPLEENGINE_MYOBJECT_H
 
 #include <sstream>
-#include "asengine.h"
+#include "engine/asengine.h"
 
 using namespace ASEngine;
 
 class NewObject: public GameObject {
+
+	float time = 0.0f;
 
 	//functions for the different events for a game object
 	void onCreate() {
@@ -18,11 +20,11 @@ class NewObject: public GameObject {
 	}
 
 	void onUpdate(float delta) {
-
+		time += delta;
 	}
 
 	void onDraw(Graphics& graphics) {
-		graphics.drawSprite("spr_run", 0, position);
+		graphics.drawSprite("spr_run", 8.0f * time, position);
 	}
 	
 	void onInputEvent(InputEvent event) {
