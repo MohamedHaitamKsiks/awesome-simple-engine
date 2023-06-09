@@ -28,7 +28,9 @@ class NewObject: public GameObject {
 	}
 	
 	void onInputEvent(InputEvent event) {
-		
+		if (event.type == INPUT_EVENT_POINTER_DOWN) {
+			position = event.pointerPosition;
+		}
 	}
 
 };

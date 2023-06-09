@@ -8,7 +8,7 @@ project(desktop)
 
 #include glfw
 #find_package(glfw3 3.3 REQUIRED)
-add_subdirectory(glfw-3.3.8)
+add_subdirectory(dependencies/glfw-3.3.8)
 include_directories(asengine/dependencies/glew/include)
 
 #include the engine 
@@ -16,9 +16,7 @@ include_directories(asengine)
 add_subdirectory(asengine)
 
 
-add_executable(build main.cpp)
-
-
+add_executable(build main.cpp DesktopApplication.cpp)
 
 target_link_libraries(
     build
