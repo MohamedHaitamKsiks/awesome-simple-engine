@@ -5,7 +5,7 @@ import sys
 import os
 import shutil
 import json
-import subprocess
+
 
 #read config
 config = {}
@@ -83,7 +83,7 @@ elif platform == "windows":
     # build for windows
     os.chdir(f"{workingDirectory}/{tmpFileName}/build")
     os.system(
-        "cmake -DCMAKE_TOOLCHAIN_FILE=~/mingw-w64-x86_64.cmake ..")
+        f"cmake -DCMAKE_TOOLCHAIN_FILE={workingDirectory}/cmake-toolchains/mingw-w64-x86_64.cmake ..")
     os.system("make")
     os.system(f"wine {workingDirectory}/{tmpFileName}/build/build.exe")
     os.chdir(workingDirectory)
