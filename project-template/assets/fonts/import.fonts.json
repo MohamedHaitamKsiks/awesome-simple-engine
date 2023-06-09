@@ -1,0 +1,10 @@
+[
+  {
+    "name": "ft_default",
+    "size": 24,
+    "font": "RobotoCondensed-Regular.ttf",
+    "separation": 4,
+    "lineSeparation": 4,
+    "spaceSize": 8
+  }
+]

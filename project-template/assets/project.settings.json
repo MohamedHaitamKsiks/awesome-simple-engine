@@ -1,0 +1,8 @@
+{
+  "name": "New Projet",
+  "windowSize": {
+    "width": 180,
+    "height": 320
+  },
+  "mainScene": "sc_main"
+}
