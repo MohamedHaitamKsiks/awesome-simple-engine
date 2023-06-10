@@ -6,7 +6,14 @@
         "cocoa_platform.h": "c",
         "win32_platform.h": "c",
         "null_platform.h": "c",
-        "x11_platform.h": "c"
+        "x11_platform.h": "c",
+        "sstream": "cpp",
+        "array": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "ranges": "cpp",
+        "utility": "cpp",
+        "valarray": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

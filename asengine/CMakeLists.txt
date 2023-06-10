@@ -7,6 +7,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(asengine)
 
+#file system source system
+set(FILESYSTEM_SOURCES engine/FileSystem/File.cpp)
+if (ANDROID)
+    set(FILESYSTEM_SOURCES ${FILESYSTEM_SOURCES} engine/FileSystem/FileAndroid.cpp)
+else() 
+    set(FILESYSTEM_SOURCES ${FILESYSTEM_SOURCES} engine/FileSystem/FileDesktop.cpp)
+endif()
+
+
 add_library(
     asengine
     STATIC
@@ -34,6 +43,10 @@ add_library(
     engine/Renderer/VertexBufferObject.cpp
     #math
     engine/Math/Random.cpp
+    #memory
+    engine/Memory/PoolAllocator.cpp
+    #files
+    ${FILESYSTEM_SOURCES}
     #input
     engine/InputEvent/InputEvent.cpp
     #tween
