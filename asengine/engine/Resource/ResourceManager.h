@@ -32,7 +32,7 @@ namespace ASEngine {
         ResourceId getResourceId(const ResourceName& resourceName);
 
     private:
-        PoolAllocator<T> resources{};
+        PoolAllocator<T> resources{}
         std::unordered_map<ResourceName, ResourceID> resourceIds = {};
         //singleton
         static ResourceManager<T>* resourceManager;

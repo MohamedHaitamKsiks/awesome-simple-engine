@@ -1,11 +1,7 @@
-//
-// Created by ksiks_wa3r on 3/13/23.
-//
+
 
 #ifndef MY_APPLICATION_MATERIAL_H
 #define MY_APPLICATION_MATERIAL_H
-
-#include "Resource.h"
 
 #include "../Renderer/Renderer.h"
 #include "../Renderer/Texture.h"
@@ -58,7 +54,7 @@ namespace ASEngine {
 
 
     //material is only the glProgam put it in a class makes it easier for abstraction
-    class Material: public Resource {
+    class Material {
     public:
         int glProgram;
         static Material current;

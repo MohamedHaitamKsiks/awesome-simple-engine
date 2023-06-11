@@ -12,7 +12,7 @@
 #include <string>
 #include <sstream>
 
-#include "Resource.h"
+#include "../FileSystem/File.h"
 #include "../Renderer/Texture.h"
 #include "../Thirdparty/json.hpp"
 #include "../Log/Log.h"
@@ -34,46 +34,32 @@ namespace ASEngine {
 		int vframe;
 	};
 
-	//font id
-	typedef std::string FontID;
-
 	//font resource
-	class Font: public Resource {
+	class Font {
 	public:
 		//font data
 		FontCharacter fontCharacters[128];
+		//font size
 		int size;
+		//font character seperation size
 		int separation;
+		//font line seperation
 		int lineSeparation;
+		//font space size
 		int spaceSize;
-		Texture texture;
 
-		//load
-		static Font load(const std::string& _name, int _size, const std::string& fontPath, int _separation, int _lineSeparation, int _spaceSize);
-		static void importAll();
-		//terminate all
-		static void terminate();
-		//add font
-		static void add(const FontID& fontId, Font& font);
-		//destroy
-		void destroy();
+		//load font from file
+		bool load(const std::string &fontPath, int _size, int _separation, int _lineSeparation, int _spaceSize);
 
-		//equiv between ResourceID and Resource
-		//= operator
-		Font& operator=(const FontID& fontId) {
-			return Font::fonts[fontId];
-		};
+		//get font texture
+		Texture getTexture();
 
-		//constructors
-		Font() {};
-		Font(const FontID& fontId) {
-			*this = Font::fonts[fontId];
-		};
-
+		//destructor
+		~Font();
+	
 	private:
-		static std::unordered_map<ResourceID, Font> fonts;
-
-
+		// font texture
+		Texture texture;
 	};
 
 } // ASEngine

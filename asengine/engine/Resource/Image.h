@@ -7,10 +7,11 @@
 
 #include <string>
 
-#include "../Log/Log.h"
 #include "Resource.h"
+#include "../FileSystem/File.h"
+#include "../Log/Log.h"
 
-    namespace ASEngine {
+namespace ASEngine {
 
     enum ImageFormat {
         IMAGE_FORMAT_RBGA,
@@ -19,43 +20,30 @@
         IMAGE_FORMAT_INTENSITY
     };
 
-    typedef std::string ImageID;
-
-    class Image: public Resource {
+    class Image {
 
     public:
-        char* pixels;
-        int width;
-        int height;
+        //pixel buffer for the image
+        char* pixels = nullptr;
+        //image width
+        int width = -1;
+        //image height
+        int height = -1;
+        //image format
         ImageFormat format = IMAGE_FORMAT_RBGA;
+        
         //constructor
-        Image(char* _pixels, int _width, int _height);
+        Image(const char* _pixels, int _width, int _height);
+
+        //destructor
+        ~Image();
 
         //load image
-        static Image load(const std::string& imagePath);
+        bool load(const std::string& imagePath);
+    private:
+        //image channels
+        int channels = -1;
 
-        //add
-        static void add(const ImageID& imageId, Image &image);
-
-        //terminate
-        static void terminate();
-
-        //destroy
-        void destroy();
-
-        //equiv between ResourceID and Resource
-        //= operator
-        Image& operator=(const ImageID& imageId) {
-            return Image::images[imageId];
-        }
-
-        //constructors
-        Image() {};
-        Image(const ImageID& imageId) {
-            *this = Image::images[imageId];
-        }
-
-        static std::unordered_map<ResourceID, Image> images;
     };
 
 } // ASEngine

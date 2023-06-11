@@ -51,6 +51,11 @@ namespace ASEngine {
     {
         if (!isUsed(index))
             return;
+        //call destructor of the object to simulate it's destruction
+        //we need to do that since freeing objects from poolallocator doesn't destroy them from memory
+        //but since it's logically free we can call the destructor and simulate to make it equivilent to delete operator
+        get(index)->~T();
+        //free data
         freeChunkNext[index] = freeHead;
         freeHead = index;
         usedChunks[index] = false;

@@ -1,35 +1,21 @@
-//
-// Created by ksiks_wa3r on 3/14/23.
-//
-
 #include "Sprite.h"
 
-namespace ASEngine {
+namespace ASEngine 
+{
 
-
-    Sprite Sprite::load(const std::string& _name, Texture _texture, int _frames, vec2 _offset) {
-        //create sprite
-        Sprite sprite{};
-        sprite.texture = _texture;
-        sprite.width = _texture.width() / _frames;
-        sprite.height = _texture.height();
-        sprite.frames = _frames;
-        sprite.offset = _offset;
-        //add sprite
-        Sprite::add(_name, sprite);
-        return sprite;
+    bool Sprite::load(Texture _texture, int _frames, vec2 _offset) 
+    {
+        if (!frames) 
+            return false;
+        texture = _texture;
+        width = _texture.width() / _frames;
+        height = _texture.height();
+        frames = _frames;
+        offset = _offset;
+        return true;
     }
 
-    void Sprite::add(const SpriteID& spriteId, Sprite &sprite) {
-        Sprite::sprites[spriteId] = sprite;
-    }
-
-    void Sprite::destroy() {
-        Sprite::sprites.erase(id);
-    }
-
-    std::unordered_map<ResourceID, Sprite> Sprite::sprites = {};
-
+    /*
     void Sprite::importAll() {
         //load json file
         std::string importSpritesString = Resource::loadAsText("sprites/import.sprites.json");
@@ -54,11 +40,7 @@ namespace ASEngine {
             Log::out("new sprite loaded");
         }
     }
-
-    //terminate sprites
-    void Sprite::terminate() {
-        sprites.clear();
-    }
+    */
 
 
 } // ASEngine

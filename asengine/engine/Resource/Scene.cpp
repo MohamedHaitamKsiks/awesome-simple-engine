@@ -6,23 +6,22 @@
 
 namespace ASEngine {
 
-	std::unordered_map<ResourceID, Scene> Scene::scenes = {};
-	//current scene
-	SceneID Scene::current = "";
-
-	SceneID Scene::getCurrentScene() {
-		return current;
-	}
-
-	Scene Scene::load(const std::string &sceneName, const std::string &sceneFilePath) {
-		//create scene
-		Scene scene{};
-		scene.id = sceneName;
+	bool Scene::load(const std::string &sceneFilePath) {
 		//load json file
-		std::string sceneDataString = Resource::loadAsText(sceneFilePath);
+		File sceneFile;
+		if(!sceneFile.open(sceneFilePath, FILE_OPEN_MODE_READ))
+		{
+			Log::out("Couldn't load scene!");
+			return false;
+		}
+		
+		
 		//parse to json
+		std::string sceneDataString = sceneFile.readText();
 		nlohmann::json sceneData = nlohmann::json::parse(sceneDataString);
+		
 		//add instances
+		instances.clear();
 		for (int i = 0; i < sceneData["instances"].size(); i++) {
 			GameObjectID instanceObjectId = sceneData["instances"][i]["name"];
 			float instancePositionX = sceneData["instances"][i]["position"]["x"];
@@ -37,13 +36,14 @@ namespace ASEngine {
 				instancePosition
 			};
 			//add to scene instances
-			scene.instances.push_back(descriptor);
+			instances.push_back(descriptor);
 		}
 		//add scene to scenes
-		scenes[sceneName] = scene;
-		return scene;
+		sceneFile.close();
+		return true;
 	}
 
+	/*
 	void Scene::importAll() {
 		//load json file
 		std::string importedScenesString = Resource::loadAsText("scenes/import.scenes.json");
@@ -57,9 +57,6 @@ namespace ASEngine {
 		}
 	}
 
-	void Scene::terminate() {
-		scenes.clear();
-	}
 
 	void Scene::changeSceneTo(const std::string &sceneId) {
 		//change current scene
@@ -79,5 +76,6 @@ namespace ASEngine {
 		changeSceneTo(current);
 	}
 
+	*/
 
 } // ASEngine
