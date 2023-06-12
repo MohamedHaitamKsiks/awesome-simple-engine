@@ -11,10 +11,12 @@ class NewObject: public GameObject {
 
 	float time = 0.0f;
 	ResourceID spriteId;
+	ResourceID fontId;
 
 	//functions for the different events for a game object
 	void onCreate() {
 		spriteId = ResourceManager<Sprite>::getSingleton()->getResourceId("spr_run");
+		fontId = ResourceManager<Font>::getSingleton()->getResourceId("ft_default");
 	}
 
 	void onUpdate(float delta) {
@@ -24,6 +26,9 @@ class NewObject: public GameObject {
 	void onDraw(Graphics& graphics) {
 		Sprite sprite = ResourceManager<Sprite>::getSingleton()->get(spriteId);
 		graphics.drawSprite(sprite, 8.0f * time, position);
+		
+		Font font = ResourceManager<Font>::getSingleton()->get(fontId);
+		graphics.drawText("Hello World!", vec2{64.0f, 64.0f}, font);
 	}
 	
 	void onInputEvent(InputEvent event) {

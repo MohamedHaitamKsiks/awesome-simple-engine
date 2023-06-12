@@ -37,31 +37,22 @@ namespace ASEngine {
 		graphics.init();
 		//init resource managers
 		ResourceManager<Sprite>::init();
+		Sprite::importAll();
+
 		ResourceManager<Font>::init();
+		Font::importAll();
+
 		ResourceManager<Scene>::init();
 		// manually import some resources to try the new system
 		// will be removed soon
-		Image image;
-		image.load("sprites/spr_run.png");
-
-		Texture texture = Texture::load(image);
-
-		Sprite sprite;
-		sprite.load(texture, 6, vec2::zero());
-		ResourceManager<Sprite>::getSingleton()->add("spr_run", sprite);
-
-		Font font;
-		font.load("fonts/RobotoCondensed-Regular.ttf", 24, 4, 4, 8);
-		ResourceManager<Font>::getSingleton()->add("ft_default", font);
-
 		Scene scene;
 		scene.load("scenes/main.scene.json");
 		ResourceManager<Scene>::getSingleton()->add("sc_main", scene);
-
-		GameObject* obj = Instance::create("NewObject");
-		obj->position = vec2{0.0f, 0.0f};
 		//create default camera
 		Camera::current = new Camera();
+
+		GameObject* obj = Instance::create("NewObject");
+		obj->position = vec2::zero();
 
 		Log::out("Application init complete");
 	}
@@ -78,14 +69,11 @@ namespace ASEngine {
 		
 		//update instance
 		Instance::update(delta);
-		
+
 		//draw
 		renderer.draw();
-		
-		//draw instances
 		Instance::draw(graphics);
 		
-		//upadte graphics
 		graphics.update();
 	}
 

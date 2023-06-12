@@ -15,10 +15,13 @@ namespace ASEngine
         return true;
     }
 
-    /*
+    
     void Sprite::importAll() {
         //load json file
-        std::string importSpritesString = Resource::loadAsText("sprites/import.sprites.json");
+        File importSpritesFile;
+        importSpritesFile.open("sprites/import.sprites.json", FILE_OPEN_MODE_READ);
+        std::string importSpritesString = importSpritesFile.readText();
+        importSpritesFile.close();
         //parse to json
         nlohmann::json importedSprites = nlohmann::json::parse(importSpritesString);
         //import all sprites
@@ -32,15 +35,17 @@ namespace ASEngine
                 importedSprites[i]["offset"]["y"]
             };
             //load sprite
-            Image spriteImage = Image::load("sprites/" + spriteImageFile);
+            Image spriteImage;
+            spriteImage.load("sprites/" + spriteImageFile);
             Texture spriteTexture = Texture::load(spriteImage);
-            Sprite::load(spriteName, spriteTexture, spriteFrames, spriteOffset);
-            //delete image
-            spriteImage.destroy();
-            Log::out("new sprite loaded");
+            Sprite sprite;
+            sprite.load(spriteTexture, spriteFrames, spriteOffset);
+            ResourceManager<Sprite>::getSingleton()->add(spriteName, sprite);
+            
+            Log::out(spriteName + " loaded");
         }
     }
-    */
+    
 
 
 } // ASEngine

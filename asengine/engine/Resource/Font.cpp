@@ -33,10 +33,12 @@ namespace ASEngine {
 		//load font from file
 		File fontFile;
 		fontFile.open(fontPath, FILE_OPEN_MODE_READ);
-
+		
 		size_t fileLength = fontFile.getSize();
 		FT_Byte buffer[fileLength];
 		fontFile.read((char*) buffer);
+		
+		fontFile.close();
 
 		//craete face
 		FT_Face face;
@@ -85,12 +87,12 @@ namespace ASEngine {
 				//get index
 				int fontImageIndex = imageCoordX + fontImage.width * imageCoordY;
 				fontImage.pixels[2 * fontImageIndex] = 255;
-				if (pixel > 100)
-					fontImage.pixels[2 * fontImageIndex + 1] = 255;
+				fontImage.pixels[2 * fontImageIndex + 1] = pixel;
+
 			}
 
 			//add character
-			FontCharacter fontCharacter{
+			FontCharacter fontCharacter {
 				(int)face->glyph->bitmap.width,
 				-face->glyph->bitmap_top,
 				hframe,
@@ -111,20 +113,23 @@ namespace ASEngine {
 		FT_Done_Face(face);
 		FT_Done_FreeType(ft);
 
-		fontFile.close();
-
 		Log::out("Font created");
 		return true;
 	}
 
-	/*
-	void Font::importAll() {
+	
+	void Font::importAll() 
+	{
 		//load json file
-		std::string importFontsString = Resource::loadAsText("fonts/import.fonts.json");
+		File importFontsFile;
+		importFontsFile.open("fonts/import.fonts.json", FILE_OPEN_MODE_READ);
+		std::string importFontsString = importFontsFile.readText();
+		importFontsFile.close();
 		//parse to json
 		nlohmann::json importedFonts = nlohmann::json::parse(importFontsString);
 		//import all fonts
-		for (int i = 0; i < importedFonts.size(); i++) {
+		for (int i = 0; i < importedFonts.size(); i++) 
+		{
 			//get font info
 			std::string fontName = importedFonts[i]["name"];
 			int fontSize = importedFonts[i]["size"];
@@ -133,14 +138,17 @@ namespace ASEngine {
 			int fontLineSeparation = importedFonts[i]["lineSeparation"];
 			int fontSpaceSize = importedFonts[i]["spaceSize"];
 			//load font
-			//Font::load(fontName, fontSize,"fonts/" + fontFilePath, fontSeparation, fontLineSeparation, fontSpaceSize);
+			Font font;
+			font.load("fonts/" + fontFilePath, fontSize, fontSeparation, fontLineSeparation, fontSpaceSize);
+			ResourceManager<Font>::getSingleton()->add(fontName, font);
 			//log
-			Log::out("font loaded");
+			Log::out(fontName + " loaded");
 		}
 	}
-	*/
+	
 
-	Font::~Font() {
+	Font::~Font() 
+	{
 		//texture.destroy();
 	}
 

@@ -60,8 +60,6 @@ namespace ASEngine {
 			//delete instance;
 		}
 		destroyQueue.clear();
-		//ALOG("instances : %d", instances.size());
-
 	}
 
 	//link game object name to object

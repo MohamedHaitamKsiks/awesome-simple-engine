@@ -12,6 +12,7 @@
 #include <string>
 #include <sstream>
 
+#include "ResourceManager.h"
 #include "../FileSystem/File.h"
 #include "../Renderer/Texture.h"
 #include "../Thirdparty/json.hpp"
@@ -52,6 +53,9 @@ namespace ASEngine {
 
 		//load font from file
 		bool load(const std::string &fontPath, int _size, int _separation, int _lineSeparation, int _spaceSize);
+
+		//import all fonts
+		static void importAll();
 
 		//destructor
 		~Font();

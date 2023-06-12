@@ -2,6 +2,8 @@
 #ifndef ASENGINE_SPRITE_H
 #define ASENGINE_SPRITE_H
 
+#include "../FileSystem/File.h"
+#include "ResourceManager.h"
 #include "../Renderer/Texture.h"
 #include "../Math/vec2.h"
 #include "../Thirdparty/json.hpp"
@@ -22,6 +24,8 @@ namespace ASEngine {
 
         //load
         bool load(Texture _texture, int _frames, vec2 _offset );
+    
+        static void importAll();
     };
 
 } // ASEnginge

@@ -8,9 +8,6 @@
 #include "../Memory/PoolAllocator.h"
 #include "../Log/Log.h"
 
-#include "Sprite.h"
-#include "Scene.h"
-#include "Font.h"
 
 namespace ASEngine {
 

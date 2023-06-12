@@ -37,7 +37,7 @@ bool DesktopApplication::init() {
 
     /* Create a windowed mode window and its OpenGL context */
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    window = glfwCreateWindow(720 , 1280 , "Hello World", NULL, NULL);
+    window = glfwCreateWindow(720/2 , 1280/2 , "Hello World", NULL, NULL);
 
     if (!window) {
         glfwTerminate();
