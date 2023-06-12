@@ -26,13 +26,13 @@ add_library(
     engine/Shape/Rectangle.cpp
     #resource
     engine/Resource/Image.cpp
-    engine/Resource/Resource.cpp
     engine/Resource/Sprite.cpp
     engine/Resource/Material.cpp
     engine/Resource/Font.cpp
     engine/Resource/Scene.cpp
     #rendering
     engine/Renderer/Renderer.cpp
+    engine/Renderer/Shader.cpp
     engine/Renderer/Texture.cpp
     engine/Renderer/Screen.cpp
     engine/Renderer/Camera.cpp
@@ -43,8 +43,6 @@ add_library(
     engine/Renderer/VertexBufferObject.cpp
     #math
     engine/Math/Random.cpp
-    #memory
-    engine/Memory/PoolAllocator.cpp
     #files
     ${FILESYSTEM_SOURCES}
     #input

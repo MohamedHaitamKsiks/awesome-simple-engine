@@ -36,7 +36,7 @@ namespace ASEngine {
 
 		size_t fileLength = fontFile.getSize();
 		FT_Byte buffer[fileLength];
-		fontFile.read(buffer);
+		fontFile.read((char*) buffer);
 
 		//craete face
 		FT_Face face;
@@ -112,9 +112,11 @@ namespace ASEngine {
 		FT_Done_FreeType(ft);
 
 		fontFile.close();
-		return font;
+
+		Log::out("Font created");
+		return true;
 	}
-	
+
 	/*
 	void Font::importAll() {
 		//load json file
@@ -139,7 +141,7 @@ namespace ASEngine {
 	*/
 
 	Font::~Font() {
-		texture.destroy();
+		//texture.destroy();
 	}
 
 } // ASEngine

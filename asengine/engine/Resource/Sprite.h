@@ -15,10 +15,11 @@ namespace ASEngine {
     public:
         //data
         Texture texture;
-        int frames;
-        int width;
-        int height;
-        vec2 offset;
+        int frames = 0;
+        int width = -1;
+        int height = -1;
+        vec2 offset = vec2{0.0f, 0.0f};
+
         //load
         bool load(Texture _texture, int _frames, vec2 _offset );
     };

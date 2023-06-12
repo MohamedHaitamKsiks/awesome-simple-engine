@@ -9,7 +9,7 @@
 
 namespace ASEngine {
 
-    Image::Image(const char* _pixels, int _width, int _height) 
+    Image::Image(char* _pixels, int _width, int _height) 
     {
         pixels = _pixels;
         width = _width;
@@ -29,6 +29,7 @@ namespace ASEngine {
         }
         size_t fileLength = imageFile.getSize();
         stbi_uc buffer[fileLength];
+        imageFile.read((char*) buffer);
 
         //decode
         pixels =  (char*) stbi_load_from_memory(buffer, (int) fileLength, &width, &height, &channels, STBI_rgb_alpha);
@@ -52,7 +53,7 @@ namespace ASEngine {
         std::stringstream ss;
         ss << "Image created " << width << "x" << height << "\n"; 
         Log::out(ss.str());
-
+        
         imageFile.close();
         return true;
     }

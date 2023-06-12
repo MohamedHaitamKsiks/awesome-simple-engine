@@ -33,10 +33,7 @@ namespace ASEngine {
 
 	}
 
-	void Graphics::drawSprite(const SpriteID& spriteId, int frame, vec2 position, vec2 scale, float rotation, Color modulate) {
-		//get sprite
-		Sprite sprite = spriteId;
-
+	void Graphics::drawSprite(const Sprite& sprite, int frame, vec2 position, vec2 scale, float rotation, Color modulate) {
 		//set unifrom data
 		setUniformData(false, sprite.texture);
 
@@ -54,13 +51,9 @@ namespace ASEngine {
 
 	}
 
-	void Graphics::drawSprite(const SpriteID& spriteId, int frame, vec2 position, Color modulate) {
-		//get sprite
-		Sprite sprite = spriteId;
-
+	void Graphics::drawSprite(const Sprite& sprite, int frame, vec2 position, Color modulate) {
 		//set unifrom data
 		setUniformData(false, sprite.texture);
-
 		//transform matrix
 		vec2 imageScale = vec2{ (float)sprite.width, (float)sprite.height };
 		//create the quad
@@ -79,13 +72,9 @@ namespace ASEngine {
 		vbo.addQuad(quad);
 	}
 
-	void Graphics::drawText(const std::string& text, vec2 position, const FontID& fontId, Color modulate) {
-		//get font
-		Font font(fontId);
-		//get texture
+	void Graphics::drawText(const std::string& text, vec2 position, const Font& font, Color modulate) 
+	{
 		Texture texture = font.texture;
-
-		//set unifrom data
 		setUniformData(false, texture);
 
 		//draw every character
@@ -135,7 +124,6 @@ namespace ASEngine {
 	void Graphics::update() {
 		draw();
 		uniformData.firstDraw = false;
-		//ALOG("draw calls = %d", drawCalls);
 		drawCalls = 0;
 	}
 
@@ -155,16 +143,19 @@ namespace ASEngine {
 
 	void Graphics::draw() {
 		//set unifrom data
-		Material::current.setShaderParam("isSolidColor", uniformData.isSolidColor);
+		Shader::getCurrent().getShaderParam("isSolidColor").setValue((int) uniformData.isSolidColor);
 		//pass texture
-		Material::current.setShaderParam("texture", uniformData.texture);
+		Shader::getCurrent().getShaderParam("texture").setValue(uniformData.texture);
 		//bind vertex attribute
-		Vertex::bindAttributes(Material::current.glProgram);
+		Vertex::bindAttributes(Shader::getCurrent().glProgram);
 		//draw remaning quads
 		vbo.bind();
 		vbo.pushData();
 		vbo.draw();
 		drawCalls++;
+
+		
+		
 	}
 
 

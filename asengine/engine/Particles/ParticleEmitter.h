@@ -10,6 +10,8 @@
 #include "Particle.h"
 #include "ParticleDescriptor.h"
 
+#include "../Resource/ResourceManager.h"
+#include "../Resource/Sprite.h"
 #include "../Renderer/Texture.h"
 #include "../Renderer/Graphics.h"
 #include "../Math/Random.h"
@@ -36,7 +38,7 @@ namespace ASEngine {
 		ParticleDescriptor* particleDescriptor;
 
 		//texture
-		SpriteID spriteId;
+		ResourceID spriteId;
 		//sprite loop
 		bool isSpriteAnimationLoop = false;
 		//texture enabled

@@ -3,7 +3,7 @@
 void DesktopApplication::start() {
     loadGameObjects();
     if (!init()) {
-        Log::out("Application coudn't started!");
+        ASEngine::Log::out("Application coudn't started!");
         return;
     }
 

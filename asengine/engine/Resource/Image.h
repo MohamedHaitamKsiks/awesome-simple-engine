@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "Resource.h"
 #include "../FileSystem/File.h"
 #include "../Log/Log.h"
 
@@ -33,7 +32,8 @@ namespace ASEngine {
         ImageFormat format = IMAGE_FORMAT_RBGA;
         
         //constructor
-        Image(const char* _pixels, int _width, int _height);
+        Image() {};
+        Image(char* _pixels, int _width, int _height);
 
         //destructor
         ~Image();

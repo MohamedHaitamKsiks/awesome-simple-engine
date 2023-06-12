@@ -22,8 +22,9 @@ namespace ASEngine
 
     bool File::open(const std::string &_path, FileOpenMode _mode)
     {
-        AAsset *asset = AAssetManager_open(assetManager, _path.c_str(), AASSET_MODE_BUFFER);
+        asset = AAssetManager_open(assetManager, _path.c_str(), AASSET_MODE_BUFFER);
         size = (size_t) AAsset_getLength(asset);
+        return asset != nullptr;
     }
 
     void File::close()

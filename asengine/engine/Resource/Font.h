@@ -40,26 +40,24 @@ namespace ASEngine {
 		//font data
 		FontCharacter fontCharacters[128];
 		//font size
-		int size;
+		int size = -1;
 		//font character seperation size
-		int separation;
+		int separation = -1;
 		//font line seperation
-		int lineSeparation;
+		int lineSeparation = -1;
 		//font space size
-		int spaceSize;
+		int spaceSize = -1;
+		// font texture
+		Texture texture;
 
 		//load font from file
 		bool load(const std::string &fontPath, int _size, int _separation, int _lineSeparation, int _spaceSize);
-
-		//get font texture
-		Texture getTexture();
 
 		//destructor
 		~Font();
 	
 	private:
-		// font texture
-		Texture texture;
+		
 	};
 
 } // ASEngine

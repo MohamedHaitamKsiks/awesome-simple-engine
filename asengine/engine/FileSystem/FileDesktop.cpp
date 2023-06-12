@@ -43,6 +43,7 @@ namespace ASEngine
     {
         std::string line;
         std::stringstream textStringStream;
+        file.seekg(0, std::ios::beg);
 
         while (std::getline(file, line))
         {

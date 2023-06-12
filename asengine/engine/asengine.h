@@ -18,9 +18,9 @@
 #include "Memory/PoolAllocator.h"
 
 //resources
+#include "Resource/ResourceManager.h"
 #include "Resource/Image.h"
 #include "Resource/Sprite.h"
-#include "Resource/Resource.h"
 #include "Resource/Material.h"
 #include "Resource/Font.h"
 #include "Resource/Scene.h"

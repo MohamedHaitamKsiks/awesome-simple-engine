@@ -8,6 +8,10 @@
 #include "../Memory/PoolAllocator.h"
 #include "../Log/Log.h"
 
+#include "Sprite.h"
+#include "Scene.h"
+#include "Font.h"
+
 namespace ASEngine {
 
     //32 bits integer used to reference resources
@@ -29,15 +33,19 @@ namespace ASEngine {
         //get resource by id
         T& get(ResourceID resourceId);
         //get resource id by name, make sure to cache it if you want to use it multiple time.
-        ResourceId getResourceId(const ResourceName& resourceName);
-
+        ResourceID getResourceId(const ResourceName& resourceName);
+        //destructor
+        ~ResourceManager<T>();
     private:
-        PoolAllocator<T> resources{}
+        PoolAllocator<T> resources{};
         std::unordered_map<ResourceName, ResourceID> resourceIds = {};
         //singleton
         static ResourceManager<T>* resourceManager;
     };
 
 } // ASEngine
+
+//include implementation
+#include "ResourceManager.cpp"
 
 #endif // ASENGINE_RESOURCE_MANAGER_H

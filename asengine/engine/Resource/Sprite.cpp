@@ -5,7 +5,7 @@ namespace ASEngine
 
     bool Sprite::load(Texture _texture, int _frames, vec2 _offset) 
     {
-        if (!frames) 
+        if (!_frames) 
             return false;
         texture = _texture;
         width = _texture.width() / _frames;

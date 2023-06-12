@@ -1,6 +1,3 @@
-//
-// Created by ksiks_wa3r on 3/18/23.
-//
 #include "Texture.h"
 
 namespace ASEngine {
@@ -10,9 +7,9 @@ namespace ASEngine {
     //init
     void Texture::init() {
         //load default texture
-        Image defaultImage = Image::load("images/no_texture.png");
+        Image defaultImage;
+        defaultImage.load("images/no_texture.png");
         defaultTexture = Texture::load(defaultImage);
-        defaultImage.destroy();
 		//log
 		Log::out("Texture init complete");
     };

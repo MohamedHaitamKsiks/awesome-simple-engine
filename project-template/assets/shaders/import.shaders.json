@@ -1,0 +1,7 @@
+[
+  {
+    "name": "sh_default",
+    "vertex": "default.vert",
+    "fragment": "default.frag"
+  }
+]

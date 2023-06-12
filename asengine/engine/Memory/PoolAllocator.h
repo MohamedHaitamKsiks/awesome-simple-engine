@@ -51,4 +51,6 @@ namespace ASEngine {
 
 } // namespace ASEngine
 
+#include "PoolAllocator.cpp"
+
 #endif // ASENGINE_POOL_ALLOCATOR_H

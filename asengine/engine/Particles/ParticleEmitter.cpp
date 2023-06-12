@@ -31,7 +31,7 @@ namespace ASEngine {
 
 		//set frame
 		float frame = Random::rand_rangef(particleDescriptor->frame.min, particleDescriptor->frame.max);
-		particles[currentParticlesNumber].frame = uint32_t (float(Sprite(spriteId).frames) * frame);
+		particles[currentParticlesNumber].frame = uint32_t(float(ResourceManager<Sprite>::getSingleton()->get(spriteId).frames) * frame);
 
 		//set frame rate
 		float frameRate = Random::rand_rangef(particleDescriptor->frameRate.min, particleDescriptor->frameRate.max);
@@ -58,7 +58,6 @@ namespace ASEngine {
 			emitted = false;
 			return;
 		}
-		//ALOG("%f %f",time , float(currentParticlesNumber) * life / float(particlesNumber));
 		//add particle
 		while (emitted && time > float(currentParticlesNumber) * (life * (1.0f - explosiveness)) / float(particlesNumber) && currentParticlesNumber < particlesNumber) {
 			addParticle();
@@ -72,8 +71,7 @@ namespace ASEngine {
 			particles[i].frame += particles[i].frameRate * delta;
 			//check animation loop
 			if (!isSpriteAnimationLoop)
-				particles[i].frame = fmin(particles[i].frame, float(Sprite(spriteId).frames - 1) );
-
+				particles[i].frame = fmin(particles[i].frame, float(ResourceManager<Sprite>::getSingleton()->get(spriteId).frames - 1));
 		}
 
 	}
@@ -85,7 +83,7 @@ namespace ASEngine {
 			return;
 		//particles  draw
 		for (int i = 0; i < currentParticlesNumber; i++) {
-			graphics.drawSprite(spriteId, uint32_t(particles[i].frame), particles[i].position, vec2::one(), particles[i].angle, Color::white);
+			graphics.drawSprite(ResourceManager<Sprite>::getSingleton()->get(spriteId), uint32_t(particles[i].frame), particles[i].position, vec2::one(), particles[i].angle, Color::white);
 		}
 	}
 

@@ -4,10 +4,10 @@
 namespace ASEngine {
 
     template <typename T>
-    ResourceManager<T>* ResourceManager<T>::resourcesManager = nullptr;
+    ResourceManager<T>* ResourceManager<T>::resourceManager = nullptr;
 
     template <typename T>
-    void ResourceManager<T>::init(size_t resourceMaxNumber = INT16_MAX)
+    void ResourceManager<T>::init(size_t resourceMaxNumber)
     {
         if (resourceManager)
             return;
@@ -23,13 +23,17 @@ namespace ASEngine {
     }
 
     template <typename T>
+    ResourceManager<T>::~ResourceManager<T>(){
+        resources.terminate();
+        resourceIds.clear();
+    };
+
+    template <typename T>
     void ResourceManager<T>::terminate()
     {
         if (!resourceManager)
             return;
-
         delete resourceManager;
-        resources.terminate();
     }
 
     template <typename T>
@@ -58,9 +62,9 @@ namespace ASEngine {
     }
 
     template <typename T>
-    ResourceId ResourceManager<T>::getResourceId(const ResourceName &resourceName)
+    ResourceID ResourceManager<T>::getResourceId(const ResourceName &resourceName)
     {
-        return resourceIds[id];
+        return resourceIds[resourceName];
     }
 
 
