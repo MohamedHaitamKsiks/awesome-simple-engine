@@ -1,6 +1,6 @@
 
-#ifndef ANDROIDSIMPLEENGINE_APPLICATION_H
-#define ANDROIDSIMPLEENGINE_APPLICATION_H
+#ifndef ASENGINE_APPLICATION_H
+#define ASENGINE_APPLICATION_H
 
 
 #include "../Renderer/Renderer.h"
@@ -56,4 +56,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_APPLICATION_H
+#endif // ASENGINE_APPLICATION_H

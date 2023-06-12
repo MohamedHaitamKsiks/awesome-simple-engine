@@ -30,7 +30,7 @@ namespace ASEngine
 
     void ShaderParam::setValue(const mat3 &_value)
     {
-        glUniformMatrix3fv(uniformLocation, 1, GL_FALSE, _value.data);
+        glUniformMatrix3fv(uniformLocation, 1, GL_TRUE, _value.data);   
     }
 
     void ShaderParam::setValue(Texture _value)

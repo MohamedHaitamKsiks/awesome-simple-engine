@@ -45,6 +45,7 @@ namespace ASEngine {
         defaultShader.use();
         defaultShader.getShaderParam("view").setValue(Screen::getView());
         defaultShader.getShaderParam("camera").setValue(Camera::current->getMatrix());
+        
     }   
 
     Renderer::~Renderer()

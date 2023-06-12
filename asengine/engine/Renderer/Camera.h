@@ -14,8 +14,8 @@ namespace ASEngine {
 
     public:
         //transform
-         vec2 position = vec2::zero();
-         vec2 offset = vec2::zero();
+         vec2 position = vec2{0.0f, 0.0f};
+         vec2 offset = vec2{0.0f, 0.0f};
          float zoom = 1.0f;
          float rotation = 0.0f;
 
