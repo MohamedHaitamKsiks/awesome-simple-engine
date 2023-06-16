@@ -12,6 +12,7 @@
 #include <string>
 #include <sstream>
 
+#include "Resource.h"
 #include "ResourceManager.h"
 #include "../FileSystem/File.h"
 #include "../Renderer/Texture.h"
@@ -36,7 +37,7 @@ namespace ASEngine {
 	};
 
 	//font resource
-	class Font {
+	class Font : public Resource {
 	public:
 		//font data
 		FontCharacter fontCharacters[128];
@@ -54,10 +55,10 @@ namespace ASEngine {
 		//load font from file
 		bool load(const std::string &fontPath, int _size, int _separation, int _lineSeparation, int _spaceSize);
 
-		//import all fonts
+		// import all fonts
 		static void importAll();
 
-		//destructor
+		// destructor
 		~Font();
 	
 	private:

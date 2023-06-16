@@ -3,6 +3,8 @@
 #ifndef MY_APPLICATION_MATERIAL_H
 #define MY_APPLICATION_MATERIAL_H
 
+#include "Resource.h"
+
 #include "../Renderer/Renderer.h"
 #include "../Renderer/Texture.h"
 #include "../Renderer/Color.h"
@@ -21,7 +23,7 @@
 
 namespace ASEngine {
 
-    class Material {
+    class Material : public Resource {
     public:
         
     private:

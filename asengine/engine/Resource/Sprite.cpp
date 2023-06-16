@@ -38,10 +38,11 @@ namespace ASEngine
             Image spriteImage;
             spriteImage.load("sprites/" + spriteImageFile);
             Texture spriteTexture = Texture::load(spriteImage);
-            Sprite sprite;
-            sprite.load(spriteTexture, spriteFrames, spriteOffset);
-            ResourceManager<Sprite>::getSingleton()->add(spriteName, sprite);
-            
+
+            ResourceManager<Sprite>::getSingleton()
+                ->add(spriteName)
+                ->load(spriteTexture, spriteFrames, spriteOffset);
+
             Log::out(spriteName + " loaded");
         }
     }

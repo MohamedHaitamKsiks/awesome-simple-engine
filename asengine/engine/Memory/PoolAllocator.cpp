@@ -14,34 +14,64 @@ namespace ASEngine {
         data = new T[poolSize];
         freeChunkNext = new ChunkId[poolSize];
         usedChunks = new bool[poolSize];
+        //allocate linked list space
+        chunkNext = new ChunkId[poolSize];
+        chunkPrev = new ChunkId[poolSize];
         // prepare freechunk linked list
         for (ChunkId i = 0; i < poolSize; i++) 
         {
             freeChunkNext[i] = (i + 1) % maxSize;
             usedChunks[i] = false;
+            chunkNext[i] = i;
+            chunkPrev[i] = i;
         }
     }
 
     template <typename T>
-    void PoolAllocator<T>::terminate()
+    PoolAllocator<T>::~PoolAllocator<T>()
     {
         delete data;
         delete freeChunkNext;
         delete usedChunks;
     }
 
+    template <typename T>
+    ChunkId PoolAllocator<T>::prev(ChunkId index)
+    {
+        ChunkId prevIndex = chunkPrev[index];
+        if (prevIndex == index)
+            return CHUNK_ID_NULL;
+        return prevIndex;
+    }
 
+    template <typename T>
+    ChunkId PoolAllocator<T>::next(ChunkId index)
+    {
+        ChunkId nextIndex = chunkNext[index];
+        if (nextIndex == index)
+            return CHUNK_ID_NULL;
+        return nextIndex;
+    }
 
     template <typename T>
     ChunkId PoolAllocator<T>::alloc() 
     {
+        if (size == maxSize)
+            return UINT32_MAX; 
         // get index
         ChunkId index = freeHead;
         usedChunks[index] = true;
 
         // move head to the next node
         freeHead = freeChunkNext[freeHead];
-        // increase size
+
+        // update linked list
+        if (size != 0) {
+            chunkNext[index] = head;
+            chunkPrev[head] = index;
+        }
+        head = index;
+
         size++;
         return index;
     }
@@ -56,9 +86,24 @@ namespace ASEngine {
         //but since it's logically free we can call the destructor and simulate to make it equivilent to delete operator
         get(index)->~T();
         //free data
+        size--;
         freeChunkNext[index] = freeHead;
         freeHead = index;
         usedChunks[index] = false;
+        //update linked list
+        if (index == head) 
+        {
+            head = next(index);
+        }
+        else if (next(index) == UINT32_MAX)
+        {
+            chunkNext[prev(index)] = prev(index);
+        }
+        else
+        {
+            chunkNext[prev(index)] = next(index);
+            chunkPrev(next(index)) = prev(index);
+        }
     }
 
     template <typename T>

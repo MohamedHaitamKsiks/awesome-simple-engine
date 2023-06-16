@@ -23,8 +23,8 @@ namespace ASEngine {
     }
 
     template <typename T>
-    ResourceManager<T>::~ResourceManager<T>(){
-        resources.terminate();
+    ResourceManager<T>::~ResourceManager<T>()
+    {
         resourceIds.clear();
     };
 
@@ -37,14 +37,14 @@ namespace ASEngine {
     }
 
     template <typename T>
-    ResourceID ResourceManager<T>::add(const ResourceName &resourceName, const T &resource)
+    T* ResourceManager<T>::add(const ResourceName &resourceName)
     {
-        ChunkId newResourceID = (ChunkId) resources.alloc();
-        *(resources.get(newResourceID)) = resource;
-        
+        ChunkId newResourceID = resources.alloc();
         resourceIds[resourceName] = newResourceID;
-        
-        return (ResourceID) newResourceID;
+
+        resources.get(newResourceID)->id = newResourceID;
+
+        return resources.get(newResourceID);
     }
 
     template <typename T>
@@ -56,9 +56,9 @@ namespace ASEngine {
     }
 
     template <typename T>
-    T& ResourceManager<T>::get(ResourceID resourceId)
+    T* ResourceManager<T>::get(ResourceID resourceId)
     {
-        return *(resources.get(resourceId));
+        return resources.get(resourceId);
     }
 
     template <typename T>

@@ -24,10 +24,10 @@ class NewObject: public GameObject {
 	}
 
 	void onDraw(Graphics& graphics) {
-		Sprite sprite = ResourceManager<Sprite>::getSingleton()->get(spriteId);
+		Sprite sprite = *ResourceManager<Sprite>::getSingleton()->get(spriteId);
 		graphics.drawSprite(sprite, 8.0f * time, position);
 		
-		Font font = ResourceManager<Font>::getSingleton()->get(fontId);
+		Font font = *ResourceManager<Font>::getSingleton()->get(fontId);
 		graphics.drawText("Hello World!", vec2{64.0f, 64.0f}, font);
 	}
 	

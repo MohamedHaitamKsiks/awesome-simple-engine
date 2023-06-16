@@ -38,16 +38,10 @@ namespace ASEngine {
 		//init resource managers
 		ResourceManager<Sprite>::init();
 		Sprite::importAll();
-
+		
 		ResourceManager<Font>::init();
 		Font::importAll();
-
-		ResourceManager<Scene>::init();
 		// manually import some resources to try the new system
-		// will be removed soon
-		Scene scene;
-		scene.load("scenes/main.scene.json");
-		ResourceManager<Scene>::getSingleton()->add("sc_main", scene);
 		//create default camera
 		Camera::current = new Camera();
 

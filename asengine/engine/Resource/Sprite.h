@@ -2,18 +2,19 @@
 #ifndef ASENGINE_SPRITE_H
 #define ASENGINE_SPRITE_H
 
-#include "../FileSystem/File.h"
+#include "Resource.h"
 #include "ResourceManager.h"
+#include "Image.h"
+#include "../FileSystem/File.h"
 #include "../Renderer/Texture.h"
 #include "../Math/vec2.h"
 #include "../Thirdparty/json.hpp"
 #include "../Log/Log.h"
-#include "Image.h"
 
 
 namespace ASEngine {
 
-    class Sprite {
+    class Sprite : public Resource{
     public:
         //data
         Texture texture;

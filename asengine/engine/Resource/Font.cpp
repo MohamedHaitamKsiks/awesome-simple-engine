@@ -138,11 +138,12 @@ namespace ASEngine {
 			int fontLineSeparation = importedFonts[i]["lineSeparation"];
 			int fontSpaceSize = importedFonts[i]["spaceSize"];
 			//load font
-			Font font;
-			font.load("fonts/" + fontFilePath, fontSize, fontSeparation, fontLineSeparation, fontSpaceSize);
-			ResourceManager<Font>::getSingleton()->add(fontName, font);
+			bool loaded = ResourceManager<Font>::getSingleton()
+				->add(fontName)
+				->load("fonts/" + fontFilePath, fontSize, fontSeparation, fontLineSeparation, fontSpaceSize);
 			//log
-			Log::out(fontName + " loaded");
+			if (loaded)
+				Log::out(fontName + " loaded");
 		}
 	}
 	

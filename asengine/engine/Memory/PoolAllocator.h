@@ -4,21 +4,23 @@
 #include <cstddef>
 #include <cstdint>
 
+#define CHUNK_ID_NULL UINT32_MAX;
 
 namespace ASEngine {
 
-    //poolallocator implemetation
-    //faster than the heap
-    //will be used in
-
     typedef uint32_t ChunkId;
 
+    /*
+    poolallocator implemetation
+    faster than the heap
+    but requires to know the size of the pool
+    */
     template <typename T>
     class PoolAllocator {
     public:
         // init pool allocator
         void init(size_t poolSize);
-        void terminate();
+        ~PoolAllocator<T>();
 
         // returns the index of the allocated ressource
         ChunkId alloc();
@@ -47,6 +49,17 @@ namespace ASEngine {
         ChunkId freeHead = 0;
         ChunkId *freeChunkNext = nullptr;
         bool *usedChunks = nullptr;
+
+        // make chunks as linked list to iterate with them
+        ChunkId head = 0;
+        ChunkId* chunkNext = nullptr;
+        ChunkId* chunkPrev = nullptr;
+
+        // next of chunk
+        ChunkId next(ChunkId index);
+        // previous of chunk
+        ChunkId prev(ChunkId index);
+
     };
 
 } // namespace ASEngine

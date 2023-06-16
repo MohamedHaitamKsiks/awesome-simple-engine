@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "Resource.h"
 #include "../FileSystem/File.h"
 #include "../Log/Log.h"
 
@@ -19,7 +20,7 @@ namespace ASEngine {
         IMAGE_FORMAT_INTENSITY
     };
 
-    class Image {
+    class Image : public Resource {
 
     public:
         //pixel buffer for the image
