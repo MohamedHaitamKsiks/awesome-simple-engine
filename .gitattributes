@@ -1,2 +1,2 @@
 asengine/dependencies/** linguist-vendored
-*.cpp linguist-detectable
+*.h linguist-language=C++
