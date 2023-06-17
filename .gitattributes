@@ -1,1 +1,2 @@
 asengine/dependencies/** linguist-vendored
+*.cpp linguist-detectable
