@@ -6,9 +6,8 @@
 
 namespace ASEngine {
 
-    //rendering main functions
-    //init renderer
-    void Renderer::init() {
+    void Renderer::init() 
+    {
         //init glew for desktop devices
         #ifndef __ANDROID__
         glewInit();
@@ -21,17 +20,37 @@ namespace ASEngine {
         //set clear color
         glClearColor(0.5f, 0.5f, 0.55f, 1.0f);
 
+        //this is temporary
+        //I will remove this after I rework the material system
+        //init default shader
+
+        File fragmentShaderFile;
+        fragmentShaderFile.open("shaders/default.frag", FILE_OPEN_MODE_READ);
+        std::string fragmentCode = fragmentShaderFile.readText();
+        fragmentShaderFile.close();
+
+        File vertexShaderFile;
+        vertexShaderFile.open("shaders/default.vert", FILE_OPEN_MODE_READ);
+        std::string vertexCode = vertexShaderFile.readText();
+        vertexShaderFile.close();
+
+        defaultShader.create(vertexCode, fragmentCode);
 
     }
 
 
-    //draw frame
-    void Renderer::draw() {
+    void Renderer::draw() 
+    {
         glClear (GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-		//use default material
-        Material::use("mt_default");
+        defaultShader.use();
+        defaultShader.getShaderParam("view").setValue(Screen::getView());
+        defaultShader.getShaderParam("camera").setValue(Camera::current->getMatrix());
+        
+    }   
+
+    Renderer::~Renderer()
+    {
+        defaultShader.destroy();
     }
-
-
 
 } // ASEngine

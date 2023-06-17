@@ -1,53 +1,25 @@
-//
-// Created by ksiks_wa3r on 3/13/23.
-//
+#ifndef ASENGINE_RESOURCE_H
+#define ASENGINE_RESOURCE_H
 
-#ifndef MY_APPLICATION_RESOURCE_H
-#define MY_APPLICATION_RESOURCE_H
+#include "../Memory/PoolAllocator.h"
 
-#include <unordered_map>
-#include <string>
-#include <sstream>
+namespace ASEngine
+{
+    // 32 bits integer used to reference resources
+    typedef ChunkId ResourceID;
 
-#include "../Log/Log.h"
-
-#ifdef __ANDROID__
-#include <android/asset_manager.h>
-
-#else
-#include <iostream>
-#include <fstream>
-
-#endif
-
-namespace ASEngine {
-
-    typedef std::string ResourceID;
-
-    class Resource {
+    // abstract class for resources
+    // parent of all resources
+    class Resource 
+    {
     public:
+        //resource id
+        ResourceID id;
 
-#ifdef __ANDROID__
-        //use assets manager for android devices
-        static void init(AAssetManager* _assetManager);
-        static AAssetManager* assetManager;
-#endif
-
-        static std::string loadAsText(const std::string& filePath);
-        static char* loadAsBinary(const std::string& filePath, size_t* fileLength);
-        static ResourceID generateId();
-        static void terminate();
-
-        //resource object
-        ResourceID id = "";
-        Resource() {};
-        virtual void destroy() = 0;
-
-    private:
-        static uint32_t resourceCounter;
-
+        
     };
 
-} // ASEngine
+} // namespace ASEngine
 
-#endif //MY_APPLICATION_RESOURCE_H
+
+#endif

@@ -1,15 +1,12 @@
-//
-// Created by ksiks_wa3r on 4/10/23.
-//
 
-#ifndef ANDROIDSIMPLEENGINE_APPLICATION_H
-#define ANDROIDSIMPLEENGINE_APPLICATION_H
+#ifndef ASENGINE_APPLICATION_H
+#define ASENGINE_APPLICATION_H
 
 
 #include "../Renderer/Renderer.h"
 #include "../Renderer/Graphics.h"
 
-#include "../Resource/Material.h"
+#include "../Resource/ResourceManager.h"
 #include "../Resource/Font.h"
 #include "../Resource/Sprite.h"
 #include "../Resource/Image.h"
@@ -17,6 +14,9 @@
 
 #include "../GameObject/GameObject.h"
 #include "../GameObject/Instance.h"
+
+#include "../String/UniqueString.h"
+#include "../String/UniqueStringManager.h"
 
 #include "../InputEvent/InputEvent.h"
 
@@ -59,4 +59,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_APPLICATION_H
+#endif // ASENGINE_APPLICATION_H

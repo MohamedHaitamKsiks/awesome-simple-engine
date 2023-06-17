@@ -6,10 +6,8 @@
 
 namespace ASEngine {
 
-	Font Font::load(const std::string& _name, int _size, const std::string& fontPath, int _separation, int _lineSeparation, int _spaceSize) {
-		//create font
-		Font font{};
-		//font image 16x8
+	bool Font::load(const std::string &fontPath, int _size, int _separation, int _lineSeparation, int _spaceSize)
+	{
 		Image fontImage{};
 		fontImage.width = FONT_TEXTURE_WIDTH * _size;
 		fontImage.height = FONT_TEXTURE_HEIGHT * _size;
@@ -29,23 +27,28 @@ namespace ASEngine {
 		FT_Library ft;
 		if (FT_Init_FreeType(&ft)) {
 			Log::out("Could not init FreeType Library!!");
-			return Font();
+			return false;
 		}
 
-		//load font to buffer
-		size_t fileLength;
-
-		FT_Byte * buffer = (FT_Byte*) Resource::loadAsBinary(fontPath, &fileLength);
+		//load font from file
+		File fontFile;
+		fontFile.open(fontPath, FILE_OPEN_MODE_READ);
+		
+		size_t fileLength = fontFile.getSize();
+		FT_Byte buffer[fileLength];
+		fontFile.read((char*) buffer);
+		
+		fontFile.close();
 
 		//craete face
 		FT_Face face;
 		if (FT_New_Memory_Face(ft, buffer, fileLength, 0, &face)) {
 			Log::out("Failed to load font!!");
-			return Font();
+			return false;
 		}
 
 		//set size
-		font.size = _size;
+		size = _size;
 		FT_Set_Pixel_Sizes(face, 0, _size);
 
 		FT_Render_Glyph(face->glyph, FT_RENDER_MODE_MONO);
@@ -55,7 +58,7 @@ namespace ASEngine {
 			//load font char
 			if (FT_Load_Char(face, char(i), FT_LOAD_RENDER )) {
 				Log::out("Failed to load Glyph!!");
-				return Font();
+				return false;
 			}
 
 			//bitmapBufferSize
@@ -84,54 +87,49 @@ namespace ASEngine {
 				//get index
 				int fontImageIndex = imageCoordX + fontImage.width * imageCoordY;
 				fontImage.pixels[2 * fontImageIndex] = 255;
-				if (pixel > 100)
-					fontImage.pixels[2 * fontImageIndex + 1] = 255;
+				fontImage.pixels[2 * fontImageIndex + 1] = pixel;
+
 			}
 
 			//add character
-			FontCharacter fontCharacter{
+			FontCharacter fontCharacter {
 				(int)face->glyph->bitmap.width,
 				-face->glyph->bitmap_top,
 				hframe,
 				vframe
 			};
-			font.fontCharacters[i] = fontCharacter;
+			fontCharacters[i] = fontCharacter;
 
 			//font params
-			font.separation = _separation;
-			font.lineSeparation = _lineSeparation;
-			font.spaceSize = _spaceSize;
+			separation = _separation;
+			lineSeparation = _lineSeparation;
+			spaceSize = _spaceSize;
 		}
 
 		//generate texture
-		font.texture = Texture::load(fontImage);
-		//destroy image
-		fontImage.destroy();
-
-		//add font
-		Font::add(_name, font);
+		texture = Texture::load(fontImage);
 
 		//free font data
 		FT_Done_Face(face);
 		FT_Done_FreeType(ft);
 
-		//free buffer
-		delete buffer;
-		return font;
+		Log::out("Font created");
+		return true;
 	}
 
-	void Font::add(const FontID& fontId, Font &font) {
-		font.id = fontId;
-		Font::fonts[fontId] = font;
-	}
-
-	void Font::importAll() {
+	
+	void Font::importAll() 
+	{
 		//load json file
-		std::string importFontsString = Resource::loadAsText("fonts/import.fonts.json");
+		File importFontsFile;
+		importFontsFile.open("fonts/import.fonts.json", FILE_OPEN_MODE_READ);
+		std::string importFontsString = importFontsFile.readText();
+		importFontsFile.close();
 		//parse to json
 		nlohmann::json importedFonts = nlohmann::json::parse(importFontsString);
 		//import all fonts
-		for (int i = 0; i < importedFonts.size(); i++) {
+		for (int i = 0; i < importedFonts.size(); i++) 
+		{
 			//get font info
 			std::string fontName = importedFonts[i]["name"];
 			int fontSize = importedFonts[i]["size"];
@@ -140,21 +138,20 @@ namespace ASEngine {
 			int fontLineSeparation = importedFonts[i]["lineSeparation"];
 			int fontSpaceSize = importedFonts[i]["spaceSize"];
 			//load font
-			Font::load(fontName, fontSize,"fonts/" + fontFilePath, fontSeparation, fontLineSeparation, fontSpaceSize);
+			bool loaded = ResourceManager<Font>::getSingleton()
+				->add(UniqueString(fontName))
+				->load("fonts/" + fontFilePath, fontSize, fontSeparation, fontLineSeparation, fontSpaceSize);
 			//log
-			Log::out("font loaded");
+			if (loaded)
+				Log::out(fontName + " loaded");
+			
 		}
 	}
+	
 
-	void Font::destroy() {
-		Font::fonts.erase(id);
+	Font::~Font() 
+	{
+		texture.destroy();
 	}
-
-	std::unordered_map<ResourceID, Font> Font::fonts = {};
-
-	void Font::terminate() {
-		fonts.clear();
-	}
-
 
 } // ASEngine

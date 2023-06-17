@@ -1,6 +1,3 @@
-//
-// Created by ksiks_wa3r on 4/10/23.
-//
 
 #include "Application.h"
 
@@ -20,7 +17,7 @@ namespace ASEngine {
 			return;
 		application = new Application(_platform);
 		//import scenes
-		Scene::importAll();
+		//Scene::importAll();
 		//load project settings
 		application->loadProjectSettings();
 	}
@@ -38,14 +35,23 @@ namespace ASEngine {
 		Texture::init();
 		//init graphics
 		graphics.init();
-		//load sprites
+		//init unique string manager
+		UniqueStringManager::init();
+
+		//init resource managers
+		ResourceManager<Sprite>::init();
 		Sprite::importAll();
-		//load materials
-		Material::importAll();
-		//load fonts
+		
+		ResourceManager<Font>::init();
 		Font::importAll();
+		// manually import some resources to try the new system
 		//create default camera
 		Camera::current = new Camera();
+
+		GameObject* obj = Instance::create("NewObject");
+		obj->position = vec2::zero();
+
+		Log::out("Application init complete");
 	}
 
 
@@ -57,13 +63,14 @@ namespace ASEngine {
 	}
 
 	void Application::update(float delta) {
+		
 		//update instance
 		Instance::update(delta);
+
 		//draw
 		renderer.draw();
-		//draw instances
 		Instance::draw(graphics);
-		//upadte graphics
+		
 		graphics.update();
 	}
 
@@ -74,12 +81,10 @@ namespace ASEngine {
 		graphics.terminate();
 		//terminate textures
 		Texture::terminate();
-		//terminate resources
-		Resource::terminate();
-		Material::terminate();
-		Sprite::terminate();
-		Font::terminate();
-		Image::terminate();
+		// terminate resource managers
+		ResourceManager<Sprite>::terminate();
+		ResourceManager<Font>::terminate();
+		ResourceManager<Scene>::terminate();
 		//delete camera
 		delete Camera::current;
 	}
@@ -87,7 +92,10 @@ namespace ASEngine {
 
 	void Application::loadProjectSettings() {
 		//load json file
-		std::string projectSettingsString = Resource::loadAsText("project.settings.json");
+		File projectSettingsFile;
+		projectSettingsFile.open("project.settings.json", FILE_OPEN_MODE_READ);
+		std::string projectSettingsString = projectSettingsFile.readText();
+		projectSettingsFile.close();
 		//parse to json
 		nlohmann::json projectSettings = nlohmann::json::parse(projectSettingsString);
 		//get settings
@@ -98,7 +106,7 @@ namespace ASEngine {
 		Screen::setSize(projectWindowWidth, projectWindowHeight);
 		//set main scene
 		std::string projectMainScene = projectSettings["mainScene"];
-		Scene::changeSceneTo(projectMainScene);
+		//Scene::changeSceneTo(projectMainScene);
 
 	}
 

@@ -6,6 +6,8 @@
 #define ANDROIDSIMPLEENGINE_SCENE_H
 
 #include "Resource.h"
+#include "ResourceManager.h"
+#include "../FileSystem/File.h"
 #include "../Log/Log.h"
 #include "../GameObject/GameObject.h"
 #include "../GameObject/Instance.h"
@@ -18,47 +20,17 @@ namespace ASEngine {
 		vec2 position;
 	};
 
-	//scene id
-	typedef std::string SceneID;
-
 	class Scene: public Resource {
 	public:
 		//load scene from file
-		static Scene load(const std::string& sceneName, const std::string& sceneFilePath);
-		//preload all scenes
+		bool load(const std::string& sceneFilePath);
+
 		static void importAll();
-		//terminate all scenes
-		static void terminate();
 
-		//get current scene
-		static SceneID getCurrentScene();
-
-		//change scene
-		static void changeSceneTo(const SceneID& sceneId);
-
-		//reload current scene
-		static void reloadCurrentScene();
-
-		//equiv between ResourceID and Resource
-		//= operator
-		Scene& operator=(const SceneID& sceneId) {
-			return scenes[sceneId];
-		};
-
-		void destroy() {};
-
-		//constructors
-		Scene() {};
-		Scene(const SceneID& sceneId) {
-			*this = scenes[sceneId];
-		};
 	private:
 		//scene content
 		std::vector<SceneInstanceDescriptor> instances = {};
-		//current scene
-		static SceneID current;
-		//scenes
-		static std::unordered_map<ResourceID, Scene> scenes;
+		
 	};
 
 } // ASEngine

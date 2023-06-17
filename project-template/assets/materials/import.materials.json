@@ -1,7 +1,6 @@
 [
   {
     "name": "mt_default",
-    "vertex": "default.vert",
-    "fragment": "default.frag"
+    "path": "default.material.json"
   }
 ]

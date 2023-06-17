@@ -1,6 +1,3 @@
-//
-// Created by ksiks_wa3r on 3/27/23.
-//
 
 #ifndef ANDROIDSIMPLEENGINE_MYOBJECT_H
 #define ANDROIDSIMPLEENGINE_MYOBJECT_H
@@ -13,10 +10,13 @@ using namespace ASEngine;
 class NewObject: public GameObject {
 
 	float time = 0.0f;
+	ResourceID spriteId;
+	ResourceID fontId;
 
 	//functions for the different events for a game object
 	void onCreate() {
-
+		spriteId = ResourceManager<Sprite>::getSingleton()->getResourceId(UniqueString("spr_run"));
+		fontId = ResourceManager<Font>::getSingleton()->getResourceId(UniqueString("ft_default"));
 	}
 
 	void onUpdate(float delta) {
@@ -24,7 +24,13 @@ class NewObject: public GameObject {
 	}
 
 	void onDraw(Graphics& graphics) {
-		graphics.drawSprite("spr_run", 8.0f * time, position);
+		Sprite* sprite = ResourceManager<Sprite>::getSingleton()->get(spriteId);
+		if (sprite)
+			graphics.drawSprite(sprite, 8.0f * time, position);
+		
+		Font* font = ResourceManager<Font>::getSingleton()->get(fontId);
+		if (font)
+			graphics.drawText("Hello World!", vec2{64.0f, 64.0f}, font);
 	}
 	
 	void onInputEvent(InputEvent event) {
@@ -34,6 +40,9 @@ class NewObject: public GameObject {
 	}
 
 };
+
+
+
 
 
 #endif //ANDROIDSIMPLEENGINE_MYOBJECT_H

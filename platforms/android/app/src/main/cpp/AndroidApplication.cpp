@@ -1,13 +1,10 @@
-//
-// Created by ksiks_wa3r on 5/30/23.
-//
 
 #include "AndroidApplication.h"
 
 void AndroidApplication::init(android_app* _app) {
 	app = _app;
 
-	ASEngine::Resource::init(app->activity->assetManager);
+	ASEngine::File::setAssetManager(app->activity->assetManager);
 
 	context = new AndroidEGLContext(app);
 

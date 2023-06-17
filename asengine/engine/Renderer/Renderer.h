@@ -14,23 +14,28 @@
 
 #endif
 
+#include "../FileSystem/File.h"
 
-#include "../Resource/Material.h"
-#include "../Resource/Sprite.h"
 #include "Camera.h"
-
 #include "Color.h"
 #include "Screen.h"
+#include "Shader.h"
 #include "VertexBufferObject.h"
 
 namespace ASEngine {
 
     class Renderer {
     public:
+        //initiate the renderer
         void init();
+        //draw renderer
         void draw();
+        //deconstructor
+        ~Renderer();
 
-
+    private:
+        //default shader will be used 
+        Shader defaultShader;
 
     };
 

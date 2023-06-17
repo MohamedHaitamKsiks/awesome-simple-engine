@@ -12,6 +12,7 @@ namespace ASEngine {
 	class Log {
 	public:
 		static void out(const std::string& message);
+		static void out(int value);
 	};
 
 } // ASEngine

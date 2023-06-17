@@ -1,6 +1,3 @@
-//
-// Created by ksiks_wa3r on 3/20/23.
-//
 
 #ifndef MY_APPLICATION_MAT3_H
 #define MY_APPLICATION_MAT3_H

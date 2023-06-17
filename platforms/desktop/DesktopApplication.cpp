@@ -3,7 +3,7 @@
 void DesktopApplication::start() {
     loadGameObjects();
     if (!init()) {
-        Log::out("Application coudn't started!");
+        ASEngine::Log::out("Application coudn't started!");
         return;
     }
 
@@ -36,7 +36,9 @@ bool DesktopApplication::init() {
         return false;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(720, 1280, "Hello World", NULL, NULL);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    window = glfwCreateWindow(720/2 , 1280/2 , "Hello World", NULL, NULL);
+
     if (!window) {
         glfwTerminate();
         return false;

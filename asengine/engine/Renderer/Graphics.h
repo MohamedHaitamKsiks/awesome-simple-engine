@@ -5,12 +5,14 @@
 #ifndef ANDROIDSIMPLEENGINE_GRAPHICS_H
 #define ANDROIDSIMPLEENGINE_GRAPHICS_H
 
-#include "../Resource/Material.h"
 #include "../Resource/Sprite.h"
 #include "../Resource/Font.h"
+#include "Texture.h"
 #include "Camera.h"
 #include "Color.h"
+#include "Shader.h"
 #include "Screen.h"
+#include "VertexBufferObject.h"
 
 namespace ASEngine {
 
@@ -32,11 +34,11 @@ namespace ASEngine {
 		//draw texture
 		void drawTexture(Texture texture, vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
 		//draw sprite ext
-		void drawSprite(const SpriteID& spriteId, int frame,vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
+		void drawSprite(const Sprite* sprite, int frame,vec2 position, vec2 scale, float rotation, Color modulate = Color::white);
 		//draw sprite
-		void drawSprite(const SpriteID& spriteId, int frame,vec2 position, Color modulate = Color::white);
+		void drawSprite(const Sprite* sprite, int frame,vec2 position, Color modulate = Color::white);
 		//draw text
-		void drawText(const std::string& text, vec2 position, const FontID& fontId, Color modulate = Color::white);
+		void drawText(const std::string& text, vec2 position, const Font* font, Color modulate = Color::white);
 		//update graphics
 		void update();
 	private:

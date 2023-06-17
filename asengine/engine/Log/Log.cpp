@@ -12,8 +12,14 @@
 
 namespace ASEngine {
 
-	void Log::out(const std::string& message) {
+	void Log::out(const std::string& message) 
+	{
 		ALOG("%s", message.c_str());
+	}
+
+	void Log::out(int value)
+	{
+		ALOG("%i", value);
 	}
 
 } // ASEngine
@@ -24,8 +30,14 @@ namespace ASEngine {
 
 namespace ASEngine {
 
-	void Log::out(const std::string &message) {
+	void Log::out(const std::string &message) 
+	{
 		std::cout<< message << "\n";
+	}
+
+	void Log::out(int value)
+	{
+		std::cout << value << "\n";
 	}
 
 } // ASEngine

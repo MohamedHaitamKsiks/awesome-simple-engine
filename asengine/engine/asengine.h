@@ -12,14 +12,16 @@
 
 //core
 #include "FileSystem/File.h"
-#include "Math/vec2.h"
 #include "Math/mat3.h"
+#include "Math/vec2.h"
 #include "Math/Random.h"
+#include "Memory/PoolAllocator.h"
+#include "String/UniqueString.h"
 
 //resources
+#include "Resource/ResourceManager.h"
 #include "Resource/Image.h"
 #include "Resource/Sprite.h"
-#include "Resource/Resource.h"
 #include "Resource/Material.h"
 #include "Resource/Font.h"
 #include "Resource/Scene.h"
