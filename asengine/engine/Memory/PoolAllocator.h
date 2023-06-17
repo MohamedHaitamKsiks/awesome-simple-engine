@@ -18,9 +18,14 @@ namespace ASEngine {
     template <typename T>
     class PoolAllocator {
     public:
+        //contructors / deconstructors
+        PoolAllocator<T>() {};
+        PoolAllocator<T>(size_t poolSize) {
+            init(poolSize);
+        };
+        ~PoolAllocator<T>();
         // init pool allocator
         void init(size_t poolSize);
-        ~PoolAllocator<T>();
 
         // returns the index of the allocated ressource
         ChunkId alloc();
@@ -34,11 +39,65 @@ namespace ASEngine {
         // get data at position
         T* get(ChunkId index);
 
+        // get copy of data only for 
+        // T getCopy(ChunkId index);
+
         // get maximum allocation size
         size_t getMaxSize();
 
         // get allocator size
         size_t getSize();
+
+        // iterator
+        using Iterator = struct PoolAllocatorIterator
+        {
+            ChunkId currentPosition = UINT32_MAX;
+            PoolAllocator<T>* out = nullptr;
+
+            PoolAllocatorIterator(PoolAllocator<T> *_out, ChunkId _currentPosition)
+            {
+                currentPosition = _currentPosition;
+                out = _out;
+            };
+
+            PoolAllocatorIterator operator ++(int)
+            {   
+                currentPosition = out->next(currentPosition);
+                return *this;
+            };
+
+            PoolAllocatorIterator operator++()
+            {
+                currentPosition = out->next(currentPosition);
+                return *this;
+            };
+
+            T *operator* (void) const
+            {
+                return out->get(currentPosition);
+            };
+
+            bool operator==(const PoolAllocatorIterator& it)
+            {
+                return currentPosition == it.currentPosition;
+            };
+
+            bool operator!=(const PoolAllocatorIterator &it)
+            {
+                return currentPosition != it.currentPosition;
+            };
+        };
+
+        // begin
+        Iterator begin() 
+        {
+            return Iterator(this, head);
+        };
+        // end
+        Iterator end()
+        {
+            return Iterator(this, UINT32_MAX);
+        };
 
     private:
         T* data = nullptr;
@@ -51,7 +110,8 @@ namespace ASEngine {
         bool *usedChunks = nullptr;
 
         // make chunks as linked list to iterate with them
-        ChunkId head = 0;
+        ChunkId head = UINT32_MAX;
+        ChunkId foot = UINT32_MAX;
         ChunkId* chunkNext = nullptr;
         ChunkId* chunkPrev = nullptr;
 

@@ -61,7 +61,7 @@ namespace ASEngine {
 			std::string sceneName = importedScenes[i]["name"];
 			std::string sceneFilePath = importedScenes[i]["file"] ;
 			ResourceManager<Scene>::getSingleton()
-				->add(sceneName)
+				->add(UniqueString(sceneName))
 				->load("scenes/" + sceneFilePath);
 		}
 	}

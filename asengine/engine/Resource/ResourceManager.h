@@ -8,14 +8,11 @@
 #include "Resource.h"
 #include "../FileSystem/File.h"
 #include "../Memory/PoolAllocator.h"
+#include "../String/UniqueString.h"
 #include "../Log/Log.h"
 
 
 namespace ASEngine {
-
-
-    //resource name you can use it to get the resource reference
-    typedef std::string ResourceName;
 
     template <typename T>
     class ResourceManager {
@@ -26,13 +23,13 @@ namespace ASEngine {
 
 
         //add new resource and give it a name
-        T* add(const ResourceName& resourceName);
+        T* add(const UniqueString& resourceName);
         //remove resource by id
-        void remove(const ResourceName &resourceName);
+        void remove(const UniqueString &resourceName);
         //get resource by id
         T* get(ResourceID resourceId);
         //get resource id by name, make sure to cache it if you want to use it multiple time.
-        ResourceID getResourceId(const ResourceName& resourceName);
+        ResourceID getResourceId(const UniqueString& resourceName);
 
         // constructor
         ResourceManager<T>() 
@@ -45,7 +42,7 @@ namespace ASEngine {
         ~ResourceManager<T>();
     private:
         PoolAllocator<T> resources{};
-        std::unordered_map<ResourceName, ResourceID> resourceIds = {};
+        std::unordered_map<UniqueStringID, ResourceID> resourceIds = {};
         //singleton
         static ResourceManager<T>* resourceManager;
     };

@@ -139,18 +139,19 @@ namespace ASEngine {
 			int fontSpaceSize = importedFonts[i]["spaceSize"];
 			//load font
 			bool loaded = ResourceManager<Font>::getSingleton()
-				->add(fontName)
+				->add(UniqueString(fontName))
 				->load("fonts/" + fontFilePath, fontSize, fontSeparation, fontLineSeparation, fontSpaceSize);
 			//log
 			if (loaded)
 				Log::out(fontName + " loaded");
+			
 		}
 	}
 	
 
 	Font::~Font() 
 	{
-		//texture.destroy();
+		texture.destroy();
 	}
 
 } // ASEngine

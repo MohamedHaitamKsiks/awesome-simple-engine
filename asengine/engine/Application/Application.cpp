@@ -35,6 +35,9 @@ namespace ASEngine {
 		Texture::init();
 		//init graphics
 		graphics.init();
+		//init unique string manager
+		UniqueStringManager::init();
+
 		//init resource managers
 		ResourceManager<Sprite>::init();
 		Sprite::importAll();

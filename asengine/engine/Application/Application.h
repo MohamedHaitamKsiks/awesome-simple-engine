@@ -15,6 +15,9 @@
 #include "../GameObject/GameObject.h"
 #include "../GameObject/Instance.h"
 
+#include "../String/UniqueString.h"
+#include "../String/UniqueStringManager.h"
+
 #include "../InputEvent/InputEvent.h"
 
 #include "../Thirdparty/json.hpp"

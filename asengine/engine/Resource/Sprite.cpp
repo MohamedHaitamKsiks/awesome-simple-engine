@@ -40,7 +40,7 @@ namespace ASEngine
             Texture spriteTexture = Texture::load(spriteImage);
 
             ResourceManager<Sprite>::getSingleton()
-                ->add(spriteName)
+                ->add(UniqueString(spriteName))
                 ->load(spriteTexture, spriteFrames, spriteOffset);
 
             Log::out(spriteName + " loaded");

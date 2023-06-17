@@ -16,6 +16,7 @@
 #include "Math/vec2.h"
 #include "Math/Random.h"
 #include "Memory/PoolAllocator.h"
+#include "String/UniqueString.h"
 
 //resources
 #include "Resource/ResourceManager.h"

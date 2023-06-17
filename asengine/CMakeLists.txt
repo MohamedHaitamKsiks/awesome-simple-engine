@@ -30,6 +30,9 @@ add_library(
     engine/Resource/Material.cpp
     engine/Resource/Font.cpp
     engine/Resource/Scene.cpp
+    #strings
+    engine/String/UniqueString.cpp
+    engine/String/UniqueStringManager.cpp
     #rendering
     engine/Renderer/Renderer.cpp
     engine/Renderer/Shader.cpp

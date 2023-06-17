@@ -4,6 +4,14 @@
 namespace ASEngine {
 
     template <typename T>
+    PoolAllocator<T>::~PoolAllocator<T>()
+    {
+        delete data;
+        delete freeChunkNext;
+        delete usedChunks;
+    }
+
+    template <typename T>
     void PoolAllocator<T>::init(size_t poolSize)
     {
         // set sizes
@@ -25,14 +33,6 @@ namespace ASEngine {
             chunkNext[i] = i;
             chunkPrev[i] = i;
         }
-    }
-
-    template <typename T>
-    PoolAllocator<T>::~PoolAllocator<T>()
-    {
-        delete data;
-        delete freeChunkNext;
-        delete usedChunks;
     }
 
     template <typename T>
@@ -67,10 +67,13 @@ namespace ASEngine {
 
         // update linked list
         if (size != 0) {
-            chunkNext[index] = head;
-            chunkPrev[head] = index;
+            chunkNext[foot] = index;
+            chunkPrev[index] = foot;
         }
-        head = index;
+        else {
+            head = index;
+        }
+        foot = index;
 
         size++;
         return index;
@@ -95,7 +98,7 @@ namespace ASEngine {
         {
             head = next(index);
         }
-        else if (next(index) == UINT32_MAX)
+        else if (index == foot)
         {
             chunkNext[prev(index)] = prev(index);
         }
@@ -120,6 +123,7 @@ namespace ASEngine {
         return data + index;
     }
 
+
     template <typename T>
     size_t PoolAllocator<T>::getMaxSize()
     {
@@ -131,5 +135,7 @@ namespace ASEngine {
     {
         return size;
     }
+    
+    
 
 } // namespace ASEngine
