@@ -26,9 +26,6 @@
 #include "Resource/Font.h"
 #include "Resource/Scene.h"
 
-//game object
-#include "GameObject/GameObject.h"
-#include "GameObject/Instance.h"
 
 //rendering
 #include "Renderer/Texture.h"
@@ -40,10 +37,6 @@
 #include "Renderer/Vertex.h"
 #include "Renderer/Quad.h"
 #include "Renderer/VertexBufferObject.h"
-
-//instance
-#include "GameObject/GameObject.h"
-#include "GameObject/Instance.h"
 
 //input
 #include "InputEvent/InputEvent.h"

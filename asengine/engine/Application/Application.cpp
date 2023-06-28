@@ -48,29 +48,23 @@ namespace ASEngine {
 		//create default camera
 		Camera::current = new Camera();
 
-		GameObject* obj = Instance::create("NewObject");
-		obj->position = vec2::zero();
-
 		Log::out("Application init complete");
 	}
 
 
 	void Application::onInputEvent(InputEvent &inputEvent) {
-		//process event for each instance
-		for (auto instance: Instance::instances) {
-			instance->onInputEvent(inputEvent);
-		}
+		// process event for each instance
 	}
 
 	void Application::update(float delta) {
-		
-		//update instance
-		Instance::update(delta);
+		// update here..
 
-		//draw
+		// init draw
 		renderer.draw();
-		Instance::draw(graphics);
+
+		// draw here ..
 		
+		// flush graphics
 		graphics.update();
 	}
 

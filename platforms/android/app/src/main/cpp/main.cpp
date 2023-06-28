@@ -4,7 +4,6 @@
 
 #include "engine/asengine.h"
 #include "AndroidApplication.h"
-#include "objects/loadGameObject.h"
 
 #include <string>
 #include <chrono>
@@ -57,7 +56,6 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
  */
 void android_main(struct android_app *pApp) {
 	ASEngine::Log::out("Starting Game Activity");
-	loadGameObjects();
 
     // register an event handler for Android events
     pApp->onAppCmd = handle_cmd;

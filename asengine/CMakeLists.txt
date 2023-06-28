@@ -20,8 +20,6 @@ add_library(
     asengine
     STATIC
     #game object
-    engine/GameObject/GameObject.cpp
-    engine/GameObject/Instance.cpp
     #shapes
     engine/Shape/Rectangle.cpp
     #resource

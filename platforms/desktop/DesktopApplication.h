@@ -1,6 +1,5 @@
 
 #include "engine/asengine.h"
-#include "objects/loadGameObject.h"
 
 #include <iostream>
 #include <chrono>

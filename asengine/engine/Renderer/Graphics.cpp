@@ -121,6 +121,8 @@ namespace ASEngine {
 	int drawCalls = 0;
 
 	void Graphics::update() {
+		if (!uniformData.firstDraw)
+			return;
 		draw();
 		uniformData.firstDraw = false;
 		drawCalls = 0;

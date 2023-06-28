@@ -1,7 +1,6 @@
 #include "DesktopApplication.h"
 
 void DesktopApplication::start() {
-    loadGameObjects();
     if (!init()) {
         ASEngine::Log::out("Application coudn't started!");
         return;

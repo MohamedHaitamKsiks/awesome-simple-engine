@@ -12,8 +12,6 @@
 #include "../Resource/Image.h"
 #include "../Resource/Scene.h"
 
-#include "../GameObject/GameObject.h"
-#include "../GameObject/Instance.h"
 
 #include "../String/UniqueString.h"
 #include "../String/UniqueStringManager.h"
