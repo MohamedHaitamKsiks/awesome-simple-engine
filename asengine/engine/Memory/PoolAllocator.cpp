@@ -6,9 +6,12 @@ namespace ASEngine {
     template <typename T>
     PoolAllocator<T>::~PoolAllocator<T>()
     {
-        delete data;
-        delete freeChunkNext;
-        delete usedChunks;
+        delete[] data;
+        delete[] freeChunkNext;
+        delete[] usedChunks;
+
+        delete[] chunkNext;
+        delete[] chunkPrev;
     }
 
     template <typename T>
@@ -110,7 +113,7 @@ namespace ASEngine {
     }
 
     template <typename T>
-    bool PoolAllocator<T>::isUsed(ChunkId index)
+    bool PoolAllocator<T>::isUsed(ChunkId index) 
     {
         return usedChunks[index];
     }

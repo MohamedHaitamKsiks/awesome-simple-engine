@@ -30,10 +30,10 @@ namespace ASEngine {
 
 	//font caracter
 	struct FontCharacter {
-		int width;
-		int bearingY;
-		int hframe;
-		int vframe;
+		int width = -1;
+		int bearingY = -1;
+		int hframe = 0;
+		int vframe = 0;
 	};
 
 	//font resource
@@ -50,7 +50,7 @@ namespace ASEngine {
 		//font space size
 		int spaceSize = -1;
 		// font texture
-		Texture texture;
+		Texture texture = Texture::defaultTexture;
 
 		//load font from file
 		bool load(const std::string &fontPath, int _size, int _separation, int _lineSeparation, int _spaceSize);

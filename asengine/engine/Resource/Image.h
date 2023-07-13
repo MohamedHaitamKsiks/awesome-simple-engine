@@ -41,10 +41,15 @@ namespace ASEngine {
 
         //load image
         bool load(const std::string& imagePath);
+
+        // create empty image knowing width and height and format
+        bool create(int _width, int _height, ImageFormat _format = IMAGE_FORMAT_RBGA);
+
     private:
         //image channels
         int channels = -1;
-
+        // load method
+        bool loadedWithSTBI = false;
     };
 
 } // ASEngine

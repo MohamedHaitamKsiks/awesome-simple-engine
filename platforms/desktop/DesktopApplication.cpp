@@ -1,4 +1,5 @@
 #include "DesktopApplication.h"
+#include "ecs/registry.h"
 
 void DesktopApplication::start() {
     if (!init()) {
@@ -27,7 +28,7 @@ void DesktopApplication::start() {
 }
 
 bool DesktopApplication::init() {
-    //create asengine app
+    // create asengine app
     ASEngine::Application::create(ASEngine::PLATFORM_DESKTOP);
 
     /* Initialize the library */
@@ -46,6 +47,10 @@ bool DesktopApplication::init() {
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
     ASEngine::Application::getSingleton()->init();
+    ASEngine::Screen::setWindowSize(720/2, 1280/2);
+
+    // ecs registry
+    ECSRegistry();
 
     return true;
 

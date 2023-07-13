@@ -18,6 +18,15 @@
 #include "Memory/PoolAllocator.h"
 #include "String/UniqueString.h"
 
+// ecs
+#include "ECS/World.h"
+#include "ECS/Component.h"
+#include "ECS/ComponentManager.h"
+#include "ECS/Entity.h"
+#include "ECS/System.h"
+#include "ECS/SystemManager.h"
+#include "ECS/Archetype.h"
+
 //resources
 #include "Resource/ResourceManager.h"
 #include "Resource/Image.h"

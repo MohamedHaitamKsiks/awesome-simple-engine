@@ -1,5 +1,9 @@
+#ifndef ASENGINE_DESKTOP_APPLICATION_H
+#define ASENGINE_DESKTOP_APPLICATION_H
+
 
 #include "engine/asengine.h"
+
 
 #include <iostream>
 #include <chrono>
@@ -27,3 +31,5 @@ class DesktopApplication {
         //derminate desktop application
         void terminate();
 };
+
+#endif

@@ -1,21 +1,54 @@
-#ifndef ASENGINE_ISYSTEM_H
-#define ASENGINE_ISYSTEM_H
+#ifndef ASENGINE_SYSTEM_H
+#define ASENGINE_SYSTEM_H
 
+#include <memory>
+#include <vector>
+
+#include "../Renderer/Graphics.h"
+
+#include "Archetype.h"
 #include "Component.h"
+#include "ComponentManager.h"
 
 namespace ASEngine
 {
-    // ecs system interface template 
-    template<typename T>
-    class ISystem 
+    // base system class
+    class BaseSystem
     {
-        // on create
-        virtual void onCreate(T* data) = 0;
-    
+    public:
+        // archetypes list
+        std::vector<std::shared_ptr<Archetype>> archetypes = {};
+
+        // get signature
+        uint32_t getSignature() const
+        {
+            return signature;
+        };
+
         // on update
-        virtual void onUpdate(T* data, float delta) = 0;
-    
-    }
+        virtual void onUpdate(float delta) = 0;
+
+        // on draw
+        virtual void onDraw(Graphics &graphics) = 0;
+
+    protected:
+        // system signature with it's component requirements
+        uint32_t signature = 1;
+    };
+
+
+    // system interaface
+    template <typename T, typename... types>
+    class System: public BaseSystem
+    {
+    public:
+        // constructor
+        System() 
+        {
+            signature = ComponentManager::getSingleton()->getSignature<T, types...>();
+        };
+    };
+
 } // namespace ASEngine
 
 

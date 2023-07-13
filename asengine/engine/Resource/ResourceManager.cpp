@@ -34,6 +34,7 @@ namespace ASEngine {
         if (!resourceManager)
             return;
         delete resourceManager;
+        resourceManager = nullptr;
     }
 
     template <typename T>

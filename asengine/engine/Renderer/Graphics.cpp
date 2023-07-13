@@ -9,6 +9,7 @@ namespace ASEngine {
 	//init vertex buffer
 	void Graphics::init() {
 		vbo.create();
+		uniformData.texture = Texture::defaultTexture;
 	}
 
 	//terminate vertex buffer
@@ -118,14 +119,12 @@ namespace ASEngine {
 
 	}
 
-	int drawCalls = 0;
 
 	void Graphics::update() {
 		if (!uniformData.firstDraw)
 			return;
 		draw();
 		uniformData.firstDraw = false;
-		drawCalls = 0;
 	}
 
 	bool Graphics::setUniformData(bool isSolidColor, Texture texture) {
@@ -153,9 +152,6 @@ namespace ASEngine {
 		vbo.bind();
 		vbo.pushData();
 		vbo.draw();
-		drawCalls++;
-
-		
 		
 	}
 

@@ -1,44 +1,54 @@
 #ifndef ASENGINE_WORLD_H
 #define ASENGINE_WORLD_H
 
+#include <memory>
 
+#include "../Memory/PoolAllocator.h"
+#include "../Renderer/Graphics.h"
+#include "../Singleton/Singleton.h"
 
-namespace ASENGINE
+#include "Entity.h"
+#include "EntityData.h"
+
+#include "Component.h"
+#include "ComponentManager.h"
+
+#include "Archetype.h"
+#include "ArchetypeManager.h"
+
+#include "System.h"
+#include "SystemManager.h"
+
+namespace ASEngine
 {
-    class World
+    class World: public Singleton<World>
     {
-    public:
-        // init singleton
-        static void init();
-        // get singleton
-        static World* getSingleton();
-        // terminate singleton
-        static terminate();
+    public: 
+        // contructor
+        World();
 
-        // add component type
-        template <typename T>
-        void addComponentType<T>();
-        // remove component type
-        template <typename T>
-        void removeComponentType<T>();
+        // destructor
+        ~World();
 
-        //  add system
+        // create entity based on an archetype
+        Entity createEntity(std::shared_ptr<Archetype> archetype);
 
-        // add entity
-        Entity addEntity();
-        void removeEntity(Entity entity);
+        // destroy entity
+        void destroyEntity(Entity entity);
+
         // update the world
         void update(float delta);
 
+        // render the world
+        void draw(Graphics &graphics);
 
     private:
-        //singleton
-        static World* world;
-        
+        // entity managements
+        PoolAllocator<EntityData> entities{UINT16_MAX};
+
 
     };
-    
-} // namespace ASENGINE
 
+} // namespace ASENGINE
 
 #endif

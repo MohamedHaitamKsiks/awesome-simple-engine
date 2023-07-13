@@ -6,7 +6,7 @@
 
 namespace ASEngine {
 
-	GLushort Quad::indexData[] = {0, 1, 2, 2, 3, 0};
+	GLushort Quad::indexData[6] = {0, 1, 2, 2, 3, 0};
 
 	Quad Quad::create(vec2 size, mat3 &transform, float zIndex, Color _modulate) {
 		Quad quad{};

@@ -23,6 +23,8 @@ namespace ASEngine
         UniqueString(const std::string& str);
         // create from id
         UniqueString(UniqueStringID _id);
+        // empty constructor
+        UniqueString() {};
         // compare strings
         bool operator==(const UniqueString& uStr);
         // get string length
@@ -33,9 +35,8 @@ namespace ASEngine
         std::string getString() const;
     private:
         /* data */
-        UniqueStringID id;
+        UniqueStringID id = UINT32_MAX;
     };
-    
 } // namespace ASEngine
 
 

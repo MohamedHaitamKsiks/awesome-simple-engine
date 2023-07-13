@@ -45,9 +45,10 @@ namespace ASEngine {
             return false;
         }
 
+        loadedWithSTBI = true;
 
-        //create image resource
-		format = IMAGE_FORMAT_RBGA;
+        // create image resource
+        format = IMAGE_FORMAT_RBGA;
 
         //log image created
         std::stringstream ss;
@@ -58,10 +59,20 @@ namespace ASEngine {
         return true;
     }
 
+    bool Image::create(int _width, int _height, ImageFormat _format)
+    {
+        return false;
+    }
+
     Image::~Image() 
     {
-        if (pixels)
-            delete pixels;
+        if (!pixels)
+            return;
+
+        if (loadedWithSTBI)
+            stbi_image_free(pixels);
+        else
+            delete[] pixels;
     }
 
 } // ASEngine

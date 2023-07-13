@@ -33,7 +33,10 @@ namespace ASEngine
         for (UniqueStringInfo* info: stringInfos)
         {
             if (info->length != strLength)
+            {
+                index++;
                 continue;
+            }
             //check characters one by one
             bool areStringEquals = true;
 

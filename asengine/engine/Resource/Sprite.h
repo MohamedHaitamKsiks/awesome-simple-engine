@@ -17,7 +17,7 @@ namespace ASEngine {
     class Sprite : public Resource{
     public:
         //data
-        Texture texture;
+        Texture texture = Texture::defaultTexture;
         int frames = 0;
         int width = -1;
         int height = -1;

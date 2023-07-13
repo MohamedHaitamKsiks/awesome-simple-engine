@@ -39,9 +39,6 @@ namespace ASEngine {
         // get data at position
         T* get(ChunkId index);
 
-        // get copy of data only for 
-        // T getCopy(ChunkId index);
-
         // get maximum allocation size
         size_t getMaxSize();
 
@@ -89,7 +86,7 @@ namespace ASEngine {
         };
 
         // begin
-        Iterator begin() 
+        Iterator begin()
         {
             return Iterator(this, head);
         };
@@ -101,13 +98,14 @@ namespace ASEngine {
 
     private:
         T* data = nullptr;
+
         size_t maxSize = 0;
         size_t size = 0;
         
         // linked list of all free chunks
         ChunkId freeHead = 0;
         ChunkId *freeChunkNext = nullptr;
-        bool *usedChunks = nullptr;
+        bool* usedChunks = nullptr;
 
         // make chunks as linked list to iterate with them
         ChunkId head = UINT32_MAX;

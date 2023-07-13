@@ -38,7 +38,7 @@ shutil.copytree(f"platforms/{ platformType }", tmpFileName, dirs_exist_ok=True)
 def copyProjectToTemp():
     # copy project + engine + dependencies to .tmp
     shutil.copytree("asengine", f"{tmpFileName}/asengine", dirs_exist_ok=True)
-    shutil.copytree(f"{projectPath}/objects", f"{tmpFileName}/objects", dirs_exist_ok=True)
+    shutil.copytree(f"{projectPath}/ecs", f"{tmpFileName}/ecs", dirs_exist_ok=True)
     shutil.copytree(f"{projectPath}/assets", f"{tmpFileName}/build/assets", dirs_exist_ok=True)
 
 
@@ -53,7 +53,7 @@ if platform == "android":
 
     #copy project + engine + dependencies to .tmp
     shutil.copytree("asengine", f"{tmpFileName}/app/src/main/cpp/asengine", dirs_exist_ok=True)
-    shutil.copytree(f"{projectPath}/objects", f"{tmpFileName}/app/src/main/cpp/objects", dirs_exist_ok=True)
+    shutil.copytree(f"{projectPath}/ecs", f"{tmpFileName}/app/src/main/cpp/ecs", dirs_exist_ok=True)
     shutil.copytree(f"{projectPath}/assets", f"{tmpFileName}/app/src/main/assets", dirs_exist_ok=True)
 
     #build debug

@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <cstdint>
 
 #ifdef __ANDROID__
 #include <GLES2/gl2.h>
@@ -23,17 +24,22 @@
 namespace ASEngine {
 
     struct TextureInfo {
-        GLuint texture;
-        int width;
-        int height;
+        GLuint texture = UINT32_MAX;
+        int width = -1;
+        int height = -1;
         //for each texture we are going to allocate a vertex buffer
     };
 
     class Texture {
     public:
-        uint32_t id;
+        uint32_t id = UINT32_MAX;
+
+        Texture(uint32_t _id) {
+            id = _id;
+        };
+
         //eq;
-        inline bool operator==(Texture texture){
+        bool operator==(Texture texture) {
             return id == texture.id;
         }
         //init textures

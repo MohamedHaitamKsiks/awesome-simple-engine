@@ -1,39 +1,37 @@
 #ifndef ASENGINE_COMPONENT_H
 #define ASENGINE_COMPONENT_H
 
-#include <cstdint>
-
+#include <cstdint>  
 #include "../String/UniqueString.h"
-#include "Entity.h"
+#include "Entity.h" 
+
+#define ComponentNameOf(componentType) (Component<componentType>::name)
 
 namespace ASEngine
 {
 
-    typedef uint32_t ComponentID;
-
-    //abstract class for components
+    // abstract class for components
+    template <typename T>
     class Component 
     {
     public:
-        // contructor for entity
-        Component(ComponentID _id, Entity _owner);
-        // get id
-        ComponentID getId() const;
-        // get entity owenr
-        Entity getOwner() const;
-        // is component active
-        bool isActive();
-        // destroy componenet
-        void destroy();
-    private:
-        // component index in the world
-        ComponentID id;
         // component owner
         Entity owner;
-        // active
-        bool active = false;
-    }
 
+        // component name
+        static UniqueString name;
+
+        // component signature
+        static uint32_t signature;
+    };
+
+    // component name implementation
+    template <typename T>
+    UniqueString Component<T>::name = UniqueString();
+
+    // component signature
+    template <typename T>
+    uint32_t Component<T>::signature = 0;
 }
 
 

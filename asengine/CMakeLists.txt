@@ -19,7 +19,11 @@ endif()
 add_library(
     asengine
     STATIC
-    #game object
+    #ecs
+    engine/ECS/World.cpp
+    engine/ECS/Archetype.cpp
+    engine/ECS/ComponentManager.cpp
+    engine/ECS/SystemManager.cpp
     #shapes
     engine/Shape/Rectangle.cpp
     #resource
