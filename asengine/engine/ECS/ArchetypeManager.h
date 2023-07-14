@@ -12,7 +12,7 @@
 
 namespace ASEngine
 {
-    class ArchetypeManager: Singleton<ArchetypeManager>
+    class ArchetypeManager:public Singleton<ArchetypeManager>
     {
     public:
         // get archetype
@@ -25,7 +25,7 @@ namespace ASEngine
         std::shared_ptr<Archetype> createArchetype();
 
         // create archetype
-        bool hasArchetype(uint32_t signature);
+        bool hasArchetype(uint32_t signature) const;
 
         // map signature to corresponding archetype
         std::unordered_map<uint32_t, std::shared_ptr<Archetype>> archetypes = {};
@@ -49,7 +49,15 @@ namespace ASEngine
     template <typename T, typename... types>
     std::shared_ptr<Archetype> ArchetypeManager::createArchetype()
     {
+        uint32_t signature = ComponentManager::getSingleton()->getSignature<T, types...>();
         std::shared_ptr<Archetype> archetype = std::make_shared<Archetype>();
+
+        archetype->addComponents<T, types...>();
+        archetypes[signature] = archetype;
+
+        SystemManager::getSingleton()->registerArchetype(archetype);
+
+        return archetype;
     }
 
 } // namespace ASEngine

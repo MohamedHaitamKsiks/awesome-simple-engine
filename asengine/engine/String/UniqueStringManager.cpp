@@ -58,7 +58,7 @@ namespace ASEngine
         }
         
         //return null if not found
-        return CHUNK_ID_NULL;
+        return CHUNK_NULL;
     }
 
     UniqueStringID UniqueStringManager::create(const std::string &str)
@@ -75,7 +75,7 @@ namespace ASEngine
 
         for (int i = 0; i < strLength; i++) 
         {
-            ChunkId charId = stringData.alloc();
+            ChunkID charId = stringData.alloc();
             *stringData.get(charId) = str[i];
             if (i == 0)
                 newStrInfo.startIndex = charId;
@@ -83,7 +83,7 @@ namespace ASEngine
         }
 
         index = (UniqueStringID) stringInfos.alloc();
-        *stringInfos.get((ChunkId) index) = newStrInfo;
+        *stringInfos.get((ChunkID) index) = newStrInfo;
 
         return index;
     }

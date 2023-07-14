@@ -26,6 +26,7 @@
 #include "ECS/System.h"
 #include "ECS/SystemManager.h"
 #include "ECS/Archetype.h"
+#include "ECS/ArchetypeManager.h"
 
 //resources
 #include "Resource/ResourceManager.h"

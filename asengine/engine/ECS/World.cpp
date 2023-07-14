@@ -26,4 +26,12 @@ namespace ASEngine
         SystemManager::getSingleton()->draw(graphics);
     }
 
+    Entity World::createEntity(std::shared_ptr<Archetype> archetype)
+    {
+        Entity createdEntity = entities.alloc();
+        entities.get(createdEntity)->archetype = archetype;
+        archetype->addEntity(createdEntity);
+        return createdEntity;
+    };
+
 } // namespace ASEngine

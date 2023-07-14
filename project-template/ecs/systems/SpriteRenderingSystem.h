@@ -15,22 +15,20 @@ public:
     // on update
     void onUpdate(float delta)
     {
-        
+        forEach([&delta](SpriteComponent *sprite, TransformComponent *transform)
+        {
+            sprite->frame += delta * sprite->frameRate;
+        });
     }
 
     // on draw
     void onDraw(Graphics &graphics)
     {
-        UniqueString text = UniqueString("Ksiks Wa3r");
-
-        ResourceID fontId = ResourceManager<Font>::getSingleton()->getResourceId(UniqueString("ft_default"));
-        Font* font = ResourceManager<Font>::getSingleton()->get(fontId);
-        graphics.drawText(text.getString(), vec2{32.0f, 32.0f}, font);
-
-
-        ResourceID spriteId = ResourceManager<Sprite>::getSingleton()->getResourceId(UniqueString("spr_run"));
-        Sprite* sprite = ResourceManager<Sprite>::getSingleton()->get(spriteId);
-        graphics.drawSprite(sprite, 0, Screen::getCenter());
+        forEach([&graphics](SpriteComponent *sprite, TransformComponent *transform)
+        {
+            Sprite* spriteResource = ResourceManager<Sprite>::getSingleton()->get(sprite->spriteId);
+            graphics.drawSprite(spriteResource, sprite->frame, transform->position);
+        });
     }
 };
 

@@ -32,6 +32,7 @@ namespace ASEngine
     // component signature
     template <typename T>
     uint32_t Component<T>::signature = 0;
+
 }
 
 

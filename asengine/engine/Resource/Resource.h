@@ -6,7 +6,7 @@
 namespace ASEngine
 {
     // 32 bits integer used to reference resources
-    typedef ChunkId ResourceID;
+    using ResourceID = ChunkID;
 
     // abstract class for resources
     // parent of all resources

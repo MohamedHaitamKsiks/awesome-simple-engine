@@ -2,7 +2,9 @@
 #define ASENGINE_SYSTEM_H
 
 #include <memory>
+#include <functional>
 #include <vector>
+#include <tuple>
 
 #include "../Renderer/Graphics.h"
 
@@ -47,6 +49,24 @@ namespace ASEngine
         {
             signature = ComponentManager::getSingleton()->getSignature<T, types...>();
         };
+
+        // foreach entiy with signature of system
+        void forEach(std::function<void(T*, types*...)> callback)
+        {
+            for (auto archetype: archetypes)
+            {
+                auto &collection = archetype->getComponentCollection<T>();
+
+                for (auto it = collection.begin(); it != collection.end(); it++)
+                {   
+                    ChunkID index = it.currentPosition;
+                    callback(collection.get(index), archetype->getComponentCollection<types>().get(index)...);
+                }
+                
+            }
+        };
+
+        // 
     };
 
 } // namespace ASEngine

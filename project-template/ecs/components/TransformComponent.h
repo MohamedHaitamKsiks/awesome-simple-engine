@@ -6,9 +6,10 @@
 using namespace ASEngine;
 
 // holds transoorm data
-struct TransformComponent: public Component<TransformComponent>
+class TransformComponent: public Component<TransformComponent>
 {
-    mat3 transform;
+public:
+    vec2 position;
 };
 
 

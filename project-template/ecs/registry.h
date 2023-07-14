@@ -16,13 +16,20 @@ void ECSRegistry()
     ComponentManager::getSingleton()->registerComponent<SpriteComponent>(UniqueString("Sprite"));
     ComponentManager::getSingleton()->registerComponent<TransformComponent>(UniqueString("Transform"));
 
-    Log::out(ComponentManager::getSingleton()->getSignature<SpriteComponent, TransformComponent>());
-    Log::out(ComponentManager::getSingleton()->getSignature<SpriteComponent>());
-
-    // archetype registry ...
-
     // system registry ...
     SystemManager::getSingleton()->registerSystem<SpriteRenderingSystem>();
+
+    // entity registry
+    auto archetype = ArchetypeManager::getSingleton()->getArchetype<SpriteComponent, TransformComponent>();
+    Entity entity = World::getSingleton()->createEntity(archetype);
+    
+    // set sprite
+    auto sprite = World::getSingleton()->getComponentOfEntity<SpriteComponent>(entity);
+    sprite->spriteId = ResourceManager<Sprite>::getSingleton()->getResourceId(UniqueString("spr_run"));
+    
+    // set position
+    auto transform = World::getSingleton()->getComponentOfEntity<TransformComponent>(entity);
+    transform->position = Screen::getCenter();
 };
 
 

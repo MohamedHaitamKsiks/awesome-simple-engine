@@ -11,13 +11,13 @@
 namespace ASEngine
 {
     //unique string id
-    typedef uint32_t UniqueStringID;
+    using UniqueStringID = uint32_t;
 
     // define unique string informations
     struct UniqueStringInfo
     {
         // where the string starts
-        ChunkId startIndex;
+        ChunkID startIndex;
         // length of the string
         size_t length = 0;
     };

@@ -6,8 +6,9 @@
 using namespace ASEngine;
 
 // holds sprite data
-struct SpriteComponent : public Component<SpriteComponent>
+class SpriteComponent : public Component<SpriteComponent>
 {
+public:
     ResourceID spriteId;
     float frame = 0;
     float frameRate = 8.0f;

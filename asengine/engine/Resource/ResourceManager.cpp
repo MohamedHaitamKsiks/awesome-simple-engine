@@ -40,7 +40,7 @@ namespace ASEngine {
     template <typename T>
     T* ResourceManager<T>::add(const UniqueString &resourceName)
     {
-        ChunkId newResourceID = resources.alloc();
+        ChunkID newResourceID = resources.alloc();
         resourceIds[resourceName.getId()] = newResourceID;
 
         resources.get(newResourceID)->id = newResourceID;
@@ -52,7 +52,7 @@ namespace ASEngine {
     void ResourceManager<T>::remove(const UniqueString &resourceName)
     {
         ResourceID resourceId = resourceIds[resourceName.getId()];
-        resources.free((ChunkId) resourceId);
+        resources.free((ChunkID) resourceId);
         resourceIds.erase(resourceName.getId());
     }
 

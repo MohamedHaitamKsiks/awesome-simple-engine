@@ -33,6 +33,18 @@ namespace ASEngine
         // create entity based on an archetype
         Entity createEntity(std::shared_ptr<Archetype> archetype);
 
+        // get component of entity
+        template<typename T>
+        T* getComponentOfEntity(Entity entity)
+        {
+            // check if component is of component type
+            static_assert(std::is_base_of_v<Component<T>, T>);
+
+            // get component
+            std::shared_ptr<Archetype> archetype = entities.get(entity)->archetype;
+            return archetype->getComponentOfEntity<T>(entity);
+        }
+
         // destroy entity
         void destroyEntity(Entity entity);
 

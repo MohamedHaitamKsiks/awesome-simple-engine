@@ -3,12 +3,9 @@
 
 #include <cstddef>
 #include <cstdint>
-
-#define CHUNK_ID_NULL UINT32_MAX;
+#include "BasePoolAllocator.h"
 
 namespace ASEngine {
-
-    typedef uint32_t ChunkId;
 
     /*
     poolallocator implemetation
@@ -16,74 +13,25 @@ namespace ASEngine {
     but requires to know the size of the pool
     */
     template <typename T>
-    class PoolAllocator {
+    class PoolAllocator: public BasePoolAllocator {
     public:
+        // types
+        using Type = T;
+
+
         //contructors / deconstructors
-        PoolAllocator<T>() {};
-        PoolAllocator<T>(size_t poolSize) {
-            init(poolSize);
-        };
-        ~PoolAllocator<T>();
-        // init pool allocator
-        void init(size_t poolSize);
+        PoolAllocator<T>() : BasePoolAllocator(sizeof(T)) {};
 
-        // returns the index of the allocated ressource
-        ChunkId alloc();
+        PoolAllocator<T>(size_t _capacity) : BasePoolAllocator(sizeof(T), _capacity){}
 
-        // free index
-        void free(ChunkId index);
+        // free 
+        void free(ChunkID index);
 
-        // is chunk used
-        bool isUsed(ChunkId index);
-
-        // get data at position
-        T* get(ChunkId index);
-
-        // get maximum allocation size
-        size_t getMaxSize();
-
-        // get allocator size
-        size_t getSize();
+        // get at 
+        T* get(ChunkID index);
 
         // iterator
-        using Iterator = struct PoolAllocatorIterator
-        {
-            ChunkId currentPosition = UINT32_MAX;
-            PoolAllocator<T>* out = nullptr;
-
-            PoolAllocatorIterator(PoolAllocator<T> *_out, ChunkId _currentPosition)
-            {
-                currentPosition = _currentPosition;
-                out = _out;
-            };
-
-            PoolAllocatorIterator operator ++(int)
-            {   
-                currentPosition = out->next(currentPosition);
-                return *this;
-            };
-
-            PoolAllocatorIterator operator++()
-            {
-                currentPosition = out->next(currentPosition);
-                return *this;
-            };
-
-            T *operator* (void) const
-            {
-                return out->get(currentPosition);
-            };
-
-            bool operator==(const PoolAllocatorIterator& it)
-            {
-                return currentPosition == it.currentPosition;
-            };
-
-            bool operator!=(const PoolAllocatorIterator &it)
-            {
-                return currentPosition != it.currentPosition;
-            };
-        };
+        using Iterator = PoolAllocatorIterator<T>;
 
         // begin
         Iterator begin()
@@ -95,28 +43,6 @@ namespace ASEngine {
         {
             return Iterator(this, UINT32_MAX);
         };
-
-    private:
-        T* data = nullptr;
-
-        size_t maxSize = 0;
-        size_t size = 0;
-        
-        // linked list of all free chunks
-        ChunkId freeHead = 0;
-        ChunkId *freeChunkNext = nullptr;
-        bool* usedChunks = nullptr;
-
-        // make chunks as linked list to iterate with them
-        ChunkId head = UINT32_MAX;
-        ChunkId foot = UINT32_MAX;
-        ChunkId* chunkNext = nullptr;
-        ChunkId* chunkPrev = nullptr;
-
-        // next of chunk
-        ChunkId next(ChunkId index);
-        // previous of chunk
-        ChunkId prev(ChunkId index);
 
     };
 

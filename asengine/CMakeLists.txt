@@ -19,11 +19,14 @@ endif()
 add_library(
     asengine
     STATIC
+    #memory
+    engine/Memory/BasePoolAllocator.cpp
     #ecs
     engine/ECS/World.cpp
     engine/ECS/Archetype.cpp
     engine/ECS/ComponentManager.cpp
     engine/ECS/SystemManager.cpp
+    engine/ECS/ArchetypeManager.cpp
     #shapes
     engine/Shape/Rectangle.cpp
     #resource
