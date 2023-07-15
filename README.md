@@ -1,6 +1,6 @@
-# Android Simple Engine
+# Awesome Simple Engine
 
-Android game engine written with native c++ and android studio.
+Cross-platform game engine written with c++.
 
 ## Features
 
@@ -9,7 +9,7 @@ Android game engine written with native c++ and android studio.
 
 You can draw textures, sprites, colored rectangles and text.
 
-The renderer uses batch rendering for performances with over 16 000 elements per in a single draw call.
+The renderer uses batch rendering for performances with over 16 000 elements in a single draw call.
 
 You can draw in the screen using a Graphics object that is created with the Application.
 
@@ -17,7 +17,7 @@ Examples :
 
 ````cpp
  
-    graphics.drawSprite("spriteId", frame, position, scale, rotation, modulate);
+    graphics.drawSprite(sprite, frame, position, scale, rotation, modulate);
 
     graphics.drawText("Hello World!", frame, fontId, position, modulate);
   
@@ -26,6 +26,7 @@ Examples :
 ### Resource Manager
 
 Most resources in the engine are referenced by a unique Id that can either be assigned by the user or generated.
+
 
 The resources that we manage are:
 
@@ -36,7 +37,8 @@ Loading images from png files that can be used to generate textures to draw.
 
 ````cpp
 
-    Image img = Image::load(imagePath);
+    Image img;
+    img.load(imagePath);
     
     //we can use it to create textures in the gpu
     
@@ -44,19 +46,19 @@ Loading images from png files that can be used to generate textures to draw.
 
 ````
 
-img will have a automaticly generated ID
 
 #### 2. Sprites
 
-Adding sprites that we can draw using their Id.
+Adding sprites that we can draw.
 
 ````cpp
 
-    Sprite::load("givenSpriteId", texture, frameNumber, offset);
+    Sprite sprite;
+    sprite.load(texture, frameNumber, offset);
     
     //we can access the sprite with the id for example to draw it
     
-    graphics.drawSprite("givenSpriteId", frame, position, scale, rotation, modulate);
+    graphics.drawSprite(&sprite, frame, position, scale, rotation, modulate);
 
 ````
 
@@ -66,44 +68,10 @@ Fonts are pretty much like sprites
 
 ````cpp
 
-    Font::load("givenFontId", size, fontPath, separation, lineSeparation, spaceSize);
+    Font font;
+    font.load(size, fontPath, separation, lineSeparation, spaceSize);
 
 ````
-
-#### 4. Scenes
-
-Scenes are described in json files like these :
-
-````json
-
-{
-  "instances": [
-    {
-      "name": "MyObject",
-      "position": {
-        "x": 120,
-        "y": 120
-      }
-    },
-    {
-      "name": "MyObject",
-      "position": {
-        "x": 10,
-        "y": 10
-      }
-    }
-  ]
-}
-
-````
-
-They are imported like sprites and fonts.
-
-#### 5. Materials
-
-They are not in point yet. 
-
-While you can load materials. I don't think you should expect to use them yet since the my batch renderer is not compatible with using multiple materials.
 
 #### Using JSON file to load 
 
@@ -146,118 +114,120 @@ Examples:
 
 ````
 
-3. Scenes
-
-````json
-
-[
-  {
-    "name": "sc_main",
-    "file": "main.scene.json"
-  }
-]
-
-````
 
 
-### Game Objects and Instances
+### Entity Component System
 
-The engine uses a purely object oriented approach where all the Objects that are in Game inherites from the GameObject class.
+The engine uses a pure ECS architecture. With:
 
-It follows the same idea as GameMaker's Object but simpler.
+1. Entity: just an ID
 
-The GameObject reacts to 4 main events:
+2. Component: Data only with no behaviour
 
-- onCreate
+3. System: Behaviour of entities that has some given components
 
-- onUpdate
+### Component:
 
-- onDraw
+Create a struct that inherits from Component.
 
-- onInputEvent
-
-Example of creating a gameobject:
+Example:
 
 ````cpp
 
-#include "../../engine/asengine.h"
+#include "engine/asengine.h"
 
 using namespace ASEngine;
 
-class MyObject: public GameObject {
+struct SpriteComponent: Component<SpriteComponent> {
 
-	void onCreate() {
-        //on instance create
-    }
-    
-	void onUpdate(float delta) {
-        //on frame update
-    }
-    
-	void onDraw(Graphics& graphics) {
-        //what you want to draw on the screen
-    }
-    
-	void onInputEvent(InputEvent event) {
-        //on input event
-    }
+  ResourceID spriteId;
+  float frame = 0.0f;
+  float frameRate = 8.0f;
 
 };
 
 ````
 
-We are not done yet, to make your object usable you need to give him an Id.
+### System:
 
-You can do that in 'Objects/loadGameObject.h' file :
+Create a class that inherits from System<Component1, Component2 ....>.
+
+Example:
+````cpp
+
+#include "engine/asengine.h"
+
+using namespace ASEngine;
+
+// render sprites on screen
+class SpriteRenderingSystem: public System<SpriteComponent, TransformComponent>
+{
+public:
+
+    // on update
+    void onUpdate(float delta)
+    {
+        forEach([&delta](SpriteComponent *sprite, TransformComponent *transform)
+        {
+            //behaviour...
+        });
+    }
+
+    // on draw
+    void onDraw(Graphics &graphics)
+    {
+        forEach([&graphics](SpriteComponent *sprite, TransformComponent *transform)
+        {
+            //behaviour...
+        });
+    }
+};
+````
+
+### Entity:
+
+You can create entities and delete them using the World singleton.
+
+Example:
+````cpp
+  SpriteComponent sprite;
+  TransformComponent tranform;
+
+  // create entity
+  Entity entity = World::getSingleton()->create(
+      sprite,
+      transform
+  );
+
+  // destroy entity
+  World::getSingleton()->destroy(entity);
+````
+
+
+
+We are not done yet, you need to register your components and systems.
+
+You can do that in 'ecs/registry.h' file :
 
 ````cpp
 
-//add every game object here
-static void loadGameObjects() {
-	ASEngine::Instance::addGameObject<MyObject>("MyObject");
-}
+using namespace ASEngine;
+
+// register ecs
+void ECSRegistry()
+{
+    
+    // component registry ...
+    ComponentManager::getSingleton()->registerComponent<SpriteComponent>(UniqueString("Sprite"));
+    ComponentManager::getSingleton()->registerComponent<TransformComponent>(UniqueString("Transform"));
+
+    // system registry ...
+    SystemManager::getSingleton()->registerSystem<SpriteRenderingSystem>();
+};
 
 ````
 
-Now that we have our gameobject we can create instances of it or add to a scene like the example above.
-
-````cpp
-
-MyObject* instance = Instance::create("MyObject");
-
-````
-
-#### GameObjects and physics
-
-GameObjects can detect collision with each others.
-
-You can enable the collision detection by :
-
-````cpp
-
-//setting the collision mask size
-mask.size = vec2{w, h};
-
-//enabling collision
-collisionEnabled = true;
-
-````
-
-You can detect collision with other objects/ instances ...
-
-Examples :
-
-````cpp
-
-//check collision with the MyObject GameObject and give the instance you collide with
-GameObject* instance = collideWithObject("MyObject", offset);
-
-//check collision with all objects
-GameObject* instance = collideWithAll(offset);
-
-````
-
-### Particle System
+### Particle System (Deprecated)
 
 To you the particle system you have to create:
 
@@ -310,15 +280,9 @@ emitter.emit();
 
 3. Log
 
+4. UniqueStrings
 
-### Future of the engine.
 
-The Engine is still very primitive but it is usable if you are not afraid of dig into the source code. 
+## Future of the engine.
 
-I want to add other features and fix / improve the current state.
-
-The main objective of it was to create a game for android for a school project.
-
-After I finish this game I will port the engine to desktop and try to make it multiplatform (Desktop and Android).
-
-Then I can start working on it.
+The Engine is still under active development with many missing featues like: Input Management, Scene Management...
