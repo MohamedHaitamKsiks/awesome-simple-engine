@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "../Renderer/Graphics.h"
-#include "../Singleton/Singleton.h"
+#include "engine/Renderer/Graphics.h"
+#include "engine/Singleton/Singleton.h"
 
 #include "System.h"
 

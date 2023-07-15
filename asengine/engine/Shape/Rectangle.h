@@ -2,10 +2,10 @@
 // Created by ksiks_wa3r on 4/16/23.
 //
 
-#ifndef ANDROIDSIMPLEENGINE_RECTANGLE_H
-#define ANDROIDSIMPLEENGINE_RECTANGLE_H
+#ifndef ASENGINE_RECTANGLE_H
+#define ASENGINE_RECTANGLE_H
 
-#include "../Math/vec2.h"
+#include "engine/Math/vec2.h"
 
 namespace ASEngine {
 
@@ -22,4 +22,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_RECTANGLE_H
+#endif //ASENGINE_RECTANGLE_H

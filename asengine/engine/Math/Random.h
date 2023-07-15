@@ -1,9 +1,6 @@
-//
-// Created by ksiks_wa3r on 4/12/23.
-//
 
-#ifndef ANDROIDSIMPLEENGINE_RANDOM_H
-#define ANDROIDSIMPLEENGINE_RANDOM_H
+#ifndef ASENGINE_RANDOM_H
+#define ASENGINE_RANDOM_H
 
 #include <random>
 
@@ -19,4 +16,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_RANDOM_H
+#endif //ASENGINE_RANDOM_H

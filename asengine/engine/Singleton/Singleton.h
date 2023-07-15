@@ -1,7 +1,7 @@
 #ifndef ASENGINE_SINGLETON_H
 #define ASENGINE_SINGLETON_H
 
-#include "../Log/Log.h"
+#include "engine/Log/Log.h"
 
 namespace ASEngine
 {

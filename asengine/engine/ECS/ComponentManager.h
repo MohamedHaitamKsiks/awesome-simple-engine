@@ -5,7 +5,7 @@
 #include <type_traits>
 
 #include "Component.h"
-#include "../Singleton/Singleton.h"
+#include "engine/Singleton/Singleton.h"
 
 namespace ASEngine
 {

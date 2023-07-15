@@ -1,12 +1,9 @@
-//
-// Created by ksiks_wa3r on 3/27/23.
-//
 
-#ifndef ANDROIDSIMPLEENGINE_INPUTEVENT_H
-#define ANDROIDSIMPLEENGINE_INPUTEVENT_H
+#ifndef ASENGINE_INPUTEVENT_H
+#define ASENGINE_INPUTEVENT_H
 
-#include "../Math/vec2.h"
-#include "../Renderer/Screen.h"
+#include "engine/Math/vec2.h"
+#include "engine/Renderer/Screen.h"
 
 namespace ASEngine {
 
@@ -27,4 +24,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_INPUTEVENT_H
+#endif //ASENGINE_INPUTEVENT_H

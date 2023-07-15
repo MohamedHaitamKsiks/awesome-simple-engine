@@ -51,14 +51,14 @@ add_library(
     engine/Renderer/VertexBufferObject.cpp
     #math
     engine/Math/Random.cpp
+    engine/Math/mat3.cpp
+    engine/Math/vec2.cpp
     #files
     ${FILESYSTEM_SOURCES}
     #input
     engine/InputEvent/InputEvent.cpp
     #tween
     engine/Interpolation/Interpolate.cpp
-    #particles
-    engine/Particles/ParticleEmitter.cpp
     #app
     engine/Application/Application.cpp
     #log
@@ -66,6 +66,7 @@ add_library(
 )
 
 add_subdirectory(dependencies/freetype)
+
 
 if(NOT ANDROID)
     # add opengl

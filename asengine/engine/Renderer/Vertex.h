@@ -2,10 +2,10 @@
 // Created by ksiks_wa3r on 3/30/23.
 //
 
-#ifndef ANDROIDSIMPLEENGINE_VERTEX_H
-#define ANDROIDSIMPLEENGINE_VERTEX_H
+#ifndef ASENGINE_VERTEX_H
+#define ASENGINE_VERTEX_H
 
-#include "../Math/vec2.h"
+#include "engine/Math/vec2.h"
 #include "Color.h"
 
 #include <cstddef>
@@ -34,4 +34,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_VERTEX_H
+#endif //ASENGINE_VERTEX_H

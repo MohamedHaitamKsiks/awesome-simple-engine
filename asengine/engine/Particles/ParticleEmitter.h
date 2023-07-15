@@ -2,19 +2,19 @@
 // Created by ksiks_wa3r on 4/11/23.
 //
 
-#ifndef ANDROIDSIMPLEENGINE_PARTICLEEMITTER_H
-#define ANDROIDSIMPLEENGINE_PARTICLEEMITTER_H
+#ifndef ASENGINE_PARTICLEEMITTER_H
+#define ASENGINE_PARTICLEEMITTER_H
 
 #include <vector>
 
 #include "Particle.h"
 #include "ParticleDescriptor.h"
 
-#include "../Resource/ResourceManager.h"
-#include "../Resource/Sprite.h"
-#include "../Renderer/Texture.h"
-#include "../Renderer/Graphics.h"
-#include "../Math/Random.h"
+#include "engine/Resource/ResourceManager.h"
+#include "engine/Resource/Sprite.h"
+#include "engine/Renderer/Texture.h"
+#include "engine/Renderer/Graphics.h"
+#include "engine/Math/Random.h"
 
 namespace ASEngine {
 
@@ -77,4 +77,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_PARTICLEEMITTER_H
+#endif //ASENGINE_PARTICLEEMITTER_H

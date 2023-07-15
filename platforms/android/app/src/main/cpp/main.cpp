@@ -1,5 +1,3 @@
-
-
 #include <jni.h>
 
 #include "engine/asengine.h"

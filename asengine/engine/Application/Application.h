@@ -2,24 +2,23 @@
 #ifndef ASENGINE_APPLICATION_H
 #define ASENGINE_APPLICATION_H
 
+#include "engine/Renderer/Renderer.h"
+#include "engine/Renderer/Graphics.h"
 
-#include "../Renderer/Renderer.h"
-#include "../Renderer/Graphics.h"
+#include "engine/Resource/ResourceManager.h"
+#include "engine/Resource/Font.h"
+#include "engine/Resource/Sprite.h"
+#include "engine/Resource/Image.h"
+#include "engine/Resource/Scene.h"
 
-#include "../Resource/ResourceManager.h"
-#include "../Resource/Font.h"
-#include "../Resource/Sprite.h"
-#include "../Resource/Image.h"
-#include "../Resource/Scene.h"
+#include "engine/String/UniqueString.h"
+#include "engine/String/UniqueStringManager.h"
 
-#include "../String/UniqueString.h"
-#include "../String/UniqueStringManager.h"
+#include "engine/InputEvent/InputEvent.h"
 
-#include "../InputEvent/InputEvent.h"
+#include "engine/ECS/World.h"
 
-#include "../ECS/World.h"
-
-#include "../Thirdparty/json.hpp"
+#include "engine/Thirdparty/json.hpp"
 
 
 namespace ASEngine {

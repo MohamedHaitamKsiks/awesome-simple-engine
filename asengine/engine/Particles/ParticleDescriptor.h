@@ -2,11 +2,11 @@
 // Created by ksiks_wa3r on 4/11/23.
 //
 
-#ifndef ANDROIDSIMPLEENGINE_PARTICLEDESCRIPTOR_H
-#define ANDROIDSIMPLEENGINE_PARTICLEDESCRIPTOR_H
+#ifndef ASENGINE_PARTICLEDESCRIPTOR_H
+#define ASENGINE_PARTICLEDESCRIPTOR_H
 
-#include "../Math/vec2.h"
-#include "../Renderer/Color.h"
+#include "engine/Math/vec2.h"
+#include "engine/Renderer/Color.h"
 #include <cmath>
 
 namespace ASEngine {
@@ -42,4 +42,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_PARTICLEDESCRIPTOR_H
+#endif //ASENGINE_PARTICLEDESCRIPTOR_H

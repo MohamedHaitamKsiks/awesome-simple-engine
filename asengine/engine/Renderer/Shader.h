@@ -12,8 +12,8 @@
 
 #include "Texture.h"
 #include "Color.h"
-#include "../Math/mat3.h"
-#include "../Math/vec2.h"
+#include "engine/Math/mat3.h"
+#include "engine/Math/vec2.h"
 
 namespace ASEngine
 {

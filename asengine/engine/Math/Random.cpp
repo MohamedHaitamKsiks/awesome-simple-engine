@@ -1,6 +1,3 @@
-//
-// Created by ksiks_wa3r on 4/12/23.
-//
 
 #include "Random.h"
 

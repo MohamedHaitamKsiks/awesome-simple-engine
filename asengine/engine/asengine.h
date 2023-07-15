@@ -1,10 +1,6 @@
-//
-// Created by ksiks_wa3r on 3/20/23.
-//
 
-
-#ifndef MY_APPLICATION_ASENGINE_H
-#define MY_APPLICATION_ASENGINE_H
+#ifndef ASENGINE_H
+#define ASENGINE_H
 
 
 //log
@@ -59,11 +55,6 @@
 
 //shape
 #include "Shape/Rectangle.h"
-
-//include particles
-#include "Particles/Particle.h"
-#include "Particles/ParticleDescriptor.h"
-#include "Particles/ParticleEmitter.h"
 
 
 #endif //MY_APPLICATION_ASENGINE_H

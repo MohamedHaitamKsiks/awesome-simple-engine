@@ -4,9 +4,9 @@
 #include <memory>
 #include <vector>
 
-#include "../Memory/PoolAllocator.h"
-#include "../Renderer/Graphics.h"
-#include "../Singleton/Singleton.h"
+#include "engine/Memory/PoolAllocator.h"
+#include "engine/Renderer/Graphics.h"
+#include "engine/Singleton/Singleton.h"
 
 #include "Entity.h"
 #include "EntityData.h"

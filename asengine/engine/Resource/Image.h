@@ -1,15 +1,12 @@
-//
-// Created by ksiks_wa3r on 3/18/23.
-//
 
-#ifndef MY_APPLICATION_IMAGE_H
-#define MY_APPLICATION_IMAGE_H
+#ifndef ASENGINE_IMAGE_H
+#define ASENGINE_IMAGE_H
 
 #include <string>
 
 #include "Resource.h"
-#include "../FileSystem/File.h"
-#include "../Log/Log.h"
+#include "engine/FileSystem/File.h"
+#include "engine/Log/Log.h"
 
 namespace ASEngine {
 
@@ -53,4 +50,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //MY_APPLICATION_IMAGE_H
+#endif //ASENGINE_IMAGE_H
