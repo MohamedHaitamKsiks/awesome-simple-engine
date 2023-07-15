@@ -15,14 +15,14 @@ namespace ASEngine
     class ArchetypeManager:public Singleton<ArchetypeManager>
     {
     public:
-        // get archetype
-        template<typename T, typename... types>
+        // get archetype internal
+        template <typename T, typename... types>
         std::shared_ptr<Archetype> getArchetype();
 
     private:
         // create archetype
         template <typename T, typename... types>
-        std::shared_ptr<Archetype> createArchetype();
+        void createArchetype();
 
         // create archetype
         bool hasArchetype(uint32_t signature) const;
@@ -32,7 +32,6 @@ namespace ASEngine
     };
 
     // implemetations
-
     // get archetype implementation
     template <typename T, typename... types>
     std::shared_ptr<Archetype> ArchetypeManager::getArchetype()
@@ -40,24 +39,25 @@ namespace ASEngine
         uint32_t signature = ComponentManager::getSingleton()->getSignature<T, types...>();
         // is archetype doesn't exist create it
         if (!hasArchetype(signature))
+        {
             createArchetype<T, types...>();
-        
+        }
+
         return archetypes[signature];
     }
 
     // create archetype implementation
     template <typename T, typename... types>
-    std::shared_ptr<Archetype> ArchetypeManager::createArchetype()
+    void ArchetypeManager::createArchetype()
     {
         uint32_t signature = ComponentManager::getSingleton()->getSignature<T, types...>();
         std::shared_ptr<Archetype> archetype = std::make_shared<Archetype>();
 
         archetype->addComponents<T, types...>();
         archetypes[signature] = archetype;
-
+        
         SystemManager::getSingleton()->registerArchetype(archetype);
 
-        return archetype;
     }
 
 } // namespace ASEngine

@@ -16,11 +16,23 @@ namespace ASEngine
         // call base function
         BasePoolAllocator::free(index);
     }
+    
     template <typename T>
     T *PoolAllocator<T>::get(ChunkID index)
     {
         return (T*) getRaw(index);
     }
 
+    template <typename T>
+    void PoolAllocator<T>::initializePoolValues()
+    {   
+        T baseValue{};
+
+        for (size_t i = 0; i < capacity; i++)
+        {
+            T* currentPtr = get((ChunkID) i);
+            *currentPtr = baseValue;
+        }
+    }
 
 } // namespace ASEngine

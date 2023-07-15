@@ -3,6 +3,10 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
+
+
+#include "../Log/Log.h"
 #include "BasePoolAllocator.h"
 
 namespace ASEngine {
@@ -20,11 +24,17 @@ namespace ASEngine {
 
 
         //contructors / deconstructors
-        PoolAllocator<T>() : BasePoolAllocator(sizeof(T)) {};
+        PoolAllocator() : BasePoolAllocator(sizeof(T)) 
+        {
+            initializePoolValues();
+        };
 
-        PoolAllocator<T>(size_t _capacity) : BasePoolAllocator(sizeof(T), _capacity){}
+        PoolAllocator(size_t _capacity) : BasePoolAllocator(sizeof(T), _capacity)
+        {
+            initializePoolValues();
+        };
 
-        // free 
+        // free memory
         void free(ChunkID index);
 
         // get at 
@@ -43,6 +53,9 @@ namespace ASEngine {
         {
             return Iterator(this, UINT32_MAX);
         };
+
+    private:
+        void initializePoolValues();
 
     };
 

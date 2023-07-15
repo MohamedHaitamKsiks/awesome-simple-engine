@@ -19,6 +19,7 @@ namespace ASEngine {
 
 		//allocate image space
 		fontImage.pixels = new char[imageBufferSize];
+
 		//fill with 0
 		for (int i = 0; i < imageBufferSize; i++)
 			fontImage.pixels[i] = 0;
@@ -86,7 +87,7 @@ namespace ASEngine {
 				char pixel = face->glyph->bitmap.buffer[i];
 				//get index
 				int fontImageIndex = imageCoordX + fontImage.width * imageCoordY;
-				fontImage.pixels[2 * fontImageIndex] = 255;
+				fontImage.pixels[2 * fontImageIndex] = char(255);
 				fontImage.pixels[2 * fontImageIndex + 1] = pixel;
 
 			}
@@ -128,7 +129,7 @@ namespace ASEngine {
 		//parse to json
 		nlohmann::json importedFonts = nlohmann::json::parse(importFontsString);
 		//import all fonts
-		for (int i = 0; i < importedFonts.size(); i++) 
+		for (size_t i = 0; i < importedFonts.size(); i++) 
 		{
 			//get font info
 			std::string fontName = importedFonts[i]["name"];

@@ -38,6 +38,7 @@ namespace ASEngine
 
         // used chunks
         usedChunks = std::make_unique<bool[]>(capacity);
+
         for (uint32_t i = 0; i < capacity; i++)
         {
             freeChunksStack[i] = capacity - i - 1;
@@ -99,7 +100,8 @@ namespace ASEngine
         }
         else if (index == foot)
         {
-            chunkNext[prev(index)] = prev(index);
+            foot = prev(index);
+            chunkNext[foot] = CHUNK_NULL;
         }
         else
         {

@@ -8,8 +8,8 @@
 
 #include "../Memory/BasePoolAllocator.h"
 #include "../Memory/PoolAllocator.h"
-
 #include "../String/UniqueString.h"
+
 #include "Component.h"
 #include "ComponentManager.h"
 
@@ -19,6 +19,7 @@ namespace ASEngine
     template <typename T>
     using ComponentCollection = PoolAllocator<T>;
     using BaseComponentCollection = BasePoolAllocator;
+
     // component index in the collection
     using ComponentIndex = ChunkID;
 
@@ -36,7 +37,7 @@ namespace ASEngine
 
         // get signature
         uint32_t getSignature() const;
-    
+
     
         // add entity
         void addEntity(Entity entity);
@@ -75,7 +76,8 @@ namespace ASEngine
         if (signature % componentSignature != 0)
         {
             signature *= componentSignature;
-            componentCollections[componentName.getId()] = std::make_shared<ComponentCollection<T>>(UINT16_MAX);
+            std::shared_ptr<BaseComponentCollection> collection{new ComponentCollection<T>(UINT16_MAX)};
+            componentCollections[componentName.getId()] = collection;
         }
 
         if constexpr (sizeof...(types) > 0)

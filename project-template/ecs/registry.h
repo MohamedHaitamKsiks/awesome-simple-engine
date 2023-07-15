@@ -12,24 +12,39 @@ using namespace ASEngine;
 // register ecs
 void ECSRegistry()
 {
+    
     // component registry ...
     ComponentManager::getSingleton()->registerComponent<SpriteComponent>(UniqueString("Sprite"));
     ComponentManager::getSingleton()->registerComponent<TransformComponent>(UniqueString("Transform"));
 
     // system registry ...
     SystemManager::getSingleton()->registerSystem<SpriteRenderingSystem>();
-
+    
     // entity registry
-    auto archetype = ArchetypeManager::getSingleton()->getArchetype<SpriteComponent, TransformComponent>();
-    Entity entity = World::getSingleton()->createEntity(archetype);
+    SpriteComponent sprite = SpriteComponent{
+        ResourceManager<Sprite>::getSingleton()->getResourceId(UniqueString("spr_run"))
+    };
     
-    // set sprite
-    auto sprite = World::getSingleton()->getComponentOfEntity<SpriteComponent>(entity);
-    sprite->spriteId = ResourceManager<Sprite>::getSingleton()->getResourceId(UniqueString("spr_run"));
     
-    // set position
-    auto transform = World::getSingleton()->getComponentOfEntity<TransformComponent>(entity);
-    transform->position = Screen::getCenter();
+    for (int i = 0; i < 100; i++)
+    {
+        TransformComponent transform = TransformComponent{
+            vec2{
+                Random::rand_rangef(0, 180),
+                Random::rand_rangef(0, 320)
+            },
+            vec2{100.0f, 0.0f}.rotate(Random::rand_rangef(0.0f, 3.1415f))
+        };
+
+        Entity entity = World::getSingleton()->create(
+            sprite,
+            transform
+        );
+
+        World::getSingleton()->getComponent<TransformComponent>(entity)->owner = entity;
+        
+    }
+    
 };
 
 

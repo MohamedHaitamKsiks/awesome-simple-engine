@@ -1,12 +1,12 @@
 #ifndef ASENGINE_BASE_POOL_ALLOCATOR_H
 #define ASENGINE_BASE_POOL_ALLOCATOR_H
 
-#include <memory>
 #include <cstdint>
+#include <memory>
 
 namespace ASEngine
 {
-    //chunk index in the pool allocator
+    //chunk index in the poEol allocator
     using ChunkID = uint32_t;
     const ChunkID CHUNK_NULL = UINT32_MAX;
 
@@ -86,13 +86,13 @@ namespace ASEngine
             out = _out;
         };
 
-        PoolAllocatorIterator operator++(int)
+        PoolAllocatorIterator<T> operator++(int)
         {
             currentPosition = out->next(currentPosition);
             return *this;
         };
 
-        PoolAllocatorIterator operator++()
+        PoolAllocatorIterator<T> operator++()
         {
             currentPosition = out->next(currentPosition);
             return *this;
@@ -103,12 +103,12 @@ namespace ASEngine
             return (T*) out->getRaw(currentPosition);
         };
 
-        bool operator==(const PoolAllocatorIterator &it)
+        bool operator==(const PoolAllocatorIterator<T> &it) const
         {
             return currentPosition == it.currentPosition;
         };
 
-        bool operator!=(const PoolAllocatorIterator &it)
+        bool operator!=(const PoolAllocatorIterator<T> &it) const
         {
             return currentPosition != it.currentPosition;
         };

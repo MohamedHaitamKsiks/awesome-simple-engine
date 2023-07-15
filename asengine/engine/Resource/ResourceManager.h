@@ -6,6 +6,7 @@
 #include <cassert>
 
 #include "Resource.h"
+#include "../Singleton/Singleton.h"
 #include "../FileSystem/File.h"
 #include "../Memory/PoolAllocator.h"
 #include "../String/UniqueString.h"
@@ -15,12 +16,8 @@
 namespace ASEngine {
 
     template <typename T>
-    class ResourceManager {
+    class ResourceManager: public Singleton<ResourceManager<T>> {
     public:
-        static void init(size_t resourcesMaxNumber=INT16_MAX);
-        static ResourceManager<T>* getSingleton();
-        static void terminate();
-
 
         //add new resource and give it a name
         T* add(const UniqueString& resourceName);
@@ -32,14 +29,17 @@ namespace ASEngine {
         ResourceID getResourceId(const UniqueString& resourceName);
 
         // constructor
-        ResourceManager<T>() 
+        ResourceManager() 
         {
+            //check if resource
             T t;
             assert(dynamic_cast<Resource*>(&t) != nullptr);
+
+            resources.init(INT16_MAX);
         }
 
         //destructor
-        ~ResourceManager<T>();
+        ~ResourceManager();
     private:
         PoolAllocator<T> resources{};
         std::unordered_map<UniqueStringID, ResourceID> resourceIds = {};

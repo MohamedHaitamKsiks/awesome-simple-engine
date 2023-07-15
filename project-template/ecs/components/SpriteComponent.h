@@ -6,12 +6,18 @@
 using namespace ASEngine;
 
 // holds sprite data
-class SpriteComponent : public Component<SpriteComponent>
+struct SpriteComponent : Component<SpriteComponent>
 {
-public:
-    ResourceID spriteId;
+    ResourceID spriteId = 0;
     float frame = 0;
     float frameRate = 8.0f;
+
+    SpriteComponent(){};
+
+    SpriteComponent(ResourceID _spriteId)
+    {
+        spriteId = _spriteId;
+    };
 };
 
 

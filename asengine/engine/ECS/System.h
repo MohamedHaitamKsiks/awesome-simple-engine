@@ -19,7 +19,7 @@ namespace ASEngine
     {
     public:
         // archetypes list
-        std::vector<std::shared_ptr<Archetype>> archetypes = {};
+        std::vector<std::weak_ptr<Archetype>> archetypes = {};
 
         // get signature
         uint32_t getSignature() const
@@ -55,12 +55,12 @@ namespace ASEngine
         {
             for (auto archetype: archetypes)
             {
-                auto &collection = archetype->getComponentCollection<T>();
+                ComponentCollection<T>& collection = archetype.lock()->template getComponentCollection<T>();
 
                 for (auto it = collection.begin(); it != collection.end(); it++)
                 {   
                     ChunkID index = it.currentPosition;
-                    callback(collection.get(index), archetype->getComponentCollection<types>().get(index)...);
+                    callback(collection.get(index), archetype.lock()->template getComponentCollection<types>().get(index)...);
                 }
                 
             }

@@ -16,8 +16,7 @@ namespace ASEngine {
     enum ImageFormat {
         IMAGE_FORMAT_RBGA,
         IMAGE_FORMAT_GRAYSCALE,
-        IMAGE_FORMAT_GRAYSCALE_ALPHA,
-        IMAGE_FORMAT_INTENSITY
+        IMAGE_FORMAT_GRAYSCALE_ALPHA
     };
 
     class Image : public Resource {

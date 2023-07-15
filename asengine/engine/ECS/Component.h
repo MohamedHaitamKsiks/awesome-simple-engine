@@ -5,18 +5,15 @@
 #include "../String/UniqueString.h"
 #include "Entity.h" 
 
-#define ComponentNameOf(componentType) (Component<componentType>::name)
-
 namespace ASEngine
 {
 
     // abstract class for components
     template <typename T>
-    class Component 
+    struct Component
     {
-    public:
-        // component owner
-        Entity owner;
+        // basic constructor
+        Component() {};
 
         // component name
         static UniqueString name;
@@ -27,7 +24,7 @@ namespace ASEngine
 
     // component name implementation
     template <typename T>
-    UniqueString Component<T>::name = UniqueString();
+    UniqueString Component<T>::name = CHUNK_NULL;
 
     // component signature
     template <typename T>

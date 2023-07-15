@@ -12,7 +12,8 @@ namespace ASEngine
     // entity data for look up ..
     struct EntityData
     {
-        std::shared_ptr<Archetype> archetype;
+        Archetype* archetype = nullptr;
+        bool isDestroyed = false;
     };
 
 } // namespace ASEngine

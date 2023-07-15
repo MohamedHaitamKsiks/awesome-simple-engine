@@ -19,6 +19,7 @@ namespace ASEngine
     void World::update(float delta)
     {
         SystemManager::getSingleton()->update(delta);
+        cleanDestroyQueue();
     }
 
     void World::draw(Graphics& graphics)
@@ -26,12 +27,41 @@ namespace ASEngine
         SystemManager::getSingleton()->draw(graphics);
     }
 
-    Entity World::createEntity(std::shared_ptr<Archetype> archetype)
+    Entity World::create(std::shared_ptr<Archetype> archetype)
     {
+        // create entity
         Entity createdEntity = entities.alloc();
-        entities.get(createdEntity)->archetype = archetype;
+        EntityData *data = entities.get(createdEntity);
+        
+        data->archetype = archetype.get();
+        data->isDestroyed = false;
+        
+        //add entity to archetype
         archetype->addEntity(createdEntity);
+        
         return createdEntity;
     };
+
+    void World::destroy(Entity entity)
+    {
+        EntityData* data = entities.get(entity);
+        if (data->isDestroyed)
+            return;
+        //queue entity to destroy
+        data->isDestroyed = true;
+
+        destroyQueue.push_back(entity);
+    }
+    
+    void World::cleanDestroyQueue()
+    {
+        for (auto entity: destroyQueue)
+        {
+            EntityData *data = entities.get(entity);
+            auto* archetype = data->archetype;
+            archetype->removeEntity(entity);
+        }
+        destroyQueue.clear();
+    }
 
 } // namespace ASEngine

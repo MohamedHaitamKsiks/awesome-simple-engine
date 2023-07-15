@@ -13,8 +13,8 @@ namespace ASEngine
     {
         for (auto pair: componentCollections)
         {
-            std::shared_ptr<BaseComponentCollection> componentCollection = pair.second;
-            ComponentIndex componentIndex = componentCollection->alloc();
+            std::shared_ptr<BaseComponentCollection> collection = pair.second;
+            ComponentIndex componentIndex = collection->alloc();
             entities[entity] = componentIndex;
         }
     }
@@ -23,9 +23,9 @@ namespace ASEngine
     {
         for (auto pair : componentCollections)
         {
-            std::shared_ptr<BaseComponentCollection> componentCollection = pair.second;
+            std::shared_ptr<BaseComponentCollection> collection = pair.second;
             ComponentIndex componentIndex = entities[entity];
-            componentCollection->free(componentIndex); 
+            collection->free(componentIndex);
         }
         entities.erase(entity);
     }

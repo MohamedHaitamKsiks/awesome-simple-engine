@@ -35,8 +35,10 @@ namespace ASEngine
         std::string getString() const;
     private:
         /* data */
-        UniqueStringID id = UINT32_MAX;
+        UniqueStringID id = CHUNK_NULL;
     };
+
+    const UniqueString UNIQUE_STRING_NULL = UniqueString(CHUNK_NULL);
 } // namespace ASEngine
 
 

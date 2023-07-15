@@ -6,10 +6,19 @@
 using namespace ASEngine;
 
 // holds transoorm data
-class TransformComponent: public Component<TransformComponent>
+struct TransformComponent: Component<TransformComponent>
 {
-public:
-    vec2 position;
+    Entity owner = 0;
+    vec2 position = vec2{0.0f, 0.0f};
+    vec2 velocity = vec2{0.0f, 0.0f};
+
+    TransformComponent(){};
+
+    TransformComponent(const vec2 &_position, const vec2 &_velocity)
+    {
+        position = _position;
+        velocity = _velocity;
+    };
 };
 
 

@@ -7,35 +7,10 @@ namespace ASEngine {
     ResourceManager<T>* ResourceManager<T>::resourceManager = nullptr;
 
     template <typename T>
-    void ResourceManager<T>::init(size_t resourceMaxNumber)
-    {
-        if (resourceManager)
-            return;
-        
-        resourceManager = new ResourceManager<T>();
-        resourceManager->resources.init(resourceMaxNumber);
-    }
-
-    template <typename T>
-    ResourceManager<T>* ResourceManager<T>::getSingleton()
-    {
-        return resourceManager;
-    }
-
-    template <typename T>
-    ResourceManager<T>::~ResourceManager<T>()
+    ResourceManager<T>::~ResourceManager()
     {
         resourceIds.clear();
     };
-
-    template <typename T>
-    void ResourceManager<T>::terminate()
-    {
-        if (!resourceManager)
-            return;
-        delete resourceManager;
-        resourceManager = nullptr;
-    }
 
     template <typename T>
     T* ResourceManager<T>::add(const UniqueString &resourceName)

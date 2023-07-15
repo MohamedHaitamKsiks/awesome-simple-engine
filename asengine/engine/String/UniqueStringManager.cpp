@@ -2,27 +2,6 @@
 
 namespace ASEngine
 {
-    // singleton implementations
-    UniqueStringManager* UniqueStringManager::uniqueStringManager = nullptr;
-
-    void UniqueStringManager::init()
-    {
-        if (!uniqueStringManager)
-            uniqueStringManager = new UniqueStringManager();
-    }
-
-    UniqueStringManager* UniqueStringManager::getSingleton()
-    {
-        return uniqueStringManager;
-    }
-
-    void UniqueStringManager::terminate()
-    {
-        if (uniqueStringManager)
-            delete uniqueStringManager;
-    }
-
-
     // unique string manager implementations
     UniqueStringID UniqueStringManager::find(const std::string &str)
     {
@@ -41,8 +20,9 @@ namespace ASEngine
             bool areStringEquals = true;
 
             PoolAllocator<char>::Iterator it = PoolAllocator<char>::Iterator(&stringData, info->startIndex);
-            for (int i = 0; i < strLength && it != stringData.end(); i++)
-            {   
+
+            for (size_t i = 0; i < strLength && it != stringData.end(); i++)
+            {
                 if (str[i] != *(*it))
                 {
                     areStringEquals = false;
@@ -64,7 +44,7 @@ namespace ASEngine
     UniqueStringID UniqueStringManager::create(const std::string &str)
     {
         UniqueStringID index = find(str);
-        if (index != UINT32_MAX)
+        if (index != CHUNK_NULL)
             return index;
         
         //create new string
@@ -73,7 +53,7 @@ namespace ASEngine
         UniqueStringInfo newStrInfo;
         newStrInfo.length = strLength;
 
-        for (int i = 0; i < strLength; i++) 
+        for (size_t i = 0; i < strLength; i++) 
         {
             ChunkID charId = stringData.alloc();
             *stringData.get(charId) = str[i];
@@ -99,7 +79,7 @@ namespace ASEngine
         UniqueStringInfo* info = stringInfos.get(stringId);
 
         PoolAllocator<char>::Iterator it = PoolAllocator<char>::Iterator(&stringData, info->startIndex);
-        for (int i = 0; i < info->length && it != stringData.end(); i++)
+        for (size_t i = 0; i < info->length && it != stringData.end(); i++)
         {
             ss << *(*it);
             it++;

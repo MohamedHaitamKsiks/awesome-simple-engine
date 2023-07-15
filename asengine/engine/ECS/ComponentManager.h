@@ -13,14 +13,14 @@ namespace ASEngine
     class ComponentManager: public Singleton<ComponentManager>
     {
     public:
-        // register component
-        template<typename T>
+        // register component internal
+        template <typename T>
         void registerComponent(UniqueString componentName);
 
-        // get signature of a composition of components
-        template<typename T, typename... types>
+        // get signature of a composition of components internal
+        template <typename T, typename... types>
         uint32_t getSignature();
-        
+
     private:
         // is valid signature <===> is prime
         bool isValidSignature(uint32_t signature);
