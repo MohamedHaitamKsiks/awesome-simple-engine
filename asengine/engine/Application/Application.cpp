@@ -20,6 +20,9 @@ namespace ASEngine {
 		//Scene::importAll();
 		//load project settings
 		application->loadProjectSettings();
+
+		//init ecs world
+		World::init();
 	}
 
 	Application* Application::getSingleton() {
@@ -27,6 +30,8 @@ namespace ASEngine {
 	}
 
 	void Application::init() {
+		// create default camera
+		Camera::current = new Camera();
 		//init renderer
 		renderer.init();
 		//init vbo
@@ -44,49 +49,48 @@ namespace ASEngine {
 		
 		ResourceManager<Font>::init();
 		Font::importAll();
-		// manually import some resources to try the new system
-		//create default camera
-		Camera::current = new Camera();
-
-		GameObject* obj = Instance::create("NewObject");
-		obj->position = vec2::zero();
 
 		Log::out("Application init complete");
 	}
 
 
 	void Application::onInputEvent(InputEvent &inputEvent) {
-		//process event for each instance
-		for (auto instance: Instance::instances) {
-			instance->onInputEvent(inputEvent);
-		}
+		// process event for each instance
 	}
 
 	void Application::update(float delta) {
-		
-		//update instance
-		Instance::update(delta);
+		// update here..
+		World::getSingleton()->update(delta);
 
-		//draw
+		// init draw
 		renderer.draw();
-		Instance::draw(graphics);
-		
+
+		// draw here ..
+		World::getSingleton()->draw(graphics);
+
+		// flush graphics
 		graphics.update();
 	}
 
 	void Application::terminate() {
-		//destroy all vbo
-		VertexBufferObject::terminate();
-		//terminate graphics
+		// terminate graphics
 		graphics.terminate();
+		// destroy all vbo
+		VertexBufferObject::terminate();
 		//terminate textures
 		Texture::terminate();
 		// terminate resource managers
 		ResourceManager<Sprite>::terminate();
 		ResourceManager<Font>::terminate();
 		ResourceManager<Scene>::terminate();
+		//terminate world
+		World::terminate();
 		//delete camera
 		delete Camera::current;
+		//delete app
+		delete application;
+		application = nullptr;
+		Log::out("application terminated!");
 	}
 
 

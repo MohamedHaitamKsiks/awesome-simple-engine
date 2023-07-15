@@ -1,7 +1,10 @@
+#ifndef ASENGINE_DESKTOP_APPLICATION_H
+#define ASENGINE_DESKTOP_APPLICATION_H
+
 
 #include "engine/asengine.h"
-#include "objects/loadGameObject.h"
 
+#include <sstream>
 #include <iostream>
 #include <chrono>
 #define SEC_TO_MICRO 1000000.0f;
@@ -28,3 +31,5 @@ class DesktopApplication {
         //derminate desktop application
         void terminate();
 };
+
+#endif

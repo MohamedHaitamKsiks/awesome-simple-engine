@@ -2,7 +2,10 @@
 
 namespace ASEngine {
 
-    Texture Texture::defaultTexture = Texture{};
+    Texture Texture::defaultTexture = Texture{UINT32_MAX};
+    std::vector<TextureInfo> Texture::infoList = {};
+    std::vector<uint32_t> Texture::freeInfoList = {};
+    uint32_t Texture::textureCounter = 0;
 
     //init
     void Texture::init() {
@@ -83,20 +86,23 @@ namespace ASEngine {
     }
     //get width
     int Texture::width() {
+        if (id == UINT32_MAX)
+            return -1;
         return Texture::infoList[id].width;
     };
     //get height
     int Texture::height() {
+        if (id == UINT32_MAX)
+            return -1;
         return Texture::infoList[id].height;
     };
     //get gl texture
     GLuint Texture::glTexture() {
+        if (id == UINT32_MAX)
+            return UINT32_MAX;
         return Texture::infoList[id].texture;
     }
 
-    std::vector<TextureInfo> Texture::infoList = {};
-    std::vector<uint32_t> Texture::freeInfoList = {};
-    uint32_t Texture::textureCounter = 0;
 
 
 

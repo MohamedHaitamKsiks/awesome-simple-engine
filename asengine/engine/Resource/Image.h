@@ -16,8 +16,7 @@ namespace ASEngine {
     enum ImageFormat {
         IMAGE_FORMAT_RBGA,
         IMAGE_FORMAT_GRAYSCALE,
-        IMAGE_FORMAT_GRAYSCALE_ALPHA,
-        IMAGE_FORMAT_INTENSITY
+        IMAGE_FORMAT_GRAYSCALE_ALPHA
     };
 
     class Image : public Resource {
@@ -41,10 +40,15 @@ namespace ASEngine {
 
         //load image
         bool load(const std::string& imagePath);
+
+        // create empty image knowing width and height and format
+        bool create(int _width, int _height, ImageFormat _format = IMAGE_FORMAT_RBGA);
+
     private:
         //image channels
         int channels = -1;
-
+        // load method
+        bool loadedWithSTBI = false;
     };
 
 } // ASEngine

@@ -18,6 +18,16 @@
 #include "Memory/PoolAllocator.h"
 #include "String/UniqueString.h"
 
+// ecs
+#include "ECS/World.h"
+#include "ECS/Component.h"
+#include "ECS/ComponentManager.h"
+#include "ECS/Entity.h"
+#include "ECS/System.h"
+#include "ECS/SystemManager.h"
+#include "ECS/Archetype.h"
+#include "ECS/ArchetypeManager.h"
+
 //resources
 #include "Resource/ResourceManager.h"
 #include "Resource/Image.h"
@@ -26,9 +36,6 @@
 #include "Resource/Font.h"
 #include "Resource/Scene.h"
 
-//game object
-#include "GameObject/GameObject.h"
-#include "GameObject/Instance.h"
 
 //rendering
 #include "Renderer/Texture.h"
@@ -40,10 +47,6 @@
 #include "Renderer/Vertex.h"
 #include "Renderer/Quad.h"
 #include "Renderer/VertexBufferObject.h"
-
-//instance
-#include "GameObject/GameObject.h"
-#include "GameObject/Instance.h"
 
 //input
 #include "InputEvent/InputEvent.h"

@@ -25,7 +25,7 @@ namespace ASEngine
         //parse to json
         nlohmann::json importedSprites = nlohmann::json::parse(importSpritesString);
         //import all sprites
-        for (int i = 0; i < importedSprites.size(); i++) {
+        for (size_t i = 0; i < importedSprites.size(); i++) {
             //get sprite info
             std::string spriteName = importedSprites[i]["name"];
             std::string spriteImageFile = importedSprites[i]["image"];

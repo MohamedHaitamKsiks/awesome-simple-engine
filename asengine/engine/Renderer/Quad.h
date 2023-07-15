@@ -32,7 +32,7 @@ namespace ASEngine {
 		};
 
 		//index data
-		static GLushort indexData[];
+		static GLushort indexData[6];
 
 		//create
 		static Quad create(vec2 size, mat3 &transform, float zIndex, Color _modulate);

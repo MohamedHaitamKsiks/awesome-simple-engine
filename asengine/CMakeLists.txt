@@ -1,7 +1,7 @@
 # Sets the minimum version of CMake required to build the native library.
 
 cmake_minimum_required(VERSION 3.22.1)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
@@ -19,9 +19,14 @@ endif()
 add_library(
     asengine
     STATIC
-    #game object
-    engine/GameObject/GameObject.cpp
-    engine/GameObject/Instance.cpp
+    #memory
+    engine/Memory/BasePoolAllocator.cpp
+    #ecs
+    engine/ECS/World.cpp
+    engine/ECS/Archetype.cpp
+    engine/ECS/ComponentManager.cpp
+    engine/ECS/SystemManager.cpp
+    engine/ECS/ArchetypeManager.cpp
     #shapes
     engine/Shape/Rectangle.cpp
     #resource

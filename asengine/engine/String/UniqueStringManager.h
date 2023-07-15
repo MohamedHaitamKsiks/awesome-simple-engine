@@ -7,29 +7,26 @@
 
 #include "../Log/Log.h"
 #include "../Memory/PoolAllocator.h"
+#include "../Singleton/Singleton.h"
 
 namespace ASEngine
 {
     //unique string id
-    typedef uint32_t UniqueStringID;
+    using UniqueStringID = uint32_t;
 
     // define unique string informations
     struct UniqueStringInfo
     {
         // where the string starts
-        ChunkId startIndex;
+        ChunkID startIndex;
         // length of the string
         size_t length = 0;
     };
 
     // unique string manager, singleton that manages unique strings. 
-    class UniqueStringManager 
+    class UniqueStringManager: public Singleton<UniqueStringManager>
     {
         public:
-            // init 
-            static void init();
-            static UniqueStringManager* getSingleton();
-            static void terminate();
             // create string if not found
             UniqueStringID create(const std::string &str);
             // get length
@@ -38,8 +35,6 @@ namespace ASEngine
             std::string getString(UniqueStringID stringId);
 
         private:
-            // singleton
-            static UniqueStringManager* uniqueStringManager;
             // where strings data are stored
             PoolAllocator<char> stringData{UINT16_MAX};
             // list of strings

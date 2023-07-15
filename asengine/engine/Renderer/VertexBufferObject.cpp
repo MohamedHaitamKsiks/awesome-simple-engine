@@ -1,6 +1,3 @@
-//
-// Created by ksiks_wa3r on 3/30/23.
-//
 
 #include "VertexBufferObject.h"
 
@@ -12,8 +9,10 @@ namespace ASEngine {
 
 	//init the buffer class
 	void VertexBufferObject::init() {
-		//fill index data
-		for (int j = 0; j < VBO_MAX_OBJECTS; j++) {
+
+		// fill index data
+		for (int j = 0; j < VBO_MAX_OBJECTS; j++)
+		{
 			//go throw each index
 			for (int i = 0; i < 6; i++)
 				indexData[6 * j + i] = 4 * j + Quad::indexData[i];
@@ -69,7 +68,7 @@ namespace ASEngine {
 
 	void VertexBufferObject::destroy() {
 		glDeleteBuffers(1, &vertexBuffer);
-		delete vertexData;
+		delete[] vertexData;
 	}
 
 

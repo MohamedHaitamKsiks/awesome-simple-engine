@@ -3,8 +3,8 @@
 #include <jni.h>
 
 #include "engine/asengine.h"
+#include "ecs/registry.h"
 #include "AndroidApplication.h"
-#include "objects/loadGameObject.h"
 
 #include <string>
 #include <chrono>
@@ -35,6 +35,7 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
 			//init application
 			application = new AndroidApplication();
 			application->init(pApp);
+			ECSRegistry();
             pApp->userData = application;
             break;
         case APP_CMD_TERM_WINDOW:
@@ -57,8 +58,7 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
  */
 void android_main(struct android_app *pApp) {
 	ASEngine::Log::out("Starting Game Activity");
-	loadGameObjects();
-
+	
     // register an event handler for Android events
     pApp->onAppCmd = handle_cmd;
 

@@ -20,7 +20,7 @@
 #include "Vertex.h"
 #include "Quad.h"
 
-#define VBO_MAX_OBJECTS 16384
+#define VBO_MAX_OBJECTS 16383
 
 namespace ASEngine {
 
@@ -29,7 +29,7 @@ namespace ASEngine {
 	class VertexBufferObject {
 	public:
 		//vertex data
-		Quad* vertexData;
+		Quad* vertexData = nullptr;
 		//index data
 		static GLushort indexData[6 * VBO_MAX_OBJECTS];
 

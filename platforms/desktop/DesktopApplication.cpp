@@ -1,7 +1,7 @@
 #include "DesktopApplication.h"
+#include "ecs/registry.h"
 
 void DesktopApplication::start() {
-    loadGameObjects();
     if (!init()) {
         ASEngine::Log::out("Application coudn't started!");
         return;
@@ -10,6 +10,8 @@ void DesktopApplication::start() {
     // start gameloop
     // delta
     float delta = 0.0f;
+    float fps = 0.0f;
+    float avgFps = 0.0f;
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -18,6 +20,17 @@ void DesktopApplication::start() {
         auto pastTime = std::chrono::high_resolution_clock::now();
 
         update(delta);
+        if (delta > 0.0f)
+        {
+            
+            fps = 1.0f / delta;
+            avgFps = (avgFps + fps) / 2.0f;
+            
+            std::stringstream ss;
+            ss << avgFps << "FPS";
+
+            glfwSetWindowTitle(window, ss.str().c_str());
+        }
 
         // compute delta
         auto currentTime = std::chrono::high_resolution_clock::now();
@@ -28,7 +41,7 @@ void DesktopApplication::start() {
 }
 
 bool DesktopApplication::init() {
-    //create asengine app
+    // create asengine app
     ASEngine::Application::create(ASEngine::PLATFORM_DESKTOP);
 
     /* Initialize the library */
@@ -47,6 +60,10 @@ bool DesktopApplication::init() {
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
     ASEngine::Application::getSingleton()->init();
+    ASEngine::Screen::setWindowSize(720/2, 1280/2);
+
+    // ecs registry
+    ECSRegistry();
 
     return true;
 

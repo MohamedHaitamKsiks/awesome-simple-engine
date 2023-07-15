@@ -9,16 +9,8 @@
 #include "ResourceManager.h"
 #include "../FileSystem/File.h"
 #include "../Log/Log.h"
-#include "../GameObject/GameObject.h"
-#include "../GameObject/Instance.h"
 
 namespace ASEngine {
-
-	//scene instance descritor
-	struct SceneInstanceDescriptor {
-		GameObjectID objectId;
-		vec2 position;
-	};
 
 	class Scene: public Resource {
 	public:
@@ -26,11 +18,6 @@ namespace ASEngine {
 		bool load(const std::string& sceneFilePath);
 
 		static void importAll();
-
-	private:
-		//scene content
-		std::vector<SceneInstanceDescriptor> instances = {};
-		
 	};
 
 } // ASEngine
