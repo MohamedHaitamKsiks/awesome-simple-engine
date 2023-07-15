@@ -1,8 +1,8 @@
 #ifndef ASENGINE_COMPONENT_H
 #define ASENGINE_COMPONENT_H
 
-#include <cstdint>  
-#include "../String/UniqueString.h"
+#include <cstdint>
+#include "engine/String/UniqueString.h"
 #include "Entity.h" 
 
 namespace ASEngine

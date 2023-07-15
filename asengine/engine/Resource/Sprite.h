@@ -5,12 +5,12 @@
 #include "Resource.h"
 #include "ResourceManager.h"
 #include "Image.h"
-#include "../FileSystem/File.h"
-#include "../Renderer/Texture.h"
-#include "../Math/vec2.h"
-#include "../Thirdparty/json.hpp"
-#include "../Log/Log.h"
 
+#include "engine/FileSystem/File.h"
+#include "engine/Renderer/Texture.h"
+#include "engine/Math/vec2.h"
+#include "engine/Thirdparty/json.hpp"
+#include "engine/Log/Log.h"
 
 namespace ASEngine {
 

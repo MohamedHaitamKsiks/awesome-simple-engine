@@ -6,7 +6,7 @@
 #include <vector>
 #include <tuple>
 
-#include "../Renderer/Graphics.h"
+#include "engine/Renderer/Graphics.h"
 
 #include "Archetype.h"
 #include "Component.h"

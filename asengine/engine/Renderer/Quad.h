@@ -1,9 +1,7 @@
-//
-// Created by ksiks_wa3r on 3/30/23.
-//
 
-#ifndef ANDROIDSIMPLEENGINE_QUAD_H
-#define ANDROIDSIMPLEENGINE_QUAD_H
+
+#ifndef ASENGINE_QUAD_H
+#define ASENGINE_QUAD_H
 
 #ifdef __ANDROID__
 #include <GLES2/gl2.h>
@@ -14,8 +12,8 @@
 
 #endif
 
-#include "../Math/mat3.h"
-#include "../Math/vec2.h"
+#include "engine/Math/mat3.h"
+#include "engine/Math/vec2.h"
 
 #include "Vertex.h"
 
@@ -43,4 +41,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_QUAD_H
+#endif //ASENGINE_QUAD_H

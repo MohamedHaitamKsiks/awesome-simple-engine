@@ -1,20 +1,39 @@
-//
-// Created by ksiks_wa3r on 5/30/23.
-//
 
-#ifndef ANDROIDSIMPLEENGINE_LOG_H
-#define ANDROIDSIMPLEENGINE_LOG_H
+#ifndef ASENGINE_LOG_H
+#define ASENGINE_LOG_H
 
+#include<sstream>
 #include<string>
 
 namespace ASEngine {
 
 	class Log {
 	public:
-		static void out(const std::string& message);
-		static void out(int value);
+		// log args... to console
+		template<typename T, typename... types>
+		static void out(T firstValue,types... args)
+		{
+			std::stringstream ss;
+			Log::pushToStringStream(ss, firstValue, args...);
+
+			Log::out(ss.str());
+		};
+
+		// log message to console
+		static void out(const std::string &message);
+
+	private:
+		// push args to string stream
+		template <typename T, typename... types>
+		static void pushToStringStream(std::stringstream& ss, T firstValue, types... args)
+		{
+			ss << firstValue;
+
+			if constexpr(sizeof...(args) > 0)
+				pushToStringStream(ss, args...);
+		};
 	};
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_LOG_H
+#endif //ASENGINE_LOG_H

@@ -1,11 +1,14 @@
 {
     "C_Cpp.files.exclude": {
         "**/.vscode": true,
-        "**/.vs": true
+        "**/.vs": true,
+        "asengine/dependencies/**": true,
+        "platforms/desktop/dependencies/**": true
     },
     "C_Cpp.default.cppStandard": "c++23",
-    "C_Cpp.default.intelliSenseMode": "",
+    "C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
     "C_Cpp.inlayHints.parameterNames.enabled": true,
     "C_Cpp.formatting": "clangFormat",
-    "C_Cpp.default.mergeConfigurations": true
+    "C_Cpp.default.mergeConfigurations": true,
+    "C_Cpp.errorSquiggles": "disabled"
 }

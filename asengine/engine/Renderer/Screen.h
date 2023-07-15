@@ -1,11 +1,7 @@
-//
-// Created by ksiks_wa3r on 3/20/23.
-//
+#ifndef ASENGINE_SCREEN_H
+#define ASENGINE_SCREEN_H
 
-#ifndef MY_APPLICATION_SCREEN_H
-#define MY_APPLICATION_SCREEN_H
-
-#include "../Math/mat3.h"
+#include "engine/Math/mat3.h"
 
 namespace ASEngine {
 
@@ -42,4 +38,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //MY_APPLICATION_SCREEN_H
+#endif //ASENGINE_SCREEN_H

@@ -7,8 +7,9 @@
 
 #include "Resource.h"
 #include "ResourceManager.h"
-#include "../FileSystem/File.h"
-#include "../Log/Log.h"
+
+#include "engine/FileSystem/File.h"
+#include "engine/Log/Log.h"
 
 namespace ASEngine {
 

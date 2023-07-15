@@ -1,5 +1,5 @@
-
 #include "File.h"
+#include "android/asset_manager.h"
 
 /*
     Android implementation for files

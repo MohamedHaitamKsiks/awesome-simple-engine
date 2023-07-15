@@ -35,11 +35,6 @@ namespace ASEngine {
 		std::cout<< message << "\n";
 	}
 
-	void Log::out(int value)
-	{
-		std::cout << value << "\n";
-	}
-
 } // ASEngine
 
 #endif

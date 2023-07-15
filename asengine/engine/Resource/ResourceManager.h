@@ -6,11 +6,11 @@
 #include <cassert>
 
 #include "Resource.h"
-#include "../Singleton/Singleton.h"
-#include "../FileSystem/File.h"
-#include "../Memory/PoolAllocator.h"
-#include "../String/UniqueString.h"
-#include "../Log/Log.h"
+#include "engine/Singleton/Singleton.h"
+#include "engine/FileSystem/File.h"
+#include "engine/Memory/PoolAllocator.h"
+#include "engine/String/UniqueString.h"
+#include "engine/Log/Log.h"
 
 
 namespace ASEngine {

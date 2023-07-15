@@ -6,9 +6,9 @@
 #include <algorithm>
 #include <memory>
 
-#include "../Memory/BasePoolAllocator.h"
-#include "../Memory/PoolAllocator.h"
-#include "../String/UniqueString.h"
+#include "engine/Memory/BasePoolAllocator.h"
+#include "engine/Memory/PoolAllocator.h"
+#include "engine/String/UniqueString.h"
 
 #include "Component.h"
 #include "ComponentManager.h"

@@ -1,7 +1,3 @@
-//
-// Created by ksiks_wa3r on 3/18/23.
-//
-
 #include "Image.h"
 
 #define STB_IMAGE_IMPLEMENTATION

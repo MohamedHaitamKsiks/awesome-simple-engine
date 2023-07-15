@@ -1,9 +1,6 @@
-//
-// Created by ksiks_wa3r on 3/1/23.
-//
 
-#ifndef MY_APPLICATION_TEXTURE_H
-#define MY_APPLICATION_TEXTURE_H
+#ifndef ASENGINE_TEXTURE_H
+#define ASENGINE_TEXTURE_H
 
 #include <vector>
 #include <algorithm>
@@ -18,8 +15,8 @@
 
 #endif
 
-#include "../Resource/Image.h"
-#include "../Log/Log.h"
+#include "engine/Resource/Image.h"
+#include "engine/Log/Log.h"
 
 namespace ASEngine {
 
@@ -70,4 +67,4 @@ namespace ASEngine {
 
 
 
-#endif //MY_APPLICATION_TEXTURE_H
+#endif //ASENGINE_TEXTURE_H

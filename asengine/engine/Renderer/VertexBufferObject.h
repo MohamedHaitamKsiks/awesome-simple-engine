@@ -2,8 +2,8 @@
 // Created by ksiks_wa3r on 3/30/23.
 //
 
-#ifndef ANDROIDSIMPLEENGINE_VERTEXBUFFEROBJECT_H
-#define ANDROIDSIMPLEENGINE_VERTEXBUFFEROBJECT_H
+#ifndef ASENGINE_VERTEXBUFFEROBJECT_H
+#define ASENGINE_VERTEXBUFFEROBJECT_H
 
 #include <vector>
 
@@ -16,7 +16,7 @@
 
 #endif
 
-#include "../Log/Log.h"
+#include "engine/Log/Log.h"
 #include "Vertex.h"
 #include "Quad.h"
 
@@ -65,4 +65,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_VERTEXBUFFEROBJECT_H
+#endif //ASENGINE_VERTEXBUFFEROBJECT_H

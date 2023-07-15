@@ -114,7 +114,6 @@ namespace ASEngine {
 		FT_Done_Face(face);
 		FT_Done_FreeType(ft);
 
-		Log::out("Font created");
 		return true;
 	}
 
@@ -144,7 +143,7 @@ namespace ASEngine {
 				->load("fonts/" + fontFilePath, fontSize, fontSeparation, fontLineSeparation, fontSpaceSize);
 			//log
 			if (loaded)
-				Log::out(fontName + " loaded");
+				Log::out(fontName, " loaded");
 			
 		}
 	}

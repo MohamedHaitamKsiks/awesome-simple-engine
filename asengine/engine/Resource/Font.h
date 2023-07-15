@@ -1,9 +1,6 @@
-//
-// Created by ksiks_wa3r on 3/27/23.
-//
 
-#ifndef ANDROIDSIMPLEENGINE_FONT_H
-#define ANDROIDSIMPLEENGINE_FONT_H
+#ifndef ASENGINE_FONT_H
+#define ASENGINE_FONT_H
 
 
 #include <ft2build.h>
@@ -14,10 +11,11 @@
 
 #include "Resource.h"
 #include "ResourceManager.h"
-#include "../FileSystem/File.h"
-#include "../Renderer/Texture.h"
-#include "../Thirdparty/json.hpp"
-#include "../Log/Log.h"
+
+#include "engine/FileSystem/File.h"
+#include "engine/Renderer/Texture.h"
+#include "engine/Thirdparty/json.hpp"
+#include "engine/Log/Log.h"
 
 #define FONT_TEXTURE_WIDTH 16
 #define FONT_TEXTURE_HEIGHT 8
@@ -38,6 +36,7 @@ namespace ASEngine {
 
 	//font resource
 	class Font : public Resource {
+
 	public:
 		//font data
 		FontCharacter fontCharacters[128];
@@ -67,4 +66,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_FONT_H
+#endif //ASENGINE_FONT_H

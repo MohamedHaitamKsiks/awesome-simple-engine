@@ -1,9 +1,6 @@
-//
-// Created by ksiks_wa3r on 3/21/23.
-//
 
-#ifndef MY_APPLICATION_COLOR_H
-#define MY_APPLICATION_COLOR_H
+#ifndef ASENGINE_COLOR_H
+#define ASENGINE_COLOR_H
 
 namespace ASEngine {
 
@@ -50,4 +47,4 @@ namespace ASEngine {
 
 } //ASEngine
 
-#endif //MY_APPLICATION_COLOR_H
+#endif //ASENGINE_COLOR_H

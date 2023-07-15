@@ -5,9 +5,9 @@
 #include <sstream>
 #include <cstring>
 
-#include "../Log/Log.h"
-#include "../Memory/PoolAllocator.h"
-#include "../Singleton/Singleton.h"
+#include "engine/Log/Log.h"
+#include "engine/Memory/PoolAllocator.h"
+#include "engine/Singleton/Singleton.h"
 
 namespace ASEngine
 {

@@ -1,9 +1,5 @@
-//
-// Created by ksiks_wa3r on 3/1/23.
-//
-
-#ifndef MY_APPLICATION_RENDERER_H
-#define MY_APPLICATION_RENDERER_H
+#ifndef ASENGINE_RENDERER_H
+#define ASENGINE_RENDERER_H
 
 #ifdef __ANDROID__
 #include <GLES2/gl2.h>
@@ -14,7 +10,7 @@
 
 #endif
 
-#include "../FileSystem/File.h"
+#include "engine/FileSystem/File.h"
 
 #include "Camera.h"
 #include "Color.h"
@@ -41,4 +37,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //MY_APPLICATION_RENDERER_H
+#endif //ASENGINE_RENDERER_H

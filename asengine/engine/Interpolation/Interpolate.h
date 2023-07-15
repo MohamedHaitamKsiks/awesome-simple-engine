@@ -1,12 +1,9 @@
-//
-// Created by ksiks_wa3r on 4/11/23.
-//
 
-#ifndef ANDROIDSIMPLEENGINE_INTERPOLATE_H
-#define ANDROIDSIMPLEENGINE_INTERPOLATE_H
+#ifndef ASENGINE_INTERPOLATE_H
+#define ASENGINE_INTERPOLATE_H
 
-#include "../Math/vec2.h"
-#include "../Renderer/Color.h"
+#include "engine/Math/vec2.h"
+#include "engine/Renderer/Color.h"
 
 namespace ASEngine {
 
@@ -26,4 +23,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_INTERPOLATE_H
+#endif //ASENGINE_INTERPOLATE_H

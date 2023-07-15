@@ -1,12 +1,9 @@
-//
-// Created by ksiks_wa3r on 4/11/23.
-//
 
-#ifndef ANDROIDSIMPLEENGINE_PARTICLE_H
-#define ANDROIDSIMPLEENGINE_PARTICLE_H
+#ifndef ASENGINE_PARTICLE_H
+#define ASENGINE_PARTICLE_H
 
-#include "../Math/vec2.h"
-#include "../Renderer/Color.h"
+#include "engine/Math/vec2.h"
+#include "engine/Renderer/Color.h"
 
 namespace ASEngine {
 
@@ -23,4 +20,4 @@ namespace ASEngine {
 
 } // ASEgnine
 
-#endif //ANDROIDSIMPLEENGINE_PARTICLE_H
+#endif //ASENGINE_PARTICLE_H

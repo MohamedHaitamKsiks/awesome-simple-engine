@@ -1,20 +1,19 @@
 
 
-#ifndef MY_APPLICATION_MATERIAL_H
-#define MY_APPLICATION_MATERIAL_H
+#ifndef ASENGINE_MATERIAL_H
+#define ASENGINE_MATERIAL_H
 
 #include "Resource.h"
 
-#include "../Renderer/Renderer.h"
-#include "../Renderer/Texture.h"
-#include "../Renderer/Color.h"
-#include "../Renderer/Shader.h"
+#include "engine/Renderer/Renderer.h"
+#include "engine/Renderer/Texture.h"
+#include "engine/Renderer/Color.h"
+#include "engine/Renderer/Shader.h"
 
-
-#include "../Math/mat3.h"
-#include "../Math/vec2.h"
-#include "../Thirdparty/json.hpp"
-#include "../Log/Log.h"
+#include "engine/Math/mat3.h"
+#include "engine/Math/vec2.h"
+#include "engine/Thirdparty/json.hpp"
+#include "engine/Log/Log.h"
 
 #include <unordered_map>
 #include <sstream>
@@ -32,4 +31,4 @@ namespace ASEngine {
 
 } //ASEngine
 
-#endif //MY_APPLICATION_MATERIAL_H
+#endif //ASENGINE_MATERIAL_H

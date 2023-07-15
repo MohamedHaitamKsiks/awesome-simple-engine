@@ -79,7 +79,7 @@ namespace ASEngine {
 		setUniformData(false, texture);
 
 		//draw every character
-		vec2 cursorPosition = vec2::zero();
+		vec2 cursorPosition = vec2::ZERO();
 		for (auto c: text) {
 			//test character
 			switch (c) {

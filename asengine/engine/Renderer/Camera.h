@@ -1,12 +1,8 @@
-//
-// Created by ksiks_wa3r on 3/21/23.
-//
+#ifndef ASENGINE_CAMERA_H
+#define ASENGINE_CAMERA_H
 
-#ifndef MY_APPLICATION_CAMERA_H
-#define MY_APPLICATION_CAMERA_H
-
-#include "../Math/vec2.h"
-#include "../Math/mat3.h"
+#include "engine/Math/vec2.h"
+#include "engine/Math/mat3.h"
 
 namespace ASEngine {
 
@@ -29,4 +25,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //MY_APPLICATION_CAMERA_H
+#endif //ASENGINE_CAMERA_H

@@ -1,12 +1,10 @@
-//
-// Created by ksiks_wa3r on 3/27/23.
-//
 
-#ifndef ANDROIDSIMPLEENGINE_GRAPHICS_H
-#define ANDROIDSIMPLEENGINE_GRAPHICS_H
+#ifndef ASENGINE_GRAPHICS_H
+#define ASENGINE_GRAPHICS_H
 
-#include "../Resource/Sprite.h"
-#include "../Resource/Font.h"
+#include "engine/Resource/Sprite.h"
+#include "engine/Resource/Font.h"
+
 #include "Texture.h"
 #include "Camera.h"
 #include "Color.h"
@@ -58,4 +56,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_GRAPHICS_H
+#endif //ASENGINE_GRAPHICS_H
