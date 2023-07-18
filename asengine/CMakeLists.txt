@@ -39,16 +39,18 @@ add_library(
     engine/String/UniqueString.cpp
     engine/String/UniqueStringManager.cpp
     #rendering
-    engine/Renderer/Renderer.cpp
-    engine/Renderer/Shader.cpp
-    engine/Renderer/Texture.cpp
-    engine/Renderer/Screen.cpp
-    engine/Renderer/Camera.cpp
-    engine/Renderer/Color.cpp
-    engine/Renderer/Graphics.cpp
-    engine/Renderer/Vertex.cpp
-    engine/Renderer/Quad.cpp
-    engine/Renderer/VertexBufferObject.cpp
+    #engine/Renderer/Renderer.cpp
+    #engine/Renderer/Shader.cpp
+    #engine/Renderer/Texture.cpp
+    #engine/Renderer/Screen.cpp
+    #engine/Renderer/Camera.cpp
+    #engine/Renderer/Color.cpp
+    #engine/Renderer/Graphics.cpp
+    #engine/Renderer/Vertex.cpp
+    #engine/Renderer/Quad.cpp
+    #engine/Renderer/VertexBufferObject.cpp
+    #window
+    engine/Window/Window.cpp
     #math
     engine/Math/Random.cpp
     engine/Math/mat3.cpp

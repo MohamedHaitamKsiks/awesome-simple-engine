@@ -4,9 +4,9 @@ namespace ASEngine
 {
 
     // create archetype
-    bool ArchetypeManager::hasArchetype(uint32_t signature) const
+    bool ArchetypeManager::HasArchetype(uint32_t signature) const
     {
-        return archetypes.find(signature) != archetypes.end();
+        return m_Archetypes.find(signature) != m_Archetypes.end();
     }
 
 } // namespace ASEngine

@@ -16,14 +16,14 @@ namespace ASEngine
     {
         public:
             // init singleton
-            static void init();
+            static void Init();
             // get singleton
-            static T* getSingleton();
+            static inline T *GetSingleton() { return s_Singleton; };
             // terminate singleton
-            static void terminate(); 
+            static void Terminate(); 
 
-        private:
-            static T* singleton;
+        protected:
+            static T* s_Singleton;
     };
 
 } // namespace ASEngine

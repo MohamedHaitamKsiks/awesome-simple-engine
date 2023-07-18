@@ -6,14 +6,7 @@
 #include <algorithm>
 #include <cstdint>
 
-#ifdef __ANDROID__
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
-
-#else
-#include <GL/glew.h>
-
-#endif
+#include "GraphicsAPI.h"
 
 #include "engine/Resource/Image.h"
 #include "engine/Log/Log.h"

@@ -7,30 +7,30 @@
 
 namespace ASEngine {
 
-	class Log {
+	class Debug {
 	public:
 		// log args... to console
 		template<typename T, typename... types>
-		static void out(T firstValue,types... args)
+		static void Log(T firstValue,types... args)
 		{
 			std::stringstream ss;
-			Log::pushToStringStream(ss, firstValue, args...);
+			Debug::PushToStringStream(ss, firstValue, args...);
 
-			Log::out(ss.str());
+			Debug::Log(ss.str());
 		};
 
 		// log message to console
-		static void out(const std::string &message);
+		static void Log(const std::string &message);
 
 	private:
 		// push args to string stream
 		template <typename T, typename... types>
-		static void pushToStringStream(std::stringstream& ss, T firstValue, types... args)
+		static void PushToStringStream(std::stringstream& ss, T firstValue, types... args)
 		{
-			ss << firstValue;
+			ss << firstValue << " ";
 
 			if constexpr(sizeof...(args) > 0)
-				pushToStringStream(ss, args...);
+				PushToStringStream(ss, args...);
 		};
 	};
 

@@ -18,7 +18,8 @@ namespace ASEngine {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         //set clear color
-        glClearColor(0.5f, 0.5f, 0.55f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glViewport(1280/8, 0, 720/2, 1280/2);
 
         //this is temporary
         //I will remove this after I rework the material system

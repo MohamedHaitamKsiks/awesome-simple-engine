@@ -6,11 +6,11 @@
 
 namespace ASEngine {
 
-	bool Scene::load(const std::string &sceneFilePath) {
+	bool Scene::Load(const std::string &sceneFilePath) {
 		return true;
 	}
 
-	void Scene::importAll() {
+	void Scene::ImportAll() {
 
 	}
 

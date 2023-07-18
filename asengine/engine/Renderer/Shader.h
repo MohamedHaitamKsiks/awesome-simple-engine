@@ -1,14 +1,7 @@
 #ifndef ASENGINE_SHADER_H
 #define ASENGINE_SHADER_H
 
-#ifdef __ANDROID__
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
-
-#else
-#include <GL/glew.h>
-
-#endif
+#include "GraphicsAPI.h"
 
 #include "Texture.h"
 #include "Color.h"
@@ -18,6 +11,7 @@
 namespace ASEngine
 {
 
+    
     class ShaderParam {
         public:
             ShaderParam(int _uniformLocation);

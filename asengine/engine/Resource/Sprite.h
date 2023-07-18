@@ -16,17 +16,18 @@ namespace ASEngine {
 
     class Sprite : public Resource{
     public:
-        //data
-        Texture texture = Texture::defaultTexture;
-        int frames = 0;
-        int width = -1;
-        int height = -1;
-        vec2 offset = vec2{0.0f, 0.0f};
-
         //load
-        bool load(Texture _texture, int _frames, vec2 _offset );
+        bool Load(Texture texture, int frames, const vec2& offset );
     
-        static void importAll();
+        static void ImportAll();
+    
+    private:
+        // data
+        Texture m_Texture;
+        int m_Frames = 0;
+        int m_Width = -1;
+        int m_Height = -1;
+        vec2 m_Offset = vec2{0.0f, 0.0f};
     };
 
 } // ASEnginge

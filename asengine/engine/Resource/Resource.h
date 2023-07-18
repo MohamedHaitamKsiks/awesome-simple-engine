@@ -14,7 +14,7 @@ namespace ASEngine
     {
     public:
         //resource id
-        ResourceID id;
+        ResourceID ID;
 
         
     };

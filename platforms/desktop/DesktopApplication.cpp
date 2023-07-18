@@ -1,9 +1,11 @@
 #include "DesktopApplication.h"
 #include "ecs/registry.h"
 
-void DesktopApplication::start() {
-    if (!init()) {
-        ASEngine::Log::out("Application coudn't started!");
+void DesktopApplication::Start()
+{
+    if (!Init())
+    {
+        Debug::Log("Application coudn't started!");
         return;
     }
 
@@ -14,70 +16,104 @@ void DesktopApplication::start() {
     float avgFps = 0.0f;
 
     /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(m_Window))
     {
         // get time now
         auto pastTime = std::chrono::high_resolution_clock::now();
 
-        update(delta);
-        if (delta > 0.0f)
-        {
-            
-            fps = 1.0f / delta;
-            avgFps = (avgFps + fps) / 2.0f;
-            
-            std::stringstream ss;
-            ss << avgFps << "FPS";
-
-            glfwSetWindowTitle(window, ss.str().c_str());
-        }
+        Update(delta);
 
         // compute delta
         auto currentTime = std::chrono::high_resolution_clock::now();
         delta = std::chrono::duration_cast<std::chrono::microseconds>(currentTime - pastTime).count() / SEC_TO_MICRO;
     }
 
-    terminate();
+    Terminate();
 }
 
-bool DesktopApplication::init() {
+bool DesktopApplication::Init()
+{
     // create asengine app
-    ASEngine::Application::create(ASEngine::PLATFORM_DESKTOP);
+    Application::Create(Platform::DESKTOP);
 
     /* Initialize the library */
     if (!glfwInit())
         return false;
 
     /* Create a windowed mode window and its OpenGL context */
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    window = glfwCreateWindow(720/2 , 1280/2 , "Hello World", NULL, NULL);
-
-    if (!window) {
+    //
+   
+    m_Window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+   
+    if (!m_Window)
+    {
         glfwTerminate();
         return false;
     }
 
     /* Make the window's context current */
-    glfwMakeContextCurrent(window);
-    ASEngine::Application::getSingleton()->init();
-    ASEngine::Screen::setWindowSize(720/2, 1280/2);
-
+    glfwMakeContextCurrent(m_Window);
+    glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, GLFW_FALSE);
+    
+    // connect window signals
+    Window::ResizeSignal().Connect(std::bind(&DesktopApplication::OnWindowChangeSize, this, std::placeholders::_1, std::placeholders::_2));
+    Window::TitleSignal().Connect(std::bind(&DesktopApplication::OnWindowSetTitle, this, std::placeholders::_1));
+    Window::FullscreenSignal().Connect(std::bind(&DesktopApplication::OnWindowSetFullscreen, this, std::placeholders::_1));
+    
+    // load project settings
+    Application::LoadProjectSettings();
+    
     // ecs registry
     ECSRegistry();
 
     return true;
-
 }
 
-void DesktopApplication::update(float delta) {
-    ASEngine::Application::getSingleton()->update(delta);
+void DesktopApplication::Update(float delta)
+{
+    // clear color
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    Application::Update(delta);
     /* Swap front and back buffers */
-    glfwSwapBuffers(window);
+    glfwSwapBuffers(m_Window);
     /* Poll for and process events */
     glfwPollEvents();
 }
 
-void DesktopApplication::terminate() {
-    ASEngine::Application::getSingleton()->terminate();
+void DesktopApplication::Terminate()
+{
+    Application::Terminate();
     glfwTerminate();
+}
+
+void DesktopApplication::OnWindowChangeSize(int width, int height)
+{
+    glfwSetWindowSize(m_Window, width, height);
+    m_WindowInfo.Width = width;
+    m_WindowInfo.Height = height;
+}
+
+void DesktopApplication::OnWindowSetFullscreen(bool fullscreen)
+{
+    if (fullscreen)
+    {
+        // save window info
+        glfwGetWindowSize(m_Window, &m_WindowInfo.Width, &m_WindowInfo.Height);
+        // set full screen
+        GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+        const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+        glfwSetWindowMonitor(m_Window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+    }
+    else 
+    {
+        // set windowed
+        glfwSetWindowMonitor(m_Window, NULL, m_WindowInfo.XPos, m_WindowInfo.YPos, m_WindowInfo.Width, m_WindowInfo.Height, 0);
+    }
+}
+
+void DesktopApplication::OnWindowSetTitle(std::string title)
+{
+    glfwSetWindowTitle(m_Window, title.c_str());
 }

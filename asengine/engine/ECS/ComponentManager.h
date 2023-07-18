@@ -13,20 +13,23 @@ namespace ASEngine
     class ComponentManager: public Singleton<ComponentManager>
     {
     public:
-        // register component internal
+        // register component
         template <typename T>
-        void registerComponent(UniqueString componentName);
+        static inline void RegisterComponent(UniqueString componentName) { GetSingleton()->IRegisterComponent<T>(componentName); };
 
-        // get signature of a composition of components internal
+        // get signature of a composition of components
         template <typename T, typename... types>
-        uint32_t getSignature();
+        static uint32_t GetSignature();
 
     private:
+        template <typename T>
+        void IRegisterComponent(UniqueString componentName);
+
         // is valid signature <===> is prime
-        bool isValidSignature(uint32_t signature);
+        bool IsValidSignature(uint32_t signature);
 
         // last component signature
-        uint32_t lastComponentSignature = 1;
+        uint32_t m_LastComponentSignature = 1;
 
     };
 
@@ -34,23 +37,23 @@ namespace ASEngine
 
     // register component implementation
     template <typename T>
-    void ComponentManager::registerComponent(UniqueString componentName)
+    void ComponentManager::IRegisterComponent(UniqueString componentName)
     {
         // check if component is of component type
         static_assert(std::is_base_of_v<Component<T>, T>);
 
         // create signature
-        int currentNumber = lastComponentSignature + 1;
-        for (uint32_t i = lastComponentSignature + 1; i < UINT32_MAX; i++)
+        int currentNumber = m_LastComponentSignature + 1;
+        for (uint32_t i = m_LastComponentSignature + 1; i < UINT32_MAX; i++)
         {
-            if (isValidSignature(i))
+            if (IsValidSignature(i))
             {
                 // register component
-                T::signature = i;
-                T::name = componentName;
+                Component<T>::s_Signature = i;
+                Component<T>::s_Name = componentName;
 
                 // update last component signature
-                lastComponentSignature = i;
+                m_LastComponentSignature = i;
                 return;
             }
         }
@@ -58,16 +61,16 @@ namespace ASEngine
 
     // get signature implementation
     template <typename T, typename... types>
-    uint32_t ComponentManager::getSignature()
+    uint32_t ComponentManager::GetSignature()
     {
         // check if component is of component type
         static_assert(std::is_base_of_v<Component<T>, T>);
 
         // compute signature
-        uint32_t signature = T::signature;
+        uint32_t signature = Component<T>::s_Signature;
         if constexpr (sizeof...(types) > 0)
         {
-            signature *= getSignature<types...>();
+            signature *= GetSignature<types...>();
         }
 
         return signature;

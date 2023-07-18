@@ -28,78 +28,97 @@ namespace ASEngine
         // contructor
         World();
 
-        // destructorE
+        // destructor
         ~World();
 
         // create entity based on an archetype
-        Entity create(std::shared_ptr<Archetype> archetype);
-
+        static inline Entity Create(std::shared_ptr<Archetype> archetype) { return GetSingleton()->ICreate(archetype); };
+        
         // create entity based on components signature
         template<typename T, typename... types>
-        Entity create()
-        {
-            // get archetype
-            std::shared_ptr<Archetype> archetype = ArchetypeManager::getSingleton()->getArchetype<T, types...>();
-            // create entity
-            return create(archetype);
-        };
-
+        static Entity Create();
+        
         // create entities with components values
         template <typename T, typename... types>
-        Entity create(T firstComponent, types... components)
-        {
-            Entity entity = create<T, types...>();
-            setComponents<T, types...>(entity, firstComponent, components...);
-            return entity;
-        };
-
+        static Entity Create(T firstComponent, types... components);
+       
         // set comonents of entity
         template <typename T, typename... types>
-        void setComponents(Entity entity, const T& firstComponent, const types&... components)
-        {
-            // set first component
-            T* component = getComponent<T>(entity);
-            *component = firstComponent;
-
-            if constexpr(sizeof...(components) > 0)
-            {
-                setComponents(entity, components...);
-            }
-            
-        };
-
+        static inline void SetComponents(Entity entity, const T& firstComponent, const types&... components);
+        
         // get component of entity
-        template<typename T>
-        T* getComponent(Entity entity)
-        {
-            // check if component is of component type
-            static_assert(std::is_base_of_v<Component<T>, T>);
-
-            // get component
-            auto* archetype = entities.get(entity)->archetype;
-            return archetype->getComponentOfEntity<T>(entity);
-        };
-
+        template <typename T>
+        static inline T* GetComponent(Entity entity) { return GetSingleton()->IGetComponent<T>(entity); };
+        
         // destroy entity
-        void destroy(Entity entity);
-
+        static inline void Destroy(Entity entity) { GetSingleton()->IDestroy(entity); };
+       
         // update the world
-        void update(float delta);
+        static void Update(float delta);
 
-        // render the world
-        void draw(Graphics &graphics);
 
     private:
+        PoolAllocator<EntityData> m_Entities{UINT16_MAX};
+        std::vector<Entity> m_DestroyQueue = {};
+
         // clear destroy queue executed at the end of the frame to delete
-        void cleanDestroyQueue();
-    
-        // entity managements
-        PoolAllocator<EntityData> entities{UINT16_MAX};
-        
-        // destroy queue
-        std::vector<Entity> destroyQueue = {};
+        void CleanDestroyQueue();
 
+        // internal singleton functions
 
+        // create entity based on archetype
+        Entity ICreate(std::shared_ptr<Archetype> archetype);
+
+        // get component from an entity
+        template <typename T>
+        T *IGetComponent(Entity entity);
+
+        // destroy entity
+        void IDestroy(Entity entity);
+
+    };
+
+    // implementations
+
+    template <typename T, typename... types>
+    Entity World::Create()
+    {
+        // get archetype
+        std::shared_ptr<Archetype> archetype = ArchetypeManager::GetArchetype<T, types...>();
+        // create entity
+        return Create(archetype);
+    };
+
+    template <typename T, typename... types>
+    Entity World::Create(T firstComponent, types... components)
+    {
+        Entity entity = Create<T, types...>();
+        SetComponents<T, types...>(entity, firstComponent, components...);
+        return entity;
+    };
+
+    template <typename T, typename... types>
+    void World::SetComponents(Entity entity, const T &firstComponent, const types &...components)
+    {
+        // set first component
+        T *component = GetComponent<T>(entity);
+        *component = firstComponent;
+
+        if constexpr (sizeof...(components) > 0)
+        {
+            SetComponents(entity, components...);
+        }
+    };
+
+    template <typename T>
+    T * World::IGetComponent(Entity entity)
+    {
+        // check if component is of component type
+        static_assert(std::is_base_of_v<Component<T>, T>);
+
+        // get component
+        auto *archetype = m_Entities.Get(entity)->ArchetypeOwner;
+        return archetype->GetComponentOfEntity<T>(entity);
     };
 
 } // namespace ASENGINE

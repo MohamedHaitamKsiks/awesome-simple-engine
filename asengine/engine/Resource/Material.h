@@ -26,7 +26,7 @@ namespace ASEngine {
     public:
         
     private:
-        
+        Shader m_Shader;
     };
 
 } //ASEngine

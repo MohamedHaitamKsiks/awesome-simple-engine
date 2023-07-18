@@ -3,31 +3,31 @@
 namespace ASEngine
 {
 
-    float vec2::angle()
+    float vec2::Angle()
     {
         return atan2(y, x);
     }
 
     // dot product
-    float vec2::dot(const vec2& v)
+    float vec2::Dot(const vec2& v)
     {
         return x * v.x + y * v.y;
     }
 
     // lenghts
-    float vec2::length()
+    float vec2::Length()
     {
         return sqrtf(x * x + y * y);
     }
 
     // length squared
-    float vec2::lengthSquared()
+    float vec2::LengthSquared()
     {
         return x * x + y * y;
     }
 
     // rotate
-    vec2 vec2::rotate(float angle)
+    vec2 vec2::Rotate(float angle)
     {
         return vec2
         {
@@ -37,8 +37,8 @@ namespace ASEngine
     }
 
     // normalized
-    vec2 vec2::normalized()
+    vec2 vec2::Normalized()
     {
-        return *this / this->length();
+        return *this / this->Length();
     }
 } // namespace ASEngine

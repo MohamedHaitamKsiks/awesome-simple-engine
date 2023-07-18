@@ -25,36 +25,39 @@ namespace ASEngine {
         //contructors / deconstructors
         PoolAllocator() : BasePoolAllocator(sizeof(T)) 
         {
-            initializePoolValues();
+            InitializePoolValues();
         };
 
-        PoolAllocator(size_t _capacity) : BasePoolAllocator(sizeof(T), _capacity)
+        PoolAllocator(size_t capacity) : BasePoolAllocator(sizeof(T), capacity)
         {
-            initializePoolValues();
+            InitializePoolValues();
         };
+
+        // push value to the allocator
+        ChunkID Push(const T& value);
 
         // free memory
-        void free(ChunkID index);
+        void Free(ChunkID index);
 
         // get at 
-        T* get(ChunkID index);
+        T* Get(ChunkID index);
 
         // iterator
         using Iterator = PoolAllocatorIterator<T>;
 
-        // begin
-        Iterator begin()
+        // iterator begin
+        inline Iterator begin()
         {
-            return Iterator(this, head);
+            return Iterator(this, m_Head);
         };
-        // end
-        Iterator end()
+        // iterator end
+        inline Iterator end()
         {
             return Iterator(this, UINT32_MAX);
         };
 
     private:
-        void initializePoolValues();
+        void InitializePoolValues();
 
     };
 

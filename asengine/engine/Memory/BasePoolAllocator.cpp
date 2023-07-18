@@ -4,140 +4,136 @@
 namespace ASEngine
 {
 
-    BasePoolAllocator::BasePoolAllocator(size_t _chunkSize)
+    BasePoolAllocator::BasePoolAllocator(size_t chunkSize)
     {
-        chunkSize = _chunkSize;
+        m_ChunkSize = chunkSize;
     }
 
-    BasePoolAllocator::BasePoolAllocator(size_t _chunkSize, size_t _capacity)
+    BasePoolAllocator::BasePoolAllocator(size_t chunkSize, size_t capacity)
     {
-        chunkSize = _chunkSize;
-        init(_capacity);
+        m_ChunkSize = chunkSize;
+        Init(capacity);
     }
 
     BasePoolAllocator::~BasePoolAllocator()
     {
-        delete[] data;
+        delete[] m_Data;
     }
 
-    void BasePoolAllocator::init(size_t _capacity)
+    void BasePoolAllocator::Init(size_t capacity)
     {
         //set capacity
-        capacity = _capacity;
+        m_Capacity = capacity;
         
         // allocate data
-        data = new uint8_t[capacity * chunkSize];
+        m_Data = new uint8_t[m_Capacity * m_ChunkSize];
 
         // stack of all free chunks
-        freeChunkStackPointer = capacity;
-        freeChunksStack = std::make_unique<ChunkID[]>(capacity);
+        m_FreeChunkStackPointer = m_Capacity;
+        m_FreeChunksStack = std::make_unique<ChunkID[]>(m_Capacity);
         
         // allocate linked list
-        chunkNext = std::make_unique<ChunkID[]>(capacity);
-        chunkPrev = std::make_unique<ChunkID[]>(capacity);
+        m_ChunkNext = std::make_unique<ChunkID[]>(m_Capacity);
+        m_ChunkPrev = std::make_unique<ChunkID[]>(m_Capacity);
 
         // used chunks
-        usedChunks = std::make_unique<bool[]>(capacity);
+        m_UsedChunks = std::make_unique<bool[]>(m_Capacity);
 
-        for (uint32_t i = 0; i < capacity; i++)
+        for (uint32_t i = 0; i < m_Capacity; i++)
         {
-            freeChunksStack[i] = capacity - i - 1;
-            usedChunks[i] = false;
-            chunkNext[i] = CHUNK_NULL;
-            chunkPrev[i] = CHUNK_NULL;
+            m_FreeChunksStack[i] = m_Capacity - i - 1;
+            m_UsedChunks[i] = false;
+            m_ChunkNext[i] = CHUNK_NULL;
+            m_ChunkPrev[i] = CHUNK_NULL;
         }
     }
 
-    ChunkID BasePoolAllocator::alloc()
+    ChunkID BasePoolAllocator::Alloc()
     {
-        if (getSize() == getCapacity())
+        if (GetSize() == GetCapacity())
             return CHUNK_NULL;
 
         // pop chunk id from free chunks stack
-        freeChunkStackPointer--;
-        ChunkID allocatedChunkId = freeChunksStack[freeChunkStackPointer];
+        m_FreeChunkStackPointer--;
+        ChunkID allocatedChunkId = m_FreeChunksStack[m_FreeChunkStackPointer];
 
         // use chunk
-        usedChunks[allocatedChunkId] = true;
+        m_UsedChunks[allocatedChunkId] = true;
 
         // update linked list
-        if (size != 0)
+        if (m_Size != 0)
         {
-            chunkNext[foot] = allocatedChunkId;
-            chunkPrev[allocatedChunkId] = foot;
+            m_ChunkNext[m_Foot] = allocatedChunkId;
+            m_ChunkPrev[allocatedChunkId] = m_Foot;
         }
         else
         {
-            head = allocatedChunkId;
+            m_Head = allocatedChunkId;
         }
-        foot = allocatedChunkId;
+        m_Foot = allocatedChunkId;
 
-        size++;
+        m_Size++;
 
         return allocatedChunkId;
 
     }
 
-    uint8_t* BasePoolAllocator::getRaw(ChunkID index)
+    uint8_t* BasePoolAllocator::GetRaw(ChunkID index)
     {
-        return data + index * chunkSize;
+        return m_Data + index * m_ChunkSize;
     }
 
-    void BasePoolAllocator::free(ChunkID index)
+    void BasePoolAllocator::Free(ChunkID index)
     {
-        if (!isUsed(index))
+        if (!IsUsed(index))
             return;
 
         //free data
-        size--;
-        freeChunksStack[index];
-        freeChunkStackPointer++;
-        usedChunks[index] = false;
+        m_Size--;
+        m_FreeChunksStack[index];
+        m_FreeChunkStackPointer++;
+        m_UsedChunks[index] = false;
+
         // update linked list
-        if (index == head)
+        if (index == m_Head)
         {
-            head = next(index);
+            m_Head = Next(index);
         }
-        else if (index == foot)
+        else if (index == m_Foot)
         {
-            foot = prev(index);
-            chunkNext[foot] = CHUNK_NULL;
+            m_Foot = Prev(index);
+            m_ChunkNext[m_Foot] = CHUNK_NULL;
         }
         else
         {
-            chunkNext[prev(index)] = next(index);
-            chunkPrev[next(index)] = prev(index);
+            m_ChunkNext[Prev(index)] = Next(index);
+            m_ChunkPrev[Next(index)] = Prev(index);
         }
     }
 
-    void BasePoolAllocator::clear()
+    bool BasePoolAllocator::IsUsed(ChunkID index) const
     {
-
+        return m_UsedChunks[index];
     }
 
-    bool BasePoolAllocator::isUsed(ChunkID index) const
+    size_t BasePoolAllocator::GetCapacity() const
     {
-        return usedChunks[index];
+        return m_Capacity;
     }
 
-    size_t BasePoolAllocator::getCapacity() const
+    size_t BasePoolAllocator::GetSize() const
     {
-        return capacity;
+        return m_Size;
     }
 
-    size_t BasePoolAllocator::getSize() const
+    ChunkID BasePoolAllocator::Next(ChunkID index) const
     {
-        return size;
+        return m_ChunkNext[index];
     }
 
-    ChunkID BasePoolAllocator::next(ChunkID index) const
+    ChunkID BasePoolAllocator::Prev(ChunkID index) const
     {
-        return chunkNext[index];
-    }
-
-    ChunkID BasePoolAllocator::prev(ChunkID index) const
-    {
-        return chunkPrev[index];
+        return m_ChunkPrev[index];
     }
 
 } // namespace ASEngine

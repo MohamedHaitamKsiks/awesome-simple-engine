@@ -18,24 +18,32 @@ namespace ASEngine
     class BaseSystem
     {
     public:
-        // archetypes list
-        std::vector<std::weak_ptr<Archetype>> archetypes = {};
 
         // get signature
-        uint32_t getSignature() const
+        inline uint32_t GetSignature() const
         {
-            return signature;
+            return m_Signature;
+        };
+
+        inline std::vector<std::weak_ptr<Archetype>>& GetArchetypes()
+        {
+            return m_Archetypes;
+        };
+
+        inline void AddArchetype(std::weak_ptr<Archetype> archetype)
+        {
+            m_Archetypes.push_back(archetype);
         };
 
         // on update
-        virtual void onUpdate(float delta) = 0;
-
-        // on draw
-        virtual void onDraw(Graphics &graphics) = 0;
+        virtual void OnUpdate(float delta) = 0;
 
     protected:
         // system signature with it's component requirements
-        uint32_t signature = 1;
+        uint32_t m_Signature = 1;
+
+        // archetypes list
+        std::vector<std::weak_ptr<Archetype>> m_Archetypes = {};
     };
 
 
@@ -47,20 +55,20 @@ namespace ASEngine
         // constructor
         System() 
         {
-            signature = ComponentManager::getSingleton()->getSignature<T, types...>();
+            m_Signature = ComponentManager::GetSignature<T, types...>();
         };
 
         // foreach entiy with signature of system
-        void forEach(std::function<void(T*, types*...)> callback)
+        void ForEach(std::function<void(T*, types*...)> callback)
         {
-            for (auto archetype: archetypes)
+            for (auto archetype: m_Archetypes)
             {
-                ComponentCollection<T>& collection = archetype.lock()->template getComponentCollection<T>();
+                ComponentCollection<T>& collection = archetype.lock()->template GetComponentCollection<T>();
 
                 for (auto it = collection.begin(); it != collection.end(); it++)
                 {   
-                    ChunkID index = it.currentPosition;
-                    callback(collection.get(index), archetype.lock()->template getComponentCollection<types>().get(index)...);
+                    ChunkID index = it.GetCurrentPosition();
+                    callback(collection.Get(index), archetype.lock()->template GetComponentCollection<types>().Get(index)...);
                 }
                 
             }

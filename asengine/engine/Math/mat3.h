@@ -35,20 +35,20 @@ namespace ASEngine {
         };
 
         // scale
-        static mat3 scale(const vec2& s);
+        static mat3 Scale(const vec2& s);
         //rotation
-        static mat3 rotation(float angle);
+        static mat3 Rotation(float angle);
         //translate
-        static mat3 translate(const vec2& v);
+        static mat3 Translate(const vec2& v);
         //transfrom
-        static mat3 transform(const vec2& translate, const vec2& scale, float rotation);
+        static mat3 Transform(const vec2& translate, const vec2& scale, float rotation);
         // tostring matrix
-        std::string toString();
+        std::string ToString();
 
-        inline float *operator[](int j)
+        inline float* operator[](int j)
         {
-            return &data[3 * j];
-        }
+            return &(data[3 * j]);
+        };
 
         // matrix multiplication
         inline mat3 operator * (mat3 m) 
@@ -80,7 +80,7 @@ namespace ASEngine {
 
 
         // matrix addition
-        inline mat3 operator + (mat3 &m)
+        inline mat3 operator + (mat3 m)
         {
             mat3 res;
 

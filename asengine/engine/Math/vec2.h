@@ -46,25 +46,25 @@ namespace ASEngine {
 
 
         // angle
-        float angle();
+        float Angle();
 
         // dot product
-        float dot(const vec2& v);
+        float Dot(const vec2& v);
 
         // lenghts
-        float length();
+        float Length();
 
         // length squared
-        float lengthSquared();
+        float LengthSquared();
 
         // rotate
-        vec2 rotate(float angle);
+        vec2 Rotate(float angle);
 
         // normalized
-        vec2 normalized();
+        vec2 Normalized();
 
         //add
-        inline vec2 operator+(const vec2& v) {
+        inline vec2 operator+(vec2 v) {
             return vec2
             {
                 x + v.x,
@@ -73,39 +73,43 @@ namespace ASEngine {
         }
 
         //sub
-        inline vec2 operator-(const vec2& v) {
-            vec2 out{};
-            out.x = x - v.x;
-            out.y = y - v.y;
-            return out;
+        inline vec2 operator-(vec2 v) {
+            return vec2
+            {
+                x - v.x,
+                y - v.y
+            };
         }
 
         //scale
         inline vec2 operator*(float s) {
-            vec2 out{};
-            out.x = x * s;
-            out.y = y * s;
-            return out;
+            return vec2
+            {
+                x * s,
+                y * s
+            };
         }
 
         //multiply
-        inline vec2 operator*(const vec2& v) {
-            vec2 out{};
-            out.x = x * v.x;
-            out.y = y * v.y;
-            return out;
+        inline vec2 operator*(vec2 v) {
+            return vec2
+            {
+                x * v.x,
+                y * v.y
+            };
         }
 
         //scale
         inline vec2 operator/(float s) {
-            vec2 out{};
-            out.x = x / s;
-            out.y = y / s;
-            return out;
+            return vec2
+            {
+                x / s,
+                y / s
+            };
         }
 
         //equal
-        inline bool operator==(const vec2& v) {
+        inline bool operator==(vec2 v) {
             return x == v.x && y == v.y;
         }
 

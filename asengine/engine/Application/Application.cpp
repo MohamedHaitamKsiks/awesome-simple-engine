@@ -2,120 +2,81 @@
 #include "Application.h"
 
 namespace ASEngine {
-	//application singletong
-	Application* Application::application = nullptr;
 
-	Application::Application(Platform _platform) {
-		platform = _platform;
-		if (application){
-			delete this;
-		}
+	Application::Application(Platform platform) {
+		// set platform
+		m_Platform = platform;
+
+		// init application window
+		Window::Init();
+
+		// init ecs world
+		World::Init();
+
+		// init unique string manager
+		UniqueStringManager::Init();
+
+		// init resource managers
+		//ResourceManager<Sprite>::Init();
+		//Sprite::importAll();
+
+		//ResourceManager<Font>::Init();
+		//Font::importAll();
+
+		Debug::Log("Application init complete");
 	}
 
-	void Application::create(Platform _platform) {
-		if (application)
+	Application::~Application()
+	{
+		World::Terminate();
+		UniqueStringManager::Terminate();
+		//ResourceManager<Sprite>::Terminate();
+		//ResourceManager<Font>::Terminate();
+		Window::Terminate();
+	}
+
+	void Application::Create(Platform platform) {
+		if (s_Singleton)
 			return;
-		application = new Application(_platform);
-		//import scenes
-		//Scene::importAll();
-		//load project settings
-		application->loadProjectSettings();
-
-		//init ecs world
-		World::init();
+		s_Singleton = new Application(platform);
 	}
 
-	Application* Application::getSingleton() {
-		return application;
-	}
-
-	void Application::init() {
-		// create default camera
-		Camera::current = new Camera();
-		//init renderer
-		renderer.init();
-		//init vbo
-		VertexBufferObject::init();
-		//init texture
-		Texture::init();
-		//init graphics
-		graphics.init();
-		//init unique string manager
-		UniqueStringManager::init();
-
-		//init resource managers
-		ResourceManager<Sprite>::init();
-		Sprite::importAll();
-		
-		ResourceManager<Font>::init();
-		Font::importAll();
-
-		Log::out("Application init complete");
-	}
-
-
-	void Application::onInputEvent(InputEvent &inputEvent) {
+	void Application::IOnInputEvent(InputEvent &inputEvent) {
 		// process event for each instance
 	}
 
-	void Application::update(float delta) {
+	void Application::Update(float delta) {
 		// update here..
-		World::getSingleton()->update(delta);
-
-		// init draw
-		renderer.draw();
-
-		// draw here ..
-		World::getSingleton()->draw(graphics);
-
-		// flush graphics
-		graphics.update();
-	}
-
-	void Application::terminate() {
-		// terminate graphics
-		graphics.terminate();
-		// destroy all vbo
-		VertexBufferObject::terminate();
-		//terminate textures
-		Texture::terminate();
-		// terminate resource managers
-		ResourceManager<Sprite>::terminate();
-		ResourceManager<Font>::terminate();
-		ResourceManager<Scene>::terminate();
-		//terminate world
-		World::terminate();
-		//delete camera
-		delete Camera::current;
-		//delete app
-		delete application;
-		application = nullptr;
-		Log::out("application terminated!");
+		World::GetSingleton()->Update(delta);
 	}
 
 
-	void Application::loadProjectSettings() {
+	void Application::LoadProjectSettings() {
 		//load json file
 		File projectSettingsFile;
-		projectSettingsFile.open("project.settings.json", FILE_OPEN_MODE_READ);
-		std::string projectSettingsString = projectSettingsFile.readText();
-		projectSettingsFile.close();
+		projectSettingsFile.Open("project.settings.json", FileOpenMode::READ);
+		std::string projectSettingsString = projectSettingsFile.ReadText();
+		projectSettingsFile.Close();
+		
+
 		//parse to json
 		nlohmann::json projectSettings = nlohmann::json::parse(projectSettingsString);
-		//get settings
+		
+		// set project name
 		std::string projectName = projectSettings["name"];
-		//set window size
-		int projectWindowWidth = projectSettings["windowSize"]["width"];
-		int projectWindowHeight = projectSettings["windowSize"]["height"];
-		Screen::setSize(projectWindowWidth, projectWindowHeight);
-		//set main scene
-		std::string projectMainScene = projectSettings["mainScene"];
-		//Scene::changeSceneTo(projectMainScene);
+		Window::SetTitle(projectName);
 
+		
+
+		// set window size
+		int windowWidth = projectSettings["window"]["size"]["width"];
+		int windowHeight = projectSettings["window"]["size"]["height"];
+		Window::SetSize(windowWidth, windowHeight);
+
+		// set fullscreen mode
+		bool windowIsFullscreen = projectSettings["window"]["fullscreen"];
+		Window::SetFullscreen(windowIsFullscreen);
 	}
 
-	Platform Application::getPlatform() {
-		return platform;
-	}
 
 } // ASEngine

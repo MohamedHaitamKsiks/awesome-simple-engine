@@ -16,9 +16,9 @@ namespace ASEngine {
 	class Scene: public Resource {
 	public:
 		//load scene from file
-		bool load(const std::string& sceneFilePath);
+		bool Load(const std::string& sceneFilePath);
 
-		static void importAll();
+		static void ImportAll();
 	};
 
 } // ASEngine

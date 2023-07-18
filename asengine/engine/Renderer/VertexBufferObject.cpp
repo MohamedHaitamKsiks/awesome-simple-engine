@@ -49,6 +49,9 @@ namespace ASEngine {
 	}
 
 	void VertexBufferObject::addQuad(Quad &quad) {
+		//if reached the limit of the vbo draw the batch and start a new one
+		if (objectCount == VBO_MAX_OBJECTS)
+			draw();
 		//copy quad data to buffer
 		vertexData[objectCount] = quad;
 		objectCount++;

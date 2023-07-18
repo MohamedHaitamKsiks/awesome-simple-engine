@@ -3,25 +3,27 @@
 namespace ASEngine 
 {
 
-    bool Sprite::load(Texture _texture, int _frames, vec2 _offset) 
+    bool Sprite::Load(Texture texture, int frames, const vec2& offset) 
     {
-        if (!_frames) 
+        if (m_Frames <= 0) 
             return false;
-        texture = _texture;
-        width = _texture.width() / _frames;
-        height = _texture.height();
-        frames = _frames;
-        offset = _offset;
+
+        m_Texture = texture;
+        m_Width = texture.width() / frames;
+        m_Height = texture.height();
+        m_Frames = frames;
+        m_Offset = offset;
         return true;
     }
 
     
-    void Sprite::importAll() {
+    void Sprite::ImportAll() {
+        /*
         //load json file
         File importSpritesFile;
-        importSpritesFile.open("sprites/import.sprites.json", FILE_OPEN_MODE_READ);
-        std::string importSpritesString = importSpritesFile.readText();
-        importSpritesFile.close();
+        importSpritesFile.Open("sprites/import.sprites.json", FileOpenMode::READ);
+        std::string importSpritesString = importSpritesFile.ReadText();
+        importSpritesFile.Close();
         //parse to json
         nlohmann::json importedSprites = nlohmann::json::parse(importSpritesString);
         //import all sprites
@@ -36,15 +38,16 @@ namespace ASEngine
             };
             //load sprite
             Image spriteImage;
-            spriteImage.load("sprites/" + spriteImageFile);
-            Texture spriteTexture = Texture::load(spriteImage);
+            spriteImage.Load("sprites/" + spriteImageFile);
+            //Texture spriteTexture = Texture::load(spriteImage);
 
-            ResourceManager<Sprite>::getSingleton()
-                ->add(UniqueString(spriteName))
-                ->load(spriteTexture, spriteFrames, spriteOffset);
+            //ResourceManager<Sprite>::getSingleton()
+            //    ->add(UniqueString(spriteName))
+            //    ->load(spriteTexture, spriteFrames, spriteOffset);
 
-            Log::out(spriteName + " loaded");
+            //Log::out(spriteName + " loaded");
         }
+        */
     }
     
 

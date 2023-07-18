@@ -22,24 +22,56 @@ namespace ASEngine
         // create unique string from given str, if str exists it will have the same id. 
         UniqueString(const std::string& str);
         // create from id
-        UniqueString(UniqueStringID _id);
+        UniqueString(UniqueStringID id);
         // empty constructor
         UniqueString() {};
+
         // compare strings
-        bool operator==(const UniqueString& uStr);
+        friend inline bool operator==(const UniqueString& uStrLeft, const UniqueString& uStrRight)
+        {
+            return uStrLeft.m_Id == uStrRight.m_Id;
+        };
+
+        friend inline bool operator!=(const UniqueString &uStrLeft, const UniqueString &uStrRight)
+        {
+            return uStrLeft.m_Id != uStrRight.m_Id;
+        };
         // get string length
-        size_t getLength() const;
+        size_t GetLength() const
+        {
+            return UniqueStringManager::GetSingleton()->GetLength(m_Id);
+        }
         // get id
-        UniqueStringID getId() const;
-        // get std::string from this string use it only for debug and log 
-        std::string getString() const;
+        inline UniqueStringID GetId() const 
+        { 
+            return m_Id; 
+        };
+        // get std::string from this string use it only for debug and log
+        inline std::string GetString() const 
+        { 
+            return UniqueStringManager::GetSingleton()->GetString(m_Id); 
+        };
+
     private:
         /* data */
-        UniqueStringID id = CHUNK_NULL;
+        UniqueStringID m_Id = CHUNK_NULL;
     };
 
     const UniqueString UNIQUE_STRING_NULL = UniqueString(CHUNK_NULL);
+
 } // namespace ASEngine
 
+// define hash function for unique string
+namespace std
+{
+    template <>
+    struct hash<ASEngine::UniqueString>
+    {
+        size_t operator()(const ASEngine::UniqueString &x) const
+        {
+            return hash<uint32_t>()((uint32_t) x.GetId());
+        }
+    };
+}
 
 #endif

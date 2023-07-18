@@ -1,28 +1,25 @@
-//
-// Created by ksiks_wa3r on 3/27/23.
-//
 
 #include "Font.h"
 
 namespace ASEngine {
 
-	bool Font::load(const std::string &fontPath, int _size, int _separation, int _lineSeparation, int _spaceSize)
+	bool Font::Load(const std::string &fontPath, int size, int separation, int lineSeparation, int spaceSize)
 	{
-		Image fontImage{};
-		fontImage.width = FONT_TEXTURE_WIDTH * _size;
-		fontImage.height = FONT_TEXTURE_HEIGHT * _size;
-		fontImage.format = IMAGE_FORMAT_GRAYSCALE_ALPHA;
+		/*
+		int width = FONT_TEXTURE_WIDTH * size;
+		int height = FONT_TEXTURE_HEIGHT * size;
+		int format = IMAGE_FORMAT_GRAYSCALE_ALPHA;
 
 		//one character size
-		const int subImageBufferSize = 2 * _size * _size * sizeof(char);
+		const int subImageBufferSize = 2 * size * size * sizeof(char);
 		const int imageBufferSize = FONT_TEXTURE_WIDTH * FONT_TEXTURE_WIDTH * subImageBufferSize;
 
 		//allocate image space
-		fontImage.pixels = new char[imageBufferSize];
+		uint8_t pixels = new uint8_t[imageBufferSize];
 
 		//fill with 0
 		for (int i = 0; i < imageBufferSize; i++)
-			fontImage.pixels[i] = 0;
+			pixels[i] = 0;
 
 		//init library
 		FT_Library ft;
@@ -33,13 +30,13 @@ namespace ASEngine {
 
 		//load font from file
 		File fontFile;
-		fontFile.open(fontPath, FILE_OPEN_MODE_READ);
+		fontFile.Open(fontPath, FileOpenMode::READ);
 		
-		size_t fileLength = fontFile.getSize();
+		size_t fileLength = fontFile.GetSize();
 		FT_Byte buffer[fileLength];
-		fontFile.read((char*) buffer);
+		fontFile.Read((char*) buffer);
 		
-		fontFile.close();
+		fontFile.Close();
 
 		//craete face
 		FT_Face face;
@@ -48,17 +45,15 @@ namespace ASEngine {
 			return false;
 		}
 
-		//set size
-		size = _size;
-		FT_Set_Pixel_Sizes(face, 0, _size);
+		FT_Set_Pixel_Sizes(face, 0, size);
 
 		FT_Render_Glyph(face->glyph, FT_RENDER_MODE_MONO);
 
 		//generate one pig texture for every character and use
-		for (int i = 0; i < 128; i++) {
+		for (int i = 0; i < FONT_CHARACTER_NUMBER; i++) {
 			//load font char
 			if (FT_Load_Char(face, char(i), FT_LOAD_RENDER )) {
-				Log::out("Failed to load Glyph!!");
+				Debug::Log("Failed to load Glyph!!");
 				return false;
 			}
 
@@ -86,9 +81,9 @@ namespace ASEngine {
 				//pixel
 				char pixel = face->glyph->bitmap.buffer[i];
 				//get index
-				int fontImageIndex = imageCoordX + fontImage.width * imageCoordY;
-				fontImage.pixels[2 * fontImageIndex] = char(255);
-				fontImage.pixels[2 * fontImageIndex + 1] = pixel;
+				int fontImageIndex = imageCoordX + width * imageCoordY;
+				pixels[2 * fontImageIndex] = char(255);
+				pixels[2 * fontImageIndex + 1] = pixel;
 
 			}
 
@@ -99,34 +94,38 @@ namespace ASEngine {
 				hframe,
 				vframe
 			};
-			fontCharacters[i] = fontCharacter;
+			m_FontCharacters[i] = fontCharacter;
 
 			//font params
-			separation = _separation;
-			lineSeparation = _lineSeparation;
-			spaceSize = _spaceSize;
+			m_Separation = separation;
+			m_LineSeparation = lineSeparation;
+			m_SpaceSize = spaceSize;
 		}
 
 		//generate texture
-		texture = Texture::load(fontImage);
+		//texture = Texture::load(fontImage);
 
 		//free font data
 		FT_Done_Face(face);
 		FT_Done_FreeType(ft);
+		*/
 
 		return true;
 	}
 
 	
-	void Font::importAll() 
+	void Font::ImportAll() 
 	{
+		/*
 		//load json file
 		File importFontsFile;
-		importFontsFile.open("fonts/import.fonts.json", FILE_OPEN_MODE_READ);
+		importFontsFile.Open("fonts/import.fonts.json", FILE_OPEN_MODE_READ);
 		std::string importFontsString = importFontsFile.readText();
-		importFontsFile.close();
+		importFontsFile.Close();
+		
 		//parse to json
 		nlohmann::json importedFonts = nlohmann::json::parse(importFontsString);
+		
 		//import all fonts
 		for (size_t i = 0; i < importedFonts.size(); i++) 
 		{
@@ -143,15 +142,16 @@ namespace ASEngine {
 				->load("fonts/" + fontFilePath, fontSize, fontSeparation, fontLineSeparation, fontSpaceSize);
 			//log
 			if (loaded)
-				Log::out(fontName, " loaded");
+				Debug::Log(fontName, " loaded");
 			
 		}
+		*/
 	}
 	
 
 	Font::~Font() 
 	{
-		texture.destroy();
+		//texture.destroy();
 	}
 
 } // ASEngine

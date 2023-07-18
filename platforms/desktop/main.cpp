@@ -4,7 +4,7 @@
 
 int main() {
     DesktopApplication application{};
-    application.start();
+    application.Start();
 
     return 0;
 }

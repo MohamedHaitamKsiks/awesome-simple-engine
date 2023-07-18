@@ -7,18 +7,11 @@
 
 #include <vector>
 
-#ifdef __ANDROID__
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
-
-#else
-#include <GL/glew.h>
-
-#endif
-
-#include "engine/Log/Log.h"
+#include "GraphicsAPI.h"
 #include "Vertex.h"
 #include "Quad.h"
+
+#include "engine/Log/Log.h"
 
 #define VBO_MAX_OBJECTS 16383
 

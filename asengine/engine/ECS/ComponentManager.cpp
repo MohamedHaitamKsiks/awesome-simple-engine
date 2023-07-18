@@ -3,7 +3,7 @@
 namespace ASEngine
 {
 
-    bool ComponentManager::isValidSignature(uint32_t signature)
+    bool ComponentManager::IsValidSignature(uint32_t signature)
     {
         for (uint32_t k = 2; k * k < signature * signature; k++)
         {

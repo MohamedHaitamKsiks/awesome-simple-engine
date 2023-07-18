@@ -13,6 +13,7 @@
 #include "Math/Random.h"
 #include "Memory/PoolAllocator.h"
 #include "String/UniqueString.h"
+#include "Signals/Signal.h"
 
 // ecs
 #include "ECS/World.h"

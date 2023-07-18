@@ -4,44 +4,46 @@
 namespace ASEngine {
 
     template <typename T>
-    ResourceManager<T>* ResourceManager<T>::resourceManager = nullptr;
+    ResourceManager<T>* ResourceManager<T>::s_Singleton = nullptr;
 
     template <typename T>
-    ResourceManager<T>::~ResourceManager()
+    ResourceManager<T>::ResourceManager()
     {
-        resourceIds.clear();
-    };
-
-    template <typename T>
-    T* ResourceManager<T>::add(const UniqueString &resourceName)
-    {
-        ChunkID newResourceID = resources.alloc();
-        resourceIds[resourceName.getId()] = newResourceID;
-
-        resources.get(newResourceID)->id = newResourceID;
-
-        return resources.get(newResourceID);
+        static_assert(std::is_base_of_v<Resource, T>);
+        m_Resources.Init(UINT16_MAX);
     }
 
     template <typename T>
-    void ResourceManager<T>::remove(const UniqueString &resourceName)
+    void ResourceManager<T>::Init()
     {
-        ResourceID resourceId = resourceIds[resourceName.getId()];
-        resources.free((ChunkID) resourceId);
-        resourceIds.erase(resourceName.getId());
+        if (!s_Singleton)
+            s_Singleton = new ResourceManager<T>();
     }
 
     template <typename T>
-    T* ResourceManager<T>::get(ResourceID resourceId)
+    void ResourceManager<T>::Terminate()
     {
-        return resources.get(resourceId);
+        if (s_Singleton)
+            delete s_Singleton;
     }
 
     template <typename T>
-    ResourceID ResourceManager<T>::getResourceId(const UniqueString &resourceName)
+    T* ResourceManager<T>::IAdd(const UniqueString &resourceName)
     {
-        return resourceIds[resourceName.getId()];
+        ChunkID newResourceID = m_Resources.Alloc();
+        m_ResourceIds[resourceName] = newResourceID;
+
+        m_Resources.Get(newResourceID)->ID = newResourceID;
+
+        return m_Resources.Get(newResourceID);
     }
 
+    template <typename T>
+    void ResourceManager<T>::IRemove(const UniqueString &resourceName)
+    {
+        ResourceID resourceId = m_ResourceIds[resourceName];
+        m_Resources.Free( resourceId);
+        m_ResourceIds.erase(resourceName);
+    }
 
 } // ASEngine

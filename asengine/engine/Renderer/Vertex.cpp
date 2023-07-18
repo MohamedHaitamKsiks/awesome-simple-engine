@@ -14,11 +14,7 @@ namespace ASEngine {
 		int vTextureCoord = glGetAttribLocation(glProgram, "vTextureCoord");
 		glVertexAttribPointer(vTextureCoord, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, uv));
 		glEnableVertexAttribArray(vTextureCoord);
-		//get zindex coordinates attribute
-		float vZIndex = glGetAttribLocation(glProgram, "vZIndex");
-		glVertexAttribPointer(vZIndex, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, zIndex));
-		glEnableVertexAttribArray(vZIndex);
-		//get texture coordinates attribute
+		//get modulate attribute
 		int vModulate = glGetAttribLocation(glProgram, "vModulate");
 		glVertexAttribPointer(vModulate, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, modulate));
 		glEnableVertexAttribArray(vModulate);
