@@ -10,13 +10,13 @@ namespace ASEngine
 
     // abstract class for resources
     // parent of all resources
+    template <typename T>
     class Resource 
     {
     public:
-        //resource id
+        // resource id
         ResourceID ID;
 
-        
     };
 
 } // namespace ASEngine

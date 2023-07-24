@@ -1,4 +1,4 @@
-
+/*
 #ifndef ASENGINE_GRAPHICS_H
 #define ASENGINE_GRAPHICS_H
 
@@ -57,3 +57,4 @@ namespace ASEngine {
 } // ASEngine
 
 #endif //ASENGINE_GRAPHICS_H
+*/

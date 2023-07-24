@@ -64,7 +64,8 @@ namespace ASEngine {
         vec2 Normalized();
 
         //add
-        inline vec2 operator+(vec2 v) {
+        inline vec2 operator+(const vec2& v) 
+        {
             return vec2
             {
                 x + v.x,
@@ -73,7 +74,8 @@ namespace ASEngine {
         }
 
         //sub
-        inline vec2 operator-(vec2 v) {
+        inline vec2 operator-(const vec2 &v)
+        {
             return vec2
             {
                 x - v.x,
@@ -82,7 +84,8 @@ namespace ASEngine {
         }
 
         //scale
-        inline vec2 operator*(float s) {
+        inline vec2 operator*(float s) 
+        {
             return vec2
             {
                 x * s,
@@ -91,7 +94,8 @@ namespace ASEngine {
         }
 
         //multiply
-        inline vec2 operator*(vec2 v) {
+        inline vec2 operator*(const vec2 &v)
+        {
             return vec2
             {
                 x * v.x,
@@ -100,7 +104,8 @@ namespace ASEngine {
         }
 
         //scale
-        inline vec2 operator/(float s) {
+        inline vec2 operator/(float s) 
+        {
             return vec2
             {
                 x / s,
@@ -109,10 +114,10 @@ namespace ASEngine {
         }
 
         //equal
-        inline bool operator==(vec2 v) {
+        inline bool operator==(const vec2 &v)
+        {
             return x == v.x && y == v.y;
         }
-
     };
 
 } // ASEngine

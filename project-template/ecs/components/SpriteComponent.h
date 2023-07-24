@@ -8,7 +8,8 @@ using namespace ASEngine;
 // holds sprite data
 struct SpriteComponent : Component<SpriteComponent>
 {
-    ResourceID SpriteId = 0;
+    MaterialID MatID = 0;
+    Texture SpriteTexture;
     float Frame = 0;
     float FrameRate = 8.0f;
 

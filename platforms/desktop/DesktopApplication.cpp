@@ -33,16 +33,12 @@ void DesktopApplication::Start()
 
 bool DesktopApplication::Init()
 {
-    // create asengine app
-    Application::Create(Platform::DESKTOP);
-
     /* Initialize the library */
     if (!glfwInit())
         return false;
 
     /* Create a windowed mode window and its OpenGL context */
     //
-   
     m_Window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
    
     if (!m_Window)
@@ -54,7 +50,10 @@ bool DesktopApplication::Init()
     /* Make the window's context current */
     glfwMakeContextCurrent(m_Window);
     glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, GLFW_FALSE);
-    
+
+    // create asengine app
+    Application::Create(Platform::DESKTOP);
+
     // connect window signals
     Window::ResizeSignal().Connect(std::bind(&DesktopApplication::OnWindowChangeSize, this, std::placeholders::_1, std::placeholders::_2));
     Window::TitleSignal().Connect(std::bind(&DesktopApplication::OnWindowSetTitle, this, std::placeholders::_1));

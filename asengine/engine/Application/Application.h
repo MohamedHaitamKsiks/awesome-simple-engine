@@ -6,8 +6,9 @@
 
 #include "engine/Window/Window.h"
 
-#include "engine/Renderer/Renderer.h"
-#include "engine/Renderer/Graphics.h"
+#include "engine/Renderer/Viewport.h"
+#include "engine/Renderer/TextureManager.h"
+#include "engine/Renderer/2D/Renderer2D.h"
 
 #include "engine/Resource/ResourceManager.h"
 #include "engine/Resource/Font.h"

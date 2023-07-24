@@ -6,8 +6,6 @@
 #include <vector>
 #include <tuple>
 
-#include "engine/Renderer/Graphics.h"
-
 #include "Archetype.h"
 #include "Component.h"
 #include "ComponentManager.h"

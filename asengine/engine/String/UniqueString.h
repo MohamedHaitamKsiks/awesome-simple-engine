@@ -37,7 +37,7 @@ namespace ASEngine
             return uStrLeft.m_Id != uStrRight.m_Id;
         };
         // get string length
-        size_t GetLength() const
+        inline size_t GetLength() const
         {
             return UniqueStringManager::GetSingleton()->GetLength(m_Id);
         }

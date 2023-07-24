@@ -7,21 +7,27 @@ namespace ASEngine {
 		// set platform
 		m_Platform = platform;
 
+		// init unique string manager
+		UniqueStringManager::Init();
+
 		// init application window
 		Window::Init();
+
+		// init viewport
+		Viewport::Init();
+
+		// init renderer 2d
+		Renderer2D::Init();
+
+		// init texture manager
+		TextureManager::Init();
 
 		// init ecs world
 		World::Init();
 
-		// init unique string manager
-		UniqueStringManager::Init();
-
 		// init resource managers
-		//ResourceManager<Sprite>::Init();
-		//Sprite::importAll();
-
-		//ResourceManager<Font>::Init();
-		//Font::importAll();
+		ResourceManager<Shader>::Init();
+		ResourceManager<Material>::Init();
 
 		Debug::Log("Application init complete");
 	}
@@ -30,8 +36,10 @@ namespace ASEngine {
 	{
 		World::Terminate();
 		UniqueStringManager::Terminate();
-		//ResourceManager<Sprite>::Terminate();
-		//ResourceManager<Font>::Terminate();
+		ResourceManager<Shader>::Terminate();
+		ResourceManager<Material>::Terminate();
+		Renderer2D::Terminate();
+		Viewport::Terminate();
 		Window::Terminate();
 	}
 
@@ -48,6 +56,7 @@ namespace ASEngine {
 	void Application::Update(float delta) {
 		// update here..
 		World::GetSingleton()->Update(delta);
+	
 	}
 
 
@@ -66,8 +75,6 @@ namespace ASEngine {
 		std::string projectName = projectSettings["name"];
 		Window::SetTitle(projectName);
 
-		
-
 		// set window size
 		int windowWidth = projectSettings["window"]["size"]["width"];
 		int windowHeight = projectSettings["window"]["size"]["height"];
@@ -76,6 +83,11 @@ namespace ASEngine {
 		// set fullscreen mode
 		bool windowIsFullscreen = projectSettings["window"]["fullscreen"];
 		Window::SetFullscreen(windowIsFullscreen);
+	
+		// set view port
+		int viewportWidth = projectSettings["viewport"]["size"]["width"];
+		int viewportHeight = projectSettings["viewport"]["size"]["height"];
+		Viewport::SetSize(viewportWidth, viewportHeight);
 	}
 
 

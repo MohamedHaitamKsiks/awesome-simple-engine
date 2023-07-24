@@ -6,7 +6,7 @@
 
 namespace ASEngine
 {
-    //chunk index in the poEol allocator
+    //chunk index in the pool allocator
     using ChunkID = uint32_t;
     constexpr const ChunkID CHUNK_NULL = UINT32_MAX;
 

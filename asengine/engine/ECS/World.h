@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "engine/Memory/PoolAllocator.h"
-#include "engine/Renderer/Graphics.h"
 #include "engine/Singleton/Singleton.h"
 
 #include "Entity.h"

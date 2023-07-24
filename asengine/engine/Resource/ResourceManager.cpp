@@ -9,7 +9,7 @@ namespace ASEngine {
     template <typename T>
     ResourceManager<T>::ResourceManager()
     {
-        static_assert(std::is_base_of_v<Resource, T>);
+        static_assert(std::is_base_of_v<Resource<T>, T>);
         m_Resources.Init(UINT16_MAX);
     }
 
@@ -28,22 +28,26 @@ namespace ASEngine {
     }
 
     template <typename T>
-    T* ResourceManager<T>::IAdd(const UniqueString &resourceName)
+    ResourceID ResourceManager<T>::IAdd(const UniqueString& resourceName)
     {
         ChunkID newResourceID = m_Resources.Alloc();
         m_ResourceIds[resourceName] = newResourceID;
-
-        m_Resources.Get(newResourceID)->ID = newResourceID;
-
-        return m_Resources.Get(newResourceID);
+        ((Resource<T>*) m_Resources.Get(newResourceID))->ID = newResourceID;
+        return newResourceID;
     }
 
     template <typename T>
-    void ResourceManager<T>::IRemove(const UniqueString &resourceName)
+    ResourceID ResourceManager<T>::IAdd()
     {
-        ResourceID resourceId = m_ResourceIds[resourceName];
+        ChunkID newResourceID = m_Resources.Alloc();
+        ((Resource<T> *)m_Resources.Get(newResourceID))->ID = newResourceID;
+        return newResourceID;
+    }
+
+    template <typename T>
+    void ResourceManager<T>::IRemove(ResourceID resourceId)
+    {
         m_Resources.Free( resourceId);
-        m_ResourceIds.erase(resourceName);
     }
 
 } // ASEngine

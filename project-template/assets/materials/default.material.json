@@ -1,6 +1,5 @@
 {
+    "shader": "sh_default",
     "params": {
-        
-    },
-    "shader": "sh_default"
+    }
 }

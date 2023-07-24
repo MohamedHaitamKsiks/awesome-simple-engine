@@ -22,14 +22,13 @@
 #define FONT_TEXTURE_HEIGHT 8
 #define FONT_CHARACTER_NUMBER 128
 
-/*
- * This font will be monospace for now.
- * */
 
-namespace ASEngine {
+namespace ASEngine 
+{
 
 	//font caracter
-	struct FontCharacter {
+	struct FontCharacter 
+	{
 		int Width = -1;
 		int BearingY = -1;
 		int HFrame = 0;
@@ -37,7 +36,8 @@ namespace ASEngine {
 	};
 
 	//font resource
-	class Font : public Resource {
+	class Font : public Resource<Font>
+	{
 
 	public:
 		// destructor
@@ -50,7 +50,8 @@ namespace ASEngine {
 		static void ImportAll();
 
 		// get character info at
-		inline FontCharacter GetFontCharacterOf(char c) const { 
+		inline FontCharacter GetFontCharacterOf(char c) const 
+		{ 
 			return m_FontCharacters[(size_t) c];
 		};
 
@@ -72,7 +73,7 @@ namespace ASEngine {
 	
 	private:
 		// font texture
-		Texture m_Texture = Texture::defaultTexture;
+		Texture m_Texture;
 
 		// font data
 		FontCharacter m_FontCharacters[FONT_CHARACTER_NUMBER];

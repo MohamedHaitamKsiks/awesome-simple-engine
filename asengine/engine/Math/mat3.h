@@ -18,7 +18,7 @@ namespace ASEngine {
         // get identity matrix
         static constexpr mat3 IDENTITY()
         {
-            return {{
+            return mat3{{
                 1.0f, 0.0f, 0.0f,
                 0.0f, 1.0f, 0.0f,
                 0.0f, 0.0f, 1.0f
@@ -27,7 +27,7 @@ namespace ASEngine {
         // get zero matrix
         static constexpr mat3 ZEROS()
         {
-            return {{
+            return mat3{{
                 0.0f, 0.0f, 0.0f,
                 0.0f, 0.0f, 0.0f,
                 0.0f, 0.0f, 0.0f

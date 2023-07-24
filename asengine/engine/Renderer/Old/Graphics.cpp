@@ -1,4 +1,4 @@
-
+/*
 #include "Graphics.h"
 
 namespace ASEngine {
@@ -154,3 +154,4 @@ namespace ASEngine {
 
 
 } // ASEngine
+*/

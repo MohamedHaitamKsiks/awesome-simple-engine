@@ -5,13 +5,13 @@
 void AndroidEGLContext::init() {
 	// Choose your render attributes
 	constexpr EGLint attribs[] = {
-			EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-			EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-			EGL_BLUE_SIZE, 8,
-			EGL_GREEN_SIZE, 8,
-			EGL_RED_SIZE, 8,
-			EGL_DEPTH_SIZE, 24,
-			EGL_NONE
+		EGL_RENDERABLE_TYPE, EGL_OPENGL_ES3_BIT,
+		EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+		EGL_BLUE_SIZE, 8,
+		EGL_GREEN_SIZE, 8,
+		EGL_RED_SIZE, 8,
+		EGL_DEPTH_SIZE, 24,
+		EGL_NONE
 	};
 
 	// The default display is probably what you want on Android
@@ -50,8 +50,8 @@ void AndroidEGLContext::init() {
 	eglGetConfigAttrib(newDisplay, config, EGL_NATIVE_VISUAL_ID, &format);
 	EGLSurface newSurface = eglCreateWindowSurface(newDisplay, config, app->window, nullptr);
 
-	// Create a GLES 2 context
-	EGLint contextAttribs[] = {EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE};
+	// Create a GLES 3 context
+	EGLint contextAttribs[] = {EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE};
 	EGLContext newContext = eglCreateContext(newDisplay, config, nullptr, contextAttribs);
 
 	// get some window metrics

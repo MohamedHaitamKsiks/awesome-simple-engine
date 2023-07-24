@@ -21,6 +21,7 @@ add_library(
     STATIC
     #memory
     engine/Memory/BasePoolAllocator.cpp
+    engine/Memory/BaseStackAllocator.cpp
     #ecs
     engine/ECS/World.cpp
     engine/ECS/Archetype.cpp
@@ -33,22 +34,20 @@ add_library(
     engine/Resource/Image.cpp
     engine/Resource/Sprite.cpp
     engine/Resource/Material.cpp
+    engine/Resource/Shader.cpp
     engine/Resource/Font.cpp
     engine/Resource/Scene.cpp
     #strings
     engine/String/UniqueString.cpp
     engine/String/UniqueStringManager.cpp
     #rendering
-    #engine/Renderer/Renderer.cpp
-    #engine/Renderer/Shader.cpp
-    #engine/Renderer/Texture.cpp
-    #engine/Renderer/Screen.cpp
-    #engine/Renderer/Camera.cpp
-    #engine/Renderer/Color.cpp
-    #engine/Renderer/Graphics.cpp
-    #engine/Renderer/Vertex.cpp
-    #engine/Renderer/Quad.cpp
-    #engine/Renderer/VertexBufferObject.cpp
+    engine/Renderer/TextureManager.cpp
+    engine/Renderer/Viewport.cpp
+    engine/Renderer/ShaderProgram.cpp
+    engine/Renderer/ShaderUniform.cpp
+    engine/Renderer/2D/Quad2D.cpp
+    engine/Renderer/2D/Renderer2D.cpp
+    engine/Renderer/2D/VertexBufferObject2D.cpp
     #window
     engine/Window/Window.cpp
     #math

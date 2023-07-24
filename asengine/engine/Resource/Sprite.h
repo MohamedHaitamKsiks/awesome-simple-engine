@@ -14,7 +14,8 @@
 
 namespace ASEngine {
 
-    class Sprite : public Resource{
+    class Sprite : public Resource<Sprite>
+    {
     public:
         //load
         bool Load(Texture texture, int frames, const vec2& offset );

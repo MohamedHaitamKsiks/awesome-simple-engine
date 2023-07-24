@@ -16,10 +16,17 @@ public:
     // on update
     void OnUpdate(float delta)
     {
+        Renderer2D::Begin();
+
         ForEach([&delta](SpriteComponent *sprite, TransformComponent *transform)
         {
-            Debug::Log("render sprite", sprite->SpriteId);
+            vec2 size = vec2{(float) sprite->SpriteTexture.GetWidth(), (float) sprite->SpriteTexture.GetHeight()};
+            mat3 spriteTransform = mat3::IDENTITY();
+            Quad2D spriteQuad = Quad2D(size, spriteTransform, Color::WHITE());
+            Renderer2D::DrawQuad(spriteQuad, sprite->MatID);
         });
+
+        Renderer2D::End();
     }
 
 };

@@ -1,0 +1,8 @@
+{
+	"image": "spr_run.png",
+	"frames": 6,
+	"offset": {
+		"x": 16.0,
+		"y": 16.0
+	}
+}

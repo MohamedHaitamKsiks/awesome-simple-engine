@@ -5,7 +5,7 @@ namespace ASEngine
 
     bool Sprite::Load(Texture texture, int frames, const vec2& offset) 
     {
-        if (m_Frames <= 0) 
+        /*if (m_Frames <= 0) 
             return false;
 
         m_Texture = texture;
@@ -13,7 +13,7 @@ namespace ASEngine
         m_Height = texture.height();
         m_Frames = frames;
         m_Offset = offset;
-        return true;
+        return true;*/
     }
 
     

@@ -34,14 +34,20 @@ namespace ASEngine {
         static void Terminate();
 
         //add new resource and give it a name
-        static inline T *Add(const UniqueString &resourceName){
+        static inline ResourceID Add(const UniqueString &resourceName){
+            return GetSingleton()->IAdd(resourceName);
+        };
+
+        // add new unnamed resource
+        static inline ResourceID Add()
+        {
             return GetSingleton()->IAdd();
         };
 
         //remove resource by id
-        static inline void Remove(const UniqueString &resourceName)
+        static inline void Remove(ResourceID resourceId)
         {
-            GetSingleton()->IRemove(resourceName);
+            GetSingleton()->IRemove(resourceId);
         };
 
         //get resource by id
@@ -51,7 +57,7 @@ namespace ASEngine {
         };
 
         //get resource id by name, make sure to cache it if you want to use it multiple time.
-        static inline ResourceID GetResourceId(const UniqueString &resourceName)
+        static inline ResourceID GetResourceId(const UniqueString& resourceName)
         { 
             return GetSingleton()->m_ResourceIds[resourceName];
         };
@@ -59,13 +65,16 @@ namespace ASEngine {
     private:
         static ResourceManager<T>* s_Singleton;
 
-        PoolAllocator<T> m_Resources{};
-        std::unordered_map<UniqueString, ResourceID> m_ResourceIds = {};
+        PoolAllocator<T> m_Resources{UINT16_MAX};
+        std::unordered_map<UniqueString, ResourceID> m_ResourceIds;
 
         // add new resource and give it a name
-        T *IAdd(const UniqueString &resourceName);
+        ResourceID IAdd(const UniqueString& resourceName);
+
+        // add new resource
+        ResourceID IAdd();
         // remove resource by id
-        void IRemove(const UniqueString &resourceName);
+        void IRemove(ResourceID resourceId);
     };
 
 } // ASEngine

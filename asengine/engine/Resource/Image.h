@@ -11,13 +11,15 @@
 
 namespace ASEngine {
 
-    enum class ImageFormat {
+    enum class ImageFormat 
+    {
         RGBA,
         GRAYSCALE,
         GRAYSCALE_ALPHA
     };
 
-    class Image : public Resource {
+    class Image : public Resource<Image>
+    {
 
     public:
         //constructor
@@ -29,6 +31,19 @@ namespace ASEngine {
 
         //load image
         bool Load(const std::string& imagePath);
+    
+        // get image pixels
+        inline uint8_t* GetPixels() const { return m_Pixels; };
+
+        // get image width
+        inline int GetWidth() const { return m_Width; };
+
+        // get image height
+        inline int GetHeight() const { return m_Height; };
+
+        // get image format 
+        inline ImageFormat GetFormat() const { return m_Format; };
+
     private:
         // image format
         ImageFormat m_Format = ImageFormat::RGBA;

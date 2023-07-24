@@ -5,22 +5,19 @@
 
 namespace ASEngine
 {
-    class Camera2D
+    struct Camera2D
     {
-    public:
         // camera position
-        vec2 position = vec2::ZERO();
+        vec2 Position = vec2::ZERO();
 
         // camera offset 
-        vec2 offset = vec2::ZERO();
+        vec2 Offset = vec2::ZERO();
 
         // camera rotation
-        float rotation = 0.0f;
+        float Rotation = 0.0f;
 
         // camera zoom
-        float zoom = 1.0f;
-
-        
+        float Zoom = 1.0f;
 
     };
 } // namespace ASEngine

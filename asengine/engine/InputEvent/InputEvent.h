@@ -3,7 +3,6 @@
 #define ASENGINE_INPUTEVENT_H
 
 #include "engine/Math/vec2.h"
-#include "engine/Renderer/Screen.h"
 
 namespace ASEngine {
 

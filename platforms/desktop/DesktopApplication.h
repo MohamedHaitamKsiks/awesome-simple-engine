@@ -13,7 +13,8 @@
 
 using namespace ASEngine;
 
-class DesktopApplication {
+class DesktopApplication 
+{
 public:
     void Start();
 

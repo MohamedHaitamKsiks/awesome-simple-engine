@@ -4,7 +4,6 @@
 #include <memory>
 #include <vector>
 
-#include "engine/Renderer/Graphics.h"
 #include "engine/Singleton/Singleton.h"
 
 #include "System.h"

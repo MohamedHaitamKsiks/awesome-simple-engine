@@ -2,13 +2,12 @@
 #define ASENGINE_GRAPHICS_API_H
 
 #ifdef __ANDROID__
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
+#include <GLES3/gl32.h>
+#include <GLES3/gl3ext.h>
 
 #else
 #include <GL/glew.h>
 
 #endif
 
-
-#endif
+#endif // ASENGINE_GRAPHICS_API_H
