@@ -70,10 +70,6 @@ bool DesktopApplication::Init()
 
 void DesktopApplication::Update(float delta)
 {
-    // clear color
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
     Application::Update(delta);
     /* Swap front and back buffers */
     glfwSwapBuffers(m_Window);
@@ -83,8 +79,8 @@ void DesktopApplication::Update(float delta)
 
 void DesktopApplication::Terminate()
 {
-    Application::Terminate();
     glfwTerminate();
+    Application::Terminate();
 }
 
 void DesktopApplication::OnWindowChangeSize(int width, int height)

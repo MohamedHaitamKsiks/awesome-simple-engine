@@ -10,7 +10,6 @@ namespace ASEngine {
     ResourceManager<T>::ResourceManager()
     {
         static_assert(std::is_base_of_v<Resource<T>, T>);
-        m_Resources.Init(UINT16_MAX);
     }
 
     template <typename T>

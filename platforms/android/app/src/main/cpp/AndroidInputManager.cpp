@@ -1,6 +1,3 @@
-//
-// Created by ksiks_wa3r on 5/30/23.
-//
 
 #include "AndroidInputManager.h"
 
@@ -11,6 +8,7 @@ AndroidInputManager::AndroidInputManager(android_app* _app) {
 
 //bake event
 ASEngine::InputEvent AndroidInputManager::bake(int eventIndex) {
+	/*
 	//create event
 	ASEngine::InputEvent event;
 
@@ -41,12 +39,15 @@ ASEngine::InputEvent AndroidInputManager::bake(int eventIndex) {
 	event.pointerPosition.y = GameActivityPointerAxes_getY(&motionEvent.pointers[ptrIndex]) / screenWindowRatio.y;
 
 	return event;
+	*/
 }
 
 void AndroidInputManager::processAndroidInput() {
+	/*
 	for(size_t i = 0; i < app->motionEventsCount; ++i) {
 		ASEngine::InputEvent event = bake(i);
 		ASEngine::Application::getSingleton()->onInputEvent(event);
 	}
 	android_app_clear_motion_events(app);
+	*/
 }

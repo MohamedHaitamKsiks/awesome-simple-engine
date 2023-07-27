@@ -3,6 +3,10 @@
 namespace ASEngine
 {
 
+    Shader::Shader()
+    {
+    }
+
     bool Shader::Load(const std::string& shaderFile)
     {
         // read file
@@ -37,6 +41,7 @@ namespace ASEngine
 
     Shader::~Shader()
     {
-        ShaderProgram::Destroy(m_Program);
+        if (m_Program != SHADER_NULL)
+            ShaderProgram::Destroy(m_Program);
     }
 } // namespace ASEngine

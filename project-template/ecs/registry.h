@@ -17,14 +17,21 @@ void ECSRegistry()
     image.Load("images/spr_run.png");
     Texture texture = Texture::LoadFromImage(image);
 
-    // register default shader
+    // sprite
+    SpriteID spriteId = ResourceManager<Sprite>::Add();
+    Sprite *sprite = ResourceManager<Sprite>::Get(spriteId);
+    sprite->Load(texture, 6, vec2::ZERO());
+
+    
+    // register default shader ...
     ShaderID shaderId = ResourceManager<Shader>::Add();
     ResourceManager<Shader>::Get(shaderId)->Load("shaders/default.glsl");
+
     
-    // register default material
+    // register default material ...
     MaterialID materialId = ResourceManager<Material>::Add();
-    ResourceManager<Material>::Get(shaderId)->Create(shaderId);
-    ResourceManager<Material>::Get(shaderId)->SetShaderParam(UniqueString("u_Texture"), texture);
+    ResourceManager<Material>::Get(materialId)->Create(shaderId);
+    ResourceManager<Material>::Get(materialId)->SetShaderParam(UniqueString("u_Texture"), texture);
 
     // component registry ...
     ComponentManager::RegisterComponent<SpriteComponent>(UniqueString("Sprite"));
@@ -33,16 +40,21 @@ void ECSRegistry()
     // system registry ...
     SystemManager::RegisterSystem<SpriteRenderingSystem>();
 
-    for (int i = 0; i < 1; i++)
+    // create entities
+    for (int i = 0; i < 10000; i++)
     {
-        TransformComponent transform;
-        SpriteComponent sprite;
-        sprite.MatID = materialId;
-        sprite.SpriteTexture = texture;
+        TransformComponent transformComponent;
+        transformComponent.Position.x = Random::Range(-200.0f, 200.0f);
+        transformComponent.Position.y = Random::Range(-200.0f, 200.0f);
+
+        SpriteComponent spriteComponent;
+        spriteComponent.MatID = materialId;
+        spriteComponent.Size = vec2{(float)sprite->GetWidth(), (float) sprite->GetHeight()};
+        spriteComponent.Frames = sprite->GetFrames();
 
         Entity entity = World::Create(
-            sprite,
-            transform
+            spriteComponent,
+            transformComponent
         );
     }
     

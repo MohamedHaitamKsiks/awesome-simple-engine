@@ -29,7 +29,7 @@
 namespace ASEngine {
 
 	enum class Platform {
-		ANDROID,
+		ANDROID_DEVICES,
 		DESKTOP
 	};
 
@@ -62,7 +62,7 @@ namespace ASEngine {
 		void IOnInputEvent(InputEvent &inputEvent);
 
 		//application platform
-		Platform m_Platform = Platform::ANDROID;
+		Platform m_Platform = Platform::ANDROID_DEVICES;
 
 	};
 

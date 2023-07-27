@@ -26,6 +26,8 @@
 namespace ASEngine 
 {
 
+	using FontID = ResourceID;
+
 	//font caracter
 	struct FontCharacter 
 	{
@@ -45,9 +47,6 @@ namespace ASEngine
 
 		//load font from file
 		bool Load(const std::string &fontPath, int size, int separation, int lineSeparation, int spaceSize);
-
-		// import all fonts
-		static void ImportAll();
 
 		// get character info at
 		inline FontCharacter GetFontCharacterOf(char c) const 
@@ -73,7 +72,7 @@ namespace ASEngine
 	
 	private:
 		// font texture
-		Texture m_Texture;
+		Texture m_Texture = TEXTURE_NULL;
 
 		// font data
 		FontCharacter m_FontCharacters[FONT_CHARACTER_NUMBER];

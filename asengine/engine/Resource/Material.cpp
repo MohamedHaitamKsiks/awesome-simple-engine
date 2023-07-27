@@ -4,7 +4,8 @@ namespace ASEngine
 {
     Material::~Material()
     {
-        delete[] m_UniformBuffer;
+        if (m_UniformBuffer)
+            delete[] m_UniformBuffer;
     }
 
     bool Material::Load(const std::string &materialPath)
@@ -52,7 +53,7 @@ namespace ASEngine
                 info.Location.SetVec3((float *)value);
                 break;
             case ShaderUniformType::VEC4:
-                info.Location.SetVec3((float *)value);
+                info.Location.SetVec4((float *)value);
                 break;
             case ShaderUniformType::MAT3:
                 info.Location.SetMat3((float *)value);

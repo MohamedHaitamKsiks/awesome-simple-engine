@@ -49,17 +49,17 @@ namespace ASEngine
     struct ShaderUniformInfo
     {
         // uniform location
-        ShaderUniform Location;
+        ShaderUniform Location{};
         // uniform name
-        UniqueString Name;
+        UniqueString Name = UNIQUE_STRING_NULL;
         // unifrom type
         ShaderUniformType Type = ShaderUniformType::UNDEFINED;
         // uniform size
         size_t Size = 0;
         // uniform index
-        int Index;
+        int Index = 0;
         // uniform offset
-        int Offset;
+        int Offset = 0;
 
         // constructor
         ShaderUniformInfo(ShaderUniform location)

@@ -14,14 +14,29 @@
 
 namespace ASEngine {
 
+    using SpriteID = ResourceID;
+
     class Sprite : public Resource<Sprite>
     {
     public:
         //load
         bool Load(Texture texture, int frames, const vec2& offset );
     
-        static void ImportAll();
-    
+        // get sprite texture
+        inline Texture GetTexture() const { return m_Texture; };
+
+        // get frame number
+        inline int GetFrames() const { return m_Frames; };
+
+        // get width
+        inline int GetWidth() const { return m_Width; };
+
+        // get height
+        inline int GetHeight() const { return m_Height; }
+        
+        // get sprite offset
+        inline vec2 GetOffset() const { return m_Offset; };
+
     private:
         // data
         Texture m_Texture;

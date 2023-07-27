@@ -24,16 +24,18 @@ namespace ASEngine
     class Shader: public Resource<Shader>
     {
     public:
+        Shader();
+
         // load shader file
         bool Load(const std::string& shaderFile );
 
-        // bind
+        // bind shader
         void Bind();
 
         ~Shader();
 
     private:
-        ShaderProgram m_Program;
+        ShaderProgram m_Program = SHADER_NULL;
         // size of buffer
         int m_UniformBufferSize = 0;
         // hashmap of all unifroms

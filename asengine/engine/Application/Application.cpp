@@ -28,6 +28,8 @@ namespace ASEngine {
 		// init resource managers
 		ResourceManager<Shader>::Init();
 		ResourceManager<Material>::Init();
+		ResourceManager<Sprite>::Init();
+		ResourceManager<Font>::Init();
 
 		Debug::Log("Application init complete");
 	}
@@ -38,6 +40,8 @@ namespace ASEngine {
 		UniqueStringManager::Terminate();
 		ResourceManager<Shader>::Terminate();
 		ResourceManager<Material>::Terminate();
+		ResourceManager<Sprite>::Terminate();
+		ResourceManager<Font>::Terminate();
 		Renderer2D::Terminate();
 		Viewport::Terminate();
 		Window::Terminate();
@@ -55,7 +59,7 @@ namespace ASEngine {
 
 	void Application::Update(float delta) {
 		// update here..
-		World::GetSingleton()->Update(delta);
+		World::Update(delta);
 	
 	}
 
@@ -78,11 +82,13 @@ namespace ASEngine {
 		// set window size
 		int windowWidth = projectSettings["window"]["size"]["width"];
 		int windowHeight = projectSettings["window"]["size"]["height"];
-		Window::SetSize(windowWidth, windowHeight);
+		if (GetSingleton()->m_Platform != Platform::ANDROID_DEVICES)
+			Window::SetSize(windowWidth, windowHeight);
 
 		// set fullscreen mode
 		bool windowIsFullscreen = projectSettings["window"]["fullscreen"];
-		Window::SetFullscreen(windowIsFullscreen);
+		if (GetSingleton()->m_Platform != Platform::ANDROID_DEVICES)
+			Window::SetFullscreen(windowIsFullscreen);
 	
 		// set view port
 		int viewportWidth = projectSettings["viewport"]["size"]["width"];

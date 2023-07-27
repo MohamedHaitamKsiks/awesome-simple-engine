@@ -36,6 +36,7 @@ namespace ASEngine
     {
         // recompute viewport 
         glViewport(0, 0, width, height);
+        
     }
 
     void Renderer2D::IBegin()

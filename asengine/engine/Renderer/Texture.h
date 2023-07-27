@@ -15,7 +15,17 @@ namespace ASEngine
     public:
         Texture() {};
         Texture(TextureID id) { m_Id = id; };
-        
+
+        // compare texures
+        inline friend bool operator==(const Texture& a, const Texture& b)
+        {
+            return a.m_Id == b.m_Id;
+        }
+
+        inline friend bool operator!=(const Texture &a, const Texture &b)
+        {
+            return a.m_Id != b.m_Id;
+        }
 
         // load texture from image
         static inline Texture LoadFromImage(const Image& image)
@@ -36,19 +46,19 @@ namespace ASEngine
         };
 
         // get widths
-        int inline GetWidth()
+        int inline GetWidth() const
         {
             return TextureManager::GetSingleton()->GetInfo(m_Id)->Width;
         };
 
         // get widths
-        int inline GetHeight()
+        int inline GetHeight() const
         {
             return TextureManager::GetSingleton()->GetInfo(m_Id)->Height;
         };
 
         // get widths
-        TextureFormat inline GetFormat()
+        TextureFormat inline GetFormat() const
         {
             return TextureManager::GetSingleton()->GetInfo(m_Id)->Format;
         };

@@ -17,6 +17,7 @@ namespace ASEngine
         // resource id
         ResourceID ID;
 
+        
     };
 
 } // namespace ASEngine

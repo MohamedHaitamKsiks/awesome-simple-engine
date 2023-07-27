@@ -7,8 +7,9 @@
     },
     "C_Cpp.default.cppStandard": "c++23",
     "C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
-    "C_Cpp.inlayHints.parameterNames.enabled": true,
+    "C_Cpp.inlayHints.parameterNames.enabled": false,
     "C_Cpp.formatting": "clangFormat",
     "C_Cpp.default.mergeConfigurations": true,
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "editor.fontFamily": "/home/ksiks_wa3r/Documents/workspace/Autobusbold-1ynL.ttf"
 }

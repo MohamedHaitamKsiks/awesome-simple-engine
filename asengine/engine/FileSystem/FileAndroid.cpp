@@ -18,7 +18,7 @@ namespace ASEngine
     bool File::Open(const std::string &path, FileOpenMode mode)
     {
         m_Asset = AAssetManager_open(s_AssetManager, path.c_str(), AASSET_MODE_BUFFER);
-        m_Size = (size_t) AAsset_getLength(asset);
+        m_Size = (size_t) AAsset_getLength(m_Asset);
         return m_Asset != nullptr;
     }
 
@@ -37,15 +37,15 @@ namespace ASEngine
 
     }
 
-    std::string File::readText()
+    std::string File::ReadText()
     {
         //create buffer
-        char buffer[size];
+        char buffer[m_Size];
             
         //read char by char
         char readChar;
         uint32_t currentChar = 0;
-        while (currentChar < size)
+        while (currentChar < m_Size)
         {
             AAsset_read(m_Asset, &readChar, sizeof(char));
             if (readChar == EOF)

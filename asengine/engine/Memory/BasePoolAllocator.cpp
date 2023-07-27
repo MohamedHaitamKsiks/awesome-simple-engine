@@ -15,19 +15,11 @@ namespace ASEngine
         Init(capacity);
     }
 
-    BasePoolAllocator::~BasePoolAllocator()
-    {
-        delete[] m_Data;
-    }
-
     void BasePoolAllocator::Init(size_t capacity)
     {
         //set capacity
         m_Capacity = capacity;
-        
-        // allocate data
-        m_Data = new uint8_t[m_Capacity * m_ChunkSize];
-
+    
         // stack of all free chunks
         m_FreeChunkStackPointer = m_Capacity;
         m_FreeChunksStack = std::make_unique<ChunkID[]>(m_Capacity);
@@ -77,12 +69,7 @@ namespace ASEngine
         return allocatedChunkId;
 
     }
-
-    uint8_t* BasePoolAllocator::GetRaw(ChunkID index)
-    {
-        return m_Data + index * m_ChunkSize;
-    }
-
+    
     void BasePoolAllocator::Free(ChunkID index)
     {
         if (!IsUsed(index))

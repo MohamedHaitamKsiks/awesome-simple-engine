@@ -66,8 +66,6 @@ void AndroidEGLContext::init() {
 	width = -1;
 	height = -1;
 
-	ASEngine::Log::out("Context initialized");
-
 }
 
 
@@ -81,8 +79,7 @@ void AndroidEGLContext::updateRenderArea() {
 	if (width != width_ || height != height_) {
 		width = width_;
 		height = height_;
-		glViewport(0, 0, width, height);
-		ASEngine::Screen::setWindowSize(width, height);
+		ASEngine::Window::SetSize(width, height);
 	}
 }
 

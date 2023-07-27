@@ -4,6 +4,12 @@
 namespace ASEngine 
 {
 
+    template<typename T>
+    PoolAllocator<T>::~PoolAllocator()
+    {
+        delete[] m_Data;
+    }
+
     template <typename T>
     void PoolAllocator<T>::Free(ChunkID index) 
     {
@@ -25,23 +31,12 @@ namespace ASEngine
         *allocatedValue = value;
         return id;
     }
-    
-    template <typename T>
-    T *PoolAllocator<T>::Get(ChunkID index)
-    {
-        return (T*) GetRaw(index);
-    }
 
     template <typename T>
     void PoolAllocator<T>::InitializePoolValues()
     {   
-        T baseValue{};
-
-        for (size_t i = 0; i < m_Capacity; i++)
-        {
-            T* currentPtr = Get((ChunkID) i);
-            *currentPtr = baseValue;
-        }
+        // allocate data
+        m_Data = new T[m_Capacity];
     }
 
 } // namespace ASEngine

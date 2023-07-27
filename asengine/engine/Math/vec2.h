@@ -64,59 +64,59 @@ namespace ASEngine {
         vec2 Normalized();
 
         //add
-        inline vec2 operator+(const vec2& v) 
+        friend inline vec2 operator+(const vec2 &a, const vec2 &b)
         {
             return vec2
             {
-                x + v.x,
-                y + v.y
+                a.x + b.x,
+                a.y + b.y
             };
         }
 
         //sub
-        inline vec2 operator-(const vec2 &v)
+        friend inline vec2 operator-(const vec2 &a, const vec2 &b)
         {
             return vec2
             {
-                x - v.x,
-                y - v.y
+                a.x - b.x,
+                a.y - b.y
             };
         }
 
         //scale
-        inline vec2 operator*(float s) 
+        friend inline vec2 operator*(const vec2 &a, float s)
         {
             return vec2
             {
-                x * s,
-                y * s
+                a.x * s,
+                a.y * s
             };
         }
-
+        
         //multiply
-        inline vec2 operator*(const vec2 &v)
+        friend inline vec2 operator*(const vec2 &a, const vec2 &b)
         {
             return vec2
             {
-                x * v.x,
-                y * v.y
+                a.x * b.x,
+                a.y * b.y
             };
         }
 
         //scale
-        inline vec2 operator/(float s) 
+        friend inline vec2 operator/(const vec2 &a, float s)
         {
             return vec2
             {
-                x / s,
-                y / s
+                a.x / s,
+                a.y / s
             };
         }
 
         //equal
-        inline bool operator==(const vec2 &v)
+        friend inline bool operator==(const vec2 &a, const vec2 &b)
         {
-            return x == v.x && y == v.y;
+            return a.x == b.x && a.y == b.y;
         }
     };
 

@@ -20,9 +20,9 @@ public:
 
         ForEach([&delta](SpriteComponent *sprite, TransformComponent *transform)
         {
-            vec2 size = vec2{(float) sprite->SpriteTexture.GetWidth(), (float) sprite->SpriteTexture.GetHeight()};
-            mat3 spriteTransform = mat3::IDENTITY();
-            Quad2D spriteQuad = Quad2D(size, spriteTransform, Color::WHITE());
+            sprite->Frame += sprite->FrameRate * delta;
+            mat3 spriteTransform = mat3::Transform(transform->Position, transform->Scale, transform->Rotation);
+            Quad2D spriteQuad = Quad2D(sprite->Size, spriteTransform, Color::WHITE(), sprite->Frame, sprite->Frames, 0.0f, 1.0f);
             Renderer2D::DrawQuad(spriteQuad, sprite->MatID);
         });
 

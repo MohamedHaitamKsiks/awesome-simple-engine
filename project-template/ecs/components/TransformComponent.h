@@ -9,7 +9,8 @@ using namespace ASEngine;
 struct TransformComponent: Component<TransformComponent>
 {
     vec2 Position = vec2{0.0f, 0.0f};
-    vec2 Velocity = vec2{0.0f, 0.0f};
+    vec2 Scale = vec2::ONE();
+    float Rotation = 0.0f;
 };
 
 

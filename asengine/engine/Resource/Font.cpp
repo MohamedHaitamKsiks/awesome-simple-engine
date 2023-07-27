@@ -5,17 +5,17 @@ namespace ASEngine {
 
 	bool Font::Load(const std::string &fontPath, int size, int separation, int lineSeparation, int spaceSize)
 	{
-		/*
+		
 		int width = FONT_TEXTURE_WIDTH * size;
 		int height = FONT_TEXTURE_HEIGHT * size;
-		int format = IMAGE_FORMAT_GRAYSCALE_ALPHA;
+		ImageFormat format = ImageFormat::GRAYSCALE_ALPHA;
 
 		//one character size
 		const int subImageBufferSize = 2 * size * size * sizeof(char);
 		const int imageBufferSize = FONT_TEXTURE_WIDTH * FONT_TEXTURE_WIDTH * subImageBufferSize;
 
 		//allocate image space
-		uint8_t pixels = new uint8_t[imageBufferSize];
+		uint8_t* pixels = new uint8_t[imageBufferSize];
 
 		//fill with 0
 		for (int i = 0; i < imageBufferSize; i++)
@@ -24,7 +24,7 @@ namespace ASEngine {
 		//init library
 		FT_Library ft;
 		if (FT_Init_FreeType(&ft)) {
-			Log::out("Could not init FreeType Library!!");
+			Debug::Log("Could not init FreeType Library!!");
 			return false;
 		}
 
@@ -41,7 +41,7 @@ namespace ASEngine {
 		//craete face
 		FT_Face face;
 		if (FT_New_Memory_Face(ft, buffer, fileLength, 0, &face)) {
-			Log::out("Failed to load font!!");
+			Debug::Log("Failed to load font!!");
 			return false;
 		}
 
@@ -67,8 +67,8 @@ namespace ASEngine {
 			int vframe = i / FONT_TEXTURE_WIDTH;
 
 			//image buffer offset
-			int imageBufferOffsetX = hframe * _size;
-			int imageBufferOffsetY = vframe * _size;
+			int imageBufferOffsetX = hframe * size;
+			int imageBufferOffsetY = vframe * size;
 			//pixels
 			//create image where alpha = luminance
 			for (int i = 0; i < bitmapBufferSize; i++) {
@@ -96,62 +96,29 @@ namespace ASEngine {
 			};
 			m_FontCharacters[i] = fontCharacter;
 
-			//font params
-			m_Separation = separation;
-			m_LineSeparation = lineSeparation;
-			m_SpaceSize = spaceSize;
 		}
 
+		// font params
+		m_Size = size;
+		m_Separation = separation;
+		m_LineSeparation = lineSeparation;
+		m_SpaceSize = spaceSize;
+
 		//generate texture
-		//texture = Texture::load(fontImage);
+		Image image = Image(pixels, width, height, format);
+		m_Texture = Texture::LoadFromImage(image);
 
 		//free font data
 		FT_Done_Face(face);
 		FT_Done_FreeType(ft);
-		*/
-
+	
 		return true;
 	}
 
-	
-	void Font::ImportAll() 
-	{
-		/*
-		//load json file
-		File importFontsFile;
-		importFontsFile.Open("fonts/import.fonts.json", FILE_OPEN_MODE_READ);
-		std::string importFontsString = importFontsFile.readText();
-		importFontsFile.Close();
-		
-		//parse to json
-		nlohmann::json importedFonts = nlohmann::json::parse(importFontsString);
-		
-		//import all fonts
-		for (size_t i = 0; i < importedFonts.size(); i++) 
-		{
-			//get font info
-			std::string fontName = importedFonts[i]["name"];
-			int fontSize = importedFonts[i]["size"];
-			std::string fontFilePath = importedFonts[i]["font"];
-			int fontSeparation = importedFonts[i]["separation"];
-			int fontLineSeparation = importedFonts[i]["lineSeparation"];
-			int fontSpaceSize = importedFonts[i]["spaceSize"];
-			//load font
-			bool loaded = ResourceManager<Font>::getSingleton()
-				->add(UniqueString(fontName))
-				->load("fonts/" + fontFilePath, fontSize, fontSeparation, fontLineSeparation, fontSpaceSize);
-			//log
-			if (loaded)
-				Debug::Log(fontName, " loaded");
-			
-		}
-		*/
-	}
-	
-
 	Font::~Font() 
 	{
-		//texture.destroy();
+		if (m_Texture != TEXTURE_NULL)
+			m_Texture.Destroy();
 	}
 
 } // ASEngine

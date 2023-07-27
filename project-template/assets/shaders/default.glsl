@@ -1,4 +1,9 @@
-// vertex part
+
+// varyings
+varying vec2 UV;
+varying vec4 MODULATE;
+
+// vertex code
 #ifdef VERTEX
 
 //attribute
@@ -10,31 +15,25 @@ attribute vec4 v_Modulate;
 uniform mat3 u_View;
 uniform mat3 u_Camera;
 
-// variants
-varying vec4 COLOR;
-varying vec2 UV;
-
+// main function is generated
 void main(void) 
 {
     UV = v_TextureCoord;
-    COLOR = v_Modulate;
+    MODULATE = v_Modulate;
 
     gl_Position = vec4( u_View * u_Camera * vec3(v_Position, 0.0), 1.0);
 }
 
-#endif
+#endif  
 
-// shader part
+// fragment code
 #ifdef FRAGMENT
-
-varying vec4 COLOR;
-varying vec2 UV;
 
 uniform sampler2D u_Texture;
 
 void main(void) 
 {
-    gl_FragColor = texture2D(u_Texture, UV) * COLOR;
+    gl_FragColor = texture2D(u_Texture, UV) * MODULATE;
 }
 
 #endif

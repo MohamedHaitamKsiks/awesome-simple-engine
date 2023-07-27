@@ -1,6 +1,8 @@
 #ifndef ASENGINE_BASE_POOL_ALLOCATOR_H
 #define ASENGINE_BASE_POOL_ALLOCATOR_H
 
+#include "engine/Log/Log.h"
+
 #include <cstdint>
 #include <memory>
 
@@ -18,16 +20,11 @@ namespace ASEngine
             BasePoolAllocator(size_t chunkSize);
             BasePoolAllocator(size_t chunkSize, size_t _capacity);
 
-            ~BasePoolAllocator();
-
             // init allocator
             void Init(size_t capacity);
 
             // allocate chunk
             ChunkID Alloc();
-
-            // get at index
-            uint8_t* GetRaw(ChunkID index); 
 
             // free chunk
             void Free(ChunkID index);
@@ -48,9 +45,6 @@ namespace ASEngine
             ChunkID Prev(ChunkID index) const;
 
         protected:
-            // data
-            uint8_t* m_Data = nullptr;
-
             size_t m_ChunkSize = 1;
             size_t m_Size = 0;
             size_t m_Capacity = 0;
@@ -67,52 +61,9 @@ namespace ASEngine
             ChunkID m_Foot = CHUNK_NULL;
             std::unique_ptr<ChunkID[]> m_ChunkNext;
             std::unique_ptr<ChunkID[]> m_ChunkPrev;
-            
+
     };
 
-    // pool allocator iterator
-    template <typename T>
-    class PoolAllocatorIterator
-    {
-    public:
-        PoolAllocatorIterator(BasePoolAllocator* pool, ChunkID currentPosition)
-        {
-            m_CurrentPosition = currentPosition;
-            m_Pool = pool;
-        };
-
-        inline ChunkID GetCurrentPosition() const { return m_CurrentPosition; };
-
-        inline PoolAllocatorIterator<T> operator++(int)
-        {
-            m_CurrentPosition = m_Pool->Next(m_CurrentPosition);
-            return *this;
-        };
-
-        inline PoolAllocatorIterator<T> operator++()
-        {
-            m_CurrentPosition = m_Pool->Next(m_CurrentPosition);
-            return *this;
-        };
-
-        inline T* operator*(void) const
-        {
-            return (T *) m_Pool->GetRaw(m_CurrentPosition);
-        };
-
-        inline bool operator==(const PoolAllocatorIterator<T> &it) const
-        {
-            return m_CurrentPosition == it.m_CurrentPosition;
-        };
-
-        inline bool operator!=(const PoolAllocatorIterator<T> &it) const
-        {
-            return m_CurrentPosition != it.m_CurrentPosition;
-        };
-    private:
-        ChunkID m_CurrentPosition = CHUNK_NULL;
-        BasePoolAllocator *m_Pool = nullptr;
-    };
 
 } // namespace ASEgine
 

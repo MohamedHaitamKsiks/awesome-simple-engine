@@ -7,15 +7,15 @@ namespace ASEngine
     {
         // get position attribute
         int vPosition = glGetAttribLocation(m_GLProgram, "v_Position");
-        glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (const void *)offsetof(Vertex2D, Vertex2D::Position));
+        glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (const void *)offsetof(Vertex2D, Position));
         glEnableVertexAttribArray(vPosition);
         // get texture coordinates attribute
         int vTextureCoord = glGetAttribLocation(m_GLProgram, "v_TextureCoord");
-        glVertexAttribPointer(vTextureCoord, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (const void *)offsetof(Vertex2D, Vertex2D::UV));
+        glVertexAttribPointer(vTextureCoord, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (const void *)offsetof(Vertex2D, UV));
         glEnableVertexAttribArray(vTextureCoord);
         // get modulate attribute
         int vModulate = glGetAttribLocation(m_GLProgram, "v_Modulate");
-        glVertexAttribPointer(vModulate, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (const void *)offsetof(Vertex2D, Vertex2D::Modulate));
+        glVertexAttribPointer(vModulate, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (const void *)offsetof(Vertex2D, Modulate));
         glEnableVertexAttribArray(vModulate);
     }
 

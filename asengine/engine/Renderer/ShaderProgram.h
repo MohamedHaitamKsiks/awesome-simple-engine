@@ -24,7 +24,18 @@ namespace ASEngine
     public:
 
         // constructors
-        ShaderProgram(){};
+        ShaderProgram(){ m_GLProgram = UINT32_MAX; };
+
+        // ccheck equals
+        friend inline bool operator==(const ShaderProgram& a, const ShaderProgram& b)
+        {
+            return a.m_GLProgram == b.m_GLProgram;
+        }
+
+        friend inline bool operator!=(const ShaderProgram &a, const ShaderProgram &b)
+        {
+            return a.m_GLProgram != b.m_GLProgram;
+        }
 
         // create shader from vertex code and fragment code
         static ShaderProgram Create(const std::string &shaderCode);

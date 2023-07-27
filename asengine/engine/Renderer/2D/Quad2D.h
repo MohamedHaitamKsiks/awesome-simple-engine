@@ -21,8 +21,10 @@ namespace ASEngine
         constexpr static const uint16_t Indices[QUAD_2D_INDICES_COUNT] = {0, 1, 2, 2, 3, 0};
 
         // create normal quad
-        Quad2D(vec2& size, mat3& transform, const Color& modulate);
-        
+        Quad2D(const vec2& size, const mat3& transform, const Color& modulate);
+
+        // create quad width frames
+        Quad2D(const vec2 &size, const mat3 &transform, const Color &modulate, int hFrame, int hFrames, int vFrame, int vFrames);
     };
 
 } // namespace ASEngine
