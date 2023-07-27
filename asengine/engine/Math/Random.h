@@ -8,10 +8,9 @@ namespace ASEngine {
 
 	class Random {
 	public:
-		static void init();
-		static int randi();
-		static float randf();
-		static float rand_rangef(float a, float b);
+		static int Int();
+		static float Float();
+		static float Range(float a, float b);
 	};
 
 } // ASEngine

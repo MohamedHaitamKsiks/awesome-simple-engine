@@ -1,8 +1,18 @@
 {
-  "name": "New Projet",
-  "windowSize": {
-    "width": 180,
-    "height": 320
-  },
-  "mainScene": "sc_main"
+	"name": "Template Projet",
+	"viewport": {
+		"size":{
+			"width": 320,
+			"height": 180
+		}
+	},
+	"window": {
+		"size": {
+			"width": 640,
+			"height": 360
+		},
+		"keepAspectRatio": true,
+		"fullscreen": false
+	},
+	"mainScene": "scenes/main.scene.json" 
 }

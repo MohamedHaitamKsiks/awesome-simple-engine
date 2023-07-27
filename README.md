@@ -5,22 +5,18 @@ Cross-platform game engine written with c++.
 ## Features
 
 
-### 2D OpenGL ES 2.0 Renderer
+### 2D OpenGL ES 3.0 Renderer
 
-You can draw textures, sprites, colored rectangles and text.
+The renderer uses batch rendering with 16000 quads per draw call.
 
-The renderer uses batch rendering for performances with over 16 000 elements in a single draw call.
-
-You can draw in the screen using a Graphics object that is created with the Application.
-
-Examples : 
-
+Example:
 ````cpp
- 
-    graphics.drawSprite(sprite, frame, position, scale, rotation, modulate);
+  Renderer2D::Begin();
 
-    graphics.drawText("Hello World!", frame, fontId, position, modulate);
-  
+  Quad2D spriteQuad = Quad2D(sprite->Size, spriteTransform, Color::WHITE(), sprite->Frame, sprite->Frames, 0.0f, 1.0f);
+  Renderer2D::DrawQuad(spriteQuad, sprite->MatID);
+
+  Renderer2D::End();
 ````
 
 ### Resource Manager
@@ -36,14 +32,11 @@ The resources that we manage are:
 Loading images from png files that can be used to generate textures to draw.
 
 ````cpp
-
     Image img;
     img.load(imagePath);
     
     //we can use it to create textures in the gpu
-    
-    Texture texture = Texture::load(img);
-
+    Texture texture = Texture::LoadFromImage(img);
 ````
 
 
@@ -52,14 +45,8 @@ Loading images from png files that can be used to generate textures to draw.
 Adding sprites that we can draw.
 
 ````cpp
-
     Sprite sprite;
-    sprite.load(texture, frameNumber, offset);
-    
-    //we can access the sprite with the id for example to draw it
-    
-    graphics.drawSprite(&sprite, frame, position, scale, rotation, modulate);
-
+    sprite.Load(texture, frameNumber, offset);
 ````
 
 #### 3. Fonts
@@ -67,54 +54,26 @@ Adding sprites that we can draw.
 Fonts are pretty much like sprites
 
 ````cpp
-
     Font font;
-    font.load(size, fontPath, separation, lineSeparation, spaceSize);
-
+    font.Load(size, fontPath, separation, lineSeparation, spaceSize);
 ````
 
-#### Using JSON file to load 
+#### 4. Shaders
 
-The resources can also be imported using json files in the assets folder.
-
-Examples:
-
-1. Sprites
-
-````json
-
-[
-  {
-    "name": "spr_run",
-    "image": "spr_run.png",
-    "frames": 6,
-    "offset": {
-      "x": 16.0,
-      "y": 16.0
-    }
-  }
-]
-
+````cpp
+    Shader shader;
+    shader.Load("shaders/default.glsl");
 ````
 
-2. Fonts
+#### 5. Materials
 
-````json
+Create material depending of shader.
 
-[
-  {
-    "name": "ft_pixel",
-    "size": 24,
-    "font": "nuku1.ttf",
-    "separation": 4,
-    "lineSeparation": 4,
-    "spaceSize": 8
-  }
-]
-
+````cpp
+  Material mat;
+  mat.Create(shaderId);
+  mat.SetShaderParam(UniqueString("u_Texture"), texture);
 ````
-
-
 
 ### Entity Component System
 
@@ -133,7 +92,6 @@ Create a struct that inherits from Component.
 Example:
 
 ````cpp
-
 #include "engine/asengine.h"
 
 using namespace ASEngine;
@@ -145,7 +103,6 @@ struct SpriteComponent: Component<SpriteComponent> {
   float frameRate = 8.0f;
 
 };
-
 ````
 
 ### System:
@@ -154,7 +111,6 @@ Create a class that inherits from System<Component1, Component2 ....>.
 
 Example:
 ````cpp
-
 #include "engine/asengine.h"
 
 using namespace ASEngine;
@@ -165,18 +121,9 @@ class SpriteRenderingSystem: public System<SpriteComponent, TransformComponent>
 public:
 
     // on update
-    void onUpdate(float delta)
+    void OnUpdate(float delta)
     {
         forEach([&delta](SpriteComponent *sprite, TransformComponent *transform)
-        {
-            //behaviour...
-        });
-    }
-
-    // on draw
-    void onDraw(Graphics &graphics)
-    {
-        forEach([&graphics](SpriteComponent *sprite, TransformComponent *transform)
         {
             //behaviour...
         });
@@ -194,13 +141,13 @@ Example:
   TransformComponent tranform;
 
   // create entity
-  Entity entity = World::getSingleton()->create(
+  Entity entity = World::Create(
       sprite,
       transform
   );
 
   // destroy entity
-  World::getSingleton()->destroy(entity);
+  World::Destroy(entity);
 ````
 
 

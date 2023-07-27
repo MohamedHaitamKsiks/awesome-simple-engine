@@ -2,36 +2,29 @@
 
 namespace ASEngine
 {
-    void SystemManager::registerArchetype(std::shared_ptr<Archetype> archetype)
+    void SystemManager::IRegisterArchetype(std::shared_ptr<Archetype> archetype)
     {
-        uint32_t archetypeSignature = archetype->getSignature();
+        uint32_t archetypeSignature = archetype->GetSignature();
 
-        for (auto system: systems)
+        for (auto system: m_Systems)
         {
-            uint32_t systemSignature = system->getSignature();
+            uint32_t systemSignature = system->GetSignature();
             //check if system signature is a part of archetype signature
             if (archetypeSignature % systemSignature == 0)
             {
                 // add archetype to the system
-                system->archetypes.push_back(archetype);
+                system->AddArchetype(archetype);
             }
             
         }
     }
 
-    void SystemManager::update(float delta)
+    void SystemManager::IUpdate(float delta)
     {
-        for (auto system: systems)
+        for (auto system: m_Systems)
         {
-            system->onUpdate(delta);
+            system->OnUpdate(delta);
         }
     }
 
-    void SystemManager::draw(Graphics& graphics)
-    {
-        for (auto system : systems)
-        {
-            system->onDraw(graphics);
-        }
-    }
 } // namespace ASEngine

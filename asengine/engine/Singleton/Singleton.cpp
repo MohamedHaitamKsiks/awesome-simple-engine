@@ -3,26 +3,20 @@
 namespace ASEngine
 {
     template <typename T>
-    T* Singleton<T>::singleton = nullptr;
+    T* Singleton<T>::s_Singleton = nullptr;
 
     template <typename T>
-    void Singleton<T>::init()
+    void Singleton<T>::Init()
     {
-        if (!singleton)
-            singleton = new T();
+        if (!s_Singleton)
+            s_Singleton = new T();
     }
 
     template <typename T>
-    T* Singleton<T>::getSingleton()
+    void Singleton<T>::Terminate()
     {
-        return singleton;
-    }
-
-    template <typename T>
-    void Singleton<T>::terminate()
-    {
-        if (singleton)
-            delete singleton;
+        if (s_Singleton)
+            delete s_Singleton;
     }
 
 

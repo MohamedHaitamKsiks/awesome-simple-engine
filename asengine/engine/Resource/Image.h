@@ -2,6 +2,7 @@
 #ifndef ASENGINE_IMAGE_H
 #define ASENGINE_IMAGE_H
 
+#include <cstdint>
 #include <string>
 
 #include "Resource.h"
@@ -10,42 +11,53 @@
 
 namespace ASEngine {
 
-    enum ImageFormat {
-        IMAGE_FORMAT_RBGA,
-        IMAGE_FORMAT_GRAYSCALE,
-        IMAGE_FORMAT_GRAYSCALE_ALPHA
+    enum class ImageFormat 
+    {
+        RGBA,
+        GRAYSCALE,
+        GRAYSCALE_ALPHA
     };
 
-    class Image : public Resource {
+    class Image : public Resource<Image>
+    {
 
     public:
-        //pixel buffer for the image
-        char* pixels = nullptr;
-        //image width
-        int width = -1;
-        //image height
-        int height = -1;
-        //image format
-        ImageFormat format = IMAGE_FORMAT_RBGA;
-        
         //constructor
         Image() {};
-        Image(char* _pixels, int _width, int _height);
+        Image(uint8_t* pixels, int width, int height, ImageFormat format);
 
         //destructor
         ~Image();
 
         //load image
-        bool load(const std::string& imagePath);
+        bool Load(const std::string& imagePath);
+    
+        // get image pixels
+        inline uint8_t* GetPixels() const { return m_Pixels; };
 
-        // create empty image knowing width and height and format
-        bool create(int _width, int _height, ImageFormat _format = IMAGE_FORMAT_RBGA);
+        // get image width
+        inline int GetWidth() const { return m_Width; };
+
+        // get image height
+        inline int GetHeight() const { return m_Height; };
+
+        // get image format 
+        inline ImageFormat GetFormat() const { return m_Format; };
 
     private:
-        //image channels
-        int channels = -1;
+        // image format
+        ImageFormat m_Format = ImageFormat::RGBA;
+
+        // pixel buffer for the image
+        uint8_t *m_Pixels = nullptr;
+
+        int m_Width = -1;
+        int m_Height = -1;
+        
+        int m_Channels = -1;
+
         // load method
-        bool loadedWithSTBI = false;
+        bool m_LoadedWithSTBI = false;
     };
 
 } // ASEngine

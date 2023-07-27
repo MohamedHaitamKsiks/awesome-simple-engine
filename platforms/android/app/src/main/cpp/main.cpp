@@ -55,8 +55,6 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
  * This the main entry point for a native activity
  */
 void android_main(struct android_app *pApp) {
-	ASEngine::Log::out("Starting Game Activity");
-	
     // register an event handler for Android events
     pApp->onAppCmd = handle_cmd;
 

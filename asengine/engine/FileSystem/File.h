@@ -17,21 +17,21 @@
 
 namespace ASEngine {
 
-    enum FileOpenMode
+    enum class FileOpenMode
     {
         // do not open files with this mode, this is the default mode
-        FILE_OPEN_MODE_NONE,
+        NONE,
         // open file in read mode
-        FILE_OPEN_MODE_READ,
+        READ,
         // open file in write mode
-        FILE_OPEN_MODE_WRITE,
+        WRITE,
     };
 
     enum FileType { 
         //file is a resource, resource files are readonly files
-        FILE_TYPE_RESOURCE,
+        RESOURCE,
         //file is used to store game data like saves, settings ...
-        FILE_TYPE_USERDATA
+        USERDATA
     };
 
     class File {
@@ -39,40 +39,40 @@ namespace ASEngine {
     public:
         //get/set assetmanager for android 
         #ifdef __ANDROID__
-        static void setAssetManager(AAssetManager *_assetManager);
-        static AAssetManager* getAssetManager();
+        static void SetAssetManager(AAssetManager *assetManager);
+        static inline AAssetManager* GetAssetManager() { return s_AssetManager; };
         #endif
 
         // open file: read | write
-        bool open(const std::string &_path, FileOpenMode _mode);
+        bool Open(const std::string &path, FileOpenMode mode);
 
         //close file
-        void close();
+        void Close();
 
         //get file size
-        size_t getSize();
+        size_t GetSize();
 
         //read data into buffer
-        void read(char* buffer);
+        void Read(char* buffer);
 
         //write data from buffer into file
-        void write(const char* buffer, const size_t length);
+        void Write(const char* buffer, const size_t length);
 
         //read text and return string
-        std::string readText();
+        std::string ReadText();
 
 
 
     private:
-        size_t size = -1;
-        FileOpenMode mode = FILE_OPEN_MODE_NONE;
+        size_t m_Size = 0;
+        FileOpenMode m_Mode = FileOpenMode::NONE;
         
         #ifdef  __ANDROID__
-        static AAssetManager* assetManager;
-        AAsset* asset = nullptr;
+        static AAssetManager* s_AssetManager;
+        AAsset* m_Asset = nullptr;
 
         #else
-        std::fstream file;
+        std::fstream m_File;
 
         #endif
     };

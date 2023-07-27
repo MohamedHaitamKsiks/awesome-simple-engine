@@ -46,69 +46,78 @@ namespace ASEngine {
 
 
         // angle
-        float angle();
+        float Angle();
 
         // dot product
-        float dot(const vec2& v);
+        float Dot(const vec2& v);
 
         // lenghts
-        float length();
+        float Length();
 
         // length squared
-        float lengthSquared();
+        float LengthSquared();
 
         // rotate
-        vec2 rotate(float angle);
+        vec2 Rotate(float angle);
 
         // normalized
-        vec2 normalized();
+        vec2 Normalized();
 
         //add
-        inline vec2 operator+(const vec2& v) {
+        friend inline vec2 operator+(const vec2 &a, const vec2 &b)
+        {
             return vec2
             {
-                x + v.x,
-                y + v.y
+                a.x + b.x,
+                a.y + b.y
             };
         }
 
         //sub
-        inline vec2 operator-(const vec2& v) {
-            vec2 out{};
-            out.x = x - v.x;
-            out.y = y - v.y;
-            return out;
+        friend inline vec2 operator-(const vec2 &a, const vec2 &b)
+        {
+            return vec2
+            {
+                a.x - b.x,
+                a.y - b.y
+            };
         }
 
         //scale
-        inline vec2 operator*(float s) {
-            vec2 out{};
-            out.x = x * s;
-            out.y = y * s;
-            return out;
+        friend inline vec2 operator*(const vec2 &a, float s)
+        {
+            return vec2
+            {
+                a.x * s,
+                a.y * s
+            };
         }
-
+        
         //multiply
-        inline vec2 operator*(const vec2& v) {
-            vec2 out{};
-            out.x = x * v.x;
-            out.y = y * v.y;
-            return out;
+        friend inline vec2 operator*(const vec2 &a, const vec2 &b)
+        {
+            return vec2
+            {
+                a.x * b.x,
+                a.y * b.y
+            };
         }
 
         //scale
-        inline vec2 operator/(float s) {
-            vec2 out{};
-            out.x = x / s;
-            out.y = y / s;
-            return out;
+        friend inline vec2 operator/(const vec2 &a, float s)
+        {
+            return vec2
+            {
+                a.x / s,
+                a.y / s
+            };
         }
 
         //equal
-        inline bool operator==(const vec2& v) {
-            return x == v.x && y == v.y;
+        friend inline bool operator==(const vec2 &a, const vec2 &b)
+        {
+            return a.x == b.x && a.y == b.y;
         }
-
     };
 
 } // ASEngine

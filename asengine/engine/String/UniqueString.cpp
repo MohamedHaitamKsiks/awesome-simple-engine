@@ -4,32 +4,13 @@ namespace ASEngine
 {
     UniqueString::UniqueString(const std::string &str)
     {
-        id = UniqueStringManager::getSingleton()->create(str);
+        m_Id = UniqueStringManager::GetSingleton()->Create(str);
     }
 
-    UniqueString::UniqueString(UniqueStringID _id)
+    UniqueString::UniqueString(UniqueStringID id)
     {
-        id = _id;
+        m_Id = id;
     }
 
-    bool UniqueString::operator==(const UniqueString &uStr)
-    {
-        return id == uStr.id;
-    }
-
-    size_t UniqueString::getLength() const
-    {
-        return UniqueStringManager::getSingleton()->getLength(id);
-    }
-
-    UniqueStringID UniqueString::getId() const
-    {
-        return id;
-    }
-
-    std::string UniqueString::getString() const
-    {
-        return UniqueStringManager::getSingleton()->getString(id);
-    }
 
 } // namespace ASEngine

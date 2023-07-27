@@ -76,7 +76,7 @@ elif platform == "linux":
     copyProjectToTemp()
     # build for linux
     os.chdir(f"{workingDirectory}/{tmpFileName}/build")
-    os.system("cmake ..")
+    os.system("cmake .. ")
     os.system("make")
     os.system("./build")
     os.chdir(workingDirectory)

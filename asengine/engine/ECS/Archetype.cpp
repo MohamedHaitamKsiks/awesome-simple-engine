@@ -1,33 +1,32 @@
 #include "Archetype.h"
 
-
 namespace ASEngine
 {
 
-    uint32_t Archetype::getSignature() const
+    uint32_t Archetype::GetSignature() const
     {
-        return signature;
+        return m_Signature;
     }
 
-    void Archetype::addEntity(Entity entity)
+    void Archetype::AddEntity(Entity entity)
     {
-        for (auto pair: componentCollections)
+        for (auto pair: m_ComponentCollections)
         {
             std::shared_ptr<BaseComponentCollection> collection = pair.second;
-            ComponentIndex componentIndex = collection->alloc();
-            entities[entity] = componentIndex;
+            ComponentIndex componentIndex = collection->Alloc();
+            m_Entities[entity] = componentIndex;
         }
     }
 
-    void Archetype::removeEntity(Entity entity)
+    void Archetype::RemoveEntity(Entity entity)
     {
-        for (auto pair : componentCollections)
+        for (auto pair : m_ComponentCollections)
         {
             std::shared_ptr<BaseComponentCollection> collection = pair.second;
-            ComponentIndex componentIndex = entities[entity];
-            collection->free(componentIndex);
+            ComponentIndex componentIndex = m_Entities[entity];
+            collection->Free(componentIndex);
         }
-        entities.erase(entity);
+        m_Entities.erase(entity);
     }
 
 } // namespace ASEngine

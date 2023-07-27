@@ -8,44 +8,44 @@
 namespace ASEngine
 {
 
-    bool File::open(const std::string &_path, FileOpenMode _mode)
+    bool File::Open(const std::string &path, FileOpenMode mode)
     {
-        file.open("assets/" + _path, std::ios::binary | std::ios::in);
+        m_File.open("assets/" + path, std::ios::binary | std::ios::in);
         //check if file is loaded
-        if(!file) {
-            Log::out("Error loading " + _path + "!");
+        if(!m_File) {
+            Debug::Log("Error loading", path, "!");
             return false;
         }
 
         //get file size
-        file.seekg(0, std::ios::end);
-        size = (size_t) file.tellg();
+        m_File.seekg(0, std::ios::end);
+        m_Size = (size_t) m_File.tellg();
         return true;
     }
 
-    void File::close()
+    void File::Close()
     {
-        file.close();
+        m_File.close();
     }
 
-    void File::read(char *buffer)
+    void File::Read(char *buffer)
     {
-        file.seekg(0, std::ios::beg);
-        file.read(buffer, size);
+        m_File.seekg(0, std::ios::beg);
+        m_File.read(buffer, m_Size);
     }
 
-    void File::write(const char *buffer, const size_t length)
+    void File::Write(const char *buffer, const size_t length)
     {
         /*todo later*/
     }
 
-    std::string File::readText()
+    std::string File::ReadText()
     {
         std::string line;
         std::stringstream textStringStream;
-        file.seekg(0, std::ios::beg);
+        m_File.seekg(0, std::ios::beg);
 
-        while (std::getline(file, line))
+        while (std::getline(m_File, line))
         {
             textStringStream << line << "\n";
         }

@@ -3,20 +3,19 @@
 
 namespace ASEngine {
 
-	int Random::randi() {
+	int Random::Int() 
+	{
 		return rand();
 	}
 
-	float Random::randf() {
-		return float(rand()) / RAND_MAX;
+	float Random::Float()
+	{
+		return static_cast <float> (rand()) / static_cast <float> (RAND_MAX);;
 	}
 
-	float Random::rand_rangef(float a, float b) {
-		return a + (b - a) * Random::randf();
-	}
-
-	void Random::init() {
-
+	float Random::Range(float a, float b)
+	{
+		return a + (b - a) * Random::Float();
 	}
 
 

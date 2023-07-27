@@ -8,17 +8,9 @@ using namespace ASEngine;
 // holds transoorm data
 struct TransformComponent: Component<TransformComponent>
 {
-    Entity owner = 0;
-    vec2 position = vec2{0.0f, 0.0f};
-    vec2 velocity = vec2{0.0f, 0.0f};
-
-    TransformComponent(){};
-
-    TransformComponent(const vec2 &_position, const vec2 &_velocity)
-    {
-        position = _position;
-        velocity = _velocity;
-    };
+    vec2 Position = vec2{0.0f, 0.0f};
+    vec2 Scale = vec2::ONE();
+    float Rotation = 0.0f;
 };
 
 

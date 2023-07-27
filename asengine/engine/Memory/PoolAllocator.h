@@ -1,6 +1,7 @@
 #ifndef ASENGINE_POOL_ALLOCATOR_H
 #define ASENGINE_POOL_ALLOCATOR_H
 
+#include <memory>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
@@ -25,38 +26,92 @@ namespace ASEngine {
         //contructors / deconstructors
         PoolAllocator() : BasePoolAllocator(sizeof(T)) 
         {
-            initializePoolValues();
-        };
+            InitializePoolValues();
+        }
 
-        PoolAllocator(size_t _capacity) : BasePoolAllocator(sizeof(T), _capacity)
+        PoolAllocator(size_t capacity) : BasePoolAllocator(sizeof(T), capacity)
         {
-            initializePoolValues();
-        };
+            InitializePoolValues();
+        }
+
+        ~PoolAllocator();
+
+
+        // push value to the allocator
+        ChunkID Push(const T& value);
 
         // free memory
-        void free(ChunkID index);
+        void Free(ChunkID index);
 
         // get at 
-        T* get(ChunkID index);
+        inline T* Get(ChunkID index)
+        {
+            return m_Data + index;
+        }
 
         // iterator
-        using Iterator = PoolAllocatorIterator<T>;
-
-        // begin
-        Iterator begin()
+        using Iterator = class PoolAllocatorIterator
         {
-            return Iterator(this, head);
+        public:
+            PoolAllocatorIterator(PoolAllocator<T> *pool, ChunkID currentPosition)
+            {
+                m_CurrentPosition = currentPosition;
+                m_Pool = pool;
+            };
+
+            inline ChunkID GetCurrentPosition() const { return m_CurrentPosition; };
+
+            inline PoolAllocatorIterator operator++(int)
+            {
+                m_CurrentPosition = m_Pool->Next(m_CurrentPosition);
+                return *this;
+            };
+
+            inline PoolAllocatorIterator operator++()
+            {
+                m_CurrentPosition = m_Pool->Next(m_CurrentPosition);
+                return *this;
+            };
+
+            inline T *operator*(void) const
+            {
+                return (T *)m_Pool->Get(m_CurrentPosition);
+            };
+
+            inline bool operator==(const PoolAllocatorIterator &it) const
+            {
+                return m_CurrentPosition == it.m_CurrentPosition;
+            };
+
+            inline bool operator!=(const PoolAllocatorIterator &it) const
+            {
+                return m_CurrentPosition != it.m_CurrentPosition;
+            };
+
+        private:
+            ChunkID m_CurrentPosition = CHUNK_NULL;
+            PoolAllocator<T> *m_Pool = nullptr;
         };
-        // end
-        Iterator end()
+
+        // iterator begin
+        inline Iterator begin()
+        {
+            return Iterator(this, m_Head);
+        };
+        // iterator end
+        inline Iterator end()
         {
             return Iterator(this, UINT32_MAX);
         };
 
     private:
-        void initializePoolValues();
+        // pool data
+        T* m_Data = nullptr;
 
+        // initialize pool data
+        void InitializePoolValues();
     };
+
 
 } // namespace ASEngine
 

@@ -4,12 +4,12 @@
 void AndroidApplication::init(android_app* _app) {
 	app = _app;
 
-	ASEngine::File::setAssetManager(app->activity->assetManager);
+	ASEngine::File::SetAssetManager(app->activity->assetManager);
 
 	context = new AndroidEGLContext(app);
 
-	ASEngine::Application::create(ASEngine::PLATFORM_ANDROID);
-	ASEngine::Application::getSingleton()->init();
+	ASEngine::Application::Create(ASEngine::Platform::ANDROID_DEVICES);
+	ASEngine::Application::LoadProjectSettings();
 
 	androidInputManager = new AndroidInputManager(app);
 }
@@ -18,12 +18,12 @@ void AndroidApplication::update(float delta) {
 	androidInputManager->processAndroidInput();
 
 	context->updateRenderArea();
-	ASEngine::Application::getSingleton()->update(delta);
+	ASEngine::Application::Update(delta);
 	context->flush();
 }
 
 void AndroidApplication::terminate() {
-	ASEngine::Application::getSingleton()->terminate();
+	ASEngine::Application::Terminate();
 	delete context;
 	delete androidInputManager;
 }

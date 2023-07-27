@@ -4,64 +4,59 @@ namespace ASEngine
 {
     World::World()
     {
-        ComponentManager::init();
-        SystemManager::init();
-        ArchetypeManager::init();
+        ComponentManager::Init();
+        SystemManager::Init();
+        ArchetypeManager::Init();
     }
 
     World::~World()
     {
-        ComponentManager::terminate();
-        SystemManager::terminate();
-        ArchetypeManager::terminate();
+        ComponentManager::Terminate();
+        SystemManager::Terminate();
+        ArchetypeManager::Terminate();
     }
 
-    void World::update(float delta)
+    void World::Update(float delta)
     {
-        SystemManager::getSingleton()->update(delta);
-        cleanDestroyQueue();
+        SystemManager::Update(delta);
+        GetSingleton()->CleanDestroyQueue();
     }
 
-    void World::draw(Graphics& graphics)
-    {
-        SystemManager::getSingleton()->draw(graphics);
-    }
-
-    Entity World::create(std::shared_ptr<Archetype> archetype)
+    Entity World::ICreate(std::shared_ptr<Archetype> archetype)
     {
         // create entity
-        Entity createdEntity = entities.alloc();
-        EntityData *data = entities.get(createdEntity);
-        
-        data->archetype = archetype.get();
-        data->isDestroyed = false;
-        
-        //add entity to archetype
-        archetype->addEntity(createdEntity);
-        
+        EntityData data;
+        data.ArchetypeOwner = archetype.get();
+        data.IsDestroyed = false;
+
+        Entity createdEntity = m_Entities.Push(data);
+
+        // add entity to archetype
+        archetype->AddEntity(createdEntity);
+
         return createdEntity;
     };
 
-    void World::destroy(Entity entity)
+    void World::IDestroy(Entity entity)
     {
-        EntityData* data = entities.get(entity);
-        if (data->isDestroyed)
+        EntityData* data = m_Entities.Get(entity);
+        if (data->IsDestroyed)
             return;
         //queue entity to destroy
-        data->isDestroyed = true;
-
-        destroyQueue.push_back(entity);
+        data->IsDestroyed = true;
+        m_DestroyQueue.push_back(entity);
     }
     
-    void World::cleanDestroyQueue()
+    void World::CleanDestroyQueue()
     {
-        for (auto entity: destroyQueue)
+        for (auto entity: m_DestroyQueue)
         {
-            EntityData *data = entities.get(entity);
-            auto* archetype = data->archetype;
-            archetype->removeEntity(entity);
+            EntityData *data = m_Entities.Get(entity);
+            auto* archetype = data->ArchetypeOwner;
+            archetype->RemoveEntity(entity);
+            m_Entities.Free(entity);
         }
-        destroyQueue.clear();
+        m_DestroyQueue.clear();
     }
 
 } // namespace ASEngine

@@ -8,16 +8,12 @@ using namespace ASEngine;
 // holds sprite data
 struct SpriteComponent : Component<SpriteComponent>
 {
-    ResourceID spriteId = 0;
-    float frame = 0;
-    float frameRate = 8.0f;
+    MaterialID MatID = CHUNK_NULL;
+    vec2 Size = vec2::ZERO();
+    float Frames = 1.0f;
+    float Frame = 0.0f;
+    float FrameRate = 8.0f;
 
-    SpriteComponent(){};
-
-    SpriteComponent(ResourceID _spriteId)
-    {
-        spriteId = _spriteId;
-    };
 };
 
 

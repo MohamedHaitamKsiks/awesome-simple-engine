@@ -13,6 +13,7 @@
 #include "Math/Random.h"
 #include "Memory/PoolAllocator.h"
 #include "String/UniqueString.h"
+#include "Signals/Signal.h"
 
 // ecs
 #include "ECS/World.h"
@@ -29,20 +30,18 @@
 #include "Resource/Image.h"
 #include "Resource/Sprite.h"
 #include "Resource/Material.h"
+#include "Resource/Shader.h"
 #include "Resource/Font.h"
 #include "Resource/Scene.h"
 
 
 //rendering
 #include "Renderer/Texture.h"
-#include "Renderer/Renderer.h"
-#include "Renderer/Screen.h"
+#include "Renderer/2D/Renderer2D.h"
+#include "Renderer/2D/Quad2D.h"
 #include "Renderer/Color.h"
-#include "Renderer/Camera.h"
-#include "Renderer/Graphics.h"
-#include "Renderer/Vertex.h"
-#include "Renderer/Quad.h"
-#include "Renderer/VertexBufferObject.h"
+#include "Renderer/Viewport.h"
+#include "Window/Window.h"
 
 //input
 #include "InputEvent/InputEvent.h"

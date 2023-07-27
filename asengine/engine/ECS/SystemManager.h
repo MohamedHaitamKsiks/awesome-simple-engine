@@ -4,7 +4,6 @@
 #include <memory>
 #include <vector>
 
-#include "engine/Renderer/Graphics.h"
 #include "engine/Singleton/Singleton.h"
 
 #include "System.h"
@@ -16,27 +15,33 @@ namespace ASEngine
     public:
         // register system to the system manager
         template <typename T>
-        void registerSystem()
-        {
-            // check if T is a system
-            static_assert(std::is_base_of_v<BaseSystem, T>);
-
-            //create new system
-            std::shared_ptr<BaseSystem> newSystem = std::make_shared<T>();
-            systems.push_back(newSystem);
-        };
-
+        static void inline RegisterSystem() { GetSingleton()->IRegisterSystem<T>(); };
         // register archetype to system manager
-        void registerArchetype(std::shared_ptr<Archetype> archetype);
-
+        static void inline  RegisterArchetype(std::shared_ptr<Archetype> archetype) { GetSingleton()->IRegisterArchetype(archetype);};
         // update all system
-        void update(float delta);
+        static void inline Update(float delta) { GetSingleton()->IUpdate(delta); };
 
-        // draw all system
-        void draw(Graphics& graphics);
     private:
-        // list of registered systems
-        std::vector<std::shared_ptr<BaseSystem>> systems = {};
+        std::vector<std::shared_ptr<BaseSystem>> m_Systems = {};
+
+        template <typename T>
+        void IRegisterSystem();
+
+        void IRegisterArchetype(std::shared_ptr<Archetype> archetype);
+       
+        void IUpdate(float delta);
+    };
+
+    // implementation of register system
+    template <typename T>
+    void SystemManager::IRegisterSystem()
+    {
+        // check if T is a system
+        static_assert(std::is_base_of_v<BaseSystem, T>);
+
+        // create new system
+        std::shared_ptr<BaseSystem> system = std::make_shared<T>();
+        m_Systems.push_back(system);
     };
 } // namespace ASEngine
 

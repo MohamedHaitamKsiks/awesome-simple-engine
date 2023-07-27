@@ -2,9 +2,9 @@
 
 namespace ASEngine {
 
-    size_t File::getSize()
+    size_t File::GetSize()
     {
-        return size;
+        return m_Size;
     }
 
 } // ASEngine

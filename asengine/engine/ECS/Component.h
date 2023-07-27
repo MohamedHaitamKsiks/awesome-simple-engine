@@ -16,19 +16,19 @@ namespace ASEngine
         Component() {};
 
         // component name
-        static UniqueString name;
+        static UniqueString s_Name;
 
         // component signature
-        static uint32_t signature;
+        static uint32_t s_Signature;
     };
 
     // component name implementation
     template <typename T>
-    UniqueString Component<T>::name = CHUNK_NULL;
+    UniqueString Component<T>::s_Name = CHUNK_NULL;
 
     // component signature
     template <typename T>
-    uint32_t Component<T>::signature = 0;
+    uint32_t Component<T>::s_Signature = 0;
 
 }
 

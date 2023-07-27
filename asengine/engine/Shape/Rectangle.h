@@ -1,6 +1,4 @@
-//
-// Created by ksiks_wa3r on 4/16/23.
-//
+
 
 #ifndef ASENGINE_RECTANGLE_H
 #define ASENGINE_RECTANGLE_H

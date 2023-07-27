@@ -12,8 +12,8 @@ namespace ASEngine
     // entity data for look up ..
     struct EntityData
     {
-        Archetype* archetype = nullptr;
-        bool isDestroyed = false;
+        Archetype* ArchetypeOwner = nullptr;
+        bool IsDestroyed = false;
     };
 
 } // namespace ASEngine

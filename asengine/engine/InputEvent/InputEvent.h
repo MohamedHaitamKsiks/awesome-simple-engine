@@ -3,23 +3,22 @@
 #define ASENGINE_INPUTEVENT_H
 
 #include "engine/Math/vec2.h"
-#include "engine/Renderer/Screen.h"
 
 namespace ASEngine {
 
-	enum InputEventType {
-		INPUT_EVENT_POINTER_DOWN,
-		INPUT_EVENT_POINTER_UP,
-		INPUT_EVENT_POINTER_MOVE
+	enum class InputEventType {
+		// pointer events
+		POINTER_DOWN,
+		POINTER_UP,
+		POINTER_MOVE
 	};
 
-	class InputEvent {
-	public:
+	struct InputEvent {
 		//event type
-		InputEventType type;
+		InputEventType Type;
 		//pointer data
-		vec2 pointerPosition;
-		int pointerIndex;
+		vec2 PointerPosition;
+		int PointerIndex;
 	};
 
 } // ASEngine

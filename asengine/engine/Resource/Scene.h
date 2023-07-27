@@ -1,9 +1,6 @@
-//
-// Created by ksiks_wa3r on 4/15/23.
-//
 
-#ifndef ANDROIDSIMPLEENGINE_SCENE_H
-#define ANDROIDSIMPLEENGINE_SCENE_H
+#ifndef ASENGINE_SCENE_H
+#define ASENGINE_SCENE_H
 
 #include "Resource.h"
 #include "ResourceManager.h"
@@ -13,14 +10,15 @@
 
 namespace ASEngine {
 
-	class Scene: public Resource {
+	class Scene: public Resource<Scene>
+	{
 	public:
 		//load scene from file
-		bool load(const std::string& sceneFilePath);
+		bool Load(const std::string& sceneFilePath);
 
-		static void importAll();
+		static void ImportAll();
 	};
 
 } // ASEngine
 
-#endif //ANDROIDSIMPLEENGINE_SCENE_H
+#endif // ASENGINE_SCENE_H

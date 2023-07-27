@@ -68,8 +68,8 @@ target_link_libraries( # Specifies the target library.
         # EGL, required for configuring the display context
         EGL
 
-        # GLES 2, used for the sample renderer
-        GLESv2
+        # GLES 3, used for the sample renderer
+        GLESv3
 
         # for AImageDecoder, to load images from resources
         jnigraphics

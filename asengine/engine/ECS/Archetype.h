@@ -29,88 +29,88 @@ namespace ASEngine
     public:
         // set component to archetype
         template <typename T, typename... types>
-        void addComponents();
+        void AddComponents();
 
         // get component collection
         template <typename T>
-        ComponentCollection<T>& getComponentCollection();
+        ComponentCollection<T>& GetComponentCollection();
 
         // get signature
-        uint32_t getSignature() const;
+        uint32_t GetSignature() const;
 
-    
         // add entity
-        void addEntity(Entity entity);
+        void AddEntity(Entity entity);
 
         // get component of entity
         template <typename T>
-        T* getComponentOfEntity(Entity entity);
+        T* GetComponentOfEntity(Entity entity);
 
         // remove entity
-        void removeEntity(Entity entity);
+        void RemoveEntity(Entity entity);
 
-        private:
+    private:
         // signature with all components that compose the archetype
-        uint32_t signature = 1;
+        uint32_t m_Signature = 1;
 
         // component collections
-        std::unordered_map<UniqueStringID, std::shared_ptr<BaseComponentCollection>> componentCollections = {};
+        std::unordered_map<UniqueString, std::shared_ptr<BaseComponentCollection>> m_ComponentCollections = {};
 
         // entity to component
-        std::unordered_map<Entity, ComponentIndex> entities = {};
+        std::unordered_map<Entity, ComponentIndex> m_Entities = {};
     };
 
     // implementations
     // add component implementation
     template <typename T, typename... types>
-    void Archetype::addComponents()
+    void Archetype::AddComponents()
     {
         // check if component is of component type
         static_assert(std::is_base_of_v<Component<T>, T>);
 
         // get component info
-        UniqueString componentName = Component<T>::name;
-        uint32_t componentSignature = Component<T>::signature;
+        UniqueString componentName = Component<T>::s_Name;
+        uint32_t componentSignature = Component<T>::s_Signature;
 
         // check if component isnot added
-        if (signature % componentSignature != 0)
+        if (m_Signature % componentSignature != 0)
         {
-            signature *= componentSignature;
+            m_Signature *= componentSignature;
             std::shared_ptr<BaseComponentCollection> collection{new ComponentCollection<T>(UINT16_MAX)};
-            componentCollections[componentName.getId()] = collection;
+            m_ComponentCollections[componentName] = collection;
         }
 
         if constexpr (sizeof...(types) > 0)
         {
-            addComponents<types...>();
+            AddComponents<types...>();
         }
     };
 
     //get component collection
     template <typename T>
-    ComponentCollection<T>& Archetype::getComponentCollection()
+    ComponentCollection<T>& Archetype::GetComponentCollection()
     {
         // check if component is of component type
         static_assert(std::is_base_of_v<Component<T>, T>);
 
-        UniqueString componentName = Component<T>::name;
+        UniqueString componentName = Component<T>::s_Name;
 
-        auto baseComponentCollection = componentCollections[componentName.getId()];
-        std::shared_ptr<ComponentCollection<T>> componentCollection = std::static_pointer_cast<ComponentCollection<T>>(baseComponentCollection);
-        return *componentCollection;
+        auto baseComponentCollection = m_ComponentCollections[componentName];
+        std::shared_ptr<ComponentCollection<T>> collection = std::static_pointer_cast<ComponentCollection<T>>(baseComponentCollection);
+        
+        return *collection;
     };
 
     // get component of entity implementation
     template <typename T>
-    T* Archetype::getComponentOfEntity(Entity entity)
+    T* Archetype::GetComponentOfEntity(Entity entity)
     {
         // check if component is of component type
         static_assert(std::is_base_of_v<Component<T>, T>);
 
-        ComponentIndex index = entities[entity];
-        auto &collection = getComponentCollection<T>();
+        ComponentIndex index = m_Entities[entity];
+        auto &collection = GetComponentCollection<T>();
 
-        return collection.get(index);
+        return collection.Get(index);
     }
 
 } // namespace ASEngine

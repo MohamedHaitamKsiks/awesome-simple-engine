@@ -5,70 +5,58 @@
 
 namespace ASEngine {
 
-    Image::Image(char* _pixels, int _width, int _height) 
+    Image::Image(uint8_t* pixels, int width, int height, ImageFormat format)
     {
-        pixels = _pixels;
-        width = _width;
-        height = _height;
+        m_Pixels = pixels;
+        m_Width = width;
+        m_Height = height;
+        m_Format = format;
     }
 
-    bool Image::load(const std::string& imagePath) 
+    bool Image::Load(const std::string& imagePath) 
     {
         //read image file
         File imageFile;
-        if(!imageFile.open(imagePath, FILE_OPEN_MODE_READ)) 
+        if(!imageFile.Open(imagePath, FileOpenMode::READ)) 
         {
-            std::stringstream error;
-            error << "Cannot open image: " << imagePath;
-            Log::out(error.str());
+            Debug::Log("Cannot open image:", imagePath);
             return false;
         }
-        size_t fileLength = imageFile.getSize();
+
+        size_t fileLength = imageFile.GetSize();
         stbi_uc buffer[fileLength];
-        imageFile.read((char*) buffer);
+        imageFile.Read((char*) buffer);
 
         //decode
-        pixels =  (char*) stbi_load_from_memory(buffer, (int) fileLength, &width, &height, &channels, STBI_rgb_alpha);
-        if (!pixels) 
+        m_Pixels =  (uint8_t*) stbi_load_from_memory(buffer, (int) fileLength, &m_Width, &m_Height, &m_Channels, STBI_rgb_alpha);
+        if (!m_Pixels) 
         {
-            auto *StbError = stbi_failure_reason();
-            if (!StbError)
-                StbError = "Unknown error";
-            std::stringstream error;
-            error << "Failed to read image pixels; " << StbError;
-
-            Log::out(error.str());
+            auto *stbError = stbi_failure_reason();
+            if (!stbError)
+                stbError = "Unknown error";
+        
+            Debug::Log("Failed to read image pixels:", stbError);
             return false;
         }
 
-        loadedWithSTBI = true;
+        m_LoadedWithSTBI = true;
 
         // create image resource
-        format = IMAGE_FORMAT_RBGA;
-
-        //log image created
-        std::stringstream ss;
-        ss << "Image created " << width << "x" << height << "\n"; 
-        Log::out(ss.str());
+        m_Format = ImageFormat::RGBA;
         
-        imageFile.close();
+        imageFile.Close();
         return true;
-    }
-
-    bool Image::create(int _width, int _height, ImageFormat _format)
-    {
-        return false;
     }
 
     Image::~Image() 
     {
-        if (!pixels)
+        if (!m_Pixels)
             return;
 
-        if (loadedWithSTBI)
-            stbi_image_free(pixels);
+        if (m_LoadedWithSTBI)
+            stbi_image_free(m_Pixels);
         else
-            delete[] pixels;
+            delete[] m_Pixels;
     }
 
 } // ASEngine

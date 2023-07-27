@@ -11,25 +11,44 @@
 
 #include "GLFW/glfw3.h"
 
-class DesktopApplication {
-    public:
-        void start();
+using namespace ASEngine;
+
+class DesktopApplication 
+{
+public:
+    void Start();
+
+private:
+
+    //glfw window
+    GLFWwindow *m_Window = nullptr;
+
+    // window information
+    struct
+    {
+        int Width = -1;
+        int Height = -1;
+        int XPos = 0;
+        int YPos = 0;
+    } m_WindowInfo;
+
+    //init desktop application
+    bool Init();
+
+    //update desktop application
+    void Update(float delta);
+
+    //derminate desktop application
+    void Terminate();
+
+    // on window resize
+    void OnWindowChangeSize(int width, int height);
     
-    private:
-        //singleton
-        DesktopApplication* application = nullptr;
+    // on window set fullscreen
+    void OnWindowSetFullscreen(bool fullscreen);
 
-        //glfw window
-        GLFWwindow *window;
-
-        //init desktop application
-        bool init();
-
-        //update desktop application
-        void update(float delta);
-
-        //derminate desktop application
-        void terminate();
+    // on window set title
+    void OnWindowSetTitle(std::string title);
 };
 
 #endif

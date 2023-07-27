@@ -3,15 +3,15 @@
 namespace ASEngine
 {
     // unique string manager implementations
-    UniqueStringID UniqueStringManager::find(const std::string &str)
+    UniqueStringID UniqueStringManager::Find(const std::string &str)
     {
         size_t strLength = str.length();
         
         UniqueStringID index = 0;
         
-        for (UniqueStringInfo* info: stringInfos)
+        for (UniqueStringInfo* info: m_StringInfos)
         {
-            if (info->length != strLength)
+            if (info->Length != strLength)
             {
                 index++;
                 continue;
@@ -19,9 +19,9 @@ namespace ASEngine
             //check characters one by one
             bool areStringEquals = true;
 
-            PoolAllocator<char>::Iterator it = PoolAllocator<char>::Iterator(&stringData, info->startIndex);
+            PoolAllocator<char>::Iterator it = PoolAllocator<char>::Iterator(&m_StringData, info->StartIndex);
 
-            for (size_t i = 0; i < strLength && it != stringData.end(); i++)
+            for (size_t i = 0; i < strLength && it != m_StringData.end(); i++)
             {
                 if (str[i] != *(*it))
                 {
@@ -41,9 +41,9 @@ namespace ASEngine
         return CHUNK_NULL;
     }
 
-    UniqueStringID UniqueStringManager::create(const std::string &str)
+    UniqueStringID UniqueStringManager::Create(const std::string &str)
     {
-        UniqueStringID index = find(str);
+        UniqueStringID index = Find(str);
         if (index != CHUNK_NULL)
             return index;
         
@@ -51,35 +51,29 @@ namespace ASEngine
         size_t strLength = str.length();
         //new string info
         UniqueStringInfo newStrInfo;
-        newStrInfo.length = strLength;
+        newStrInfo.Length = strLength;
 
         for (size_t i = 0; i < strLength; i++) 
         {
-            ChunkID charId = stringData.alloc();
-            *stringData.get(charId) = str[i];
+            ChunkID charId = m_StringData.Alloc();
+            *m_StringData.Get(charId) = str[i];
             if (i == 0)
-                newStrInfo.startIndex = charId;
+                newStrInfo.StartIndex = charId;
             
         }
 
-        index = (UniqueStringID) stringInfos.alloc();
-        *stringInfos.get((ChunkID) index) = newStrInfo;
+        index = (UniqueStringID)m_StringInfos.Push(newStrInfo);
 
         return index;
     }
 
-    size_t UniqueStringManager::getLength(UniqueStringID stringId)
-    {
-        return stringInfos.get(stringId)->length;
-    }
-
-    std::string UniqueStringManager::getString(UniqueStringID stringId)
+    std::string UniqueStringManager::GetString(UniqueStringID stringId)
     {
         std::stringstream ss;
-        UniqueStringInfo* info = stringInfos.get(stringId);
+        UniqueStringInfo* info = m_StringInfos.Get(stringId);
 
-        PoolAllocator<char>::Iterator it = PoolAllocator<char>::Iterator(&stringData, info->startIndex);
-        for (size_t i = 0; i < info->length && it != stringData.end(); i++)
+        PoolAllocator<char>::Iterator it = PoolAllocator<char>::Iterator(&m_StringData, info->StartIndex);
+        for (size_t i = 0; i < info->Length && it != m_StringData.end(); i++)
         {
             ss << *(*it);
             it++;

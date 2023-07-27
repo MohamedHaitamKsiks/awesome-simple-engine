@@ -8,51 +8,46 @@
 namespace ASEngine
 {
 
-    AAssetManager* File::assetManager = nullptr;
+    AAssetManager* File::s_AssetManager = nullptr;
 
-    void File::setAssetManager(AAssetManager *_assetManager) 
+    void File::SetAssetManager(AAssetManager *assetManager) 
     {
-        assetManager = _assetManager;
+        s_AssetManager = assetManager;
     }
 
-    AAssetManager* File::getAssetManager()
+    bool File::Open(const std::string &path, FileOpenMode mode)
     {
-        return assetManager;
+        m_Asset = AAssetManager_open(s_AssetManager, path.c_str(), AASSET_MODE_BUFFER);
+        m_Size = (size_t) AAsset_getLength(m_Asset);
+        return m_Asset != nullptr;
     }
 
-    bool File::open(const std::string &_path, FileOpenMode _mode)
+    void File::Close()
     {
-        asset = AAssetManager_open(assetManager, _path.c_str(), AASSET_MODE_BUFFER);
-        size = (size_t) AAsset_getLength(asset);
-        return asset != nullptr;
+        AAsset_close(m_Asset);
     }
 
-    void File::close()
+    void File::Read(char *buffer)
     {
-        AAsset_close(asset);
+        AAsset_read(m_Asset, buffer, m_Size);
     }
 
-    void File::read(char *buffer)
-    {
-        AAsset_read(asset, buffer, size);
-    }
-
-    void File::write(const char *buffer, const size_t length)
+    void File::Write(const char *buffer, const size_t length)
     {
 
     }
 
-    std::string File::readText()
+    std::string File::ReadText()
     {
         //create buffer
-        char buffer[size];
+        char buffer[m_Size];
             
         //read char by char
         char readChar;
         uint32_t currentChar = 0;
-        while (currentChar < size)
+        while (currentChar < m_Size)
         {
-            AAsset_read(asset, &readChar, sizeof(char));
+            AAsset_read(m_Asset, &readChar, sizeof(char));
             if (readChar == EOF)
             {
                 break;

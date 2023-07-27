@@ -2,8 +2,13 @@
 #ifndef ASENGINE_APPLICATION_H
 #define ASENGINE_APPLICATION_H
 
-#include "engine/Renderer/Renderer.h"
-#include "engine/Renderer/Graphics.h"
+#include "engine/Singleton/Singleton.h"
+
+#include "engine/Window/Window.h"
+
+#include "engine/Renderer/Viewport.h"
+#include "engine/Renderer/TextureManager.h"
+#include "engine/Renderer/2D/Renderer2D.h"
 
 #include "engine/Resource/ResourceManager.h"
 #include "engine/Resource/Font.h"
@@ -23,34 +28,41 @@
 
 namespace ASEngine {
 
-	enum Platform {
-		PLATFORM_ANDROID,
-		PLATFORM_DESKTOP
+	enum class Platform {
+		ANDROID_DEVICES,
+		DESKTOP
 	};
 
 	//application
-	class Application {
+	class Application:public Singleton<Application> {
 	public:
-		static void create(Platform _platform);
-		static Application* getSingleton();
-		Application(Platform _platform);
+		// constructors
+		Application(){};
+		Application(Platform platform);
 
-		Platform getPlatform();
+		// destructor
+		~Application();
 
-		void init();
-		void update(float delta);
-		void onInputEvent(InputEvent& inputEvent);
-		void terminate();
+		// create application for given platform
+		static void Create(Platform platform);
+
+		// get apllication running platform
+		static inline Platform GetPlatform() { return GetSingleton()->m_Platform; };
+
+		// get project setting
+		static void LoadProjectSettings();
+
+		// update application
+		static void Update(float delta);
+		
+		// application on event
+		static inline void OnInputEvent(InputEvent &inputEvent) { GetSingleton()->IOnInputEvent(inputEvent); };
+
 	private:
+		void IOnInputEvent(InputEvent &inputEvent);
+
 		//application platform
-		Platform platform = PLATFORM_ANDROID;
-		//graphics objects
-		Renderer renderer{};
-		Graphics graphics{};
-		//get project setting
-		void loadProjectSettings();
-		//singleton
-		static Application* application;
+		Platform m_Platform = Platform::ANDROID_DEVICES;
 
 	};
 

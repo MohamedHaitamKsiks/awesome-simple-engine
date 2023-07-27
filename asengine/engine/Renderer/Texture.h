@@ -1,70 +1,77 @@
-
 #ifndef ASENGINE_TEXTURE_H
 #define ASENGINE_TEXTURE_H
 
-#include <vector>
-#include <algorithm>
-#include <cstdint>
-
-#ifdef __ANDROID__
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
-
-#else
-#include <GL/glew.h>
-
-#endif
-
+#include "GraphicsAPI.h"
+#include "engine/Memory/PoolAllocator.h"
 #include "engine/Resource/Image.h"
-#include "engine/Log/Log.h"
 
-namespace ASEngine {
+#include "TextureManager.h"
 
-    struct TextureInfo {
-        GLuint texture = UINT32_MAX;
-        int width = -1;
-        int height = -1;
-        //for each texture we are going to allocate a vertex buffer
-    };
-
-    class Texture {
+namespace ASEngine
+{
+    // texture abstraction
+    class Texture
+    {
     public:
-        uint32_t id = UINT32_MAX;
+        Texture() {};
+        Texture(TextureID id) { m_Id = id; };
 
-        Texture(uint32_t _id) {
-            id = _id;
+        // compare texures
+        inline friend bool operator==(const Texture& a, const Texture& b)
+        {
+            return a.m_Id == b.m_Id;
+        }
+
+        inline friend bool operator!=(const Texture &a, const Texture &b)
+        {
+            return a.m_Id != b.m_Id;
+        }
+
+        // load texture from image
+        static inline Texture LoadFromImage(const Image& image)
+        {
+            return Texture(TextureManager::GetSingleton()->LoadFromImage(image));
         };
 
-        //eq;
-        bool operator==(Texture texture) {
-            return id == texture.id;
-        }
-        //init textures
-        static void init();
-        //terminate textures
-        static void terminate();
-        //load texture from
-        static Texture load(Image& image);
-        //destroy
-        void destroy();
-        //get width
-        int width();
-        //get height
-        int height();
-        //get gl texture
-        GLuint glTexture();
-        //default texture
-        static Texture defaultTexture;
+        // bind texture to sampler slot
+        void inline BindSampler(SamplerSlot slot)
+        {
+            TextureManager::GetSingleton()->BindSampler(m_Id, slot);
+        };
+
+        // destroy texture
+        void inline Destroy() 
+        {
+            TextureManager::GetSingleton()->Destroy(m_Id);
+        };
+
+        // get widths
+        int inline GetWidth() const
+        {
+            return TextureManager::GetSingleton()->GetInfo(m_Id)->Width;
+        };
+
+        // get widths
+        int inline GetHeight() const
+        {
+            return TextureManager::GetSingleton()->GetInfo(m_Id)->Height;
+        };
+
+        // get widths
+        TextureFormat inline GetFormat() const
+        {
+            return TextureManager::GetSingleton()->GetInfo(m_Id)->Format;
+        };
 
     private:
-        static std::vector<TextureInfo> infoList;
-        static std::vector<uint32_t> freeInfoList;
-        static uint32_t textureCounter;
+        // texture id
+        TextureID m_Id = CHUNK_NULL;
     };
 
+    // null texture
+    static const Texture TEXTURE_NULL = Texture(CHUNK_NULL);
 
-} // ASEngine
+} // namespace ASEngine
 
 
-
-#endif //ASENGINE_TEXTURE_H
+#endif // ASENGINE_TEXTURE_H
