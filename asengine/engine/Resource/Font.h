@@ -38,11 +38,11 @@ namespace ASEngine
 	};
 
 	//font resource
-	class Font : public Resource<Font>
+	class Font : public Resource
 	{
 
 	public:
-		// destructor
+		Font() {};
 		~Font();
 
 		//load font from file

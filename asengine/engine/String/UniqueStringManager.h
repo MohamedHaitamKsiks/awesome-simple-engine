@@ -6,6 +6,7 @@
 #include <cstring>
 
 #include "engine/Log/Log.h"
+#include "engine/Memory/DynamicArray.h"
 #include "engine/Memory/PoolAllocator.h"
 #include "engine/Singleton/Singleton.h"
 
@@ -18,7 +19,7 @@ namespace ASEngine
     struct UniqueStringInfo
     {
         // where the string starts
-        ChunkID StartIndex = CHUNK_NULL;
+        uint32_t StartIndex = CHUNK_NULL;
         // length of the string
         size_t Length = 0;
     };
@@ -30,18 +31,19 @@ namespace ASEngine
             // create string if not found
             UniqueStringID Create(const std::string &str);
             // get length
-            inline size_t GetLength(UniqueStringID stringId)
+            inline size_t GetLength(UniqueStringID stringID)
             {
-                return m_StringInfos.Get(stringId)->Length;
+                return m_StringInfos[stringID].Length;
             };
             // get std::string 
             std::string GetString(UniqueStringID stringId);
 
         private:
             // where strings data are stored
-            PoolAllocator<char> m_StringData{UINT16_MAX};
+            char m_StringData[UINT16_MAX];
+            size_t m_StringDataHead = 0;
             // list of strings
-            PoolAllocator<UniqueStringInfo> m_StringInfos{UINT16_MAX};
+            TDynamicArray<UniqueStringInfo> m_StringInfos{UINT16_MAX};
             // return the id of the string if found
             UniqueStringID Find(const std::string &str);
     };

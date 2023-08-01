@@ -16,6 +16,8 @@ namespace ASEngine
         bool IsDestroyed = false;
     };
 
+
+
 } // namespace ASEngine
 
 

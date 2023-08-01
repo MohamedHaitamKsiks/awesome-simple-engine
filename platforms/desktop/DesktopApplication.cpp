@@ -22,6 +22,12 @@ void DesktopApplication::Start()
         auto pastTime = std::chrono::high_resolution_clock::now();
 
         Update(delta);
+        if (delta > 0.0f)
+        {
+            std::stringstream ss;
+            ss << 1.0f / delta << " FPS";
+            Window::SetTitle(ss.str());
+        }
 
         // compute delta
         auto currentTime = std::chrono::high_resolution_clock::now();

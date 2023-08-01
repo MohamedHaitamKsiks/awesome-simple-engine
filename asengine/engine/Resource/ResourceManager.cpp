@@ -9,7 +9,7 @@ namespace ASEngine {
     template <typename T>
     ResourceManager<T>::ResourceManager()
     {
-        static_assert(std::is_base_of_v<Resource<T>, T>);
+        static_assert(std::is_base_of_v<Resource, T>);
     }
 
     template <typename T>
@@ -31,7 +31,7 @@ namespace ASEngine {
     {
         ChunkID newResourceID = m_Resources.Alloc();
         m_ResourceIds[resourceName] = newResourceID;
-        ((Resource<T>*) m_Resources.Get(newResourceID))->ID = newResourceID;
+        ((Resource&) m_Resources.Get(newResourceID)).ID = newResourceID;
         return newResourceID;
     }
 
@@ -39,7 +39,7 @@ namespace ASEngine {
     ResourceID ResourceManager<T>::IAdd()
     {
         ChunkID newResourceID = m_Resources.Alloc();
-        ((Resource<T> *)m_Resources.Get(newResourceID))->ID = newResourceID;
+        ((Resource&)m_Resources.Get(newResourceID)).ID = newResourceID;
         return newResourceID;
     }
 

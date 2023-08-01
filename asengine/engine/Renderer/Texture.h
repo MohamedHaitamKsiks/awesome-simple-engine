@@ -48,19 +48,19 @@ namespace ASEngine
         // get widths
         int inline GetWidth() const
         {
-            return TextureManager::GetSingleton()->GetInfo(m_Id)->Width;
+            return TextureManager::GetSingleton()->GetInfo(m_Id).Width;
         };
 
         // get widths
         int inline GetHeight() const
         {
-            return TextureManager::GetSingleton()->GetInfo(m_Id)->Height;
+            return TextureManager::GetSingleton()->GetInfo(m_Id).Height;
         };
 
         // get widths
         TextureFormat inline GetFormat() const
         {
-            return TextureManager::GetSingleton()->GetInfo(m_Id)->Format;
+            return TextureManager::GetSingleton()->GetInfo(m_Id).Format;
         };
 
     private:

@@ -19,19 +19,19 @@ void ECSRegistry()
 
     // sprite
     SpriteID spriteId = ResourceManager<Sprite>::Add();
-    Sprite *sprite = ResourceManager<Sprite>::Get(spriteId);
-    sprite->Load(texture, 6, vec2::ZERO());
+    auto& sprite = ResourceManager<Sprite>::Get(spriteId);
+    sprite.Load(texture, 6, vec2::ZERO());
 
     
     // register default shader ...
     ShaderID shaderId = ResourceManager<Shader>::Add();
-    ResourceManager<Shader>::Get(shaderId)->Load("shaders/default.glsl");
+    ResourceManager<Shader>::Get(shaderId).Load("shaders/default.glsl");
 
     
     // register default material ...
     MaterialID materialId = ResourceManager<Material>::Add();
-    ResourceManager<Material>::Get(materialId)->Create(shaderId);
-    ResourceManager<Material>::Get(materialId)->SetShaderParam(UniqueString("u_Texture"), texture);
+    ResourceManager<Material>::Get(materialId).Create(shaderId);
+    ResourceManager<Material>::Get(materialId).SetShaderParam(UniqueString("u_Texture"), texture);
 
     // component registry ...
     ComponentManager::RegisterComponent<SpriteComponent>(UniqueString("Sprite"));
@@ -41,7 +41,7 @@ void ECSRegistry()
     SystemManager::RegisterSystem<SpriteRenderingSystem>();
 
     // create entities
-    for (int i = 0; i < 10000; i++)
+    for (int i = 0; i < 100000; i++)
     {
         TransformComponent transformComponent;
         transformComponent.Position.x = Random::Range(-200.0f, 200.0f);
@@ -49,8 +49,8 @@ void ECSRegistry()
 
         SpriteComponent spriteComponent;
         spriteComponent.MatID = materialId;
-        spriteComponent.Size = vec2{(float)sprite->GetWidth(), (float) sprite->GetHeight()};
-        spriteComponent.Frames = sprite->GetFrames();
+        spriteComponent.Size = vec2{(float)sprite.GetWidth(), (float) sprite.GetHeight()};
+        spriteComponent.Frames = sprite.GetFrames();
 
         Entity entity = World::Create(
             spriteComponent,

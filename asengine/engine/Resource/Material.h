@@ -24,9 +24,10 @@ namespace ASEngine {
 
     using MaterialID = ResourceID;
 
-    class Material : public Resource<Material> 
+    class Material : public Resource
     {
     public:
+        Material(){}
         ~Material();
 
         // create material based on file
@@ -42,9 +43,11 @@ namespace ASEngine {
         template<typename T>
         void SetShaderParam(const UniqueString& param, const T& value)
         {
+            // get shader
+            auto &shader = ResourceManager<Shader>::Get(m_ShaderID);
             // get shader info
-            int paramIndex = m_Shader->m_UniformNames[param];
-            ShaderUniformInfo info = m_Shader->m_Uniforms[paramIndex];
+            int paramIndex = shader.m_UniformNames[param];
+            ShaderUniformInfo info = shader.m_Uniforms[paramIndex];
 
             // check if sizeof T is the same as param info
             if (info.Size != sizeof(T))
@@ -69,9 +72,9 @@ namespace ASEngine {
 
         // shader
         ShaderID m_ShaderID = CHUNK_NULL;
-        Shader* m_Shader = nullptr;
         // buffer of all uniforms values
         uint8_t* m_UniformBuffer = nullptr;
+
     };
 
 } //ASEngine

@@ -9,5 +9,4 @@ namespace ASEngine
     using Entity = uint32_t;
 } // namespace ASEngine
 
-
-#endif
+#endif // ASENGINE_ENTITY_H

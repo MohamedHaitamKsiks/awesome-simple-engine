@@ -34,7 +34,8 @@ namespace ASEngine {
         static void Terminate();
 
         //add new resource and give it a name
-        static inline ResourceID Add(const UniqueString &resourceName){
+        static inline ResourceID Add(const UniqueString &resourceName)
+        {
             return GetSingleton()->IAdd(resourceName);
         };
 
@@ -51,7 +52,7 @@ namespace ASEngine {
         };
 
         //get resource by id
-        static inline T *Get(ResourceID resourceId) 
+        static inline T& Get(ResourceID resourceId) 
         { 
             return GetSingleton()->m_Resources.Get(resourceId); 
         };
@@ -65,7 +66,7 @@ namespace ASEngine {
     private:
         static ResourceManager<T>* s_Singleton;
 
-        PoolAllocator<T> m_Resources{UINT16_MAX};
+        TPoolAllocator<T> m_Resources{UINT16_MAX};
         std::unordered_map<UniqueString, ResourceID> m_ResourceIds;
 
         // add new resource and give it a name

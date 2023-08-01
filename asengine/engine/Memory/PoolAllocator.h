@@ -2,119 +2,120 @@
 #define ASENGINE_POOL_ALLOCATOR_H
 
 #include <memory>
+#include <cstdlib>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
 
 #include "engine/Log/Log.h"
-#include "BasePoolAllocator.h"
+#include "DynamicArray.h"
 
 namespace ASEngine {
 
+    // chunk index in the pool allocator
+    using ChunkID = uint32_t;
+    constexpr const ChunkID CHUNK_NULL = UINT32_MAX;
+
+    // base class of pool allocator
+    class PoolAllocator
+    {
+    public:
+        PoolAllocator(size_t capacity); 
+
+        // allocate chunk in pool allcoator
+        ChunkID Alloc();
+
+        // free chunk 
+        void Free(ChunkID chunkID);
+
+        // get pool usage
+        inline size_t GetSize()  const 
+        {
+            return m_Size;
+        };
+
+
+    private:
+        size_t m_Size = 0;
+
+        // pool list of free chunks
+        TDynamicArray<ChunkID> m_FreeChunkStack{};
+    };
+
     /*
-    poolallocator implemetation
-    faster than the heap
-    but requires to know the size of the pool
+    dynanmic poolallocator implemetation
+    faster than the heap, you can reserve space you want
     */
     template <typename T>
-    class PoolAllocator: public BasePoolAllocator {
+    class TPoolAllocator : public PoolAllocator
+    {
     public:
-        // types
-        using Type = T;
 
-
-        //contructors / deconstructors
-        PoolAllocator() : BasePoolAllocator(sizeof(T)) 
+        // chunk
+        using Chunk = struct PoolAllocatorChunk
         {
-            InitializePoolValues();
+            T Data;
+            bool Used = false;
+        };
+
+        TPoolAllocator(size_t capacity) : PoolAllocator(capacity)
+        {
+            m_Data.Reserve(capacity);
         }
 
-        PoolAllocator(size_t capacity) : BasePoolAllocator(sizeof(T), capacity)
+        ~TPoolAllocator()
         {
-            InitializePoolValues();
         }
 
-        ~PoolAllocator();
-
+        // allocate chunk and return the address
+        ChunkID Alloc()
+        {
+            ChunkID allocatedChunkID = PoolAllocator::Alloc();
+            if (allocatedChunkID == GetSize() - 1)
+            {
+                m_Data.Add();
+            }
+            m_Data[allocatedChunkID].Used = true;
+            return allocatedChunkID;
+        }
 
         // push value to the allocator
-        ChunkID Push(const T& value);
-
-        // free memory
-        void Free(ChunkID index);
-
-        // get at 
-        inline T* Get(ChunkID index)
+        ChunkID Push(const T& value)
         {
-            return m_Data + index;
+            ChunkID allocatedChunkID = Alloc();
+            m_Data[allocatedChunkID].Data = value;
+            return allocatedChunkID;
         }
 
-        // iterator
-        using Iterator = class PoolAllocatorIterator
+        // free memory
+        void Free(ChunkID chunkID)
         {
-        public:
-            PoolAllocatorIterator(PoolAllocator<T> *pool, ChunkID currentPosition)
+            if (!m_Data[chunkID].Used)
             {
-                m_CurrentPosition = currentPosition;
-                m_Pool = pool;
-            };
+                Debug::Log(chunkID, ": This Chunk has already been freed.");
+                return;
+            }
 
-            inline ChunkID GetCurrentPosition() const { return m_CurrentPosition; };
+             // call destructor to logically destroy
+             m_Data[chunkID].Data.~T();
 
-            inline PoolAllocatorIterator operator++(int)
-            {
-                m_CurrentPosition = m_Pool->Next(m_CurrentPosition);
-                return *this;
-            };
+             // free chunk
+             PoolAllocator::Free(chunkID);
+        }
 
-            inline PoolAllocatorIterator operator++()
-            {
-                m_CurrentPosition = m_Pool->Next(m_CurrentPosition);
-                return *this;
-            };
-
-            inline T *operator*(void) const
-            {
-                return (T *)m_Pool->Get(m_CurrentPosition);
-            };
-
-            inline bool operator==(const PoolAllocatorIterator &it) const
-            {
-                return m_CurrentPosition == it.m_CurrentPosition;
-            };
-
-            inline bool operator!=(const PoolAllocatorIterator &it) const
-            {
-                return m_CurrentPosition != it.m_CurrentPosition;
-            };
-
-        private:
-            ChunkID m_CurrentPosition = CHUNK_NULL;
-            PoolAllocator<T> *m_Pool = nullptr;
-        };
-
-        // iterator begin
-        inline Iterator begin()
+        // get data at 
+        inline T& Get(ChunkID chunkID)
         {
-            return Iterator(this, m_Head);
-        };
-        // iterator end
-        inline Iterator end()
-        {
-            return Iterator(this, UINT32_MAX);
+            return m_Data[chunkID].Data;
         };
 
     private:
         // pool data
-        T* m_Data = nullptr;
-
-        // initialize pool data
-        void InitializePoolValues();
+        TDynamicArray<Chunk> m_Data{};
     };
-
 
 } // namespace ASEngine
 
-#include "PoolAllocator.cpp"
+
 
 #endif // ASENGINE_POOL_ALLOCATOR_H

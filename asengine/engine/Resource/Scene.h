@@ -10,7 +10,7 @@
 
 namespace ASEngine {
 
-	class Scene: public Resource<Scene>
+	class Scene: public Resource
 	{
 	public:
 		//load scene from file

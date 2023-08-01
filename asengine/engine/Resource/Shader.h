@@ -21,18 +21,17 @@ namespace ASEngine
     using ShaderID = ResourceID;
 
     // shader resource
-    class Shader: public Resource<Shader>
+    class Shader: public Resource
     {
     public:
         Shader();
+        ~Shader();
 
         // load shader file
         bool Load(const std::string& shaderFile );
 
         // bind shader
         void Bind();
-
-        ~Shader();
 
     private:
         ShaderProgram m_Program = SHADER_NULL;

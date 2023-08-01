@@ -43,7 +43,7 @@ namespace ASEngine
 
     private:
         // list of textures 
-        PoolAllocator<TextureInfo> m_Textures{UINT16_MAX};
+        TPoolAllocator<TextureInfo> m_Textures{UINT16_MAX};
 
         // load texture form image
         TextureID LoadFromImage(const Image &image);
@@ -55,7 +55,7 @@ namespace ASEngine
         void Destroy(TextureID id);
 
         // get texture info for texture id
-        inline TextureInfo *GetInfo(TextureID id) { return m_Textures.Get(id); };
+        inline TextureInfo& GetInfo(TextureID id) { return m_Textures.Get(id); };
     };
     
 } // namespace ASEngine

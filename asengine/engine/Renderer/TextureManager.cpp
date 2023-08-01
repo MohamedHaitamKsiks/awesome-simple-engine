@@ -9,11 +9,6 @@ namespace ASEngine
 
     TextureManager::~TextureManager()
     {
-        for (auto* info: m_Textures)
-        {
-            GLuint texture = info->GLTexture;
-            glDeleteTextures(1, &texture);
-        }
     }
 
     TextureID TextureManager::LoadFromImage(const Image &image)
@@ -60,14 +55,15 @@ namespace ASEngine
 
     void TextureManager::BindSampler(TextureID id, SamplerSlot slot)
     {
+        GLuint texture = GetInfo(id).GLTexture;
         glActiveTexture(GL_TEXTURE0 + slot);
-        glBindTexture(GL_TEXTURE_2D, m_Textures.Get(id)->GLTexture);
+        glBindTexture(GL_TEXTURE_2D, texture);
     }
 
     void TextureManager::Destroy(TextureID id)
     {
         // delete opengl texture
-        GLuint texture = GetInfo(id)->GLTexture;
+        GLuint texture = GetInfo(id).GLTexture;
         glDeleteTextures(1, &texture);
 
         // free texture info

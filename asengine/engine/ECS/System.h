@@ -6,6 +6,8 @@
 #include <vector>
 #include <tuple>
 
+#include "engine/Memory/DynamicArray.h"
+
 #include "Archetype.h"
 #include "Component.h"
 #include "ComponentManager.h"
@@ -23,14 +25,14 @@ namespace ASEngine
             return m_Signature;
         };
 
-        inline std::vector<std::weak_ptr<Archetype>>& GetArchetypes()
+        inline TDynamicArray<std::weak_ptr<Archetype>>& GetArchetypes()
         {
             return m_Archetypes;
         };
 
         inline void AddArchetype(std::weak_ptr<Archetype> archetype)
         {
-            m_Archetypes.push_back(archetype);
+            m_Archetypes.Push(archetype);
         };
 
         // on update
@@ -41,7 +43,7 @@ namespace ASEngine
         uint32_t m_Signature = 1;
 
         // archetypes list
-        std::vector<std::weak_ptr<Archetype>> m_Archetypes = {};
+        TDynamicArray<std::weak_ptr<Archetype>> m_Archetypes{};
     };
 
 
@@ -57,16 +59,15 @@ namespace ASEngine
         };
 
         // foreach entiy with signature of system
-        void ForEach(std::function<void(T*, types*...)> callback)
+        void ForEach(std::function<void(T&, types&...)> callback)
         {
             for (auto archetype: m_Archetypes)
             {
                 ComponentCollection<T>& collection = archetype.lock()->template GetComponentCollection<T>();
 
-                for (auto it = collection.begin(); it != collection.end(); it++)
+                for (ComponentIndex i = 0; i < collection.GetSize(); i++)
                 {   
-                    ChunkID index = it.GetCurrentPosition();
-                    callback(collection.Get(index), archetype.lock()->template GetComponentCollection<types>().Get(index)...);
+                    callback(collection[i], archetype.lock()->template GetComponentCollection<types>()[i]...);
                 }
                 
             }
