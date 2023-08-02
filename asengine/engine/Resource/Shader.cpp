@@ -7,7 +7,7 @@ namespace ASEngine
     {
     }
 
-    bool Shader::Load(const std::string& shaderFile)
+    bool Shader::Load(const std::string &shaderFile)
     {
         // read file
         File file;

@@ -16,7 +16,7 @@ namespace ASEngine {
 
     using SpriteID = ResourceID;
 
-    class Sprite : public Resource<Sprite>
+    class Sprite : public Resource
     {
     public:
         //load

@@ -18,7 +18,7 @@ namespace ASEngine {
         GRAYSCALE_ALPHA
     };
 
-    class Image : public Resource<Image>
+    class Image : public Resource
     {
 
     public:
@@ -26,7 +26,6 @@ namespace ASEngine {
         Image() {};
         Image(uint8_t* pixels, int width, int height, ImageFormat format);
 
-        //destructor
         ~Image();
 
         //load image

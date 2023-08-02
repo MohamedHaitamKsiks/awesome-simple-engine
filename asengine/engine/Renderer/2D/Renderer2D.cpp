@@ -10,6 +10,7 @@ namespace ASEngine
         #endif
 
         // enable blend
+        glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -70,26 +71,26 @@ namespace ASEngine
 
             // get material
             m_CurrentMaterialID = materialId;
-            Material *material = ResourceManager<Material>::Get(materialId);
+            Material& material = ResourceManager<Material>::Get(materialId);
 
             // check if shader changed
-            if (material->GetShaderID() != m_CurrentShaderID)
+            if (material.GetShaderID() != m_CurrentShaderID)
             {
                 // bind the new shader
-                m_CurrentShaderID = material->GetShaderID();
-                Shader *shader = ResourceManager<Shader>::Get(m_CurrentShaderID);
+                m_CurrentShaderID = material.GetShaderID();
+                Shader& shader = ResourceManager<Shader>::Get(m_CurrentShaderID);
 
                 // bind shader
-                shader->Bind();
+                shader.Bind();
 
             }
 
             // set projection matrices
-            material->SetShaderParam(m_CameraParamName, m_CameraProjectionMatrix);
-            material->SetShaderParam(m_ViewParamName, m_ViewProjectionMatrix);
+            material.SetShaderParam(m_CameraParamName, m_CameraProjectionMatrix);
+            material.SetShaderParam(m_ViewParamName, m_ViewProjectionMatrix);
             
             // bind material
-            material->Bind();
+            material.Bind();
         }
 
         // add quad to current batch

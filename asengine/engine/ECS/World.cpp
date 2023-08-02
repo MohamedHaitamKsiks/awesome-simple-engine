@@ -22,41 +22,45 @@ namespace ASEngine
         GetSingleton()->CleanDestroyQueue();
     }
 
-    Entity World::ICreate(std::shared_ptr<Archetype> archetype)
+
+    
+    EntityCreateInfo World::ICreate(std::shared_ptr<Archetype> archetype)
     {
         // create entity
         EntityData data;
         data.ArchetypeOwner = archetype.get();
         data.IsDestroyed = false;
 
-        Entity createdEntity = m_Entities.Push(data);
-
+        EntityCreateInfo info;
+        info.archetype = archetype.get();
+        info.entity = m_Entities.Push(data);
         // add entity to archetype
-        archetype->AddEntity(createdEntity);
+        info.index = archetype->AddEntity(info.entity);
 
-        return createdEntity;
+        return info;
     };
+    
 
     void World::IDestroy(Entity entity)
     {
-        EntityData* data = m_Entities.Get(entity);
-        if (data->IsDestroyed)
+        EntityData& data = m_Entities.Get(entity);
+        if (data.IsDestroyed)
             return;
         //queue entity to destroy
-        data->IsDestroyed = true;
-        m_DestroyQueue.push_back(entity);
+        data.IsDestroyed = true;
+        m_DestroyQueue.Push(entity);
     }
     
     void World::CleanDestroyQueue()
     {
         for (auto entity: m_DestroyQueue)
         {
-            EntityData *data = m_Entities.Get(entity);
-            auto* archetype = data->ArchetypeOwner;
+            EntityData& data = m_Entities.Get(entity);
+            auto* archetype = data.ArchetypeOwner;
             archetype->RemoveEntity(entity);
             m_Entities.Free(entity);
         }
-        m_DestroyQueue.clear();
+        m_DestroyQueue.Clear();
     }
 
 } // namespace ASEngine

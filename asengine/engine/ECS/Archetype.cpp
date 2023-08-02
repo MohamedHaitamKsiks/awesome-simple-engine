@@ -3,30 +3,45 @@
 namespace ASEngine
 {
 
-    uint32_t Archetype::GetSignature() const
+    ComponentIndex Archetype::AddEntity(Entity entity)
     {
-        return m_Signature;
-    }
-
-    void Archetype::AddEntity(Entity entity)
-    {
+        ComponentIndex index;
         for (auto pair: m_ComponentCollections)
         {
             std::shared_ptr<BaseComponentCollection> collection = pair.second;
-            ComponentIndex componentIndex = collection->Alloc();
-            m_Entities[entity] = componentIndex;
+            index = collection->Add();
         }
+        m_Entities.Push(entity);
+        return index;
+    }
+
+    ComponentIndex Archetype::GetComponentIndexOfEntity(Entity entity)
+    {
+        // find component index
+        for (ComponentIndex i = 0; i < m_Entities.GetSize(); i++)
+        {
+            if (m_Entities[i] == entity)
+            {
+                return i;
+            }
+        }
+        return UINT32_MAX;
     }
 
     void Archetype::RemoveEntity(Entity entity)
     {
+        // find component index
+        ComponentIndex index = GetComponentIndexOfEntity(entity);
+        if (index == UINT32_MAX)
+            return;
+
+        // remove components    
         for (auto pair : m_ComponentCollections)
         {
             std::shared_ptr<BaseComponentCollection> collection = pair.second;
-            ComponentIndex componentIndex = m_Entities[entity];
-            collection->Free(componentIndex);
+            collection->Remove(index);
         }
-        m_Entities.erase(entity);
+        m_Entities.Remove(index);
     }
 
 } // namespace ASEngine

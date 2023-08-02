@@ -6,7 +6,7 @@
 #include "Vertex2D.h"
 #include "Quad2D.h"
 
-#include "engine/Memory/StackAllocator.h"
+#include "engine/Memory/DynamicArray.h"
 
 #include "engine/Log/Log.h"
 
@@ -17,7 +17,7 @@
 namespace ASEngine
 {
     // vertex 2d array
-    using Vertex2DArray = StackAllocator<Vertex2D>;
+    using Vertex2DArray = TDynamicArray<Vertex2D>;
     
     // dynamic vertex buffer object
     // only handles 2D quads since it's all we need in 

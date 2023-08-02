@@ -115,7 +115,7 @@ namespace ASEngine {
 		return true;
 	}
 
-	Font::~Font() 
+	Font::~Font()
 	{
 		if (m_Texture != TEXTURE_NULL)
 			m_Texture.Destroy();

@@ -20,8 +20,7 @@ add_library(
     asengine
     STATIC
     #memory
-    engine/Memory/BasePoolAllocator.cpp
-    engine/Memory/BaseStackAllocator.cpp
+    engine/Memory/PoolAllocator.cpp
     #ecs
     engine/ECS/World.cpp
     engine/ECS/Archetype.cpp

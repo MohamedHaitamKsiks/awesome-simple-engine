@@ -21,6 +21,15 @@
 
 namespace ASEngine
 {
+    // list of all information for an entity we just created
+    struct EntityCreateInfo
+    {
+        Entity entity;
+        ComponentIndex index;
+        Archetype *archetype = nullptr;
+    };
+
+    // context of ecs: the world where all the entities exists
     class World: public Singleton<World>
     {
     public: 
@@ -31,7 +40,7 @@ namespace ASEngine
         ~World();
 
         // create entity based on an archetype
-        static inline Entity Create(std::shared_ptr<Archetype> archetype) { return GetSingleton()->ICreate(archetype); };
+        static inline Entity Create(std::shared_ptr<Archetype> archetype) { return GetSingleton()->ICreate(archetype).entity; };
         
         // create entity based on components signature
         template<typename T, typename... types>
@@ -47,7 +56,7 @@ namespace ASEngine
         
         // get component of entity
         template <typename T>
-        static inline T* GetComponent(Entity entity) { return GetSingleton()->IGetComponent<T>(entity); };
+        static inline T& GetComponent(Entity entity) { return GetSingleton()->IGetComponent<T>(entity); };
         
         // destroy entity
         static inline void Destroy(Entity entity) { GetSingleton()->IDestroy(entity); };
@@ -57,8 +66,8 @@ namespace ASEngine
 
 
     private:
-        PoolAllocator<EntityData> m_Entities{UINT16_MAX};
-        std::vector<Entity> m_DestroyQueue = {};
+        TPoolAllocator<EntityData> m_Entities{UINT16_MAX};
+        TDynamicArray<Entity> m_DestroyQueue{};
 
         // clear destroy queue executed at the end of the frame to delete
         void CleanDestroyQueue();
@@ -66,11 +75,11 @@ namespace ASEngine
         // internal singleton functions
 
         // create entity based on archetype
-        Entity ICreate(std::shared_ptr<Archetype> archetype);
+        EntityCreateInfo ICreate(std::shared_ptr<Archetype> archetype);
 
         // get component from an entity
         template <typename T>
-        T *IGetComponent(Entity entity);
+        T& IGetComponent(Entity entity);
 
         // destroy entity
         void IDestroy(Entity entity);
@@ -83,7 +92,7 @@ namespace ASEngine
     Entity World::Create()
     {
         // get archetype
-        std::shared_ptr<Archetype> archetype = ArchetypeManager::GetArchetype<T, types...>();
+        auto archetype = ArchetypeManager::GetArchetype<T, types...>();
         // create entity
         return Create(archetype);
     };
@@ -91,32 +100,29 @@ namespace ASEngine
     template <typename T, typename... types>
     Entity World::Create(T firstComponent, types... components)
     {
-        Entity entity = Create<T, types...>();
-        SetComponents<T, types...>(entity, firstComponent, components...);
-        return entity;
+        // get archetype
+        auto archetype = ArchetypeManager::GetArchetype<T, types...>();
+        // create entity
+        EntityCreateInfo info = GetSingleton()->ICreate(archetype);
+        info.archetype->SetComponent(info.index, firstComponent, components...);
+        return info.entity;
     };
 
     template <typename T, typename... types>
     void World::SetComponents(Entity entity, const T &firstComponent, const types &...components)
     {
-        // set first component
-        T *component = GetComponent<T>(entity);
-        *component = firstComponent;
-
-        if constexpr (sizeof...(components) > 0)
-        {
-            SetComponents(entity, components...);
-        }
+        EntityData& data = GetSingleton()->m_Entities.Get(entity);
+        data.ArchetypeOwner->SetComponentOfEntity(entity, firstComponent, components...);
     };
 
     template <typename T>
-    T * World::IGetComponent(Entity entity)
+    T& World::IGetComponent(Entity entity)
     {
         // check if component is of component type
         static_assert(std::is_base_of_v<Component<T>, T>);
 
         // get component
-        auto *archetype = m_Entities.Get(entity)->ArchetypeOwner;
+        auto *archetype = m_Entities.Get(entity).ArchetypeOwner;
         return archetype->GetComponentOfEntity<T>(entity);
     };
 

@@ -48,7 +48,7 @@ namespace ASEngine {
         return true;
     }
 
-    Image::~Image() 
+    Image::~Image()
     {
         if (!m_Pixels)
             return;

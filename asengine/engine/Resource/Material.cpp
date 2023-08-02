@@ -17,10 +17,10 @@ namespace ASEngine
     {
         // get shader
         m_ShaderID = shaderId;
-        m_Shader = ResourceManager<Shader>::Get(shaderId);
+        auto &shader = ResourceManager<Shader>::Get(m_ShaderID);
 
         // allocate uniform buffer
-        m_UniformBuffer = new uint8_t[m_Shader->m_UniformBufferSize];
+        m_UniformBuffer = new uint8_t[shader.m_UniformBufferSize];
     }
 
     void Material::CopyToUniformBuffer(const void *buffer, size_t offset, size_t size)
@@ -30,7 +30,9 @@ namespace ASEngine
 
     void Material::Bind()
     {
-        for (auto info : m_Shader->m_Uniforms)
+        auto& shader = ResourceManager<Shader>::Get(m_ShaderID);
+
+        for (auto info : shader.m_Uniforms)
         {
             // get value adress
             uint8_t *value = m_UniformBuffer + info.Offset;

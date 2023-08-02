@@ -3,40 +3,33 @@
 
 namespace ASEngine 
 {
-
-    template<typename T>
-    PoolAllocator<T>::~PoolAllocator()
+    PoolAllocator::PoolAllocator(size_t capacity)
     {
-        delete[] m_Data;
+        m_FreeChunkStack.Reserve(capacity);
     }
 
-    template <typename T>
-    void PoolAllocator<T>::Free(ChunkID index) 
+    ChunkID PoolAllocator::Alloc()
     {
-        if (!IsUsed(index))
-            return;
-        //call destructor of the object to simulate it's destruction
-        //we need to do that since freeing objects from poolallocator doesn't destroy them from memory
-        //but since it's logically free we can call the destructor and simulate to make it equivilent to delete operator
-        Get(index)->~T();
-        // call base function
-        BasePoolAllocator::Free(index);
+        // allocate chunk
+        ChunkID allocatedChunkID;
+        if (m_FreeChunkStack.GetSize() > 0)
+        {
+            // pop free value
+            allocatedChunkID = m_FreeChunkStack.Pop();
+        }
+        else
+        {
+            allocatedChunkID = m_Size;
+        }
+        m_Size++;
+
+        return allocatedChunkID;
     }
 
-    template <typename T>
-    ChunkID PoolAllocator<T>::Push(const T& value)
+    void PoolAllocator::Free(ChunkID chunkID)
     {
-        ChunkID id = Alloc();
-        T* allocatedValue = Get(id);
-        *allocatedValue = value;
-        return id;
-    }
-
-    template <typename T>
-    void PoolAllocator<T>::InitializePoolValues()
-    {   
-        // allocate data
-        m_Data = new T[m_Capacity];
+        m_Size--;
+        m_FreeChunkStack.Push(chunkID);
     }
 
 } // namespace ASEngine

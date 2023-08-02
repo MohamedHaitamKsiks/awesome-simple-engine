@@ -1,5 +1,4 @@
 
-// varyings
 varying vec2 UV;
 varying vec4 MODULATE;
 
