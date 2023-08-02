@@ -41,7 +41,7 @@ void ECSRegistry()
     SystemManager::RegisterSystem<SpriteRenderingSystem>();
 
     // create entities
-    for (int i = 0; i < 100000; i++)
+    for (int i = 0; i < 20000; i++)
     {
         TransformComponent transformComponent;
         transformComponent.Position.x = Random::Range(-200.0f, 200.0f);
