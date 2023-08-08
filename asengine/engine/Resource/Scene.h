@@ -5,6 +5,7 @@
 #include "Resource.h"
 #include "ResourceManager.h"
 
+#include "engine/Serialization/Serializer.h"
 #include "engine/FileSystem/File.h"
 #include "engine/Log/Log.h"
 
@@ -15,8 +16,6 @@ namespace ASEngine {
 	public:
 		//load scene from file
 		bool Load(const std::string& sceneFilePath);
-
-		static void ImportAll();
 	};
 
 } // ASEngine

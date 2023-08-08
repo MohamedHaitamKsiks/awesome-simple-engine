@@ -5,6 +5,16 @@ namespace ASEngine
 
     Shader::Shader()
     {
+        
+    }
+
+    Shader::~Shader()
+    {
+        if (!IsOwner())
+            return;
+
+        if (m_Program != SHADER_NULL)
+            ShaderProgram::Destroy(m_Program);
     }
 
     bool Shader::Load(const std::string &shaderFile)
@@ -39,9 +49,4 @@ namespace ASEngine
         m_Program.BindVertex2D();
     }
 
-    Shader::~Shader()
-    {
-        if (m_Program != SHADER_NULL)
-            ShaderProgram::Destroy(m_Program);
-    }
 } // namespace ASEngine

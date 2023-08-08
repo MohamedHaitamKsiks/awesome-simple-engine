@@ -5,7 +5,7 @@ import sys
 import os
 import shutil
 import json
-
+from glob import glob
 
 #read config
 config = {}
@@ -40,7 +40,27 @@ def copyProjectToTemp():
     shutil.copytree("asengine", f"{tmpFileName}/asengine", dirs_exist_ok=True)
     shutil.copytree(f"{projectPath}/ecs", f"{tmpFileName}/ecs", dirs_exist_ok=True)
     shutil.copytree(f"{projectPath}/assets", f"{tmpFileName}/build/assets", dirs_exist_ok=True)
-
+    # create import.json file
+    os.chdir(f"{tmpFileName}/build/assets")
+    fonts = glob("**/*.font.json", recursive=True)
+    sprites = glob("**/*.sprite.json", recursive=True)
+    shaders = glob("**/*.glsl", recursive=True)
+    materials = glob("**/*.material.json", recursive=True)
+    scenes = glob("**/*.scene.json", recursive=True)
+    #create import all json
+    importAll = {
+        "Sprites": sprites,
+        "Shaders": shaders,
+        "Scenes": scenes,
+        "Materials": materials,
+        "Fonts": fonts
+    }
+    os.chdir(workingDirectory)
+    #save import.json
+    importFile = open(f"{tmpFileName}/build/assets/import.json", "w")
+    importFile.write(json.dumps(importAll, indent=4))
+    importFile.close()
+    
 
 #build for android
 if platform == "android":

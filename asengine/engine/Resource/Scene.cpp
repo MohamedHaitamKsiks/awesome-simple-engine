@@ -10,10 +10,6 @@ namespace ASEngine
 		return true;
 	}
 
-	void Scene::ImportAll() 
-	{
-
-	}
 
 
 } // ASEngine

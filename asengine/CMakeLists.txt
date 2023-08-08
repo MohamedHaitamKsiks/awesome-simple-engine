@@ -19,6 +19,8 @@ endif()
 add_library(
     asengine
     STATIC
+    #serialization
+    engine/Serialization/Serializer.cpp
     #memory
     engine/Memory/PoolAllocator.cpp
     #ecs

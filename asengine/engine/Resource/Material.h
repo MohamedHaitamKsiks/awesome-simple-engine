@@ -13,16 +13,14 @@
 
 #include "engine/Math/mat3.h"
 #include "engine/Math/vec2.h"
-#include "engine/Thirdparty/json.hpp"
 #include "engine/Log/Log.h"
 
+#include "engine/Serialization/Serializer.h"
 #include "ResourceManager.h"
 #include "Resource.h"
 #include "Shader.h"
 
 namespace ASEngine {
-
-    using MaterialID = ResourceID;
 
     class Material : public Resource
     {
@@ -34,7 +32,7 @@ namespace ASEngine {
         bool Load(const std::string& materialPath);
     
         // create material based on shade
-        void Create(ShaderID shaderId);
+        void Create(ResourceID shaderID);
 
         // bind material before drawing
         void Bind();
@@ -60,7 +58,7 @@ namespace ASEngine {
         }
 
         // get shader
-        inline ShaderID GetShaderID() const
+        inline ResourceID GetShaderID() const
         {
             return m_ShaderID;
         };
@@ -71,7 +69,7 @@ namespace ASEngine {
         void CopyToUniformBuffer(const void *buffer, size_t offset, size_t size);
 
         // shader
-        ShaderID m_ShaderID = CHUNK_NULL;
+        ResourceID m_ShaderID = CHUNK_NULL;
         // buffer of all uniforms values
         uint8_t* m_UniformBuffer = nullptr;
 

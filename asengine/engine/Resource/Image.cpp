@@ -13,6 +13,20 @@ namespace ASEngine {
         m_Format = format;
     }
 
+    Image::~Image()
+    {
+        if (!IsOwner())
+            return;
+
+        if (!m_Pixels)
+            return;
+
+        if (m_LoadedWithSTBI)
+            stbi_image_free(m_Pixels);
+        else
+            delete[] m_Pixels;
+    }
+
     bool Image::Load(const std::string& imagePath) 
     {
         //read image file
@@ -48,15 +62,5 @@ namespace ASEngine {
         return true;
     }
 
-    Image::~Image()
-    {
-        if (!m_Pixels)
-            return;
-
-        if (m_LoadedWithSTBI)
-            stbi_image_free(m_Pixels);
-        else
-            delete[] m_Pixels;
-    }
 
 } // ASEngine

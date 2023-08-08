@@ -3,9 +3,19 @@
 
 namespace ASEngine {
 
+	Font::~Font()
+	{
+		if (!IsOwner())
+			return;
+
+		if (m_Texture != TEXTURE_NULL)
+			m_Texture.Destroy();
+	}
+
 	bool Font::Load(const std::string &fontPath, int size, int separation, int lineSeparation, int spaceSize)
 	{
-		
+		m_FontPath = UniqueString(fontPath);
+
 		int width = FONT_TEXTURE_WIDTH * size;
 		int height = FONT_TEXTURE_HEIGHT * size;
 		ImageFormat format = ImageFormat::GRAYSCALE_ALPHA;
@@ -115,10 +125,37 @@ namespace ASEngine {
 		return true;
 	}
 
-	Font::~Font()
+
+	// font serialization
+	template <>
+	Json Serializer<Font>::Serialize(const Font &value)
 	{
-		if (m_Texture != TEXTURE_NULL)
-			m_Texture.Destroy();
+		Json fontObject = Json({});
+		return fontObject;
+	}
+	template <>
+	void Serializer<Font>::Deserialize(const Json &object, Font &dest)
+	{
+		assert(object.is_object());
+
+		// decerialize fields
+		std::string fontPath;
+		Serializer<std::string>::Deserialize(object["FontPath"], fontPath);
+
+		int size;
+		Serializer<int>::Deserialize(object["Size"], size);
+
+		int separation;
+		Serializer<int>::Deserialize(object["Separation"], separation);
+
+		int lineSeparation;
+		Serializer<int>::Deserialize(object["LineSeparation"], lineSeparation);
+
+		int spaceSize;
+		Serializer<int>::Deserialize(object["SpaceSize"], spaceSize);
+
+		// load font
+		dest.Load(fontPath, size, separation, lineSeparation, spaceSize);
 	}
 
 } // ASEngine

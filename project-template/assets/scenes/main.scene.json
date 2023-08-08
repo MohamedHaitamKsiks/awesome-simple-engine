@@ -1,0 +1,29 @@
+[
+    {
+        "Transform": {
+            "Position": 
+            {
+                "x": 5.0,
+                "y": 2.0
+            }
+        },
+        "Sprite": 
+        {
+            "SpritePath": "sprites/run.sprite.json",
+            "Frame": 0
+        }
+    }
+    ,
+    {
+        "Transform": {
+            "Position": {
+                "x": 50.0,
+                "y": 50.0
+            }
+        },
+        "Sprite": {
+            "SpritePath": "sprites/run.sprite.json",
+            "Frame": 2
+        }
+    }
+]

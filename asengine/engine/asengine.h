@@ -14,6 +14,7 @@
 #include "Memory/PoolAllocator.h"
 #include "String/UniqueString.h"
 #include "Signals/Signal.h"
+#include "Serialization/Serializer.h"
 
 // ecs
 #include "ECS/World.h"

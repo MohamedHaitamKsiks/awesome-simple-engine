@@ -26,10 +26,10 @@ namespace ASEngine {
 		World::Init();
 
 		// init resource managers
-		ResourceManager<Shader>::Init();
-		ResourceManager<Material>::Init();
-		ResourceManager<Sprite>::Init();
-		ResourceManager<Font>::Init();
+		ResourceManager<Shader>::Init("Shaders");
+		ResourceManager<Material>::Init("Materials");
+		ResourceManager<Sprite>::Init("Sprites");
+		ResourceManager<Font>::Init("Fonts");
 
 		Debug::Log("Application init complete");
 	}

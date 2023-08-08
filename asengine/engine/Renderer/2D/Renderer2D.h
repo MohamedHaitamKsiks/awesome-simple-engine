@@ -30,9 +30,9 @@ namespace ASEngine
             ~Renderer2D();
 
             // draw a quad with a given material
-            static inline void DrawQuad(const Quad2D &quad2D, MaterialID materialId)
+            static inline void DrawQuad(const Quad2D &quad2D, ResourceID materialID)
             {
-                GetSingleton()->IDrawQuad(quad2D, materialId);
+                GetSingleton()->IDrawQuad(quad2D, materialID);
             };
 
             // begin rendering context
@@ -50,9 +50,9 @@ namespace ASEngine
             UniqueString m_ViewParamName;
 
             // current shader
-            ShaderID m_CurrentShaderID = CHUNK_NULL;
+            ResourceID m_CurrentShaderID = CHUNK_NULL;
             // current material
-            MaterialID m_CurrentMaterialID = CHUNK_NULL;
+            ResourceID m_CurrentMaterialID = CHUNK_NULL;
 
             // vertex buffer to batch render
             VertexBufferObject2D m_Vbo2D{};
@@ -67,7 +67,7 @@ namespace ASEngine
             void IEnd();
 
             // draw quad internal
-            void IDrawQuad(const Quad2D &quad2D, MaterialID materialId);
+            void IDrawQuad(const Quad2D &quad2D, ResourceID materialID);
     };
 } // namespace ASEngine
 

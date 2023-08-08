@@ -60,18 +60,18 @@ namespace ASEngine
         m_Vbo2D.Submit();
     }
 
-    void Renderer2D::IDrawQuad(const Quad2D &quad2D, MaterialID materialId)
+    void Renderer2D::IDrawQuad(const Quad2D &quad2D, ResourceID materialID)
     {
         
         // check material changed
-        if (materialId != m_CurrentMaterialID)
+        if (materialID != m_CurrentMaterialID)
         {
             // submit current batch
             m_Vbo2D.Submit();
 
             // get material
-            m_CurrentMaterialID = materialId;
-            Material& material = ResourceManager<Material>::Get(materialId);
+            m_CurrentMaterialID = materialID;
+            Material& material = ResourceManager<Material>::Get(materialID);
 
             // check if shader changed
             if (material.GetShaderID() != m_CurrentShaderID)

@@ -15,10 +15,14 @@ namespace ASEngine
     public:
         // resource id
         ResourceID ID;
-
+        // is resource owner
+        inline bool IsOwner() const
+        {
+            return m_Owner;
+        }
 
     private:
-
+        bool m_Owner = true;
         
     };
 

@@ -6,10 +6,13 @@
 #include <cassert>
 
 #include "Resource.h"
+#include "Shader.h"
+
 #include "engine/Singleton/Singleton.h"
 #include "engine/FileSystem/File.h"
 #include "engine/Memory/PoolAllocator.h"
 #include "engine/String/UniqueString.h"
+#include "engine/Serialization/Serializer.h"
 #include "engine/Log/Log.h"
 
 
@@ -19,10 +22,10 @@ namespace ASEngine {
     class ResourceManager
     {
     public:
-        ResourceManager();
+        ResourceManager(const std::string &resourceName);
 
         // initiate resource manager
-        static void Init();
+        static void Init(const std::string& resourceName);
 
         // get resource manager
         static inline ResourceManager<T>* GetSingleton()
@@ -74,8 +77,12 @@ namespace ASEngine {
 
         // add new resource
         ResourceID IAdd();
+
         // remove resource by id
         void IRemove(ResourceID resourceId);
+
+        // load all resources
+        void LoadAll(const std::string& resourceName);
     };
 
 } // ASEngine
