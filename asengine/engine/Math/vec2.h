@@ -46,22 +46,37 @@ namespace ASEngine {
 
 
         // angle
-        float Angle();
+        inline float Angle()
+        {
+            return atan2(y, x);
+        }
 
         // dot product
-        float Dot(const vec2& v);
+        inline float Dot(const vec2& v)
+        {
+            return x * v.x + y * v.y;
+        }
 
         // lenghts
-        float Length();
+        inline float Length()
+        {
+            return sqrtf(x * x + y * y);
+        }
 
         // length squared
-        float LengthSquared();
+        inline float LengthSquared()
+        {
+            return x * x + y * y;
+        }
 
         // rotate
         vec2 Rotate(float angle);
-
+        
         // normalized
-        vec2 Normalized();
+        vec2 Normalized()
+        {
+            return *this / this->Length();
+        };
 
         //add
         friend inline vec2 operator+(const vec2 &a, const vec2 &b)

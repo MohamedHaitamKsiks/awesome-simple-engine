@@ -24,13 +24,14 @@ void ECSRegistry()
     SystemManager::RegisterSystem<SpriteRenderingSystem>();
 
     // create entities
-    for (int i = 0; i < 20000; i++)
+    for (int i = 0; i < 10000; i++)
     {
         TransformComponent transformComponent;
         transformComponent.Position.x = Random::Range(-200.0f, 200.0f);
         transformComponent.Position.y = Random::Range(-200.0f, 200.0f);
 
         SpriteComponent spriteComponent;
+        spriteComponent.SpriteID = spriteId;
         spriteComponent.MaterialID = sprite.GetDefaultMaterial();
         spriteComponent.Size = vec2{(float)sprite.GetWidth(), (float) sprite.GetHeight()};
         spriteComponent.Frames = sprite.GetFrames();

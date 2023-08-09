@@ -8,7 +8,7 @@ using namespace ASEngine;
 // holds transoorm data
 struct TransformComponent: Component<TransformComponent>
 {
-    vec2 Position = vec2{0.0f, 0.0f};
+    vec2 Position = vec2::ZERO();
     vec2 Scale = vec2::ONE();
     float Rotation = 0.0f;
 };

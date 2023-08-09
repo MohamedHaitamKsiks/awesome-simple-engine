@@ -64,16 +64,19 @@ namespace ASEngine
             for (auto archetype: m_Archetypes)
             {
                 ComponentCollection<T>& collection = archetype.lock()->template GetComponentCollection<T>();
+                std::tuple<ComponentCollection<types> &...> collections(archetype.lock()->template GetComponentCollection<types>()...);
 
                 for (ComponentIndex i = 0; i < collection.GetSize(); i++)
                 {   
-                    callback(collection[i], archetype.lock()->template GetComponentCollection<types>()[i]...);
+                    std::apply([callback, &collection, &i] (ComponentCollection<types> &... collections)
+                    {
+                        callback(collection[i], collections[i]...);
+                    }, collections);
+
                 }
-                
             }
         };
 
-        // 
     };
 
 } // namespace ASEngine

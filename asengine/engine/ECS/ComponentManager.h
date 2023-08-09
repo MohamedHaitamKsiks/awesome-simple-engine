@@ -1,14 +1,30 @@
 #ifndef ASENGINE_COMPONENT_MANAGER_H
 #define ASENGINE_COMPONENT_MANAGER_H
 
+#include <memory>
 #include <cstdint>
 #include <type_traits>
+#include <unordered_map>
 
 #include "Component.h"
 #include "engine/Singleton/Singleton.h"
 
 namespace ASEngine
 {
+    // component collection vector for now
+    template <typename T>
+    using ComponentCollection = TDynamicArray<T>;
+    using BaseComponentCollection = DynamicArray;
+
+    // component information used by component manager
+    struct ComponentInfo
+    {
+        UniqueString Name;
+        uint32_t Signature;
+        size_t Size = 0;
+        std::shared_ptr<BaseComponentCollection> (*CreateComponentCollection)();
+    };
+
     // singleton that manages components
     class ComponentManager: public Singleton<ComponentManager>
     {
@@ -17,9 +33,19 @@ namespace ASEngine
         template <typename T>
         static inline void RegisterComponent(UniqueString componentName) { GetSingleton()->IRegisterComponent<T>(componentName); };
 
+        // create component collection
+        template <typename T>
+        static std::shared_ptr<BaseComponentCollection> CreateComponentCollection();
+
+        // create component collection
+        inline static std::shared_ptr<BaseComponentCollection> CreateComponentCollection(UniqueString componentName) { return GetSingleton()->ICreateComponentCollection(componentName); };
+
         // get signature of a composition of components
         template <typename T, typename... types>
         static uint32_t GetSignature();
+
+        // get signature
+        inline static uint32_t GetSignature(UniqueString componentName) { return GetSingleton()->IGetSignature(componentName); }
 
     private:
         template <typename T>
@@ -28,12 +54,28 @@ namespace ASEngine
         // is valid signature <===> is prime
         bool IsValidSignature(uint32_t signature);
 
+        // create component collection
+        std::shared_ptr<BaseComponentCollection> ICreateComponentCollection(UniqueString componentName);
+
+        // get signature by name
+        uint32_t IGetSignature(UniqueString componentName);
+
         // last component signature
         uint32_t m_LastComponentSignature = 1;
+
+        // component infos
+        std::unordered_map<UniqueString, ComponentInfo> m_Components;
 
     };
 
     // implementations
+
+    // create component collection
+    template <typename T>
+    std::shared_ptr<BaseComponentCollection> ComponentManager::CreateComponentCollection()
+    {
+        return std::make_shared<ComponentCollection<T>>(UINT16_MAX);
+    };
 
     // register component implementation
     template <typename T>
@@ -51,6 +93,15 @@ namespace ASEngine
                 // register component
                 Component<T>::s_Signature = i;
                 Component<T>::s_Name = componentName;
+
+                // add component info
+                ComponentInfo info;
+                info.Name = componentName;
+                info.Signature = i;
+                info.Size = sizeof(T);
+                info.CreateComponentCollection = ComponentManager::CreateComponentCollection<T>;
+                
+                m_Components[componentName] = info;
 
                 // update last component signature
                 m_LastComponentSignature = i;

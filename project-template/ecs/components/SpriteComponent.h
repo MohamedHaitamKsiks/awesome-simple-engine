@@ -9,6 +9,7 @@ using namespace ASEngine;
 struct SpriteComponent : Component<SpriteComponent>
 {
     ResourceID MaterialID = CHUNK_NULL;
+    ResourceID SpriteID = CHUNK_NULL;
     vec2 Size = vec2::ZERO();
     float Frames = 1.0f;
     float Frame = 0.0f;

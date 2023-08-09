@@ -14,10 +14,7 @@
 
 namespace ASEngine
 {
-    // component collection vector for now
-    template <typename T>
-    using ComponentCollection = TDynamicArray<T>;
-    using BaseComponentCollection = DynamicArray;
+
 
     // component index in the collection
     using ComponentIndex = uint32_t;
