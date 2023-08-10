@@ -41,6 +41,7 @@ namespace ASEngine
 
             auto* component = archetype->GetComponent(componentName, index);
             ComponentManager::CopyComponent(componentName, component, componentValue.get());
+            component->OnCreate();
         }
 
         return entity;

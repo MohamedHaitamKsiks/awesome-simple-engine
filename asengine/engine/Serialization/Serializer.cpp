@@ -27,7 +27,7 @@ namespace ASEngine
     void Serializer<float>::Deserialize(const Json &object, float& dest)
     {
         assert(object.is_number());
-        dest = object;
+        dest = (float) object;
     }
 
     // boolean
@@ -83,9 +83,8 @@ namespace ASEngine
     void Serializer<vec2>::Deserialize(const Json &object, vec2&dest)
     {
         assert(object.is_object());
-
-        Serializer<float>::Deserialize(object["x"], dest.x);
-        Serializer<float>::Deserialize(object["y"], dest.y);
+        Serializer<float>::Deserialize(object.at("x"), dest.x);
+        Serializer<float>::Deserialize(object.at("y"), dest.y);
     }
 
 } // namespace ASEngine

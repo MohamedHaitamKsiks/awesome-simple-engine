@@ -43,6 +43,9 @@ namespace ASEngine {
 		// destructor
 		~Application();
 
+		// init resource managers
+		static void InitResourceManagers();
+
 		// create application for given platform
 		static void Create(Platform platform);
 
@@ -60,6 +63,8 @@ namespace ASEngine {
 
 	private:
 		void IOnInputEvent(InputEvent &inputEvent);
+
+		void TerminateResourceManagers();
 
 		//application platform
 		Platform m_Platform = Platform::ANDROID_DEVICES;

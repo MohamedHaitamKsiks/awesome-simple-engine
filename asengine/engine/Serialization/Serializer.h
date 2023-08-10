@@ -26,6 +26,8 @@ namespace ASEngine
         static void Deserialize(const Json& object, T& dest);
     };
 
+
+
 } // namespace ASEngine
 
 

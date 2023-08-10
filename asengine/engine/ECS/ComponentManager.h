@@ -87,7 +87,10 @@ namespace ASEngine
             // check if component is of component type
             static_assert(std::is_base_of_v<TComponent<T>, T>);
             T* newComponent = new T;
-            *newComponent = *((T*) value);
+
+            if (value != nullptr)
+                *newComponent = *((T*) value);
+
             return (Component*) newComponent;
         }
 
