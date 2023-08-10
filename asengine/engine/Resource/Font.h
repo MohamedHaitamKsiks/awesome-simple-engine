@@ -11,11 +11,9 @@
 #include <sstream>
 
 #include "Resource.h"
-#include "ResourceManager.h"
-
+#include "engine/Serialization/Serializer.h"
 #include "engine/FileSystem/File.h"
 #include "engine/Renderer/Texture.h"
-#include "engine/Thirdparty/json.hpp"
 #include "engine/Log/Log.h"
 
 #define FONT_TEXTURE_WIDTH 16
@@ -71,9 +69,10 @@ namespace ASEngine
 
 	
 	private:
+		// font path
+		UniqueString m_FontPath;
 		// font texture
 		Texture m_Texture = TEXTURE_NULL;
-
 		// font data
 		FontCharacter m_FontCharacters[FONT_CHARACTER_NUMBER];
 		// font size

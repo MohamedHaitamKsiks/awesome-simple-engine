@@ -14,11 +14,10 @@
 #include "engine/Renderer/ShaderProgram.h"
 
 #include "Resource.h"
+#include "engine/Serialization/Serializer.h"
 
 namespace ASEngine
 {
-    // shader id
-    using ShaderID = ResourceID;
 
     // shader resource
     class Shader: public Resource

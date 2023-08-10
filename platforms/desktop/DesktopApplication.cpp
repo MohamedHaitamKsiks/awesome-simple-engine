@@ -64,12 +64,15 @@ bool DesktopApplication::Init()
     Window::ResizeSignal().Connect(std::bind(&DesktopApplication::OnWindowChangeSize, this, std::placeholders::_1, std::placeholders::_2));
     Window::TitleSignal().Connect(std::bind(&DesktopApplication::OnWindowSetTitle, this, std::placeholders::_1));
     Window::FullscreenSignal().Connect(std::bind(&DesktopApplication::OnWindowSetFullscreen, this, std::placeholders::_1));
-    
-    // load project settings
-    Application::LoadProjectSettings();
-    
+
     // ecs registry
     ECSRegistry();
+
+    // load resources
+    Application::InitResourceManagers();
+
+    // load project settings
+    Application::LoadProjectSettings();
 
     return true;
 }

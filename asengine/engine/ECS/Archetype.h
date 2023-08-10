@@ -14,10 +14,7 @@
 
 namespace ASEngine
 {
-    // component collection vector for now
-    template <typename T>
-    using ComponentCollection = TDynamicArray<T>;
-    using BaseComponentCollection = DynamicArray;
+
 
     // component index in the collection
     using ComponentIndex = uint32_t;
@@ -26,13 +23,17 @@ namespace ASEngine
     class Archetype
     {
     public:
-        // set component to archetype
+        // add component to archetype
         template <typename T, typename... types>
         void AddComponents();
+
+        // add component to archetype
+        void AddComponent(UniqueString componentName);
 
         // get component collection
         template <typename T>
         ComponentCollection<T>& GetComponentCollection();
+
 
         // get signature
         inline uint32_t GetSignature() const
@@ -43,24 +44,12 @@ namespace ASEngine
         // add entity
         ComponentIndex AddEntity(Entity entity);
 
-        // get component index
-        ComponentIndex GetComponentIndexOfEntity(Entity entity);
-
-        // get component of entity
-        template <typename T>
-        T& GetComponentOfEntity(Entity entity);
-
-        // set component (s)of entity
-        template <typename T, typename... Types>
-        void SetComponentOfEntity(Entity entity, const T &firstComponent, const Types &...args);
-
-        // set component(s)
-        template <typename T, typename... Types>
-        void SetComponent(ComponentIndex index, const T& firstComponent, const Types&... args);
-
         // get component 
         template <typename T>
         T& GetComponent(ComponentIndex index);
+
+        // get component
+        Component* GetComponent(UniqueString componentName, ComponentIndex index);
 
         // remove entity
         void RemoveEntity(Entity entity);
@@ -74,6 +63,9 @@ namespace ASEngine
 
         // entity to component
         TDynamicArray<Entity> m_Entities{UINT16_MAX};
+
+        // get component index
+        ComponentIndex GetComponentIndexOfEntity(Entity entity);
     };
 
     // implementations
@@ -82,19 +74,11 @@ namespace ASEngine
     void Archetype::AddComponents()
     {
         // check if component is of component type
-        static_assert(std::is_base_of_v<Component<T>, T>);
+        static_assert(std::is_base_of_v<TComponent<T>, T>);
 
-        // get component info
-        UniqueString componentName = Component<T>::s_Name;
-        uint32_t componentSignature = Component<T>::s_Signature;
-
-        // check if component isnot added
-        if (m_Signature % componentSignature != 0)
-        {
-            m_Signature *= componentSignature;
-            std::shared_ptr<BaseComponentCollection> collection{new ComponentCollection<T>(UINT16_MAX)};
-            m_ComponentCollections[componentName] = collection;
-        }
+        // add first component
+        UniqueString componentName = TComponent<T>::s_Name;
+        AddComponent(componentName);
 
         if constexpr (sizeof...(types) > 0)
         {
@@ -107,9 +91,9 @@ namespace ASEngine
     ComponentCollection<T>& Archetype::GetComponentCollection()
     {
         // check if component is of component type
-        static_assert(std::is_base_of_v<Component<T>, T>);
+        static_assert(std::is_base_of_v<TComponent<T>, T>);
 
-        UniqueString componentName = Component<T>::s_Name;
+        UniqueString componentName = TComponent<T>::s_Name;
 
         auto baseComponentCollection = m_ComponentCollections[componentName];
         std::shared_ptr<ComponentCollection<T>> collection = std::static_pointer_cast<ComponentCollection<T>>(baseComponentCollection);
@@ -117,54 +101,15 @@ namespace ASEngine
         return *collection;
     };
 
-    // get component of entity implementation
-    template <typename T>
-    T& Archetype::GetComponentOfEntity(Entity entity)
-    {
-        // check if component is of component type
-        static_assert(std::is_base_of_v<Component<T>, T>);
-        ComponentCollection<T>& collection = GetComponentCollection<T>();
-
-        // get index
-        ComponentIndex index = GetComponentIndexOfEntity(entity);
-        if (index == UINT32_MAX)
-            return nullptr;
-
-        // return component pointer
-        return collection[index];
-    }
-
     template <typename T>
     T& Archetype::GetComponent(ComponentIndex index)
     {
         // get collection
-        static_assert(std::is_base_of_v<Component<T>, T>);
+        static_assert(std::is_base_of_v<TComponent<T>, T>);
         ComponentCollection<T> &collection = GetComponentCollection<T>();
         return collection[index];
     }
 
-    // set component (s)of entity
-    template <typename T, typename... Types>
-    void Archetype::SetComponentOfEntity(Entity entity, const T &firstComponent, const Types &...args)
-    {
-        ComponentIndex index = GetComponentIndexOfEntity(entity);
-        if (index == UINT32_MAX)
-            return;
-        SetComponent(index, firstComponent, args...);
-    }
-
-    // set component(s)
-    template <typename T, typename... Types>
-    void Archetype::SetComponent(ComponentIndex index, const T &firstComponent, const Types &...args)
-    {
-        T& component = GetComponent<T>(index);
-        memcpy(&component, &firstComponent, sizeof(T));
-
-        if constexpr (sizeof...(args) > 0)
-        {
-            SetComponent(index, args...);
-        }
-    }
 } // namespace ASEngine
 
 

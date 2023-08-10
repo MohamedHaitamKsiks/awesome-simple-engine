@@ -9,27 +9,16 @@ namespace ASEngine {
 
 		// init unique string manager
 		UniqueStringManager::Init();
-
 		// init application window
 		Window::Init();
-
 		// init viewport
 		Viewport::Init();
-
 		// init renderer 2d
 		Renderer2D::Init();
-
 		// init texture manager
 		TextureManager::Init();
-
 		// init ecs world
 		World::Init();
-
-		// init resource managers
-		ResourceManager<Shader>::Init();
-		ResourceManager<Material>::Init();
-		ResourceManager<Sprite>::Init();
-		ResourceManager<Font>::Init();
 
 		Debug::Log("Application init complete");
 	}
@@ -38,10 +27,7 @@ namespace ASEngine {
 	{
 		World::Terminate();
 		UniqueStringManager::Terminate();
-		ResourceManager<Shader>::Terminate();
-		ResourceManager<Material>::Terminate();
-		ResourceManager<Sprite>::Terminate();
-		ResourceManager<Font>::Terminate();
+		TerminateResourceManagers();
 		Renderer2D::Terminate();
 		Viewport::Terminate();
 		Window::Terminate();
@@ -51,6 +37,26 @@ namespace ASEngine {
 		if (s_Singleton)
 			return;
 		s_Singleton = new Application(platform);
+	}
+
+	void Application::InitResourceManagers()
+	{
+		ResourceManager<Shader>::Init("Shaders");
+		ResourceManager<Material>::Init("Materials");
+		ResourceManager<Sprite>::Init("Sprites");
+		ResourceManager<Font>::Init("Fonts");
+		ResourceManager<Scene>::Init("Scenes");
+
+		Debug::Log("Init resource manages");
+	}
+
+	void Application::TerminateResourceManagers()
+	{
+		ResourceManager<Shader>::Terminate();
+		ResourceManager<Material>::Terminate();
+		ResourceManager<Sprite>::Terminate();
+		ResourceManager<Font>::Terminate();
+		ResourceManager<Scene>::Terminate();
 	}
 
 	void Application::IOnInputEvent(InputEvent &inputEvent) {
@@ -94,6 +100,12 @@ namespace ASEngine {
 		int viewportWidth = projectSettings["viewport"]["size"]["width"];
 		int viewportHeight = projectSettings["viewport"]["size"]["height"];
 		Viewport::SetSize(viewportWidth, viewportHeight);
+	
+		// load main scene
+		UniqueString mainScenePath = UniqueString(std::string(projectSettings["mainScene"]));
+		ResourceID sceneID = ResourceManager<Scene>::GetResourceId(UniqueString(mainScenePath));
+		Scene& mainScene = ResourceManager<Scene>::Get(sceneID);
+		mainScene.Instantiate();
 	}
 
 

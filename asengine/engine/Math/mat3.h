@@ -37,13 +37,38 @@ namespace ASEngine {
         };
 
         // scale
-        static mat3 Scale(const vec2& s);
+        inline static mat3 Scale(const vec2& s)
+        {
+           return mat3{{s.x, 0.0f, 0.0f,
+                       0.0f, s.y, 0.0f,
+                       0.0f, 0.0f, 1.0f}};
+        }
+
         //rotation
-        static mat3 Rotation(float angle);
+        inline static mat3 Rotation(float angle)
+        {
+            return mat3{{cos(angle), sin(angle), 0.0f,
+                       -sin(angle), cos(angle), 0.0f,
+                       0.0f, 0.0f, 1.0f}};
+        }
+        
         //translate
-        static mat3 Translate(const vec2& v);
+        inline static mat3 Translate(const vec2& v)
+        {
+            return mat3{{1.0f, 0.0f, v.x,
+                       0.0f, 1.0f, v.y,
+                       0.0f, 0.0f, 1.0f}};
+        }
+
         //transfrom
-        static mat3 Transform(const vec2& translate, const vec2& scale, float rotation);
+        inline static mat3 Transform(const vec2& translate, const vec2& scale, float rotation)
+        {
+            mat3 b = {{scale.x * cos(rotation), scale.y * sin(rotation), translate.x,
+                       -scale.x * sin(rotation), scale.y * cos(rotation), translate.y,
+                       0.0f, 0.0f, 1.0f}};
+            return b;
+        }
+
         // tostring matrix
         std::string ToString();
 
@@ -69,7 +94,7 @@ namespace ASEngine {
         };
 
         // matrix multiplication with vector
-        friend inline vec2 operator*(mat3 a, const vec2& v)
+        friend inline vec2 operator*(mat3& a, const vec2& v)
         {
             float vector[] = {v.x, v.y, 1.0f};
             float res[] = {0.0f, 0.0f, 0.0f};
@@ -83,7 +108,7 @@ namespace ASEngine {
 
 
         // matrix addition
-        friend inline mat3 operator+(mat3 a, mat3 b)
+        friend inline mat3 operator+(mat3& a, mat3& b)
         {
             mat3 res;
 
@@ -96,7 +121,7 @@ namespace ASEngine {
         }
 
         //equal
-        friend inline bool operator==(mat3 a, mat3 b)
+        friend inline bool operator==(mat3& a, mat3& b)
         {
             for (int j = 0; j < 3; j++) 
             {

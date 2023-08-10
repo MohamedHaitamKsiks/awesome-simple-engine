@@ -1,0 +1,10 @@
+{
+    "ShaderPath": "shaders/default.glsl",
+    "Params": 
+    {
+        "u_Texture": {
+            "Type": "Texture",
+            "Value": "images/spr_run.png"
+        }
+    }
+}

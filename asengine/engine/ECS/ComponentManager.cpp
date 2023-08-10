@@ -2,6 +2,15 @@
 
 namespace ASEngine
 {
+    uint32_t ComponentManager::GetSignature(TDynamicArray<UniqueString> &componentNames)
+    {
+        uint32_t signature = 1;
+        for (auto& componentName: componentNames)
+        {
+            signature *= GetSignature(componentName);
+        }
+        return signature;
+    }
 
     bool ComponentManager::IsValidSignature(uint32_t signature)
     {

@@ -23,6 +23,9 @@ namespace ASEngine
             // remove index
             virtual void Remove(size_t index) = 0;
 
+            // get ptr at
+            virtual void* PtrAt(size_t index) = 0;
+
             // clear 
             virtual void Clear() = 0;
 
@@ -58,6 +61,11 @@ namespace ASEngine
                 T t{};
                 m_Data.push_back(t);
                 return m_Data.size() - 1;
+            }
+
+            void *PtrAt(size_t index)
+            {
+                return (void*) (m_Data.data() + index);
             }
 
             // Push element to dynamic array

@@ -4,6 +4,9 @@ namespace ASEngine
 {
     Material::~Material()
     {
+        if (!IsOwner())
+            return;
+            
         if (m_UniformBuffer)
             delete[] m_UniformBuffer;
     }
@@ -13,10 +16,10 @@ namespace ASEngine
         return true;
     }
 
-    void Material::Create(ShaderID shaderId)
+    void Material::Create(ResourceID shaderID)
     {
         // get shader
-        m_ShaderID = shaderId;
+        m_ShaderID = shaderID;
         auto &shader = ResourceManager<Shader>::Get(m_ShaderID);
 
         // allocate uniform buffer
@@ -67,8 +70,20 @@ namespace ASEngine
                 currentSlot++;
                 break;
             }
-
         }
+    }
+
+    // material
+    template <>
+    Json Serializer<Material>::Serialize(const Material &value)
+    {
+        Json materialObject = Json({});
+        return materialObject;
+    }
+    template <>
+    void Serializer<Material>::Deserialize(const Json &object, Material &dest)
+    {
+        assert(object.is_object());
     }
 
 } // ASEngine

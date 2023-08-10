@@ -3,14 +3,16 @@
 #define ASENGINE_SPRITE_H
 
 #include "Resource.h"
-#include "ResourceManager.h"
 #include "Image.h"
+#include "Shader.h"
+#include "Material.h"
+#include "ResourceManager.h"
 
 #include "engine/FileSystem/File.h"
 #include "engine/Renderer/Texture.h"
 #include "engine/Math/vec2.h"
-#include "engine/Thirdparty/json.hpp"
 #include "engine/Log/Log.h"
+#include "engine/Serialization/Serializer.h"
 
 namespace ASEngine {
 
@@ -22,6 +24,9 @@ namespace ASEngine {
         //load
         bool Load(Texture texture, int frames, const vec2& offset );
     
+        // get default material
+        inline ResourceID GetDefaultMaterial() const { return m_DefaultMaterial; }
+
         // get sprite texture
         inline Texture GetTexture() const { return m_Texture; };
 
@@ -40,6 +45,7 @@ namespace ASEngine {
     private:
         // data
         Texture m_Texture;
+        ResourceID m_DefaultMaterial;
         int m_Frames = 0;
         int m_Width = -1;
         int m_Height = -1;

@@ -22,25 +22,32 @@ namespace ASEngine
         GetSingleton()->CleanDestroyQueue();
     }
 
-
-    
-    EntityCreateInfo World::ICreate(std::shared_ptr<Archetype> archetype)
+    Entity World::ICreate(EntityBuilder &builder)
     {
-        // create entity
+        // archetype owner
+        auto archetype = ArchetypeManager::GetArchetype(builder.m_ComponentNames);
+        
         EntityData data;
         data.ArchetypeOwner = archetype.get();
         data.IsDestroyed = false;
 
-        EntityCreateInfo info;
-        info.archetype = archetype.get();
-        info.entity = m_Entities.Push(data);
-        // add entity to archetype
-        info.index = archetype->AddEntity(info.entity);
+        Entity entity = m_Entities.Push(data);
+        ComponentIndex index = archetype->AddEntity(entity);
 
-        return info;
+        for (int i = 0; i < builder.m_ComponentNames.GetSize(); i++)
+        {
+            auto componentName = builder.m_ComponentNames[i];
+            auto componentValue = builder.m_Components[i];
+
+            auto* component = archetype->GetComponent(componentName, index);
+            ComponentManager::CopyComponent(componentName, component, componentValue.get());
+            component->OnCreate();
+        }
+
+        return entity;
+        
     };
     
-
     void World::IDestroy(Entity entity)
     {
         EntityData& data = m_Entities.Get(entity);
