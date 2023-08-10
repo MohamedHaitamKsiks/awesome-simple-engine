@@ -2,15 +2,14 @@
 
 namespace ASEngine
 {
-
-    std::shared_ptr<BaseComponentCollection> ComponentManager::ICreateComponentCollection(UniqueString componentName)
+    uint32_t ComponentManager::GetSignature(TDynamicArray<UniqueString> &componentNames)
     {
-        return m_Components[componentName].CreateComponentCollection();
-    }
-
-    uint32_t ComponentManager::IGetSignature(UniqueString componentName)
-    {
-        return m_Components[componentName].Signature;
+        uint32_t signature = 1;
+        for (auto& componentName: componentNames)
+        {
+            signature *= GetSignature(componentName);
+        }
+        return signature;
     }
 
     bool ComponentManager::IsValidSignature(uint32_t signature)

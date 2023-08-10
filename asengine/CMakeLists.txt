@@ -29,6 +29,7 @@ add_library(
     engine/ECS/ComponentManager.cpp
     engine/ECS/SystemManager.cpp
     engine/ECS/ArchetypeManager.cpp
+    engine/ECS/EntityBuilder.cpp
     #shapes
     engine/Shape/Rectangle.cpp
     #resource

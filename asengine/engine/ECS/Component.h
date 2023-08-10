@@ -7,13 +7,18 @@
 
 namespace ASEngine
 {
-
-    // abstract class for components
-    template <typename T>
+    // base component type
     struct Component
     {
+
+    };
+
+    // component
+    template <typename T>
+    struct TComponent: Component
+    {
         // basic constructor
-        Component() {};
+        TComponent(){};
 
         // component name
         static UniqueString s_Name;
@@ -24,11 +29,11 @@ namespace ASEngine
 
     // component name implementation
     template <typename T>
-    UniqueString Component<T>::s_Name = CHUNK_NULL;
+    UniqueString TComponent<T>::s_Name = CHUNK_NULL;
 
     // component signature
     template <typename T>
-    uint32_t Component<T>::s_Signature = 0;
+    uint32_t TComponent<T>::s_Signature = 0;
 
 }
 

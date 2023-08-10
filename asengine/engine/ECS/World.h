@@ -5,10 +5,13 @@
 #include <vector>
 
 #include "engine/Memory/PoolAllocator.h"
+#include "engine/Memory/DynamicArray.h"
+
 #include "engine/Singleton/Singleton.h"
 
 #include "Entity.h"
 #include "EntityData.h"
+#include "EntityBuilder.h"
 
 #include "Component.h"
 #include "ComponentManager.h"
@@ -21,14 +24,6 @@
 
 namespace ASEngine
 {
-    // list of all information for an entity we just created
-    struct EntityCreateInfo
-    {
-        Entity entity;
-        ComponentIndex index;
-        Archetype *archetype = nullptr;
-    };
-
     // context of ecs: the world where all the entities exists
     class World: public Singleton<World>
     {
@@ -39,25 +34,9 @@ namespace ASEngine
         // destructor
         ~World();
 
-        // create entity based on an archetype
-        static inline Entity Create(std::shared_ptr<Archetype> archetype) { return GetSingleton()->ICreate(archetype).entity; };
-        
-        // create entity based on components signature
-        template<typename T, typename... types>
-        static Entity Create();
-        
-        // create entities with components values
-        template <typename T, typename... types>
-        static Entity Create(T firstComponent, types... components);
-       
-        // set comonents of entity
-        template <typename T, typename... types>
-        static inline void SetComponents(Entity entity, const T& firstComponent, const types&... components);
-        
-        // get component of entity
-        template <typename T>
-        static inline T& GetComponent(Entity entity) { return GetSingleton()->IGetComponent<T>(entity); };
-        
+        // create entity
+        static inline Entity Create(EntityBuilder& builder) { return GetSingleton()->ICreate(builder); }
+
         // destroy entity
         static inline void Destroy(Entity entity) { GetSingleton()->IDestroy(entity); };
        
@@ -74,57 +53,14 @@ namespace ASEngine
 
         // internal singleton functions
 
-        // create entity based on archetype
-        EntityCreateInfo ICreate(std::shared_ptr<Archetype> archetype);
-
-        // get component from an entity
-        template <typename T>
-        T& IGetComponent(Entity entity);
+        // create entity
+        Entity ICreate(EntityBuilder &builder);
 
         // destroy entity
         void IDestroy(Entity entity);
 
     };
 
-    // implementations
-
-    template <typename T, typename... types>
-    Entity World::Create()
-    {
-        // get archetype
-        auto archetype = ArchetypeManager::GetArchetype<T, types...>();
-        // create entity
-        return Create(archetype);
-    };
-
-    template <typename T, typename... types>
-    Entity World::Create(T firstComponent, types... components)
-    {
-        // get archetype
-        auto archetype = ArchetypeManager::GetArchetype<T, types...>();
-        // create entity
-        EntityCreateInfo info = GetSingleton()->ICreate(archetype);
-        info.archetype->SetComponent(info.index, firstComponent, components...);
-        return info.entity;
-    };
-
-    template <typename T, typename... types>
-    void World::SetComponents(Entity entity, const T &firstComponent, const types &...components)
-    {
-        EntityData& data = GetSingleton()->m_Entities.Get(entity);
-        data.ArchetypeOwner->SetComponentOfEntity(entity, firstComponent, components...);
-    };
-
-    template <typename T>
-    T& World::IGetComponent(Entity entity)
-    {
-        // check if component is of component type
-        static_assert(std::is_base_of_v<Component<T>, T>);
-
-        // get component
-        auto *archetype = m_Entities.Get(entity).ArchetypeOwner;
-        return archetype->GetComponentOfEntity<T>(entity);
-    };
 
 } // namespace ASENGINE
 

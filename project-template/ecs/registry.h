@@ -24,7 +24,7 @@ void ECSRegistry()
     SystemManager::RegisterSystem<SpriteRenderingSystem>();
 
     // create entities
-    for (int i = 0; i < 10000; i++)
+    for (int i = 0; i < 10; i++)
     {
         TransformComponent transformComponent;
         transformComponent.Position.x = Random::Range(-200.0f, 200.0f);
@@ -36,10 +36,9 @@ void ECSRegistry()
         spriteComponent.Size = vec2{(float)sprite.GetWidth(), (float) sprite.GetHeight()};
         spriteComponent.Frames = sprite.GetFrames();
 
-        Entity entity = World::Create(
-            spriteComponent,
-            transformComponent
-        );
+        EntityBuilder builder;
+        builder.AddComponents(transformComponent, spriteComponent);
+        World::Create(builder);
     }
     
 };

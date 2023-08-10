@@ -4,7 +4,9 @@
 #include <unordered_map>
 #include <memory>
 
+#include "engine/Memory/DynamicArray.h"
 #include "engine/Singleton/Singleton.h"
+
 #include "Archetype.h"
 
 #include "System.h"
@@ -15,20 +17,30 @@ namespace ASEngine
     class ArchetypeManager:public Singleton<ArchetypeManager>
     {
     public:
-        // get archetype internal
+        // get archetype 
         template <typename T, typename... types>
         static inline std::shared_ptr<Archetype> GetArchetype() { return GetSingleton()->IGetArchetype<T, types...>(); }
+
+        // get archetype by list of component names
+        static inline std::shared_ptr<Archetype> GetArchetype(TDynamicArray<UniqueString>& componentNames) { return GetSingleton()->IGetArchetype(componentNames); }
+        
 
     private:
         // get archetype internal
         template <typename T, typename... types>
         std::shared_ptr<Archetype> IGetArchetype();
 
+        // get archetype by list of component names internal
+        std::shared_ptr<Archetype> IGetArchetype(TDynamicArray<UniqueString>& componentNames);
+
         // create archetype
         template <typename T, typename... types>
         void CreateArchetype();
 
-        // create archetype
+        // create archetype based on list of component names
+        void CreateArchetype(TDynamicArray<UniqueString> &componentNames);
+
+        // has signature
         bool HasArchetype(uint32_t signature) const;
 
         // map signature to corresponding archetype
