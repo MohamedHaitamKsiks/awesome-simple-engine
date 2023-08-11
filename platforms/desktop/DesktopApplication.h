@@ -49,6 +49,9 @@ private:
 
     // on window set title
     void OnWindowSetTitle(std::string title);
+
+    // on keyboard press
+    static void OnKeyboard(GLFWwindow *window, int key, int scancode, int action, int mods);
 };
 
 #endif

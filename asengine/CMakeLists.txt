@@ -59,7 +59,7 @@ add_library(
     #files
     ${FILESYSTEM_SOURCES}
     #input
-    engine/InputEvent/InputEvent.cpp
+    engine/InputSystem/InputEvent.cpp
     #tween
     engine/Interpolation/Interpolate.cpp
     #app

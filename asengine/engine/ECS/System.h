@@ -6,6 +6,8 @@
 #include <vector>
 #include <tuple>
 
+#include "engine/InputSystem/InputEvent.h"
+
 #include "engine/Memory/DynamicArray.h"
 
 #include "Archetype.h"
@@ -36,7 +38,13 @@ namespace ASEngine
         };
 
         // on update
-        virtual void OnUpdate(float delta) = 0;
+        virtual void OnUpdate(float delta) {};
+
+        // on render
+        virtual void OnRender2D() {};
+
+        // on input event
+        virtual void OnInputEvent(const InputEvent& event) {};
 
     protected:
         // system signature with it's component requirements

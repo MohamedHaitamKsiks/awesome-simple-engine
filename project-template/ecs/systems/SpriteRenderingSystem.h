@@ -13,22 +13,16 @@ class SpriteRenderingSystem: public System<SpriteComponent, TransformComponent>
 {
 public:
 
-    // on update
-    void OnUpdate(float delta)
+    // on render 2d
+    void OnRender2D()
     {
-        Renderer2D::Begin();
-
-        ForEach([&delta](SpriteComponent& sprite, TransformComponent& transform)
+        ForEach([](SpriteComponent &sprite, TransformComponent &transform)
         {
-            sprite.Frame += sprite.FrameRate * delta;
             mat3 spriteTransform = mat3::Transform(transform.Position, transform.Scale, transform.Rotation);
             Quad2D spriteQuad = Quad2D(sprite.Size, spriteTransform, Color::WHITE(), sprite.Frame, sprite.Frames, 0, 1);
-            Renderer2D::DrawQuad(spriteQuad, sprite.MaterialID);
+            Renderer2D::DrawQuad(spriteQuad, sprite.MaterialID); 
         });
-
-        Renderer2D::End();
     }
-
 };
 
 

@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 
+#include "engine/InputSystem/InputEvent.h"
+
 #include "engine/Memory/PoolAllocator.h"
 #include "engine/Memory/DynamicArray.h"
 
@@ -36,12 +38,28 @@ namespace ASEngine
 
         // create entity
         static inline Entity Create(EntityBuilder& builder) { return GetSingleton()->ICreate(builder); }
-
+        
         // destroy entity
         static inline void Destroy(Entity entity) { GetSingleton()->IDestroy(entity); };
        
+        // renderer the world
+        static inline void Render2D()
+        {
+            SystemManager::Render2D();
+        }
+
         // update the world
-        static void Update(float delta);
+        static inline void Update(float delta)
+        {
+            SystemManager::Update(delta);
+            GetSingleton()->CleanDestroyQueue();
+        }
+
+        // process input
+        static inline void ProcessInputEvent(const InputEvent& event)
+        {
+            SystemManager::ProcessInputEvent(event);
+        }
 
 
     private:

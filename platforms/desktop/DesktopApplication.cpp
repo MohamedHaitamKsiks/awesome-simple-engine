@@ -33,7 +33,7 @@ void DesktopApplication::Start()
         auto currentTime = std::chrono::high_resolution_clock::now();
         delta = std::chrono::duration_cast<std::chrono::microseconds>(currentTime - pastTime).count() / SEC_TO_MICRO;
     }
-
+    
     Terminate();
 }
 
@@ -57,6 +57,10 @@ bool DesktopApplication::Init()
     glfwMakeContextCurrent(m_Window);
     glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, GLFW_FALSE);
 
+    /* listen to keyboard events */
+    glfwSetKeyCallback(m_Window, DesktopApplication::OnKeyboard);
+
+
     // create asengine app
     Application::Create(Platform::DESKTOP);
 
@@ -79,7 +83,9 @@ bool DesktopApplication::Init()
 
 void DesktopApplication::Update(float delta)
 {
+    // update app
     Application::Update(delta);
+
     /* Swap front and back buffers */
     glfwSwapBuffers(m_Window);
     /* Poll for and process events */
@@ -120,4 +126,22 @@ void DesktopApplication::OnWindowSetFullscreen(bool fullscreen)
 void DesktopApplication::OnWindowSetTitle(std::string title)
 {
     glfwSetWindowTitle(m_Window, title.c_str());
+}
+
+void DesktopApplication::OnKeyboard(GLFWwindow *window, int key, int scancode, int action, int mods)
+{
+    if (action != GLFW_PRESS && action != GLFW_RELEASE)
+        return;
+
+    // bake keyboard event
+    InputEventKeyboard keyboardEvent;
+    keyboardEvent.Code = key;
+    keyboardEvent.Pressed = action == GLFW_PRESS;
+
+    InputEvent event;
+    event.Set(keyboardEvent);
+
+    // push event to application event queue
+    Application::QueueInputEvent(event);
+
 }

@@ -4,6 +4,8 @@
 
 #include "engine/Singleton/Singleton.h"
 
+#include "engine/Memory/DynamicArray.h"
+
 #include "engine/Window/Window.h"
 
 #include "engine/Renderer/Viewport.h"
@@ -19,7 +21,7 @@
 #include "engine/String/UniqueString.h"
 #include "engine/String/UniqueStringManager.h"
 
-#include "engine/InputEvent/InputEvent.h"
+#include "engine/InputSystem/InputEvent.h"
 
 #include "engine/ECS/World.h"
 
@@ -57,18 +59,21 @@ namespace ASEngine {
 
 		// update application
 		static void Update(float delta);
-		
-		// application on event
-		static inline void OnInputEvent(InputEvent &inputEvent) { GetSingleton()->IOnInputEvent(inputEvent); };
 
+		// queue event
+		static inline void QueueInputEvent(InputEvent& event)
+		{
+			GetSingleton()->m_InputEventQueue.Push(event);
+		};
+	
 	private:
-		void IOnInputEvent(InputEvent &inputEvent);
-
 		void TerminateResourceManagers();
 
-		//application platform
+		// application platform
 		Platform m_Platform = Platform::ANDROID_DEVICES;
-
+		
+		// event queue
+		TDynamicArray<InputEvent> m_InputEventQueue{};
 	};
 
 

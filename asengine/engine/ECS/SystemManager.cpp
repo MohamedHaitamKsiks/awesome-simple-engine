@@ -21,9 +21,25 @@ namespace ASEngine
 
     void SystemManager::IUpdate(float delta)
     {
-        for (auto system: m_Systems)
+        for (auto system : m_Systems)
         {
             system->OnUpdate(delta);
+        }
+    }
+
+    void SystemManager::IRender2D()
+    {
+        for (auto system : m_Systems)
+        {
+            system->OnRender2D();
+        }
+    }
+
+    void SystemManager::IProcessInputEvent(const InputEvent &event)
+    {
+        for (auto system : m_Systems)
+        {
+            system->OnInputEvent(event);
         }
     }
 

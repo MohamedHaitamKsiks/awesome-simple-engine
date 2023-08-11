@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include "engine/InputSystem/InputEvent.h"
 #include "engine/Singleton/Singleton.h"
 
 #include "System.h"
@@ -18,18 +19,26 @@ namespace ASEngine
         static void inline RegisterSystem() { GetSingleton()->IRegisterSystem<T>(); };
         // register archetype to system manager
         static void inline  RegisterArchetype(std::shared_ptr<Archetype> archetype) { GetSingleton()->IRegisterArchetype(archetype);};
+        
         // update all system
         static void inline Update(float delta) { GetSingleton()->IUpdate(delta); };
+
+        // render all system
+        static void inline Render2D() { GetSingleton()->IRender2D(); };
+
+        // process input for all system
+        static void inline ProcessInputEvent(const InputEvent &event) { GetSingleton()->IProcessInputEvent(event); };
 
     private:
         std::vector<std::shared_ptr<BaseSystem>> m_Systems = {};
 
         template <typename T>
         void IRegisterSystem();
-
         void IRegisterArchetype(std::shared_ptr<Archetype> archetype);
        
         void IUpdate(float delta);
+        void IRender2D();
+        void IProcessInputEvent(const InputEvent& event);
     };
 
     // implementation of register system

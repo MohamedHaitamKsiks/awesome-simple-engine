@@ -59,13 +59,22 @@ namespace ASEngine {
 		ResourceManager<Scene>::Terminate();
 	}
 
-	void Application::IOnInputEvent(InputEvent &inputEvent) {
-		// process event for each instance
-	}
 
 	void Application::Update(float delta) {
+		// process input
+		for (auto& event: GetSingleton()->m_InputEventQueue)
+		{
+			World::ProcessInputEvent(event);
+		}
+		GetSingleton()->m_InputEventQueue.Clear();
+
 		// update here..
 		World::Update(delta);
+
+		// render world 2d
+		Renderer2D::Begin();
+		World::Render2D();
+		Renderer2D::End(); 
 	
 	}
 
