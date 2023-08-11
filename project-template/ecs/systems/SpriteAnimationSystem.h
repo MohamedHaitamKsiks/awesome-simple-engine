@@ -20,17 +20,6 @@ public:
         });
     }
 
-    // on input
-    void OnInputEvent(const InputEvent &event)
-    {
-        if (event.GetType() == InputEventType::KEYBOARD && event.Get<InputEventKeyboard>().Code == GLFW_KEY_A && event.Get<InputEventKeyboard>().Pressed)
-        {
-            ForEach([&event](SpriteComponent &sprite)
-            { 
-                sprite.Frame = 0.0f;
-             });
-        }
-    }
 };
 
 #endif

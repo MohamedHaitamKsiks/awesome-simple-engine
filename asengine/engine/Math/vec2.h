@@ -118,6 +118,14 @@ namespace ASEngine {
             };
         }
 
+        // multiply
+        friend inline vec2 operator/(const vec2 &a, const vec2 &b)
+        {
+            return vec2{
+                a.x / b.x,
+                a.y / b.y};
+        }
+
         //scale
         friend inline vec2 operator/(const vec2 &a, float s)
         {

@@ -23,7 +23,6 @@ void ECSRegistry()
     // system registry ...
     SystemManager::RegisterSystem<SpriteRenderingSystem>();
     SystemManager::RegisterSystem<SpriteAnimationSystem>();
-
 };
 
 #endif
