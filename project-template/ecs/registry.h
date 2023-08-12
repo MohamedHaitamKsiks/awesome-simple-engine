@@ -7,6 +7,7 @@
 
 // include systems
 #include "systems/SpriteRenderingSystem.h"
+#include "systems/SpriteAnimationSystem.h"
 
 // include asengine
 #include "engine/asengine.h"
@@ -21,7 +22,7 @@ void ECSRegistry()
 
     // system registry ...
     SystemManager::RegisterSystem<SpriteRenderingSystem>();
-
+    SystemManager::RegisterSystem<SpriteAnimationSystem>();
 };
 
 #endif

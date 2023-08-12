@@ -29,14 +29,14 @@ namespace ASEngine
         m_Program = ShaderProgram::Create(shaderCode);
 
         // get params
-        m_Uniforms = m_Program.GetAllUniformInfo();
+        m_Uniforms = std::vector(m_Program.GetAllUniformInfo());
         m_UniformNames.reserve(m_Uniforms.size());
 
         // add params
         for (int i = 0; i < m_Uniforms.size(); i++)
         {
             ShaderUniformInfo info = m_Uniforms[i];
-            m_UniformNames.insert_or_assign(info.Name, i);
+            m_UniformNames.insert({m_Uniforms[i].Name, i});
             m_UniformBufferSize += info.Size;
         }
 

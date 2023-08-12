@@ -65,7 +65,6 @@ void AndroidEGLContext::init() {
 	// make width and height invalid so it gets updated the first frame in @a updateRenderArea()
 	width = -1;
 	height = -1;
-
 }
 
 

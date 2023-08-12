@@ -3,7 +3,6 @@
 #define ANDROIDSIMPLEENGINE_ANDROIDAPPLICATION_H
 
 #include "AndroidEGLContext.h"
-#include "AndroidInputManager.h"
 
 #include "engine/asengine.h"
 
@@ -16,8 +15,9 @@ public:
 
 private:
 	AndroidEGLContext* context = nullptr;
-	AndroidInputManager* androidInputManager = nullptr;
 	android_app* app = nullptr;
+
+	void ProcessAndroidInputEvent(const GameActivityMotionEvent *motionEvent, uint32_t ptrIndex);
 };
 
 

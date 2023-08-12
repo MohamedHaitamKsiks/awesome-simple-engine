@@ -24,8 +24,6 @@ add_library( # Sets the name of the library.
         AndroidApplication.cpp
         #android context
         AndroidEGLContext.cpp
-        #android input manager
-        AndroidInputManager.cpp
         # Provides a relative path to your source file(s).
         main.cpp
         )

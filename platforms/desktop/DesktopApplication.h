@@ -32,6 +32,10 @@ private:
         int YPos = 0;
     } m_WindowInfo;
 
+
+    // mouse current position
+    static vec2 s_MousePosition;
+
     //init desktop application
     bool Init();
 
@@ -49,6 +53,15 @@ private:
 
     // on window set title
     void OnWindowSetTitle(std::string title);
+
+    // on keyboard press
+    static void OnKeyboard(GLFWwindow *window, int key, int scancode, int action, int mods);
+
+    // on mouse button
+    static void OnMouseButton(GLFWwindow *window, int button, int action, int mods);
+
+    // on mouse move
+    static void OnMouseMove(GLFWwindow *window, double xpos, double ypos);
 };
 
 #endif

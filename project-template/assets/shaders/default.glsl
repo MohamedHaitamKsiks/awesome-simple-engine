@@ -1,21 +1,24 @@
 
-varying vec2 UV;
-varying vec4 MODULATE;
+
 
 // vertex code
 #ifdef VERTEX
 
 //attribute
-attribute vec2 v_Position;
-attribute vec2 v_TextureCoord;
-attribute vec4 v_Modulate;
+in vec2 v_Position;
+in vec2 v_TextureCoord;
+in vec4 v_Modulate;
+
+// outs
+out vec2 UV;
+out vec4 MODULATE;
 
 //uniform transform
 uniform mat3 u_View;
 uniform mat3 u_Camera;
 
 // main function is generated
-void main(void) 
+void main() 
 {
     UV = v_TextureCoord;
     MODULATE = v_Modulate;
@@ -28,11 +31,16 @@ void main(void)
 // fragment code
 #ifdef FRAGMENT
 
+in vec2 UV;
+in vec4 MODULATE;
+
+out vec4 fragColor;
+
 uniform sampler2D u_Texture;
 
-void main(void) 
+void main() 
 {
-    gl_FragColor = texture2D(u_Texture, UV) * MODULATE;
+    fragColor = texture(u_Texture, UV) * MODULATE;
 }
 
 #endif

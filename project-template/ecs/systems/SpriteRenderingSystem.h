@@ -13,22 +13,37 @@ class SpriteRenderingSystem: public System<SpriteComponent, TransformComponent>
 {
 public:
 
-    // on update
-    void OnUpdate(float delta)
+    // on render 2d
+    void OnRender2D()
     {
-        Renderer2D::Begin();
-
-        ForEach([&delta](SpriteComponent& sprite, TransformComponent& transform)
+        ForEach([](SpriteComponent &sprite, TransformComponent &transform)
         {
-            sprite.Frame += sprite.FrameRate * delta;
-            mat3 spriteTransform = mat3::Transform(transform.Position, transform.Scale, transform.Rotation);
+            mat3 spriteTransform = mat3::Transform(transform.Position, transform.Scale, transform.Rotation) * mat3::Translate(vec2::ONE() * -24.0f) ;
             Quad2D spriteQuad = Quad2D(sprite.Size, spriteTransform, Color::WHITE(), sprite.Frame, sprite.Frames, 0, 1);
-            Renderer2D::DrawQuad(spriteQuad, sprite.MaterialID);
+            Renderer2D::DrawQuad(spriteQuad, sprite.MaterialID); 
         });
-
-        Renderer2D::End();
     }
 
+    // on input
+    void OnInputEvent(const InputEvent &event)
+    {
+
+        if (event.GetType() == InputEventType::MOUSE_BUTTON && event.Get<InputEventMouseButton>().Pressed)
+        {
+             Window::SetFullscreen(!Window::IsFullscreen());
+        }
+
+        if (event.GetType() == InputEventType::SCREEN_DRAG)
+        {
+            vec2 mousePosition = event.Get<InputEventScreenDrag>().Position;
+            mousePosition = mousePosition * Viewport::GetSize() / Window::GetSize() - Viewport::GetSize() * 0.5f;
+            
+            ForEach([&event, &mousePosition](SpriteComponent &sprite, TransformComponent &transform)
+            { 
+                transform.Position = mousePosition;
+             });
+        }
+    }
 };
 
 

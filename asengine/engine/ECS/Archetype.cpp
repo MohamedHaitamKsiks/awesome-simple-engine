@@ -25,7 +25,7 @@ namespace ASEngine
         m_Entities.Push(entity);
         return index;
     }
-
+    
     void Archetype::RemoveEntity(Entity entity)
     {
         // find component index

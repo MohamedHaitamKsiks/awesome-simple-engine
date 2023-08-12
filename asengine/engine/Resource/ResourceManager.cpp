@@ -33,7 +33,7 @@ namespace ASEngine {
     {
         //open import.json
         File importFile;
-        importFile.Open("import.json", FileOpenMode::READ);
+        bool isOpen = importFile.Open("import.json", FileOpenMode::READ);
 
         // parse json
         auto importObject = Json::parse(importFile.ReadText());
@@ -46,12 +46,12 @@ namespace ASEngine {
 
             if constexpr(std::is_same_v<T, Shader>)
             {
-                newResource.Load(resource);
+                newResource.Load(std::string(resource));
             }
             else 
             {
                 File file;
-                file.Open(std::string(resource), FileOpenMode::READ);
+                file.Open(resource, FileOpenMode::READ);
                 Serializer<T>::Deserialize(Json::parse(file.ReadText()), newResource);
                 file.Close();
             }

@@ -11,5 +11,11 @@
     "C_Cpp.formatting": "clangFormat",
     "C_Cpp.default.mergeConfigurations": true,
     "C_Cpp.errorSquiggles": "disabled",
-    "editor.fontFamily": "/home/ksiks_wa3r/Documents/workspace/Autobusbold-1ynL.ttf"
+    "editor.fontFamily": "/home/ksiks_wa3r/Documents/workspace/Autobusbold-1ynL.ttf",
+    "files.associations": {
+        "*.h": "cpp",
+        "*.font": "json",
+        "*.material": "json",
+        "chrono": "cpp"
+    }
 }

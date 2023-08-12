@@ -37,11 +37,23 @@ shutil.copytree(f"platforms/{ platformType }", tmpFileName, dirs_exist_ok=True)
 
 def copyProjectToTemp():
     # copy project + engine + dependencies to .tmp
-    shutil.copytree("asengine", f"{tmpFileName}/asengine", dirs_exist_ok=True)
-    shutil.copytree(f"{projectPath}/ecs", f"{tmpFileName}/ecs", dirs_exist_ok=True)
-    shutil.copytree(f"{projectPath}/assets", f"{tmpFileName}/build/assets", dirs_exist_ok=True)
+    if platform == "android":
+        shutil.copytree("asengine", f"{tmpFileName}/app/src/main/cpp/asengine", dirs_exist_ok=True)
+        shutil.copytree(f"{projectPath}/ecs", f"{tmpFileName}/app/src/main/cpp/ecs", dirs_exist_ok=True)
+        shutil.copytree(f"{projectPath}/assets", f"{tmpFileName}/app/src/main/assets", dirs_exist_ok=True)
+    else:
+        shutil.copytree("asengine", f"{tmpFileName}/asengine", dirs_exist_ok=True)
+        shutil.copytree(f"{projectPath}/ecs", f"{tmpFileName}/ecs", dirs_exist_ok=True)
+        shutil.copytree(f"{projectPath}/assets", f"{tmpFileName}/build/assets", dirs_exist_ok=True)
+    
+    assetsPath = ""
+    if platform == "android":
+        assetsPath = f"{tmpFileName}/app/src/main/assets"
+    else:
+        assetsPath = f"{tmpFileName}/build/assets"
+
     # create import.json file
-    os.chdir(f"{tmpFileName}/build/assets")
+    os.chdir(assetsPath)
     fonts = glob("**/*.font.json", recursive=True)
     sprites = glob("**/*.sprite.json", recursive=True)
     shaders = glob("**/*.glsl", recursive=True)
@@ -57,7 +69,8 @@ def copyProjectToTemp():
     }
     os.chdir(workingDirectory)
     #save import.json
-    importFile = open(f"{tmpFileName}/build/assets/import.json", "w")
+
+    importFile = open(f"{assetsPath}/import.json", "w")
     importFile.write(json.dumps(importAll, indent=4))
     importFile.close()
     
@@ -70,11 +83,7 @@ if platform == "android":
     adbPath = f"{sdkPath}/platform-tools"
     avdName = config["android"]["avdName"]
 
-
-    #copy project + engine + dependencies to .tmp
-    shutil.copytree("asengine", f"{tmpFileName}/app/src/main/cpp/asengine", dirs_exist_ok=True)
-    shutil.copytree(f"{projectPath}/ecs", f"{tmpFileName}/app/src/main/cpp/ecs", dirs_exist_ok=True)
-    shutil.copytree(f"{projectPath}/assets", f"{tmpFileName}/app/src/main/assets", dirs_exist_ok=True)
+    copyProjectToTemp()
 
     #build debug
     os.chdir(tmpFileName)

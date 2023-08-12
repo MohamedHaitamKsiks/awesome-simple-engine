@@ -16,12 +16,6 @@ namespace ASEngine
         ArchetypeManager::Terminate();
     }
 
-    void World::Update(float delta)
-    {
-        SystemManager::Update(delta);
-        GetSingleton()->CleanDestroyQueue();
-    }
-
     Entity World::ICreate(EntityBuilder &builder)
     {
         // archetype owner

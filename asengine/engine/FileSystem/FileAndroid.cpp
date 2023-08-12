@@ -8,17 +8,17 @@
 namespace ASEngine
 {
 
-    AAssetManager* File::s_AssetManager = nullptr;
+    AAssetManager *File::s_AssetManager = nullptr;
 
-    void File::SetAssetManager(AAssetManager *assetManager) 
+    void File::SetAssetManager(AAssetManager *assetManager)
     {
         s_AssetManager = assetManager;
     }
 
     bool File::Open(const std::string &path, FileOpenMode mode)
     {
-        m_Asset = AAssetManager_open(s_AssetManager, path.c_str(), AASSET_MODE_BUFFER);
-        m_Size = (size_t) AAsset_getLength(m_Asset);
+        m_Asset = AAssetManager_open(s_AssetManager, (path).c_str(), AASSET_MODE_BUFFER);
+        m_Size = (size_t)AAsset_getLength(m_Asset);
         return m_Asset != nullptr;
     }
 
@@ -34,15 +34,14 @@ namespace ASEngine
 
     void File::Write(const char *buffer, const size_t length)
     {
-
     }
 
     std::string File::ReadText()
     {
-        //create buffer
+        // create buffer
         char buffer[m_Size];
-            
-        //read char by char
+
+        // read char by char
         char readChar;
         uint32_t currentChar = 0;
         while (currentChar < m_Size)
