@@ -23,17 +23,16 @@ namespace ASEngine
     {
 
         // get shader codes
-        std::string vertexCode = "#define VERTEX\n" + shaderCode;
+        std::string vertexCode = "#version 300 es\n#define VERTEX\n" + shaderCode;
         std::string fragmentCode = "#define FRAGMENT\n" + shaderCode;
 
         // add precision mediump float for platform devices
         #ifdef __ANDROID__
-        std::string newFragmentCode = "precision mediump float;\n" + fragmentCode;
-        GLuint fragmentShader = CompileShader(GL_FRAGMENT_SHADER, newFragmentCode.c_str());
-        #else
-        GLuint fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentCode.c_str());
+        fragmentCode ="precision mediump float;\n" + fragmentCode;
         #endif
+        fragmentCode = "#version 300 es\n" + fragmentCode;
 
+        GLuint fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentCode.c_str());
         GLuint vertexShader = CompileShader(GL_VERTEX_SHADER, vertexCode.c_str());
 
         if (vertexShader < 0 || fragmentShader < 0)

@@ -1,7 +1,6 @@
 #include <jni.h>
 
 #include "engine/asengine.h"
-#include "ecs/registry.h"
 #include "AndroidApplication.h"
 
 #include <string>
@@ -33,7 +32,6 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
 			//init application
 			application = new AndroidApplication();
 			application->init(pApp);
-			ECSRegistry();
             pApp->userData = application;
             break;
         case APP_CMD_TERM_WINDOW:
@@ -55,6 +53,8 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
  * This the main entry point for a native activity
  */
 void android_main(struct android_app *pApp) {
+	ASEngine::Debug::Log("tos");
+
     // register an event handler for Android events
     pApp->onAppCmd = handle_cmd;
 

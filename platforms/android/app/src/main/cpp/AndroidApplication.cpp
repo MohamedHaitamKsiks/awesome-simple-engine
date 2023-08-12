@@ -1,5 +1,6 @@
 
 #include "AndroidApplication.h"
+#include "ecs/registry.h"
 
 void AndroidApplication::init(android_app* _app) {
 	app = _app;
@@ -9,14 +10,13 @@ void AndroidApplication::init(android_app* _app) {
 	context = new AndroidEGLContext(app);
 
 	ASEngine::Application::Create(ASEngine::Platform::ANDROID_DEVICES);
-	ASEngine::Application::LoadProjectSettings();
+	ECSRegistry();
 
-	androidInputManager = new AndroidInputManager(app);
+	ASEngine::Application::InitResourceManagers();
+	ASEngine::Application::LoadProjectSettings();
 }
 
 void AndroidApplication::update(float delta) {
-	androidInputManager->processAndroidInput();
-
 	context->updateRenderArea();
 	ASEngine::Application::Update(delta);
 	context->flush();
@@ -25,5 +25,4 @@ void AndroidApplication::update(float delta) {
 void AndroidApplication::terminate() {
 	ASEngine::Application::Terminate();
 	delete context;
-	delete androidInputManager;
 }
