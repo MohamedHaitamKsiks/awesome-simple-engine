@@ -16,6 +16,8 @@ public:
 private:
 	AndroidEGLContext* context = nullptr;
 	android_app* app = nullptr;
+
+	void ProcessAndroidInputEvent(const GameActivityMotionEvent *motionEvent, uint32_t ptrIndex);
 };
 
 

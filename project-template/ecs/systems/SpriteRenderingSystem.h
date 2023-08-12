@@ -33,9 +33,9 @@ public:
              Window::SetFullscreen(!Window::IsFullscreen());
         }
 
-        if (event.GetType() == InputEventType::MOUSE_MOVE)
+        if (event.GetType() == InputEventType::SCREEN_DRAG)
         {
-            vec2 mousePosition = event.Get<InputEventMouseMove>().Position;
+            vec2 mousePosition = event.Get<InputEventScreenDrag>().Position;
             mousePosition = mousePosition * Viewport::GetSize() / Window::GetSize() - Viewport::GetSize() * 0.5f;
             
             ForEach([&event, &mousePosition](SpriteComponent &sprite, TransformComponent &transform)
