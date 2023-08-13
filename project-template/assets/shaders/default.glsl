@@ -1,6 +1,3 @@
-
-
-
 // vertex code
 #ifdef VERTEX
 
