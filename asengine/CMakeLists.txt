@@ -6,13 +6,14 @@ set(CMAKE_CXX_STANDARD 23)
 
 
 project(asengine)
+include_directories(engine)
 
 #file system source system
-set(FILESYSTEM_SOURCES engine/FileSystem/File.cpp)
+set(FILESYSTEM_SOURCES engine/Core/FileSystem/File.cpp)
 if (ANDROID)
-    set(FILESYSTEM_SOURCES ${FILESYSTEM_SOURCES} engine/FileSystem/FileAndroid.cpp)
+    set(FILESYSTEM_SOURCES ${FILESYSTEM_SOURCES} engine/Core/FileSystem/FileAndroid.cpp)
 else() 
-    set(FILESYSTEM_SOURCES ${FILESYSTEM_SOURCES} engine/FileSystem/FileDesktop.cpp)
+    set(FILESYSTEM_SOURCES ${FILESYSTEM_SOURCES} engine/Core/FileSystem/FileDesktop.cpp)
 endif()
 
 
@@ -20,9 +21,26 @@ add_library(
     asengine
     STATIC
     #serialization
-    engine/Serialization/Serializer.cpp
+    engine/Core/Serialization/Serializer.cpp
     #memory
-    engine/Memory/PoolAllocator.cpp
+    engine/Core/Memory/PoolAllocator.cpp
+    #strings
+    engine/Core/String/UniqueString.cpp
+    engine/Core/String/UniqueStringManager.cpp
+    #math
+    engine/Core/Math/Random.cpp
+    engine/Core/Math/mat3.cpp
+    engine/Core/Math/vec2.cpp
+    #window
+    engine/Core/Window/Window.cpp
+    #input
+    engine/Core/InputSystem/InputEvent.cpp
+    #app
+    engine/Core/Application/Application.cpp
+    #log
+    engine/Core/Log/Log.cpp
+    #files
+    ${FILESYSTEM_SOURCES}
     #ecs
     engine/ECS/World.cpp
     engine/ECS/Archetype.cpp
@@ -39,9 +57,6 @@ add_library(
     engine/Resource/Shader.cpp
     engine/Resource/Font.cpp
     engine/Resource/Scene.cpp
-    #strings
-    engine/String/UniqueString.cpp
-    engine/String/UniqueStringManager.cpp
     #rendering
     engine/Renderer/TextureManager.cpp
     engine/Renderer/Viewport.cpp
@@ -50,22 +65,8 @@ add_library(
     engine/Renderer/2D/Quad2D.cpp
     engine/Renderer/2D/Renderer2D.cpp
     engine/Renderer/2D/VertexBufferObject2D.cpp
-    #window
-    engine/Window/Window.cpp
-    #math
-    engine/Math/Random.cpp
-    engine/Math/mat3.cpp
-    engine/Math/vec2.cpp
-    #files
-    ${FILESYSTEM_SOURCES}
-    #input
-    engine/InputSystem/InputEvent.cpp
     #tween
-    engine/Interpolation/Interpolate.cpp
-    #app
-    engine/Application/Application.cpp
-    #log
-    engine/Log/Log.cpp
+    engine/Animation/Interpolation/Interpolate.cpp
 )
 
 add_subdirectory(dependencies/freetype)

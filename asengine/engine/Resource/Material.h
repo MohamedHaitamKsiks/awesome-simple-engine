@@ -8,14 +8,14 @@
 #include <vector>
 #include <cstring>
 
-#include "engine/Renderer/Color.h"
-#include "engine/Renderer/ShaderProgram.h"
+#include "Core/Math/mat3.h"
+#include "Core/Math/vec2.h"
+#include "Core/Log/Log.h"
+#include "Core/Serialization/Serializer.h"
 
-#include "engine/Math/mat3.h"
-#include "engine/Math/vec2.h"
-#include "engine/Log/Log.h"
+#include "Renderer/Color.h"
+#include "Renderer/ShaderProgram.h"
 
-#include "engine/Serialization/Serializer.h"
 #include "ResourceManager.h"
 #include "Resource.h"
 #include "Shader.h"

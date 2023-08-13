@@ -3,7 +3,7 @@
 #ifndef ASENGINE_RECTANGLE_H
 #define ASENGINE_RECTANGLE_H
 
-#include "engine/Math/vec2.h"
+#include "Core/Math/vec2.h"
 
 namespace ASEngine {
 

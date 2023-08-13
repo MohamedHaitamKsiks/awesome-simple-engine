@@ -3,10 +3,9 @@
 
 #include <vector>
 
-#include "engine/String/UniqueString.h"
-
-#include "engine/Math/mat3.h"
-#include "engine/Math/vec2.h"
+#include "Core/String/UniqueString.h"
+#include "Core/Math/mat3.h"
+#include "Core/Math/vec2.h"
 
 #include "GraphicsAPI.h"
 #include "ShaderUniform.h"

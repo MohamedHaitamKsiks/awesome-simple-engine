@@ -4,12 +4,10 @@
 #include <memory>
 #include <vector>
 
-#include "engine/InputSystem/InputEvent.h"
-
-#include "engine/Memory/PoolAllocator.h"
-#include "engine/Memory/DynamicArray.h"
-
-#include "engine/Singleton/Singleton.h"
+#include "Core/InputSystem/InputEvent.h"
+#include "Core/Memory/PoolAllocator.h"
+#include "Core/Memory/DynamicArray.h"
+#include "Core/Singleton/Singleton.h"
 
 #include "Entity.h"
 #include "EntityData.h"

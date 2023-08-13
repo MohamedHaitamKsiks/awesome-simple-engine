@@ -1,7 +1,7 @@
 #ifndef ASEGINE_SHADER_UNIFORM_H
 #define ASEGINE_SHADER_UNIFORM_H
 
-#include "engine/String/UniqueString.h"
+#include "Core/String/UniqueString.h"
 
 #include "GraphicsAPI.h"
 #include "Texture.h"

@@ -8,13 +8,12 @@
 #include "Resource.h"
 #include "Shader.h"
 
-#include "engine/Singleton/Singleton.h"
-#include "engine/FileSystem/File.h"
-#include "engine/Memory/PoolAllocator.h"
-#include "engine/String/UniqueString.h"
-#include "engine/Serialization/Serializer.h"
-#include "engine/Log/Log.h"
-
+#include "Core/Singleton/Singleton.h"
+#include "Core/FileSystem/File.h"
+#include "Core/Memory/PoolAllocator.h"
+#include "Core/String/UniqueString.h"
+#include "Core/Serialization/Serializer.h"
+#include "Core/Log/Log.h"
 
 namespace ASEngine {
 

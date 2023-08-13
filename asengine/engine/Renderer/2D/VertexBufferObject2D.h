@@ -2,13 +2,13 @@
 #ifndef ASENGINE_VERTEXBUFFEROBJECT_H
 #define ASENGINE_VERTEXBUFFEROBJECT_H
 
-#include "engine/Renderer/GraphicsAPI.h"
+
+#include "Core/Log/Log.h"
+#include "Core/Memory/DynamicArray.h"
+
+#include "Renderer/GraphicsAPI.h"
 #include "Vertex2D.h"
 #include "Quad2D.h"
-
-#include "engine/Memory/DynamicArray.h"
-
-#include "engine/Log/Log.h"
 
 // number of quads you can render per batch
 #define VBO_2D_MAX_QUADS 16383

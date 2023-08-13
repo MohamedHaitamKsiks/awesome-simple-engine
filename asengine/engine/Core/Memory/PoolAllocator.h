@@ -2,12 +2,13 @@
 #define ASENGINE_POOL_ALLOCATOR_H
 
 #include <memory>
+
 #include <cstdlib>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <cassert>
 
-#include "engine/Log/Log.h"
 #include "DynamicArray.h"
 
 namespace ASEngine {
@@ -90,12 +91,7 @@ namespace ASEngine {
         // free memory
         void Free(ChunkID chunkID)
         {
-            if (!m_Data[chunkID].Used)
-            {
-                Debug::Log(chunkID, ": This Chunk has already been freed.");
-                return;
-            }
-
+            assert(m_Data[chunkID].Used);
              // call destructor to logically destroy
              m_Data[chunkID].Data.~T();
 

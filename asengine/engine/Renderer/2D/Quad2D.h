@@ -3,8 +3,8 @@
 
 #include <cstdint>
 
-#include "engine/Math/mat3.h"
-#include "engine/Math/vec2.h"
+#include "Core/Math/mat3.h"
+#include "Core/Math/vec2.h"
 
 #include "Vertex2D.h"
 

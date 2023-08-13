@@ -7,15 +7,15 @@
 #include "Resource.h"
 #include "ResourceManager.h"
 
-#include "engine/ECS/World.h"
-#include "engine/ECS/EntityBuilder.h"
-#include "engine/ECS/ComponentManager.h"
-#include "engine/ECS/Component.h"
+#include "ECS/World.h"
+#include "ECS/EntityBuilder.h"
+#include "ECS/ComponentManager.h"
+#include "ECS/Component.h"
 
-#include "engine/Memory/DynamicArray.h"
-#include "engine/Serialization/Serializer.h"
-#include "engine/FileSystem/File.h"
-#include "engine/Log/Log.h"
+#include "Core/Memory/DynamicArray.h"
+#include "Core/Serialization/Serializer.h"
+#include "Core/FileSystem/File.h"
+#include "Core/Log/Log.h"
 
 namespace ASEngine {
 

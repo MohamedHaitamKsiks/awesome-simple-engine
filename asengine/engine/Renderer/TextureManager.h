@@ -1,9 +1,10 @@
 #ifndef ASENGINE_TEXTURE_MANAGER_H
 #define ASENGINE_TEXTURE_MANAGER_H
 
-#include "engine/Memory/PoolAllocator.h"
-#include "engine/Resource/Image.h"
-#include "engine/Singleton/Singleton.h"
+#include "Core/Memory/PoolAllocator.h"
+#include "Core/Singleton/Singleton.h"
+
+#include "Resource/Image.h"
 
 #include "GraphicsAPI.h"
 

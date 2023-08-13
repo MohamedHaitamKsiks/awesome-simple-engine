@@ -6,15 +6,14 @@
 #include <vector>
 #include <unordered_map>
 
-#include "engine/FileSystem/File.h"
+#include "Core/FileSystem/File.h"
+#include "Core/String/UniqueString.h"
+#include "Core/Serialization/Serializer.h"
 
-#include "engine/String/UniqueString.h"
-
-#include "engine/Renderer/ShaderUniform.h"
-#include "engine/Renderer/ShaderProgram.h"
+#include "Renderer/ShaderUniform.h"
+#include "Renderer/ShaderProgram.h"
 
 #include "Resource.h"
-#include "engine/Serialization/Serializer.h"
 
 namespace ASEngine
 {

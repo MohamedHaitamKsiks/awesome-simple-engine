@@ -4,10 +4,10 @@
 #include<string>
 #include <cassert>
 
-#include "engine/String/UniqueString.h"
-#include "engine/Math/vec2.h"
+#include "Core/String/UniqueString.h"
+#include "Core/Math/vec2.h"
 
-#include "engine/Thirdparty/json.hpp"
+#include "Thirdparty/json.hpp"
 
 namespace ASEngine
 {

@@ -5,10 +5,10 @@
 #include <sstream>
 #include <cstring>
 
-#include "engine/Log/Log.h"
-#include "engine/Memory/DynamicArray.h"
-#include "engine/Memory/PoolAllocator.h"
-#include "engine/Singleton/Singleton.h"
+#include "Core/Log/Log.h"
+#include "Core/Memory/DynamicArray.h"
+#include "Core/Memory/PoolAllocator.h"
+#include "Core/Singleton/Singleton.h"
 
 namespace ASEngine
 {

@@ -1,9 +1,9 @@
 #ifndef ASENGINE_WINDOW_H
 #define ASENGINE_WINDOW_H
 
-#include "engine/Math/vec2.h"
-#include "engine/Signals/Signal.h"
-#include "engine/Singleton/Singleton.h"
+#include "Core/Math/vec2.h"
+#include "Core/Signals/Signal.h"
+#include "Core/Singleton/Singleton.h"
 
 namespace ASEngine
 {

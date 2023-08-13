@@ -2,30 +2,27 @@
 #ifndef ASENGINE_APPLICATION_H
 #define ASENGINE_APPLICATION_H
 
-#include "engine/Singleton/Singleton.h"
+#include "Core/Singleton/Singleton.h"
 
-#include "engine/Memory/DynamicArray.h"
+#include "Core/Memory/DynamicArray.h"
+#include "Core/Window/Window.h"
+#include "Core/String/UniqueString.h"
+#include "Core/String/UniqueStringManager.h"
+#include "Core/InputSystem/InputEvent.h"
 
-#include "engine/Window/Window.h"
+#include "Renderer/Viewport.h"
+#include "Renderer/TextureManager.h"
+#include "Renderer/2D/Renderer2D.h"
 
-#include "engine/Renderer/Viewport.h"
-#include "engine/Renderer/TextureManager.h"
-#include "engine/Renderer/2D/Renderer2D.h"
+#include "Resource/ResourceManager.h"
+#include "Resource/Font.h"
+#include "Resource/Sprite.h"
+#include "Resource/Image.h"
+#include "Resource/Scene.h"
 
-#include "engine/Resource/ResourceManager.h"
-#include "engine/Resource/Font.h"
-#include "engine/Resource/Sprite.h"
-#include "engine/Resource/Image.h"
-#include "engine/Resource/Scene.h"
+#include "ECS/World.h"
 
-#include "engine/String/UniqueString.h"
-#include "engine/String/UniqueStringManager.h"
-
-#include "engine/InputSystem/InputEvent.h"
-
-#include "engine/ECS/World.h"
-
-#include "engine/Thirdparty/json.hpp"
+#include "Thirdparty/json.hpp"
 
 
 namespace ASEngine {

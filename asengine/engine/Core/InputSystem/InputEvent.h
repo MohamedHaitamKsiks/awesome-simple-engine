@@ -5,10 +5,10 @@
 #include <cstdint>
 #include <cassert>
 
-#include "engine/Macros/Foreach.h"
-#include "engine/Math/vec2.h"
+#include "Macros/Foreach.h"
+#include "Core/Math/vec2.h"
 
-#include "engine/Thirdparty/glfw3_keycodes.h"
+#include "Thirdparty/glfw3_keycodes.h"
 
 namespace ASEngine 
 {

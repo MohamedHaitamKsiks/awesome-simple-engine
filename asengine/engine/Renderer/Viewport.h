@@ -1,9 +1,9 @@
 #ifndef ASENGINE_VIEWPORT_H
 #define ASENGINE_VIEWPORT_H
 
-#include "engine/Singleton/Singleton.h"
-#include "engine/Math/vec2.h"
-#include "engine/Math/mat3.h"
+#include "Core/Singleton/Singleton.h"
+#include "Core/Math/vec2.h"
+#include "Core/Math/mat3.h"
 
 namespace ASEngine
 {

@@ -1,7 +1,7 @@
 #ifndef ASENGINE_CAMERA_2D_H
 #define ASENGINE_CAMERA_2D_H
 
-#include "engine/Math/vec2.h"
+#include "Core/Math/vec2.h"
 
 namespace ASEngine
 {

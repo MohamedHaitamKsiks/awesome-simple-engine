@@ -1,9 +1,8 @@
-
 #ifndef ASENGINE_INTERPOLATE_H
 #define ASENGINE_INTERPOLATE_H
 
-#include "engine/Math/vec2.h"
-#include "engine/Renderer/Color.h"
+#include "Core/Math/vec2.h"
+#include "Renderer/Color.h"
 
 namespace ASEngine {
 

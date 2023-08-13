@@ -6,8 +6,8 @@
 #include <algorithm>
 #include <memory>
 
-#include "engine/Memory/DynamicArray.h"
-#include "engine/String/UniqueString.h"
+#include "Core/Memory/DynamicArray.h"
+#include "Core/String/UniqueString.h"
 
 #include "Component.h"
 #include "ComponentManager.h"

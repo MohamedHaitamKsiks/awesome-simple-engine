@@ -1,10 +1,10 @@
 #ifndef ASENGINE_TEXTURE_H
 #define ASENGINE_TEXTURE_H
 
-#include "GraphicsAPI.h"
-#include "engine/Memory/PoolAllocator.h"
-#include "engine/Resource/Image.h"
+#include "Core/Memory/PoolAllocator.h"
+#include "Resource/Image.h"
 
+#include "GraphicsAPI.h"
 #include "TextureManager.h"
 
 namespace ASEngine

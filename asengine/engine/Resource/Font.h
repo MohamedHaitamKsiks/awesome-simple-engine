@@ -10,11 +10,13 @@
 #include <cstdint>
 #include <sstream>
 
+#include "Core/Serialization/Serializer.h"
+#include "Core/FileSystem/File.h"
+#include "Core/Log/Log.h"
+
+#include "Renderer/Texture.h"
+
 #include "Resource.h"
-#include "engine/Serialization/Serializer.h"
-#include "engine/FileSystem/File.h"
-#include "engine/Renderer/Texture.h"
-#include "engine/Log/Log.h"
 
 #define FONT_TEXTURE_WIDTH 16
 #define FONT_TEXTURE_HEIGHT 8

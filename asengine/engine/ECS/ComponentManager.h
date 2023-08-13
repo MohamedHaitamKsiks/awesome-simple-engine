@@ -6,9 +6,11 @@
 #include <type_traits>
 #include <unordered_map>
 
+#include "Core/Serialization/Serializer.h"
+#include "Core/Singleton/Singleton.h"
+
 #include "Component.h"
-#include "engine/Serialization/Serializer.h"
-#include "engine/Singleton/Singleton.h"
+
 
 namespace ASEngine
 {

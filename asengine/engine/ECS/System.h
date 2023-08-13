@@ -6,9 +6,8 @@
 #include <vector>
 #include <tuple>
 
-#include "engine/InputSystem/InputEvent.h"
-
-#include "engine/Memory/DynamicArray.h"
+#include "Core/InputSystem/InputEvent.h"
+#include "Core/Memory/DynamicArray.h"
 
 #include "Archetype.h"
 #include "Component.h"
