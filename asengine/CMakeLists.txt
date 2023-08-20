@@ -1,8 +1,6 @@
 # Sets the minimum version of CMake required to build the native library.
-
 cmake_minimum_required(VERSION 3.22.1)
 set(CMAKE_CXX_STANDARD 23)
-#set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 project(asengine)
@@ -69,6 +67,7 @@ add_library(
     engine/Animation/Interpolation/Interpolate.cpp
 )
 
+include_directories(dependencies/freetype/include)
 add_subdirectory(dependencies/freetype)
 
 
@@ -91,7 +90,6 @@ if(NOT ANDROID)
         OpenGL::GL
         freetype
     )
-
 
 else()
     target_link_libraries(

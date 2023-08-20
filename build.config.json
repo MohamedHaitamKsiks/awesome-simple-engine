@@ -1,13 +1,19 @@
 {
-    "android": {
-        "sdkPath": "/home/ksiks_wa3r/Android/Sdk",
-        "avdName": "Pixel_XL_API_33",
-        "type": "android"
+    "targets": {
+        "android": {
+            "sdkPath": "/home/ksiks_wa3r/Android/Sdk",
+            "avdName": "Pixel_XL_API_33",
+            "type": "mobile",
+            "platformPath": "platforms/android"
+        },
+        "linux": {
+            "type": "desktop",
+            "platformPath": "platforms/desktop" 
+        },
+        "windows": {
+            "type": "desktop",
+            "platformPath": "platforms/desktop"
+        }
     },
-    "linux": {
-        "type": "desktop"
-    },
-    "windows": {
-        "type": "desktop"
-    }
+    "asenginePath": "asengine/build"
 }

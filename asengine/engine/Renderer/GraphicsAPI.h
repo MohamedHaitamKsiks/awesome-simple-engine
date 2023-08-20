@@ -6,7 +6,7 @@
 #include <GLES3/gl3ext.h>
 
 #else
-#include <GL/glew.h>
+#include "GL/glew.h"
 
 #endif
 

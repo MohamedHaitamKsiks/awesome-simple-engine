@@ -4,7 +4,7 @@
  *
  *   OpenType common tables validation (specification).
  *
- * Copyright (C) 2004-2021 by
+ * Copyright (C) 2004-2019 by
  * David Turner, Robert Wilhelm, and Werner Lemberg.
  *
  * This file is part of the FreeType project, and may only be used,
@@ -20,8 +20,9 @@
 #define OTVCOMMN_H_
 
 
+#include <ft2build.h>
 #include "otvalid.h"
-#include <freetype/internal/ftdebug.h>
+#include FT_INTERNAL_DEBUG_H
 
 
 FT_BEGIN_HEADER
@@ -105,11 +106,10 @@ FT_BEGIN_HEADER
                 FT_Byte*  pp = (FT_Byte*)_size ## _p;               \
                                                                     \
                                                                     \
-                FT_TRACE3(( "\n" ));                                \
-                FT_TRACE3(( "Invalid offset to optional table `%s'" \
-                            " set to zero.\n",                      \
-                            #_size ));                              \
-                FT_TRACE3(( "\n" ));                                \
+                FT_TRACE3(( "\n"                                    \
+                            "Invalid offset to optional table `%s'" \
+                            " set to zero.\n"                       \
+                            "\n", #_size ));                        \
                                                                     \
                 _size = pp[0] = pp[1] = 0;                          \
               }                                                     \
@@ -128,11 +128,10 @@ FT_BEGIN_HEADER
                 FT_Byte*  pp = (FT_Byte*)_size ## _p;               \
                                                                     \
                                                                     \
-                FT_TRACE3(( "\n" ));                                \
-                FT_TRACE3(( "Invalid offset to optional table `%s'" \
-                            " set to zero.\n",                      \
-                            #_size ));                              \
-                FT_TRACE3(( "\n" ));                                \
+                FT_TRACE3(( "\n"                                    \
+                            "Invalid offset to optional table `%s'" \
+                            " set to zero.\n"                       \
+                            "\n", #_size ));                        \
                                                                     \
                 _size = pp[0] = pp[1] = pp[2] = pp[3] = 0;          \
               }                                                     \

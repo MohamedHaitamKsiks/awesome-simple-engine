@@ -4,7 +4,7 @@
  *
  *   TrueType and OpenType embedded bitmap support (body).
  *
- * Copyright (C) 2005-2021 by
+ * Copyright (C) 2005-2019 by
  * David Turner, Robert Wilhelm, and Werner Lemberg.
  *
  * Copyright 2013 by Google, Inc.
@@ -19,10 +19,11 @@
  */
 
 
-#include <freetype/internal/ftdebug.h>
-#include <freetype/internal/ftstream.h>
-#include <freetype/tttags.h>
-#include <freetype/ftbitmap.h>
+#include <ft2build.h>
+#include FT_INTERNAL_DEBUG_H
+#include FT_INTERNAL_STREAM_H
+#include FT_TRUETYPE_TAGS_H
+#include FT_BITMAP_H
 
 
 #ifdef TT_CONFIG_OPTION_EMBEDDED_BITMAPS
@@ -172,17 +173,13 @@
           goto Exit;
         }
 
-#ifdef FT_DEBUG_LEVEL_TRACE
         /* we currently don't support bit 1; however, it is better to */
         /* draw at least something...                                 */
         if ( flags == 3 )
-        {
           FT_TRACE1(( "tt_face_load_sbit_strikes:"
-                      " sbix overlay not supported yet\n" ));
-          FT_TRACE1(( "                          "
+                      " sbix overlay not supported yet\n"
+                      "                          "
                       " expect bad rendering results\n" ));
-        }
-#endif
 
         /*
          * Count the number of strikes available in the table.  We are a bit
@@ -244,8 +241,8 @@
     if ( !face->ebdt_size )
     {
       FT_TRACE2(( "tt_face_load_sbit_strikes:"
-                  " no embedded bitmap data table found;\n" ));
-      FT_TRACE2(( "                          "
+                  " no embedded bitmap data table found;\n"
+                  "                          "
                   " resetting number of strikes to zero\n" ));
       face->sbit_num_strikes = 0;
     }
@@ -349,9 +346,9 @@
           if ( metrics->ascender == 0 )
           {
             FT_TRACE2(( "tt_face_load_strike_metrics:"
-                        " sanitizing invalid ascender and descender\n" ));
-            FT_TRACE2(( "                            "
-                        " values for strike %ld (%dppem, %dppem)\n",
+                        " sanitizing invalid ascender and descender\n"
+                        "                            "
+                        " values for strike %d (%dppem, %dppem)\n",
                         strike_index,
                         metrics->x_ppem, metrics->y_ppem ));
 
@@ -378,8 +375,8 @@
         if ( metrics->height == 0 )
         {
           FT_TRACE2(( "tt_face_load_strike_metrics:"
-                      " sanitizing invalid height value\n" ));
-          FT_TRACE2(( "                            "
+                      " sanitizing invalid height value\n"
+                      "                            "
                       " for strike (%d, %d)\n",
                       metrics->x_ppem, metrics->y_ppem ));
           metrics->height    = metrics->y_ppem * 64;

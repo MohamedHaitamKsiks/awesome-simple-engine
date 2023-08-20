@@ -4,7 +4,7 @@
  *
  *   TrueType-specific tables loader (body).
  *
- * Copyright (C) 1996-2021 by
+ * Copyright (C) 1996-2019 by
  * David Turner, Robert Wilhelm, and Werner Lemberg.
  *
  * This file is part of the FreeType project, and may only be used,
@@ -16,10 +16,11 @@
  */
 
 
-#include <freetype/internal/ftdebug.h>
-#include <freetype/internal/ftobjs.h>
-#include <freetype/internal/ftstream.h>
-#include <freetype/tttags.h>
+#include <ft2build.h>
+#include FT_INTERNAL_DEBUG_H
+#include FT_INTERNAL_OBJECTS_H
+#include FT_INTERNAL_STREAM_H
+#include FT_TRUETYPE_TAGS_H
 
 #include "ttpload.h"
 
@@ -123,7 +124,7 @@
 
     if ( face->num_locations != (FT_ULong)face->root.num_glyphs + 1 )
     {
-      FT_TRACE2(( "glyph count mismatch!  loca: %ld, maxp: %ld\n",
+      FT_TRACE2(( "glyph count mismatch!  loca: %d, maxp: %d\n",
                   face->num_locations - 1, face->root.num_glyphs ));
 
       /* we only handle the case where `maxp' gives a larger value */
@@ -164,7 +165,7 @@
           face->num_locations = (FT_ULong)face->root.num_glyphs + 1;
           table_len           = new_loca_len;
 
-          FT_TRACE2(( "adjusting num_locations to %ld\n",
+          FT_TRACE2(( "adjusting num_locations to %d\n",
                       face->num_locations ));
         }
         else
@@ -172,7 +173,7 @@
           face->root.num_glyphs = face->num_locations
                                     ? (FT_Long)face->num_locations - 1 : 0;
 
-          FT_TRACE2(( "adjusting num_glyphs to %ld\n",
+          FT_TRACE2(( "adjusting num_glyphs to %d\n",
                       face->root.num_glyphs ));
         }
       }
@@ -237,11 +238,10 @@
     if ( pos1 > face->glyf_len )
     {
       FT_TRACE1(( "tt_face_get_location:"
-                  " too large offset (0x%08lx) found for glyph index %d,\n",
-                  pos1, gindex ));
-      FT_TRACE1(( "                     "
+                  " too large offset (0x%08lx) found for glyph index %ld,\n"
+                  "                     "
                   " exceeding the end of `glyf' table (0x%08lx)\n",
-                  face->glyf_len ));
+                  pos1, gindex, face->glyf_len ));
       *asize = 0;
       return 0;
     }
@@ -252,21 +252,19 @@
       if ( gindex == face->num_locations - 2 )
       {
         FT_TRACE1(( "tt_face_get_location:"
-                    " too large size (%ld bytes) found for glyph index %d,\n",
-                    pos2 - pos1, gindex ));
-        FT_TRACE1(( "                     "
+                    " too large size (%ld bytes) found for glyph index %ld,\n"
+                    "                     "
                     " truncating at the end of `glyf' table to %ld bytes\n",
-                    face->glyf_len - pos1 ));
+                    pos2 - pos1, gindex, face->glyf_len - pos1 ));
         pos2 = face->glyf_len;
       }
       else
       {
         FT_TRACE1(( "tt_face_get_location:"
-                    " too large offset (0x%08lx) found for glyph index %d,\n",
-                    pos2, gindex + 1 ));
-        FT_TRACE1(( "                     "
+                    " too large offset (0x%08lx) found for glyph index %ld,\n"
+                    "                     "
                     " exceeding the end of `glyf' table (0x%08lx)\n",
-                    face->glyf_len ));
+                    pos2, gindex + 1, face->glyf_len ));
         *asize = 0;
         return 0;
       }
@@ -347,19 +345,19 @@
 
     face->cvt_size = table_len / 2;
 
-    if ( FT_QNEW_ARRAY( face->cvt, face->cvt_size ) )
+    if ( FT_NEW_ARRAY( face->cvt, face->cvt_size ) )
       goto Exit;
 
     if ( FT_FRAME_ENTER( face->cvt_size * 2L ) )
       goto Exit;
 
     {
-      FT_Int32*  cur   = face->cvt;
-      FT_Int32*  limit = cur + face->cvt_size;
+      FT_Short*  cur   = face->cvt;
+      FT_Short*  limit = cur + face->cvt_size;
 
 
       for ( ; cur < limit; cur++ )
-        *cur = FT_GET_SHORT() * 64;
+        *cur = FT_GET_SHORT();
     }
 
     FT_FRAME_EXIT();
@@ -431,7 +429,7 @@
       if ( FT_FRAME_EXTRACT( table_len, face->font_program ) )
         goto Exit;
 
-      FT_TRACE2(( "loaded, %12ld bytes\n", face->font_program_size ));
+      FT_TRACE2(( "loaded, %12d bytes\n", face->font_program_size ));
     }
 
   Exit:
@@ -494,7 +492,7 @@
       if ( FT_FRAME_EXTRACT( table_len, face->cvt_program ) )
         goto Exit;
 
-      FT_TRACE2(( "loaded, %12ld bytes\n", face->cvt_program_size ));
+      FT_TRACE2(( "loaded, %12d bytes\n", face->cvt_program_size ));
     }
 
   Exit:
@@ -635,7 +633,7 @@
     FT_UInt   nn;
     FT_Byte*  result      = NULL;
     FT_ULong  record_size = face->hdmx_record_size;
-    FT_Byte*  record      = FT_OFFSET( face->hdmx_table, 8 );
+    FT_Byte*  record      = face->hdmx_table + 8;
 
 
     for ( nn = 0; nn < face->hdmx_record_count; nn++ )

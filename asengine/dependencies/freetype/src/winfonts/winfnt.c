@@ -4,7 +4,7 @@
  *
  *   FreeType font driver for Windows FNT/FON files
  *
- * Copyright (C) 1996-2021 by
+ * Copyright (C) 1996-2019 by
  * David Turner, Robert Wilhelm, and Werner Lemberg.
  * Copyright 2003 Huw D M Davies for Codeweavers
  * Copyright 2007 Dmitry Timoshkov for Codeweavers
@@ -18,16 +18,17 @@
  */
 
 
-#include <freetype/ftwinfnt.h>
-#include <freetype/internal/ftdebug.h>
-#include <freetype/internal/ftstream.h>
-#include <freetype/internal/ftobjs.h>
-#include <freetype/ttnameid.h>
+#include <ft2build.h>
+#include FT_WINFONTS_H
+#include FT_INTERNAL_DEBUG_H
+#include FT_INTERNAL_STREAM_H
+#include FT_INTERNAL_OBJECTS_H
+#include FT_TRUETYPE_IDS_H
 
 #include "winfnt.h"
 #include "fnterrs.h"
-#include <freetype/internal/services/svwinfnt.h>
-#include <freetype/internal/services/svfntfmt.h>
+#include FT_SERVICE_WINFNT_H
+#include FT_SERVICE_FONT_FORMAT_H
 
   /**************************************************************************
    *
@@ -330,7 +331,7 @@
         {
           FT_TRACE2(( "invalid alignment shift count for resource data\n" ));
           error = FT_THROW( Invalid_File_Format );
-          goto Exit1;
+          goto Exit;
         }
 
 
@@ -420,12 +421,12 @@
           goto Exit;
 
         FT_TRACE2(( "magic %04lx, machine %02x, number_of_sections %u, "
-                    "size_of_optional_header %02x\n",
+                    "size_of_optional_header %02x\n"
+                    "magic32 %02x, rsrc_virtual_address %04lx, "
+                    "rsrc_size %04lx\n",
                     pe32_header.magic, pe32_header.machine,
                     pe32_header.number_of_sections,
-                    pe32_header.size_of_optional_header ));
-        FT_TRACE2(( "magic32 %02x, rsrc_virtual_address %04lx, "
-                    "rsrc_size %04lx\n",
+                    pe32_header.size_of_optional_header,
                     pe32_header.magic32, pe32_header.rsrc_virtual_address,
                     pe32_header.rsrc_size ));
 
@@ -596,10 +597,6 @@
 
   Exit:
     return error;
-
-  Exit1:
-    FT_FRAME_EXIT();
-    goto Exit;
   }
 
 
@@ -793,7 +790,7 @@
         root->style_flags |= FT_STYLE_FLAG_BOLD;
 
       /* set up the `fixed_sizes' array */
-      if ( FT_QNEW( root->available_sizes ) )
+      if ( FT_NEW_ARRAY( root->available_sizes, 1 ) )
         goto Fail;
 
       root->num_fixed_sizes = 1;
@@ -888,7 +885,7 @@
       /* NULL byte -- the frame is erroneously one byte too small.  */
       /* We thus allocate one more byte, setting it explicitly to   */
       /* zero.                                                      */
-      if ( FT_QALLOC( font->family_name, family_size + 1 ) )
+      if ( FT_ALLOC( font->family_name, family_size + 1 ) )
         goto Fail;
 
       FT_MEM_COPY( font->family_name,
@@ -1094,7 +1091,7 @@
 
       /* note: since glyphs are stored in columns and not in rows we */
       /*       can't use ft_glyphslot_set_bitmap                     */
-      if ( FT_QALLOC_MULT( bitmap->buffer, bitmap->rows, pitch ) )
+      if ( FT_ALLOC_MULT( bitmap->buffer, bitmap->rows, pitch ) )
         goto Exit;
 
       column = (FT_Byte*)bitmap->buffer;

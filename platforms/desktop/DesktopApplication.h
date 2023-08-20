@@ -2,13 +2,13 @@
 #define ASENGINE_DESKTOP_APPLICATION_H
 
 
-#include "engine/asengine.h"
-
 #include <sstream>
 #include <iostream>
 #include <chrono>
 #define SEC_TO_MICRO 1000000.0f;
 
+#include "ASEngine.h"
+#include "registry.h"
 #include "GLFW/glfw3.h"
 
 using namespace ASEngine;

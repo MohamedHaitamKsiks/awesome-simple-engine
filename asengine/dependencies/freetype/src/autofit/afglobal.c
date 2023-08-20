@@ -4,7 +4,7 @@
  *
  *   Auto-fitter routines to compute global hinting values (body).
  *
- * Copyright (C) 2003-2021 by
+ * Copyright (C) 2003-2019 by
  * David Turner, Robert Wilhelm, and Werner Lemberg.
  *
  * This file is part of the FreeType project, and may only be used,
@@ -19,7 +19,7 @@
 #include "afglobal.h"
 #include "afranges.h"
 #include "afshaper.h"
-#include <freetype/internal/ftdebug.h>
+#include FT_INTERNAL_DEBUG_H
 
 
   /**************************************************************************
@@ -285,10 +285,10 @@
 
 #ifdef FT_DEBUG_LEVEL_TRACE
 
-    FT_TRACE4(( "\n" ));
-    FT_TRACE4(( "style coverage\n" ));
-    FT_TRACE4(( "==============\n" ));
-    FT_TRACE4(( "\n" ));
+    FT_TRACE4(( "\n"
+                "style coverage\n"
+                "==============\n"
+                "\n" ));
 
     for ( ss = 0; af_style_classes[ss]; ss++ )
     {
@@ -306,7 +306,7 @@
           if ( !( count % 10 ) )
             FT_TRACE4(( " " ));
 
-          FT_TRACE4(( " %ld", idx ));
+          FT_TRACE4(( " %d", idx ));
           count++;
 
           if ( !( count % 10 ) )
@@ -443,7 +443,6 @@
       style = (AF_Style)( globals->glyph_styles[gindex] &
                           AF_STYLE_UNASSIGNED           );
 
-  Again:
     style_class          = af_style_classes[style];
     writing_system_class = af_writing_system_classes
                              [style_class->writing_system];
@@ -471,20 +470,6 @@
             writing_system_class->style_metrics_done( metrics );
 
           FT_FREE( metrics );
-
-          /* internal error code -1 indicates   */
-          /* that no blue zones have been found */
-          if ( error == -1 )
-          {
-            style = (AF_Style)( globals->glyph_styles[gindex] &
-                                AF_STYLE_UNASSIGNED           );
-            /* IMPORTANT: Clear the error code, see
-             * https://gitlab.freedesktop.org/freetype/freetype/-/issues/1063
-             */
-            error = 0;
-            goto Again;
-          }
-
           goto Exit;
         }
       }
