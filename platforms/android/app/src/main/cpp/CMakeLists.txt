@@ -52,6 +52,9 @@ find_package(game-activity REQUIRED CONFIG)
 include_directories(asengine)
 add_subdirectory(asengine)
 
+include_directories(project-src)
+add_subdirectory(project-src)
+
 target_link_libraries( # Specifies the target library.
         
         androidsimpleengine

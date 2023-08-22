@@ -8,12 +8,12 @@
         },
         "linux": {
             "type": "desktop",
-            "platformPath": "platforms/desktop" 
+            "platformPath": "../platforms/desktop" 
         },
         "windows": {
             "type": "desktop",
-            "platformPath": "platforms/desktop"
+            "platformPath": "../platforms/desktop"
         }
     },
-    "asenginePath": "asengine/build"
+    "asenginePath": "../asengine/build"
 }

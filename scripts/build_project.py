@@ -2,13 +2,17 @@
 import sys
 import os
 import shutil
+import pathlib
 import json
 from glob import glob
 import generate_registry
 
+#script folder
+scriptFolder = str(pathlib.Path(__file__).parent);
+
 #load config 
 config = {}
-with open("build.config.json") as file:
+with open(f"{scriptFolder}/build.config.json") as file:
     config = json.loads(file.read())
 assert(config != {})
 
@@ -39,10 +43,15 @@ assert (buildMode in ("debug", "release"))
 #get working directory
 workingDirectory = os.getcwd()
 
+
 #generated tmp folder name
 tmpFileName = f".tmp.{ platform }.{ projectPath.split('/')[-1] }"
 #craete and copy platfrom to .tmp
 shutil.copytree(platformPath, tmpFileName, dirs_exist_ok=True)
+
+#we are going to compile from source for android
+if platform == "android":
+    pass
 
 #copy compiled engine to temp project
 shutil.copytree(f"{asenginePath}/include", f"{tmpFileName}/asengine/include", dirs_exist_ok=True)
@@ -95,7 +104,7 @@ if platform == "linux":
     os.system("./build")
 
 elif platform == "windows":
-    os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={workingDirectory}/cmake-toolchains/mingw-w64-x86_64.cmake ..")
+    os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={scriptFolder}/../cmake-toolchains/mingw-w64-x86_64.cmake ..")
     os.system("make")
     os.system(f"wine {workingDirectory}/{tmpFileName}/build/build.exe")
     

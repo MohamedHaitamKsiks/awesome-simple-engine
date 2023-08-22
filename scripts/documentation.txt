@@ -1,0 +1,23 @@
+Commands list:
+
++ help:
+    List commands
+
++ status:
+    Is current dir a valid asengine project.
+  
++ generate-project <project name>:
+    Generate project.
+
++ generate-component <component name>:
+    Generate new component.
+
++ generate-system <system name>:
+    Generate new system.
+
++ run:
+    Same as build for linux in debug.
+
++ build <windows | linux | android> <debug | release>:
+    Build current project.
+
