@@ -11,9 +11,10 @@ with open("build.config.json") as file:
     config = json.loads(file.read())
 
 # find sdk tools
-sdkPath = config["android"]["sdkPath"]
-emulatorPath = f"{sdkPath}/tools"
-avdName = config["android"]["avdName"]
+sdkPath = config["targets"]["android"]["sdkPath"]
+emulatorLocalPath = config["targets"]["android"]["emulatorPath"]
+emulatorPath = f"{sdkPath}/{emulatorLocalPath}"
+avdName = config["targets"]["android"]["avdName"]
 
 #start emulator
 os.chdir(emulatorPath)

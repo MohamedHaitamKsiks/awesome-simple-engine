@@ -35,9 +35,9 @@ add_executable(build  main.cpp DesktopApplication.cpp )
 
 target_link_libraries(
     build
+    asengine-project
     asengine
     OpenGL::GL
-    asengine-project
     glfw
 )
 

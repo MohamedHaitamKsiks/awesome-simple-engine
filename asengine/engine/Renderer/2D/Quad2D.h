@@ -1,5 +1,5 @@
-#ifndef ASENGINE_MESH_2D_H
-#define ASENGINE_MESH_2D_H
+#ifndef ASENGINE_QUAD_2D_H
+#define ASENGINE_QUAD_2D_H
 
 #include <cstdint>
 
@@ -20,6 +20,9 @@ namespace ASEngine
         // quad indicies
         constexpr static const uint16_t Indices[QUAD_2D_INDICES_COUNT] = {0, 1, 2, 2, 3, 0};
 
+        // default
+        Quad2D() {};
+
         // create normal quad
         Quad2D(const vec2& size, mat3& transform, const Color& modulate);
 
@@ -31,4 +34,4 @@ namespace ASEngine
 
 
 
-#endif // ASENGINE_MESH_2D_H
+#endif // ASENGINE_QUAD_2D_H

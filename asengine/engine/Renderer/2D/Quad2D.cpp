@@ -2,7 +2,7 @@
 
 namespace ASEngine
 {
-    Quad2D::Quad2D(const vec2 &size, mat3 &transform, const Color &modulate)
+    Quad2D::Quad2D(const vec2& size, mat3& transform, const Color& modulate)
     {   
         Vertices[0] = Vertex2D{transform * vec2{0.0f, 0.0f}, vec2{0.0f, 0.0f}, modulate};
         Vertices[1] = Vertex2D{transform * vec2{size.x, 0.0f}, vec2{1.0f, 0.0f}, modulate};

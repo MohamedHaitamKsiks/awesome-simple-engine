@@ -59,7 +59,6 @@ namespace ASEngine
             SystemManager::ProcessInputEvent(event);
         }
 
-
     private:
         TPoolAllocator<EntityData> m_Entities{UINT16_MAX};
         TDynamicArray<Entity> m_DestroyQueue{};

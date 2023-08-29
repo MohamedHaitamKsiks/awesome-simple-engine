@@ -49,7 +49,8 @@ find_package(game-activity REQUIRED CONFIG)
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
 
-include_directories(asengine)
+include_directories(asengine/include/engine)
+include_directories(asengine/include/dependencies/freetype)
 add_subdirectory(asengine)
 
 include_directories(project-src)
@@ -60,6 +61,7 @@ target_link_libraries( # Specifies the target library.
         androidsimpleengine
 
         asengine
+        asengine-project
 
         android
 

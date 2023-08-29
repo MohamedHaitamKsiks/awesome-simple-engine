@@ -2,9 +2,10 @@
     "targets": {
         "android": {
             "sdkPath": "/home/ksiks_wa3r/Android/Sdk",
-            "avdName": "Pixel_XL_API_33",
+            "emulatorPath": "emulator",
+            "avdName": "Pixel_3a_API_34_extension_level_7_x86_64",
             "type": "mobile",
-            "platformPath": "platforms/android"
+            "platformPath": "../platforms/android"
         },
         "linux": {
             "type": "desktop",
@@ -15,5 +16,6 @@
             "platformPath": "../platforms/desktop"
         }
     },
-    "asenginePath": "../asengine/build"
+    "asenginePath": "../asengine/build",
+    "asengineSourcePath": "../asengine"
 }

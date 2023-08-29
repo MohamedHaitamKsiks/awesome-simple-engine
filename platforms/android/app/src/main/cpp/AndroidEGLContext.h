@@ -2,7 +2,7 @@
 #ifndef ANDROIDSIMPLEENGINE_ANDROIDEGLCONTEXT_H
 #define ANDROIDSIMPLEENGINE_ANDROIDEGLCONTEXT_H
 
-#include "engine/asengine.h"
+#include "ASEngine.h"
 
 #include <EGL/egl.h>
 #include <GLES3/gl3.h>

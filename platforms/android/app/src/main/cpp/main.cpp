@@ -1,7 +1,7 @@
 #include <jni.h>
 
 #include "ASEngine.h"
-#include "registry.h"
+
 #include "AndroidApplication.h"
 
 #include <string>
