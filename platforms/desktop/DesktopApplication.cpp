@@ -1,5 +1,4 @@
 #include "DesktopApplication.h"
-#include "ecs/registry.h"
 
 void DesktopApplication::Start()
 {

@@ -5,9 +5,10 @@
 #include <cstdint>
 #include <string>
 
+#include "Core/FileSystem/File.h"
+#include "Core/Log/Log.h"
+
 #include "Resource.h"
-#include "engine/FileSystem/File.h"
-#include "engine/Log/Log.h"
 
 namespace ASEngine {
 

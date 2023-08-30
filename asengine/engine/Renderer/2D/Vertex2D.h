@@ -1,10 +1,10 @@
 #ifndef ASENGINE_VERTEX2D_H
 #define ASENGINE_VERTEX2D_H
 
-#include "engine/Renderer/GraphicsAPI.h"
-#include "engine/Renderer/Color.h"
+#include "Renderer/GraphicsAPI.h"
+#include "Renderer/Color.h"
 
-#include "engine/Math/vec2.h"
+#include "Core/Math/vec2.h"
 
 #include <cstddef>
 

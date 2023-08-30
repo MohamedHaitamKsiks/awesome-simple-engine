@@ -1,6 +1,7 @@
 #include <jni.h>
 
-#include "engine/asengine.h"
+#include "ASEngine.h"
+
 #include "AndroidApplication.h"
 
 #include <string>
@@ -53,8 +54,6 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
  * This the main entry point for a native activity
  */
 void android_main(struct android_app *pApp) {
-	ASEngine::Debug::Log("tos");
-
     // register an event handler for Android events
     pApp->onAppCmd = handle_cmd;
 

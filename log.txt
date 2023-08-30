@@ -1,7 +1,0 @@
-CMake Warning at asengine/dependencies/freetype/builds/cmake/FindHarfBuzz.cmake:99 (message):
-  Required version (2.0.0) is higher than found version ()
-Call Stack (most recent call first):
-  asengine/dependencies/freetype/CMakeLists.txt:215 (find_package)
-
-
-Segmentation fault (core dumped)

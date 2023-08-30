@@ -8,11 +8,12 @@
 #include "Material.h"
 #include "ResourceManager.h"
 
-#include "engine/FileSystem/File.h"
-#include "engine/Renderer/Texture.h"
-#include "engine/Math/vec2.h"
-#include "engine/Log/Log.h"
-#include "engine/Serialization/Serializer.h"
+#include "Core/FileSystem/File.h"
+#include "Core/Math/vec2.h"
+#include "Core/Log/Log.h"
+#include "Core/Serialization/Serializer.h"
+
+#include "Renderer/Texture.h"
 
 namespace ASEngine {
 

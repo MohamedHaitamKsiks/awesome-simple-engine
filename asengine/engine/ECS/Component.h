@@ -2,10 +2,12 @@
 #define ASENGINE_COMPONENT_H
 
 #include <cstdint>
-#include "engine/Macros/Foreach.h"
 
-#include "engine/Serialization/Serializer.h"
-#include "engine/String/UniqueString.h"
+#include "Macros/Foreach.h"
+
+#include "Core/Serialization/Serializer.h"
+#include "Core/String/UniqueString.h"
+
 #include "Entity.h" 
 
 namespace ASEngine

@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "engine/InputSystem/InputEvent.h"
-#include "engine/Singleton/Singleton.h"
+#include "Core/InputSystem/InputEvent.h"
+#include "Core/Singleton/Singleton.h"
 
 #include "System.h"
 

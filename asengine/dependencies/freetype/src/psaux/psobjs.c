@@ -4,7 +4,7 @@
  *
  *   Auxiliary functions for PostScript fonts (body).
  *
- * Copyright (C) 1996-2021 by
+ * Copyright (C) 1996-2019 by
  * David Turner, Robert Wilhelm, and Werner Lemberg.
  *
  * This file is part of the FreeType project, and may only be used,
@@ -16,10 +16,11 @@
  */
 
 
-#include <freetype/internal/psaux.h>
-#include <freetype/internal/ftdebug.h>
-#include <freetype/internal/ftcalc.h>
-#include <freetype/ftdriver.h>
+#include <ft2build.h>
+#include FT_INTERNAL_POSTSCRIPT_AUX_H
+#include FT_INTERNAL_DEBUG_H
+#include FT_INTERNAL_CALC_H
+#include FT_DRIVER_H
 
 #include "psobjs.h"
 #include "psconv.h"
@@ -173,10 +174,10 @@
    *   reallocation fails.
    */
   FT_LOCAL_DEF( FT_Error )
-  ps_table_add( PS_Table     table,
-                FT_Int       idx,
-                const void*  object,
-                FT_UInt      length )
+  ps_table_add( PS_Table  table,
+                FT_Int    idx,
+                void*     object,
+                FT_UInt   length )
   {
     if ( idx < 0 || idx >= table->max_elems )
     {
@@ -213,7 +214,7 @@
     }
 
     /* add the object to the base block and adjust offset */
-    table->elements[idx] = FT_OFFSET( table->block, table->cursor );
+    table->elements[idx] = table->block + table->cursor;
     table->lengths [idx] = length;
     FT_MEM_COPY( table->block + table->cursor, object, length );
 
@@ -251,7 +252,7 @@
     if ( !old_base )
       return;
 
-    if ( FT_QALLOC( table->block, table->cursor ) )
+    if ( FT_ALLOC( table->block, table->cursor ) )
       return;
     FT_MEM_COPY( table->block, old_base, table->cursor );
     shift_elements( table, old_base );
@@ -595,10 +596,10 @@
     if ( cur < limit && cur == parser->cursor )
     {
       FT_ERROR(( "ps_parser_skip_PS_token:"
-                 " current token is `%c' which is self-delimiting\n",
+                 " current token is `%c' which is self-delimiting\n"
+                 "                        "
+                 " but invalid at this point\n",
                  *cur ));
-      FT_ERROR(( "                        "
-                 " but invalid at this point\n" ));
 
       error = FT_THROW( Invalid_File_Format );
     }
@@ -979,7 +980,7 @@
     }
 
     len = (FT_UInt)( cur - *cursor );
-    if ( cur >= limit || FT_QALLOC( result, len + 1 ) )
+    if ( cur >= limit || FT_ALLOC( result, len + 1 ) )
       return 0;
 
     /* now copy the string */
@@ -1175,8 +1176,8 @@
           else
           {
             FT_ERROR(( "ps_parser_load_field:"
-                       " expected a name or string\n" ));
-            FT_ERROR(( "                     "
+                       " expected a name or string\n"
+                       "                     "
                        " but found token of type %d instead\n",
                        token.type ));
             error = FT_THROW( Invalid_File_Format );
@@ -1193,7 +1194,7 @@
             *(FT_String**)q = NULL;
           }
 
-          if ( FT_QALLOC( string, len + 1 ) )
+          if ( FT_ALLOC( string, len + 1 ) )
             goto Exit;
 
           FT_MEM_COPY( string, cur, len );
@@ -1232,7 +1233,7 @@
           bbox->xMax = FT_RoundFix( temp[2] );
           bbox->yMax = FT_RoundFix( temp[3] );
 
-          FT_TRACE4(( " [%ld %ld %ld %ld]",
+          FT_TRACE4(( " [%d %d %d %d]",
                       bbox->xMin / 65536,
                       bbox->yMin / 65536,
                       bbox->xMax / 65536,
@@ -1248,7 +1249,7 @@
           FT_UInt    i;
 
 
-          if ( FT_QNEW_ARRAY( temp, max_objects * 4 ) )
+          if ( FT_NEW_ARRAY( temp, max_objects * 4 ) )
             goto Exit;
 
           for ( i = 0; i < 4; i++ )
@@ -1258,14 +1259,14 @@
             if ( result < 0 || (FT_UInt)result < max_objects )
             {
               FT_ERROR(( "ps_parser_load_field:"
-                         " expected %d integer%s in the %s subarray\n",
+                         " expected %d integer%s in the %s subarray\n"
+                         "                     "
+                         " of /FontBBox in the /Blend dictionary\n",
                          max_objects, max_objects > 1 ? "s" : "",
                          i == 0 ? "first"
                                 : ( i == 1 ? "second"
                                            : ( i == 2 ? "third"
                                                       : "fourth" ) ) ));
-              FT_ERROR(( "                     "
-                         " of /FontBBox in the /Blend dictionary\n" ));
               error = FT_THROW( Invalid_File_Format );
 
               FT_FREE( temp );
@@ -1286,7 +1287,7 @@
             bbox->xMax = FT_RoundFix( temp[i + 2 * max_objects] );
             bbox->yMax = FT_RoundFix( temp[i + 3 * max_objects] );
 
-            FT_TRACE4(( " [%ld %ld %ld %ld]",
+            FT_TRACE4(( " [%d %d %d %d]",
                         bbox->xMin / 65536,
                         bbox->yMin / 65536,
                         bbox->xMax / 65536,
@@ -2576,7 +2577,7 @@
               FT_UShort  seed )
   {
     PS_Conv_EexecDecode( &buffer,
-                         FT_OFFSET( buffer, length ),
+                         buffer + length,
                          buffer,
                          length,
                          &seed );

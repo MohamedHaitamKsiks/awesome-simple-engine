@@ -4,8 +4,8 @@
 #include <unordered_map>
 #include <memory>
 
-#include "engine/Memory/DynamicArray.h"
-#include "engine/Singleton/Singleton.h"
+#include "Core/Memory/DynamicArray.h"
+#include "Core/Singleton/Singleton.h"
 
 #include "Archetype.h"
 

@@ -5,8 +5,8 @@
 #include <unordered_map>
 #include <cstring>
 
-#include "engine/Memory/DynamicArray.h"
-#include "engine/String/UniqueString.h"
+#include "Core/Memory/DynamicArray.h"
+#include "Core/String/UniqueString.h"
 
 #include "Entity.h"
 #include "Component.h"

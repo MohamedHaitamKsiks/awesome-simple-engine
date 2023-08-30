@@ -8,7 +8,7 @@
  * This file is for Mac OS X only; see builds/mac/ftoldmac.c for
  * classic platforms built by MPW.
  *
- * Copyright (C) 1996-2021 by
+ * Copyright (C) 1996-2019 by
  * Just van Rossum, David Turner, Robert Wilhelm, and Werner Lemberg.
  *
  * This file is part of the FreeType project, and may only be used,
@@ -65,9 +65,10 @@
   */
 
 
-#include <freetype/freetype.h>
-#include <freetype/tttags.h>
-#include <freetype/internal/ftstream.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_TRUETYPE_TAGS_H
+#include FT_INTERNAL_STREAM_H
 #include "ftbase.h"
 
 
@@ -631,7 +632,7 @@
       old_total_size = total_size;
     }
 
-    if ( FT_QALLOC( buffer, (FT_Long)total_size ) )
+    if ( FT_ALLOC( buffer, (FT_Long)total_size ) )
       goto Error;
 
     /* Second pass: append all POST data to the buffer, add PFB fields. */
@@ -752,7 +753,7 @@
     if ( FT_MAC_RFORK_MAX_LEN < sfnt_size )
       return FT_THROW( Array_Too_Large );
 
-    if ( FT_QALLOC( sfnt_data, (FT_Long)sfnt_size ) )
+    if ( FT_ALLOC( sfnt_data, (FT_Long)sfnt_size ) )
     {
       ReleaseResource( sfnt );
       return error;

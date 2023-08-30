@@ -3,8 +3,8 @@
 #define ANDROIDSIMPLEENGINE_ANDROIDAPPLICATION_H
 
 #include "AndroidEGLContext.h"
-
-#include "engine/asengine.h"
+#include "ASEngine.h"
+#include "registry.h"
 
 class AndroidApplication {
 

@@ -1,6 +1,6 @@
 
 #include "AndroidApplication.h"
-#include "ecs/registry.h"
+
 
 void AndroidApplication::init(android_app* _app) {
 	app = _app;

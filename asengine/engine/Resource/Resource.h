@@ -1,7 +1,7 @@
 #ifndef ASENGINE_RESOURCE_H
 #define ASENGINE_RESOURCE_H
 
-#include "../Memory/PoolAllocator.h"
+#include "Core/Memory/PoolAllocator.h"
 
 namespace ASEngine
 {

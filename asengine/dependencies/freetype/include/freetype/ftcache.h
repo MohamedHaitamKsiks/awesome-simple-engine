@@ -4,7 +4,7 @@
  *
  *   FreeType Cache subsystem (specification).
  *
- * Copyright (C) 1996-2021 by
+ * Copyright (C) 1996-2019 by
  * David Turner, Robert Wilhelm, and Werner Lemberg.
  *
  * This file is part of the FreeType project, and may only be used,
@@ -20,7 +20,8 @@
 #define FTCACHE_H_
 
 
-#include <freetype/ftglyph.h>
+#include <ft2build.h>
+#include FT_GLYPH_H
 
 
 FT_BEGIN_HEADER
@@ -86,8 +87,8 @@ FT_BEGIN_HEADER
    *   later use @FTC_CMapCache_Lookup to perform the equivalent of
    *   @FT_Get_Char_Index, only much faster.
    *
-   *   If you want to use the @FT_Glyph caching, call @FTC_ImageCache_New,
-   *   then later use @FTC_ImageCache_Lookup to retrieve the corresponding
+   *   If you want to use the @FT_Glyph caching, call @FTC_ImageCache, then
+   *   later use @FTC_ImageCache_Lookup to retrieve the corresponding
    *   @FT_Glyph objects from the cache.
    *
    *   If you need lots of small bitmaps, it is much more memory efficient to

@@ -3,18 +3,17 @@
 
 #include <vector>
 
-#include "engine/Singleton/Singleton.h"
-#include "engine/Math/mat3.h"
+#include "Core/Singleton/Singleton.h"
+#include "Core/Math/mat3.h"
+#include "Core/Window/Window.h"
 
-#include "engine/Window/Window.h"
+#include "Resource/Shader.h"
+#include "Resource/Material.h"
 
-#include "engine/Resource/Shader.h"
-#include "engine/Resource/Material.h"
-
-#include "engine/Renderer/GraphicsAPI.h"
-#include "engine/Renderer/Viewport.h"
-#include "engine/Renderer/ShaderUniform.h"
-#include "engine/Renderer/ShaderProgram.h"
+#include "Renderer/GraphicsAPI.h"
+#include "Renderer/Viewport.h"
+#include "Renderer/ShaderUniform.h"
+#include "Renderer/ShaderProgram.h"
 
 #include "Camera2D.h"
 #include "VertexBufferObject2D.h"

@@ -1,7 +1,4 @@
-
-
-
-// vertex code
+//vertex code
 #ifdef VERTEX
 
 //attribute
