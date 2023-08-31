@@ -94,6 +94,11 @@ namespace ASEngine {
 		std::string projectName = projectSettings["name"];
 		Window::SetTitle(projectName);
 
+		// set view port
+		int viewportWidth = projectSettings["viewport"]["size"]["width"];
+		int viewportHeight = projectSettings["viewport"]["size"]["height"];
+		Viewport::SetSize(viewportWidth, viewportHeight);
+
 		// set window size
 		int windowWidth = projectSettings["window"]["size"]["width"];
 		int windowHeight = projectSettings["window"]["size"]["height"];
@@ -104,12 +109,7 @@ namespace ASEngine {
 		bool windowIsFullscreen = projectSettings["window"]["fullscreen"];
 		if (GetSingleton()->m_Platform != Platform::ANDROID_DEVICES)
 			Window::SetFullscreen(windowIsFullscreen);
-	
-		// set view port
-		int viewportWidth = projectSettings["viewport"]["size"]["width"];
-		int viewportHeight = projectSettings["viewport"]["size"]["height"];
-		Viewport::SetSize(viewportWidth, viewportHeight);
-	
+
 		// load main scene
 		UniqueString mainScenePath = UniqueString(std::string(projectSettings["mainScene"]));
 		ResourceID sceneID = ResourceManager<Scene>::GetResourceId(UniqueString(mainScenePath));
