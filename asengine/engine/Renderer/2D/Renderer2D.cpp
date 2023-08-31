@@ -35,9 +35,35 @@ namespace ASEngine
 
     void Renderer2D::OnWindowChangeSize(int width, int height)
     {
-        // recompute viewport 
-        glViewport(0, 0, width, height);
+        // get aspect ratio of viewport
+        float viewportAspectRatio = Viewport::GetSize().x / Viewport::GetSize().y;
+
+        // get aspect ratio of window
+        float windowAspectRatio = (float) width / (float) height;
         
+        // same aspect ratio
+        float precision = 0.0001f;
+        if (abs(viewportAspectRatio - windowAspectRatio) < precision)
+        {
+            // recompute viewport 
+            glViewport(0, 0, width, height);
+        }
+        // window larger than viewport
+        else if (windowAspectRatio > viewportAspectRatio)
+        {
+            // get new width
+            int newWidth = (int) (viewportAspectRatio * height);
+            int viewportPosition = (width - newWidth) / 2;
+            glViewport(viewportPosition, 0, newWidth, height);
+        }
+        // window longuer than viewport
+        else
+        {
+            // get new height
+            int newHeight = (int)(width / viewportAspectRatio);
+            int viewportPosition = (height - newHeight) / 2;
+            glViewport(0, viewportPosition, width, newHeight);
+        }
     }
 
     void Renderer2D::IBegin()

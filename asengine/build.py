@@ -2,6 +2,7 @@
 import os
 import pathlib
 import shutil
+import sys
 
 # generate include files
 def generate_include_files():
@@ -24,13 +25,26 @@ def generate_include_files():
         entryPointList.append(includeToEntryPoint)
         #copy file
         os.makedirs("build/include/engine/" + str(destFile.parent), exist_ok=True)
-        shutil.copy(str(headerFile),"build/include/engine/" + str(destFile))
+        shutil.copystat(str(headerFile),"build/include/engine/" + str(destFile))
+
 
     #create asengine.h
     entryPointList.append("#endif")
+
+    oldEntryPointList = ""
+    newEntryPointList = ''.join(entryPointList)
+
+    if (pathlib.Path("build/include/engine/ASEngine.h").is_file()):
+        #get old entry file value
+        entryPointFile = open("build/include/engine/ASEngine.h", "r")
+        oldEntryPointList = entryPointFile.read()
+        entryPointFile.close()
+        #skip if same
+        if oldEntryPointList == newEntryPointList:
+            return
     
     entryPointFile = open("build/include/engine/ASEngine.h", "w")
-    entryPointFile.write(''.join(entryPointList))
+    entryPointFile.write(newEntryPointList)
     entryPointFile.close()
 
 
@@ -82,5 +96,9 @@ def compile_engine_for(plarform):
 #main
 generate_include_files()
 
-compile_engine_for("linux")
-compile_engine_for("windows")
+if len(sys.argv) == 2 and sys.argv[1]:
+    compile_engine_for(sys.argv[1])
+
+else:
+    compile_engine_for("linux")
+    compile_engine_for("windows")

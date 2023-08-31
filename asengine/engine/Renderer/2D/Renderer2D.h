@@ -1,6 +1,7 @@
 #ifndef ASENGINE_RENDERER_2D_H
 #define ASENGINE_RENDERER_2D_H
 
+#include <cmath>
 #include <vector>
 
 #include "Core/Singleton/Singleton.h"

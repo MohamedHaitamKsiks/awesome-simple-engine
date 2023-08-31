@@ -105,6 +105,10 @@ importFile.close()
 
 if platform == "linux":
     os.chdir(f"{workingDirectory}/{tmpFileName}/build")
+    #remove old build
+    if os.path.exists("build"):
+        os.remove("build")
+
     os.system("cmake .. ")
     os.system("make")
     os.system("./build")
@@ -112,6 +116,10 @@ if platform == "linux":
 
 elif platform == "windows":
     os.chdir(f"{workingDirectory}/{tmpFileName}/build")
+    #remove old build
+    if os.path.exists("build.exe"):
+        os.remove("build.exe")
+
     os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={scriptFolder}/../cmake-toolchains/mingw-w64-x86_64.cmake ..")
     os.system("make")
     os.system(f"wine {workingDirectory}/{tmpFileName}/build/build.exe")
