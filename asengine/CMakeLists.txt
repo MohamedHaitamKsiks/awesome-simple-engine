@@ -55,6 +55,7 @@ add_library(
     engine/Resource/Shader.cpp
     engine/Resource/Font.cpp
     engine/Resource/Scene.cpp
+    engine/Resource/Audio.cpp
     #rendering
     engine/Renderer/TextureManager.cpp
     engine/Renderer/Viewport.cpp
@@ -65,6 +66,10 @@ add_library(
     engine/Renderer/2D/VertexBufferObject2D.cpp
     #tween
     engine/Animation/Interpolation/Interpolate.cpp
+    #audio
+    engine/Audio/AudioEngine.cpp
+    #thirdparty
+    engine/Thirdparty/miniaudio.c
 )
 
 include_directories(dependencies/freetype/include)

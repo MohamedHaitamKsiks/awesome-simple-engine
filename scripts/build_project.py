@@ -88,13 +88,15 @@ sprites = glob("**/*.sprite.json", recursive=True)
 shaders = glob("**/*.glsl", recursive=True)
 materials = glob("**/*.material.json", recursive=True)
 scenes = glob("**/*.scene.json", recursive=True)
+audios = []
 #create import all json
 importAll = {
     "Sprites": sprites,
     "Shaders": shaders,
     "Scenes": scenes,
     "Materials": materials,
-    "Fonts": fonts
+    "Fonts": fonts,
+    "Audios": audios
 }
 os.chdir(workingDirectory)
 #save import.json

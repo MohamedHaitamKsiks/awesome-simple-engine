@@ -10,6 +10,8 @@
 #include "Core/String/UniqueStringManager.h"
 #include "Core/InputSystem/InputEvent.h"
 
+#include "Audio/AudioEngine.h"
+
 #include "Renderer/Viewport.h"
 #include "Renderer/TextureManager.h"
 #include "Renderer/2D/Renderer2D.h"
@@ -19,6 +21,7 @@
 #include "Resource/Sprite.h"
 #include "Resource/Image.h"
 #include "Resource/Scene.h"
+#include "Resource/Audio.h"
 
 #include "ECS/World.h"
 

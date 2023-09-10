@@ -25,7 +25,11 @@ def generate_include_files():
         entryPointList.append(includeToEntryPoint)
         #copy file
         os.makedirs("build/include/engine/" + str(destFile.parent), exist_ok=True)
-        shutil.copystat(str(headerFile),"build/include/engine/" + str(destFile))
+        
+        destPath = "build/include/engine/" + str(destFile)
+        
+        shutil.copy(str(headerFile),destPath)
+        shutil.copystat(str(headerFile),destPath)
 
 
     #create asengine.h
@@ -70,6 +74,9 @@ def compile_engine_for(plarform):
 
     #combine into one static librarty
     #create .mri file
+    if pathlib.Path("asengine.a").exists():
+        os.remove("asengine.a")
+
     mriCode = ["create asengine.a"]
 
     libFilesList = list(pathlib.Path().rglob("*.a"))

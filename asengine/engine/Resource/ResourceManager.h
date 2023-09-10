@@ -7,6 +7,7 @@
 
 #include "Resource.h"
 #include "Shader.h"
+#include "Audio.h"
 
 #include "Core/Singleton/Singleton.h"
 #include "Core/FileSystem/File.h"
@@ -134,6 +135,10 @@ namespace ASEngine
             if constexpr (std::is_same_v<T, Shader>)
             {
                 newResource.Load(std::string(resource));
+            }
+            else if constexpr (std::is_same_v<T, Audio>)
+            {
+
             }
             else
             {
