@@ -107,6 +107,7 @@ namespace ASEngine {
             assert(m_Data[chunkID].Used);
              // call destructor to logically destroy
              m_Data[chunkID].Data.~T();
+             m_Data[chunkID].Used = false;
 
              // free chunk
              PoolAllocator::Free(chunkID);

@@ -90,7 +90,6 @@ namespace ASEngine
 
         // add channel
         AudioChannelID channelID = m_AudioChannels.Push(channel);
-
         return channelID;
     }
 
