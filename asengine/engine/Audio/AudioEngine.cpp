@@ -68,7 +68,7 @@ namespace ASEngine
                 // write channels 
                 for (int j = 0; j < ASENGINE_AUDIOENGINE_CHANNELS; j++)
                 {
-                    buffer[ASENGINE_AUDIOENGINE_CHANNELS * i + j] += audioChannel.Data[ASENGINE_AUDIOENGINE_CHANNELS * audioChannel.FrameIndex + j];
+                    buffer[ASENGINE_AUDIOENGINE_CHANNELS * i + j] += audioChannel.Volume * audioChannel.Data[ASENGINE_AUDIOENGINE_CHANNELS * audioChannel.FrameIndex + j];
                 }
                 // move frame index
                 audioChannel.FrameIndex++;
