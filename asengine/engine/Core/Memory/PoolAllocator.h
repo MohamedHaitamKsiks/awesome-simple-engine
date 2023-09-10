@@ -26,6 +26,7 @@ namespace ASEngine {
         // allocate chunk in pool allcoator
         ChunkID Alloc();
 
+
         // free chunk 
         void Free(ChunkID chunkID);
 
@@ -67,6 +68,18 @@ namespace ASEngine {
         ~TPoolAllocator()
         {
         }
+
+        // check if chunkid is free
+        inline bool IsFree(ChunkID chunkID)
+        {
+            return !m_Data[chunkID].Used;
+        };
+
+        // get capacity
+        inline size_t GetCapacity()
+        {
+            return m_Data.GetCapacity();
+        };
 
         // allocate chunk and return the address
         ChunkID Alloc()

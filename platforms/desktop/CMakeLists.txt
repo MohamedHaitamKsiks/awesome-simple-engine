@@ -31,6 +31,7 @@ link_directories(asengine/lib)
 add_subdirectory(project-src)
 include_directories(project-src)
 
+
 add_executable(build  main.cpp DesktopApplication.cpp )
 
 target_link_libraries(
