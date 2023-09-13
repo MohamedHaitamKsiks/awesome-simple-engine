@@ -87,4 +87,27 @@ namespace ASEngine
         Serializer<float>::Deserialize(object.at("y"), dest.y);
     }
 
+    // Color
+    template <>
+    Json Serializer<Color>::Serialize(const Color &value)
+    {
+        Json object = Json({});
+        object["r"] = value.r;
+        object["g"] = value.g;
+        object["b"] = value.b;
+        object["a"] = value.a;
+
+        return object;
+    }
+    template <>
+    void Serializer<Color>::Deserialize(const Json &object, Color &dest)
+    {
+        assert(object.is_object());
+        
+        Serializer<float>::Deserialize(object.at("r"), dest.r);
+        Serializer<float>::Deserialize(object.at("a"), dest.g);
+        Serializer<float>::Deserialize(object.at("g"), dest.b);
+        Serializer<float>::Deserialize(object.at("b"), dest.a);
+    }
+
 } // namespace ASEngine

@@ -28,8 +28,8 @@ include_directories(asengine/include/dependencies/freetype)
 link_directories(asengine/lib)
 
 #add project
-add_subdirectory(project-src)
 include_directories(project-src)
+add_subdirectory(project-src)
 
 
 add_executable(build  main.cpp DesktopApplication.cpp )

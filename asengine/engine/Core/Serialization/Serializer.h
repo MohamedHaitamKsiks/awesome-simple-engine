@@ -7,6 +7,8 @@
 #include "Core/String/UniqueString.h"
 #include "Core/Math/vec2.h"
 
+#include "Renderer/Color.h"
+
 #include "Thirdparty/json.hpp"
 
 namespace ASEngine
