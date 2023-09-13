@@ -88,7 +88,7 @@ sprites = glob("**/*.sprite.json", recursive=True)
 shaders = glob("**/*.glsl", recursive=True)
 materials = glob("**/*.material.json", recursive=True)
 scenes = glob("**/*.scene.json", recursive=True)
-audios = []
+audios =glob("**/*.wav", recursive=True)
 #create import all json
 importAll = {
     "Sprites": sprites,

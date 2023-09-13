@@ -33,5 +33,13 @@
             },
             "Rotation": 0
         }
+    },
+    {
+        "AudioPlayer2D":
+        {
+            "AudioName": "audio/sonic_song.wav",
+            "AutoPlaying": true,
+            "Volume": 0.05
+        }
     }
 ]

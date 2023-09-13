@@ -86,7 +86,8 @@ namespace ASEngine
         // set volume for channel
         inline static void SetVolume(AudioChannelID channelID, float volume)
         {
-            GetSingleton()->m_AudioChannels.Get(channelID).Volume = volume;
+            if (AudioEngine::IsPlaying(channelID))
+                GetSingleton()->m_AudioChannels.Get(channelID).Volume = volume;
         };
         
         // get current volume in a channel

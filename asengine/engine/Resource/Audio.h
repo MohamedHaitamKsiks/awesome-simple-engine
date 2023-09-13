@@ -21,13 +21,13 @@ namespace ASEngine
         bool Load(const std::string& audioPath);
 
         // get data
-        inline float* GetData()
+        inline float* GetData() const
         {
             return m_Data;
         }
 
         // get size
-        inline size_t GetSize()
+        inline size_t GetSize() const
         {
             return m_Size;
         }

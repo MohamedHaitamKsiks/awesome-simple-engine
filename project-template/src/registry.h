@@ -5,6 +5,7 @@
 using namespace ASEngine;
 
 #include "components/SpriteRenderer2D/SpriteRenderer2D.h"
+#include "components/AudioPlayer2D/AudioPlayer2D.h"
 #include "components/Transform2D/Transform2D.h"
 #include "systems/SpriteRenderingSystem2D/SpriteRenderingSystem2D.h"
 
