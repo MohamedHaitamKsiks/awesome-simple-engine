@@ -2,3 +2,6 @@
 .vscode/
 run.sh
 test-project/
+project-template/assets/scenes/main.scene.json
+project-template/**/*.wav
+project-template/**/*.png
