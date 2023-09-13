@@ -95,6 +95,8 @@ namespace ASEngine
 
     void AudioEngine::IStop(AudioChannelID channelID)
     {
+        if (m_AudioChannels.IsFree(channelID)) return;
+
         m_AudioChannels.Free(channelID);
     }
 } // namespace ASEngine

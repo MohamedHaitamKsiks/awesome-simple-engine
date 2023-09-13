@@ -72,7 +72,7 @@ namespace ASEngine {
         // check if chunkid is free
         inline bool IsFree(ChunkID chunkID)
         {
-            return !m_Data[chunkID].Used;
+            return chunkID >= GetSize() || !m_Data[chunkID].Used;
         };
 
         // get capacity

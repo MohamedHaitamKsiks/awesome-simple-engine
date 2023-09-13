@@ -138,7 +138,7 @@ namespace ASEngine
             }
             else if constexpr (std::is_same_v<T, Audio>)
             {
-
+                newResource.Load(std::string(resource));
             }
             else
             {
