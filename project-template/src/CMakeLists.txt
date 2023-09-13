@@ -3,7 +3,9 @@ set(CMAKE_CXX_STANDARD 23)
 
 project(asengine-project)
 
-FILE(GLOB SRCFILES *.cpp)
+
+FILE(GLOB_RECURSE SRCFILES *.cpp)
+
 
 add_library(
     asengine-project
