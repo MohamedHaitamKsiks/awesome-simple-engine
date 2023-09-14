@@ -14,7 +14,6 @@ void RectangleRenderingSystem2D::OnCreate()
 
 	// get default shader
 	ResourceID defaultShaderID = ResourceManager<Shader>::GetResourceId(UniqueString("shaders/default.glsl"));
-	Debug::Log("toz");
 
 	// create material 
 	ResourceID defaultMaterialID = ResourceManager<Material>::Add();

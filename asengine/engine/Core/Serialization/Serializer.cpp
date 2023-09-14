@@ -105,9 +105,9 @@ namespace ASEngine
         assert(object.is_object());
         
         Serializer<float>::Deserialize(object.at("r"), dest.r);
-        Serializer<float>::Deserialize(object.at("a"), dest.g);
-        Serializer<float>::Deserialize(object.at("g"), dest.b);
-        Serializer<float>::Deserialize(object.at("b"), dest.a);
+        Serializer<float>::Deserialize(object.at("g"), dest.g);
+        Serializer<float>::Deserialize(object.at("b"), dest.b);
+        Serializer<float>::Deserialize(object.at("a"), dest.a);
     }
 
 } // namespace ASEngine
