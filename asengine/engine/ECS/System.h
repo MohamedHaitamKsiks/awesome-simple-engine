@@ -36,6 +36,9 @@ namespace ASEngine
             m_Archetypes.Push(archetype);
         };
 
+        // on create
+        virtual void OnCreate() {};
+
         // on update
         virtual void OnUpdate(float delta) {};
 

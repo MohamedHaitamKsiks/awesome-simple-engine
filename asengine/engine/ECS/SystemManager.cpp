@@ -19,6 +19,14 @@ namespace ASEngine
         }
     }
 
+    void SystemManager::ICreate()
+    {
+        for (auto system : m_Systems)
+        {
+            system->OnCreate();
+        }
+    }
+
     void SystemManager::IUpdate(float delta)
     {
         for (auto system : m_Systems)

@@ -20,6 +20,9 @@ namespace ASEngine
         // register archetype to system manager
         static void inline  RegisterArchetype(std::shared_ptr<Archetype> archetype) { GetSingleton()->IRegisterArchetype(archetype);};
         
+        // create all system
+        static void inline Create() { GetSingleton()->ICreate(); }
+
         // update all system
         static void inline Update(float delta) { GetSingleton()->IUpdate(delta); };
 
@@ -36,6 +39,7 @@ namespace ASEngine
         void IRegisterSystem();
         void IRegisterArchetype(std::shared_ptr<Archetype> archetype);
        
+        void ICreate();
         void IUpdate(float delta);
         void IRender2D();
         void IProcessInputEvent(const InputEvent& event);
