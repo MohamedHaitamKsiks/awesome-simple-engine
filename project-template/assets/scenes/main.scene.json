@@ -1,3 +1,33 @@
 [
-
+    {
+        "RectangleRenderer2D":
+        {
+            "Size":
+            {
+                "x": 32,
+                "y": 32
+            },
+            "Modulate":
+            {
+                "r": 1,
+                "g": 1,
+                "b": 0,
+                "a": 1
+            }
+        },
+        "Transform2D":
+        {
+            "Position": 
+            {
+                "x": 0,
+                "y": 0
+            },
+            "Scale":
+            {
+                "x": 1,
+                "y": 1
+            },
+            "Rotation": 0
+        }
+    }
 ]

@@ -49,6 +49,12 @@ namespace ASEngine
         // update the world
         static inline void Update(float delta)
         {
+            if (GetSingleton()->m_IsFirstFrame)
+            {
+                SystemManager::Create();
+                GetSingleton()->m_IsFirstFrame = false;
+            }
+
             SystemManager::Update(delta);
             GetSingleton()->CleanDestroyQueue();
         }
@@ -62,6 +68,7 @@ namespace ASEngine
     private:
         TPoolAllocator<EntityData> m_Entities{UINT16_MAX};
         TDynamicArray<Entity> m_DestroyQueue{};
+        bool m_IsFirstFrame = true;
 
         // clear destroy queue executed at the end of the frame to delete
         void CleanDestroyQueue();
