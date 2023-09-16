@@ -73,7 +73,7 @@ namespace ASEngine
         {
             T t;
             Serializer<T>::Deserialize(object, t);
-            memcpy(dest, &t, sizeof(T));
+            CopyComponent<T>(dest, (Component*) &t);
         }
 
         // deserialize
@@ -88,10 +88,12 @@ namespace ASEngine
         {
             // check if component is of component type
             static_assert(std::is_base_of_v<TComponent<T>, T>);
-            T* newComponent = new T;
+            T* newComponent = new T();
 
             if (value != nullptr)
+            {
                 *newComponent = *((T*) value);
+            }
 
             return (Component*) newComponent;
         }
@@ -108,7 +110,9 @@ namespace ASEngine
         {
             static_assert(std::is_base_of_v<TComponent<T>, T>);
             T* castedDest = (T*) dest;
-            *castedDest = *((T*) src);
+            const T* castedSrc = (T*) src;
+
+            *castedDest = *castedSrc;
         }
 
         // copy component from one to another base on name

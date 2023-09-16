@@ -50,7 +50,7 @@ namespace ASEngine
 
                 std::unique_ptr<Component> componentValue(ComponentManager::MakeComponent(componentName, nullptr));
                 ComponentManager::Deserialize(componentName, component.value(), componentValue.get());
-                
+
                 builder.AddComponent(componentName, componentValue.get());
             }
 

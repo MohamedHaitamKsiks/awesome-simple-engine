@@ -121,7 +121,15 @@ namespace ASEngine {
         //free font data
         FT_Done_Face(face);
         FT_Done_FreeType(ft);
-    
+
+        // make material
+        ResourceID shaderID = ResourceManager<Shader>::GetResourceId(UniqueString("shaders/default.glsl"));
+        // set default material
+        m_DefaultMaterialID = ResourceManager<Material>::Add();
+        auto &material = ResourceManager<Material>::Get(m_DefaultMaterialID);
+        material.Create(shaderID);
+        material.SetShaderParam(UniqueString("u_Texture"), m_Texture);
+
         return true;
     }
 

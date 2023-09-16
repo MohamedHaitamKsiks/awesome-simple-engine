@@ -1,12 +1,9 @@
 [
     {
-        "RectangleRenderer2D":
+        "TextRenderer2D":
         {
-            "Size":
-            {
-                "x": 32,
-                "y": 32
-            },
+            "FontName": "fonts/default.font.json",
+            "Text": "Hello World!",
             "Modulate":
             {
                 "r": 1,
@@ -27,7 +24,7 @@
                 "x": 1,
                 "y": 1
             },
-            "Rotation": 0
+            "Rotation": 15.0
         }
     }
 ]
