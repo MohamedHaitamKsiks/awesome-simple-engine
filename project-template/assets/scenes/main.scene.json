@@ -1,12 +1,9 @@
 [
     {
-        "RectangleRenderer2D":
+        "TextRenderer2D":
         {
-            "Size":
-            {
-                "x": 32,
-                "y": 32
-            },
+            "FontName": "fonts/default.font.json",
+            "Text": "Hello World!",
             "Modulate":
             {
                 "r": 1,
@@ -27,7 +24,43 @@
                 "x": 1,
                 "y": 1
             },
-            "Rotation": 0
+            "Rotation": 15.0
+        }
+    },
+
+    {
+        "SpriteRenderer2D":
+        {
+            "SpriteName": "sprites/run.sprite.json",
+            "FrameRate": 8.0,
+            "Frame": 0,
+            "Offset":
+            {
+                "x": 0,
+                "y": 0
+            },
+            "Centered": true,
+            "Modulate":
+            {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
+            }
+
+        },
+        "Transform2D": {
+            "Position": 
+            {
+                "x": -16,
+                "y": -16
+            },
+            "Scale": 
+            {
+                "x": 3,
+                "y": 3
+            },
+            "Rotation": 0.0
         }
     }
 ]

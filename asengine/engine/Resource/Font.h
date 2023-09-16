@@ -17,6 +17,7 @@
 #include "Renderer/Texture.h"
 
 #include "Resource.h"
+#include "Material.h"
 
 #define FONT_TEXTURE_WIDTH 16
 #define FONT_TEXTURE_HEIGHT 8
@@ -49,10 +50,13 @@ namespace ASEngine
 		bool Load(const std::string &fontPath, int size, int separation, int lineSeparation, int spaceSize);
 
 		// get character info at
-		inline FontCharacter GetFontCharacterOf(char c) const 
+		inline const FontCharacter& GetFontCharacterOf(char c) const
 		{ 
 			return m_FontCharacters[(size_t) c];
 		};
+
+		// get font material
+		inline ResourceID GetDefaultMaterialID() const { return m_DefaultMaterialID; }
 
 		// get size
 		inline int GetSize() const {return m_Size;};
@@ -75,6 +79,8 @@ namespace ASEngine
 		UniqueString m_FontPath;
 		// font texture
 		Texture m_Texture = TEXTURE_NULL;
+		// font material
+		ResourceID m_DefaultMaterialID = CHUNK_NULL;
 		// font data
 		FontCharacter m_FontCharacters[FONT_CHARACTER_NUMBER];
 		// font size

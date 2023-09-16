@@ -53,7 +53,7 @@ namespace ASEngine
     void Serializer<std::string>::Deserialize(const Json &object, std::string &dest)
     {
         assert(object.is_string());
-        dest = object;
+        dest = std::string(object);
     }
 
     // UniqueString
