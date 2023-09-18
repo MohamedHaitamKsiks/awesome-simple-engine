@@ -14,6 +14,7 @@ namespace ASEngine
     {
         Archetype* ArchetypeOwner = nullptr;
         bool IsDestroyed = false;
+        bool Persistent = false;
     };
 
 } // namespace ASEngine

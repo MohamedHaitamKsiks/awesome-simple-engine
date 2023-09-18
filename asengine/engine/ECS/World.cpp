@@ -24,6 +24,7 @@ namespace ASEngine
         EntityData data;
         data.ArchetypeOwner = archetype.get();
         data.IsDestroyed = false;
+        data.Persistent = builder.Persistent;
 
         Entity entity = m_Entities.Push(data);
         ComponentIndex index = archetype->AddEntity(entity);
@@ -51,7 +52,25 @@ namespace ASEngine
         data.IsDestroyed = true;
         m_DestroyQueue.Push(entity);
     }
-    
+
+    void World::IDestroyAll()
+    {
+        size_t entityCounter = 0;
+        for (Entity entity = 0; entity < m_Entities.GetCapacity() && entityCounter < m_Entities.GetSize(); entity++ )
+        {
+            if (m_Entities.IsFree(entity)) continue;
+
+            // get entity data
+            auto& entityData = m_Entities.Get(entity);
+
+            // destroy entity
+            if (!entityData.Persistent)
+            {
+                IDestroy(entity);
+            }
+        }
+    }
+
     void World::CleanDestroyQueue()
     {
         for (auto entity: m_DestroyQueue)

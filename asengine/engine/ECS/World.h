@@ -65,6 +65,12 @@ namespace ASEngine
             SystemManager::ProcessInputEvent(event);
         }
 
+        // destroy all
+        static inline void DestroyAll()
+        {
+            GetSingleton()->IDestroyAll();
+        }
+
     private:
         TPoolAllocator<EntityData> m_Entities{UINT16_MAX};
         TDynamicArray<Entity> m_DestroyQueue{};
@@ -80,6 +86,8 @@ namespace ASEngine
 
         // destroy entity
         void IDestroy(Entity entity);
+
+        void IDestroyAll();
 
     };
 

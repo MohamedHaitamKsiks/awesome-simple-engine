@@ -31,6 +31,9 @@ namespace ASEngine {
 		// instantiate a scene to the world
 		void Instantiate(); 
 
+		// load scene
+		static void ChangeSceneTo(Scene& scene); 
+
 	private:
 		TDynamicArray<EntityBuilder> m_Builders{};
 	};
