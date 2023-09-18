@@ -25,6 +25,12 @@ namespace ASEngine
         {
             World::Create(builder);
         }
+    }
+
+    void Scene::ChangeSceneTo(Scene &scene)
+    {
+        World::DestroyAll();
+        scene.Instantiate();
     };
 
     // seriliazation

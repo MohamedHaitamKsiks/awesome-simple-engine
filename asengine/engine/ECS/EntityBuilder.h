@@ -18,6 +18,9 @@ namespace ASEngine
     class EntityBuilder
     {
         public:
+            // is entity going to be kept when changing scene
+            bool Persistent = false;
+
             // add component
             void AddComponent(UniqueString componentName, const Component* data);
             
@@ -37,7 +40,7 @@ namespace ASEngine
         private:
             TDynamicArray<UniqueString> m_ComponentNames{};
             TDynamicArray<std::shared_ptr<Component>> m_Components{};
-    
+
             // make world friend class
             friend class World;
     };
