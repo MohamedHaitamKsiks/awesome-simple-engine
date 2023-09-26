@@ -73,9 +73,9 @@ namespace ASEngine {
         vec2 Rotate(float angle);
         
         // normalized
-        vec2 Normalized()
+        inline vec2 Normalized()
         {
-            return *this / this->Length();
+            return (this->Length() > 0.0f) ? *this / this->Length() : vec2::ZERO();
         };
 
         //add
