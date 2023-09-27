@@ -28,6 +28,12 @@ namespace ASEngine {
 		// add entity
 		void AddEntityBuilder(const EntityBuilder& builder);
 
+		// get entity buidlers
+		inline TDynamicArray<EntityBuilder>& GetEntityBuilders()
+		{
+			return m_Builders;
+		};
+
 		// instantiate a scene to the world
 		void Instantiate(); 
 
