@@ -29,7 +29,7 @@ namespace ASEngine {
 		void AddEntityBuilder(const EntityBuilder& builder);
 
 		// get entity buidlers
-		inline TDynamicArray<EntityBuidler>& GetEntityBuilders()
+		inline TDynamicArray<EntityBuilder>& GetEntityBuilders()
 		{
 			return m_Builders;
 		};
