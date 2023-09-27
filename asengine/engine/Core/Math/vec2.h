@@ -46,25 +46,25 @@ namespace ASEngine {
 
 
         // angle
-        inline float Angle()
+        inline float Angle() const
         {
             return atan2(y, x);
         }
 
         // dot product
-        inline float Dot(const vec2& v)
+        inline float Dot(const vec2& v) const
         {
             return x * v.x + y * v.y;
         }
 
         // lenghts
-        inline float Length()
+        inline float Length() const
         {
             return sqrtf(x * x + y * y);
         }
 
         // length squared
-        inline float LengthSquared()
+        inline float LengthSquared() const
         {
             return x * x + y * y;
         }
