@@ -69,11 +69,21 @@ namespace ASEngine {
             return x * x + y * y;
         }
 
+        // abs x and y
+        inline vec2 Abs() const
+        {
+            return vec2
+            {
+                abs(x),
+                abs(y)
+            };
+        }
+
         // rotate
-        vec2 Rotate(float angle);
+        vec2 Rotate(float angle) const;
         
         // normalized
-        inline vec2 Normalized()
+        inline vec2 Normalized() const
         {
             return (this->Length() > 0.0f) ? *this / this->Length() : vec2::ZERO();
         };
