@@ -4,7 +4,7 @@ namespace ASEngine
 {
 
     // rotate
-    vec2 vec2::Rotate(float angle)
+    vec2 vec2::Rotate(float angle) const
     {
         float cosAngle = cos(angle);
         float sinAngle = sin(angle);
