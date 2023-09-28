@@ -29,6 +29,12 @@ namespace ASEngine
             Renderer2D();
             ~Renderer2D();
 
+            // get camera 2D
+            static inline Camera2D& GetCamera2D()
+            {
+                return GetSingleton()->m_Camera2D;
+            };
+
             // draw a quad with a given material
             static inline void DrawQuad(const Quad2D &quad2D, ResourceID materialID)
             {
@@ -41,6 +47,12 @@ namespace ASEngine
             // end rendering context
             static inline void End() { GetSingleton()->IEnd(); };
         private:
+            // resize signal connection
+            SignalConnection m_ResizeSignalConnection;
+
+            // camera2D
+            Camera2D m_Camera2D{};
+
             // cache projection matrices
             mat3 m_CameraProjectionMatrix = mat3::IDENTITY();
             mat3 m_ViewProjectionMatrix = mat3::IDENTITY();

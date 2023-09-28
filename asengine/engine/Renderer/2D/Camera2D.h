@@ -10,9 +10,6 @@ namespace ASEngine
         // camera position
         vec2 Position = vec2::ZERO();
 
-        // camera offset 
-        vec2 Offset = vec2::ZERO();
-
         // camera rotation
         float Rotation = 0.0f;
 
