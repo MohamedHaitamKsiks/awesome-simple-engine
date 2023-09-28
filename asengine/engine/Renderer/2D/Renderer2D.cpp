@@ -25,12 +25,12 @@ namespace ASEngine
         m_ViewParamName = UniqueString("u_View");
 
         // connect to on window change signal
-        Window::ResizeSignal().Connect(std::bind(&Renderer2D::OnWindowChangeSize, this, std::placeholders::_1, std::placeholders::_2));
+        m_ResizeSignalConnection = Window::ResizeSignal().Connect(std::bind(&Renderer2D::OnWindowChangeSize, this, std::placeholders::_1, std::placeholders::_2));
     }
 
     Renderer2D::~Renderer2D()
     {
-        
+        Window::ResizeSignal().Disconnect(m_ResizeSignalConnection);
     }
 
     void Renderer2D::OnWindowChangeSize(int width, int height)
@@ -70,8 +70,7 @@ namespace ASEngine
     {
         // cache projection matrices
         m_ViewProjectionMatrix = Viewport::GetProjectionMatrix();
-        m_CameraProjectionMatrix = mat3::IDENTITY();
-
+        m_CameraProjectionMatrix = mat3::Transform(m_Camera2D.Position * -1.0f, vec2::ONE() * m_Camera2D.Zoom, -m_Camera2D.Rotation);
         // set materials and shaders to null
         m_CurrentShaderID = CHUNK_NULL;
         m_CurrentMaterialID = CHUNK_NULL;
@@ -108,7 +107,6 @@ namespace ASEngine
 
                 // bind shader
                 shader.Bind();
-
             }
 
             // set projection matrices

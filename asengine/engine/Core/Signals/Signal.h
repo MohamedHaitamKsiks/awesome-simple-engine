@@ -1,6 +1,8 @@
 #ifndef ASENGINE_SIGNAL_H
 #define ASENGINE_SIGNAL_H
 
+#include "Core/Memory/PoolAllocator.h"
+
 #include <vector>
 #include <functional>
 
@@ -10,7 +12,7 @@ namespace ASEngine
     using SignalConnection = size_t;
 
     // signal class
-    template <typename T, typename... types> 
+    template <typename T, typename... types>
     class Signal
     {
     public:
@@ -22,34 +24,37 @@ namespace ASEngine
 
         // emit signal
         void Emit(T t, types... args);
+
     private:
         // list of functions connected to the signal
-        std::vector<std::function<void(T, types...)>> m_Callbacks = {};
+        TPoolAllocator<std::function<void(T, types...)>> m_Callbacks{2};
     };
 
     // include implementation template
     template <typename T, typename... types>
     SignalConnection Signal<T, types...>::Connect(std::function<void(T, types...)> callback)
     {
-        m_Callbacks.push_back(callback);
-        return m_Callbacks.size() - 1;
+        return (SignalConnection)m_Callbacks.Push(callback);
     }
 
     template <typename T, typename... types>
     void Signal<T, types...>::Disconnect(SignalConnection connection)
     {
-        m_Callbacks.erase(m_Callbacks.begin() + connection);
+        m_Callbacks.Free((ChunkID)connection);
     }
 
     template <typename T, typename... types>
     void Signal<T, types...>::Emit(T t, types... args)
     {
-        for (auto callback : m_Callbacks)
+        for (ChunkID id = 0; id < m_Callbacks.GetCapacity(); id++)
         {
+            if (m_Callbacks.IsFree(id))
+                continue;
+
+            auto &callback = m_Callbacks.Get(id);
             callback(t, args...);
         }
     }
 } // namespace ASEngine
-
 
 #endif // ASENGINE_SIGNAL_H
