@@ -20,6 +20,12 @@ namespace ASEngine
     {
     public:
 
+        // get priority
+        inline int GetPriority() const
+        {
+            return m_Priority;
+        };
+
         // get signature
         inline uint32_t GetSignature() const
         {
@@ -51,6 +57,9 @@ namespace ASEngine
     protected:
         // system signature with it's component requirements
         uint32_t m_Signature = 1;
+
+        // system priority
+        int m_Priority = 0;
 
         // archetypes list
         TDynamicArray<std::weak_ptr<Archetype>> m_Archetypes{};
