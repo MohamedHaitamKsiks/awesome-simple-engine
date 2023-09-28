@@ -54,7 +54,26 @@ namespace ASEngine
 
         // create new system
         std::shared_ptr<BaseSystem> system = std::make_shared<T>();
-        m_Systems.push_back(system);
+        bool isSystemInserted = false;
+
+        // insert new system and keep order
+        std::vector<std::shared_ptr<BaseSystem>> newSystems{};
+
+        for (int i = 0; i < m_Systems.size(); i++)
+        {
+            if (!isSystemInserted && m_Systems[i]->GetPriority() > system->GetPriority())
+            {
+                newSystems.push_back(system);
+                isSystemInserted = true;
+            }
+            newSystems.push_back(m_Systems[i]);
+        }
+        
+        if (!isSystemInserted)
+            newSystems.push_back(system);
+
+        // copy new systems
+        m_Systems = newSystems;
     };
 } // namespace ASEngine
 
