@@ -14,7 +14,10 @@ namespace ASEngine
             return;
 
         if (m_Program != SHADER_NULL)
+        {
             ShaderProgram::Destroy(m_Program);
+            m_Program = SHADER_NULL;
+        }
     }
 
     bool Shader::Load(const std::string &shaderFile)

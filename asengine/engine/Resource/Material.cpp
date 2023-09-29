@@ -8,7 +8,10 @@ namespace ASEngine
             return;
             
         if (m_UniformBuffer)
+        {
             delete[] m_UniformBuffer;
+            m_UniformBuffer = nullptr;
+        }
     }
 
     bool Material::Load(const std::string &materialPath)

@@ -27,13 +27,14 @@ namespace ASEngine {
 
 	Application::~Application()
 	{
-		TerminateResourceManagers();
+		ResourceManager<Scene>::Terminate();
 		World::Terminate();
-		UniqueStringManager::Terminate();
+		TerminateResourceManagers();
 		Renderer2D::Terminate();
 		Viewport::Terminate();
 		AudioEngine::Terminate();
 		Window::Terminate();
+		UniqueStringManager::Terminate();
 	}
 
 	void Application::Create(Platform platform) {
@@ -60,7 +61,6 @@ namespace ASEngine {
 		ResourceManager<Material>::Terminate();
 		ResourceManager<Sprite>::Terminate();
 		ResourceManager<Font>::Terminate();
-		ResourceManager<Scene>::Terminate();
 		ResourceManager<Audio>::Terminate();
 	}
 

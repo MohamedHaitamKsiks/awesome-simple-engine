@@ -18,13 +18,14 @@ namespace ASEngine {
         if (!IsOwner())
             return;
 
-        if (!m_Pixels)
-            return;
+        if (!m_Pixels) return;
 
         if (m_LoadedWithSTBI)
             stbi_image_free(m_Pixels);
         else
             delete[] m_Pixels;
+
+        m_Pixels = nullptr;
     }
 
     bool Image::Load(const std::string& imagePath) 
