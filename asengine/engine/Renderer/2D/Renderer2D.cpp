@@ -74,7 +74,7 @@ namespace ASEngine
     {
         // cache projection matrices
         m_ViewProjectionMatrix = Viewport::GetProjectionMatrix();
-        m_CameraProjectionMatrix = mat3::Transform(m_Camera2D.Position * -1.0f, vec2::ONE() * m_Camera2D.Zoom, -m_Camera2D.Rotation);
+        m_CameraProjectionMatrix = mat3::Rotation(m_Camera2D.Rotation * -1.0f) * mat3::Scale(vec2::ONE() * m_Camera2D.Zoom) * mat3::Translate(m_Camera2D.Position * -1.0f);
         // set materials and shaders to null
         m_CurrentShaderID = CHUNK_NULL;
         m_CurrentMaterialID = CHUNK_NULL;
