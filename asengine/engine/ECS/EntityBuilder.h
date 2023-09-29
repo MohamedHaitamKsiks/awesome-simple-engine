@@ -18,6 +18,10 @@ namespace ASEngine
     class EntityBuilder
     {
         public:
+            EntityBuilder() {};
+            EntityBuilder(const EntityBuilder& builder);
+    
+            ~EntityBuilder();
             // is entity going to be kept when changing scene
             bool Persistent = false;
 
@@ -39,7 +43,7 @@ namespace ASEngine
 
         private:
             TDynamicArray<UniqueString> m_ComponentNames{};
-            TDynamicArray<std::shared_ptr<Component>> m_Components{};
+            TDynamicArray<Component*> m_Components{};
 
             // make world friend class
             friend class World;

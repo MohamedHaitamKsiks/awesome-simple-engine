@@ -20,6 +20,9 @@ namespace ASEngine
 
         // only to initialize some internal values. Avoid using it like unity's monobehaviour
         virtual void OnCreate() {};
+
+        // used to manage internal values at destruction. Avoid using it like unity's monobehaviour
+        virtual void OnDestroy() {};
     };
 
     // component

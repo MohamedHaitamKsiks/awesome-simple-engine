@@ -54,10 +54,12 @@ namespace ASEngine
             {
                 UniqueString componentName = UniqueString(component.key());
 
-                std::unique_ptr<Component> componentValue(ComponentManager::MakeComponent(componentName, nullptr));
-                ComponentManager::Deserialize(componentName, component.value(), componentValue.get());
+                Component* componentValue = ComponentManager::MakeComponent(componentName, nullptr);
+                ComponentManager::Deserialize(componentName, component.value(), componentValue);
 
-                builder.AddComponent(componentName, componentValue.get());
+                builder.AddComponent(componentName, componentValue);
+
+                ComponentManager::DeleteComponent(componentName, componentValue);
             }
 
             dest.AddEntityBuilder(builder);
