@@ -4,7 +4,11 @@ namespace ASEngine
 {   
     Audio::~Audio()
     {
-        delete m_Data;
+        if (m_Data)
+        {
+            delete[] m_Data;
+            m_Data = nullptr;
+        }
     }
 
     bool Audio::Load(const std::string& audioPath)

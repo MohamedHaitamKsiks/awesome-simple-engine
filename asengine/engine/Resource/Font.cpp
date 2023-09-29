@@ -9,7 +9,10 @@ namespace ASEngine {
             return;
 
         if (m_Texture != TEXTURE_NULL)
+        {
             m_Texture.Destroy();
+            m_Texture = TEXTURE_NULL;    
+        }
     }
 
     bool Font::Load(const std::string &fontPath, int size, int separation, int lineSeparation, int spaceSize)
