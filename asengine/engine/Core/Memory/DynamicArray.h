@@ -26,14 +26,14 @@ namespace ASEngine
             // get ptr at
             virtual void* PtrAt(size_t index) = 0;
 
-            // clear 
+            // clear
             virtual void Clear() = 0;
 
             // get size
-            virtual size_t GetSize() = 0;
+            virtual size_t GetSize() const { return 0; };
 
             // get capacity
-            virtual size_t GetCapacity() = 0;
+            virtual size_t GetCapacity() const { return 0; };
     };
 
     // dynamic array grow at need and memory safe, it's based on std vector
@@ -47,6 +47,11 @@ namespace ASEngine
             TDynamicArray(size_t capacity)
             {
                 Reserve(capacity);
+            }
+
+            TDynamicArray(const TDynamicArray<T>& array)
+            {
+                m_Data = array.m_Data;
             }
 
             // get data
@@ -84,37 +89,43 @@ namespace ASEngine
             }
 
             // reserve space for dynamic array
-            inline void Reserve(size_t size)
+            void Reserve(size_t size)
             {
                 m_Data.reserve(size);
             }
 
             // remove index
-            inline void Remove(size_t index)
+            void Remove(size_t index)
             {
                 m_Data.erase(m_Data.cbegin() + index);
             }
 
             // clear
-            inline void Clear()
+            void Clear()
             {
                 m_Data.clear();
             };
 
             // get size
-            size_t GetSize()
+            size_t GetSize() const
             {
                 return m_Data.size();
             }
 
             // get capacity
-            size_t GetCapacity()
+            size_t GetCapacity() const
             {
                 return m_Data.capacity();
             }
 
             // get value at
             inline T& operator[](size_t index)
+            {
+                return m_Data[index];
+            };
+
+            // get const value at
+            inline const T &operator[](size_t index) const
             {
                 return m_Data[index];
             };
@@ -148,6 +159,7 @@ namespace ASEngine
                     return m_Array->m_Data[m_Index];
                 };
 
+
                 inline bool operator==(const DynamicArrayIterator &it) const
                 {
                     return m_Index == it.m_Index;
@@ -175,7 +187,7 @@ namespace ASEngine
             };
 
         private:
-            std::vector<T> m_Data;
+            std::vector<T> m_Data{};
 
     };
 } // namespace ASEngine

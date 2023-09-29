@@ -11,6 +11,9 @@ namespace ASEngine
 
     World::~World()
     {
+        DestroyAll();
+        CleanDestroyQueue();
+
         ComponentManager::Terminate();
         SystemManager::Terminate();
         ArchetypeManager::Terminate();
@@ -35,7 +38,7 @@ namespace ASEngine
             auto componentValue = builder.m_Components[i];
 
             auto* component = archetype->GetComponent(componentName, index);
-            ComponentManager::CopyComponent(componentName, component, componentValue.get());
+            ComponentManager::CopyComponent(componentName, component, componentValue);
             component->OnCreate();
         }
 

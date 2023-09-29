@@ -27,9 +27,9 @@ namespace ASEngine {
 
 	Application::~Application()
 	{
+		TerminateResourceManagers();
 		World::Terminate();
 		UniqueStringManager::Terminate();
-		TerminateResourceManagers();
 		Renderer2D::Terminate();
 		Viewport::Terminate();
 		AudioEngine::Terminate();

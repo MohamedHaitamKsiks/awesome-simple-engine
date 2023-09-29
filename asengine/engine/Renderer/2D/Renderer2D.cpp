@@ -25,7 +25,11 @@ namespace ASEngine
         m_ViewParamName = UniqueString("u_View");
 
         // connect to on window change signal
-        m_ResizeSignalConnection = Window::ResizeSignal().Connect(std::bind(&Renderer2D::OnWindowChangeSize, this, std::placeholders::_1, std::placeholders::_2));
+        std::function<void(int, int)> callback = [this](int width, int height)
+        {
+            OnWindowChangeSize(width, height);
+        }; 
+        m_ResizeSignalConnection = Window::ResizeSignal().Connect(callback);
     }
 
     Renderer2D::~Renderer2D()

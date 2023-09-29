@@ -29,6 +29,7 @@ namespace ASEngine
         Json (*Serialize)(const Component*);
         void (*Deserialize)(const Json&, Component*);
         Component* (*MakeComponent)(const Component*);
+        void (*DeleteComponent) (Component*);
         void (*CopyComponent)(Component*, const Component*);
     };
 
@@ -104,6 +105,22 @@ namespace ASEngine
             return GetSingleton()->m_Components[componentName].MakeComponent(value);
         }
 
+        // destroy component
+        template <typename T>
+        static void DeleteComponent(Component *value)
+        {
+            // check if component is of component type
+            static_assert(std::is_base_of_v<TComponent<T>, T>);
+            T* castedComponent = (T*) value;
+            delete castedComponent;
+        }
+
+        // destroy component by name
+        static inline void DeleteComponent(UniqueString componentName, Component *value)
+        {
+            GetSingleton()->m_Components[componentName].DeleteComponent(value);
+        }
+
         // copy component from one to another
         template <typename T>
         static void CopyComponent(Component* dest, const Component* src)
@@ -177,6 +194,7 @@ namespace ASEngine
                 info.Deserialize = ComponentManager::Deserialize<T>;
                 info.Serialize = ComponentManager::Serialize<T>;
                 info.MakeComponent = ComponentManager::MakeComponent<T>;
+                info.DeleteComponent = ComponentManager::DeleteComponent<T>;
                 info.CopyComponent = ComponentManager::CopyComponent<T>;
 
                 m_Components[componentName] = info;

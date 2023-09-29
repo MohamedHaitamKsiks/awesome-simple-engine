@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <vector>
+#include <functional>
 
 #include "Core/Singleton/Singleton.h"
 #include "Core/Math/mat3.h"

@@ -37,6 +37,10 @@ namespace ASEngine
         for (auto pair : m_ComponentCollections)
         {
             std::shared_ptr<BaseComponentCollection> collection = pair.second;
+            
+            Component* component = (Component*) collection->PtrAt(index);
+            component->OnDestroy();
+
             collection->Remove(index);
         }
         m_Entities.Remove(index);
