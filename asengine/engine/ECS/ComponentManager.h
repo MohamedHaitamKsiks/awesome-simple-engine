@@ -10,6 +10,7 @@
 #include "Core/Singleton/Singleton.h"
 
 #include "Component.h"
+#include "Signature.h"
 
 
 namespace ASEngine
@@ -23,7 +24,6 @@ namespace ASEngine
     struct ComponentInfo
     {
         UniqueString Name;
-        uint32_t Signature;
         size_t Size = 0;
         std::shared_ptr<BaseComponentCollection> (*CreateComponentCollection)();
         Json (*Serialize)(const Component*);
@@ -138,28 +138,25 @@ namespace ASEngine
             GetSingleton()->m_Components[componentName].CopyComponent(dest, src);
         }
 
-        // get signature of a composition of components
-        template <typename T, typename... types>
-        static uint32_t GetSignature();
-
-        // get signature of a component
-        inline static uint32_t GetSignature(UniqueString componentName) { return GetSingleton()->m_Components[componentName].Signature; }
-
-        // get signature of a list of component names
-        static uint32_t GetSignature(TDynamicArray<UniqueString>& componentNames);
-
         // get size of a component
         inline static size_t GetSize(UniqueString componentName) { return GetSingleton()->m_Components[componentName].Size; }
+
+        // get signature
+        template<typename T, typename... types>
+        static void GetSignature(Signature& signature)
+        {
+            static_assert(std::is_base_of_v<TComponent<T>, T>);
+            signature.emplace(T::s_Name);
+
+            if constexpr (sizeof...(types) > 0)
+            {
+                GetSignature<types...>(signature);
+            }
+        }
 
     private:
         template <typename T>
         void IRegisterComponent(UniqueString componentName);
-
-        // is valid signature <===> is prime
-        bool IsValidSignature(uint32_t signature);
-
-        // last component signature
-        uint32_t m_LastComponentSignature = 1;
 
         // component infos
         std::unordered_map<UniqueString, ComponentInfo> m_Components;
@@ -175,53 +172,24 @@ namespace ASEngine
         // check if component is of component type
         static_assert(std::is_base_of_v<TComponent<T>, T>);
 
-        // create signature
-        int currentNumber = m_LastComponentSignature + 1;
-        for (uint32_t i = m_LastComponentSignature + 1; i < UINT32_MAX; i++)
-        {
-            if (IsValidSignature(i))
-            {
-                // register component
-                TComponent<T>::s_Signature = i;
-                TComponent<T>::s_Name = componentName;
+        // register component
+        TComponent<T>::s_Name = componentName;
 
-                // add component info
-                ComponentInfo info;
-                info.Name = componentName;
-                info.Signature = i;
-                info.Size = sizeof(T);
-                info.CreateComponentCollection = ComponentManager::CreateComponentCollection<T>;
-                info.Deserialize = ComponentManager::Deserialize<T>;
-                info.Serialize = ComponentManager::Serialize<T>;
-                info.MakeComponent = ComponentManager::MakeComponent<T>;
-                info.DeleteComponent = ComponentManager::DeleteComponent<T>;
-                info.CopyComponent = ComponentManager::CopyComponent<T>;
+        // add component info
+        ComponentInfo info;
+        info.Name = componentName;
+        info.Size = sizeof(T);
+        info.CreateComponentCollection = ComponentManager::CreateComponentCollection<T>;
+        info.Deserialize = ComponentManager::Deserialize<T>;
+        info.Serialize = ComponentManager::Serialize<T>;
+        info.MakeComponent = ComponentManager::MakeComponent<T>;
+        info.DeleteComponent = ComponentManager::DeleteComponent<T>;
+        info.CopyComponent = ComponentManager::CopyComponent<T>;
 
-                m_Components[componentName] = info;
+        m_Components[componentName] = info;
 
-                // update last component signature
-                m_LastComponentSignature = i;
-                return;
-            }
-        }
     };
 
-    // get signature implementation
-    template <typename T, typename... types>
-    uint32_t ComponentManager::GetSignature()
-    {
-        // check if component is of component type
-        static_assert(std::is_base_of_v<TComponent<T>, T>);
-
-        // compute signature
-        uint32_t signature = GetSignature(TComponent<T>::s_Name);
-        if constexpr (sizeof...(types) > 0)
-        {
-            signature *= GetSignature<types...>();
-        }
-
-        return signature;
-    };
 
 } // namespace ASEngine
 

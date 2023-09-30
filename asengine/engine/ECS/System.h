@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <functional>
+#include <set>
 #include <vector>
 #include <tuple>
 
@@ -12,6 +13,7 @@
 #include "Archetype.h"
 #include "Component.h"
 #include "ComponentManager.h"
+#include "Signature.h"
 
 namespace ASEngine
 {
@@ -27,7 +29,7 @@ namespace ASEngine
         };
 
         // get signature
-        inline uint32_t GetSignature() const
+        inline const Signature& GetSignature() const
         {
             return m_Signature;
         };
@@ -56,7 +58,7 @@ namespace ASEngine
 
     protected:
         // system signature with it's component requirements
-        uint32_t m_Signature = 1;
+        Signature m_Signature{};
 
         // system priority
         int m_Priority = 0;
@@ -74,7 +76,7 @@ namespace ASEngine
         // constructor
         System() 
         {
-            m_Signature = ComponentManager::GetSignature<T, types...>();
+            ComponentManager::GetSignature<T, types...>(m_Signature);
         };
 
         // foreach entiy with signature of system

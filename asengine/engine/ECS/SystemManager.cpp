@@ -4,13 +4,13 @@ namespace ASEngine
 {
     void SystemManager::IRegisterArchetype(std::shared_ptr<Archetype> archetype)
     {
-        uint32_t archetypeSignature = archetype->GetSignature();
+        const auto& archetypeSignature = archetype->GetSignature();
 
         for (auto system: m_Systems)
         {
-            uint32_t systemSignature = system->GetSignature();
+            const auto& systemSignature = system->GetSignature();
             //check if system signature is a part of archetype signature
-            if (archetypeSignature % systemSignature == 0)
+            if (std::includes(archetypeSignature.begin(), archetypeSignature.end(), systemSignature.begin(), systemSignature.end()) )
             {
                 // add archetype to the system
                 system->AddArchetype(archetype);

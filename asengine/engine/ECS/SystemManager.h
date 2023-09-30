@@ -2,6 +2,7 @@
 #define ASENGINE_SYSTEM_MANAGER_H
 
 #include <memory>
+#include <set>
 #include <vector>
 
 #include "Core/InputSystem/InputEvent.h"

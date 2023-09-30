@@ -3,11 +3,13 @@
 
 #include <unordered_map>
 #include <memory>
+#include <set>
 
 #include "Core/Memory/DynamicArray.h"
 #include "Core/Singleton/Singleton.h"
 
 #include "Archetype.h"
+#include "Signature.h"
 
 #include "System.h"
 #include "SystemManager.h"
@@ -22,7 +24,7 @@ namespace ASEngine
         static inline std::shared_ptr<Archetype> GetArchetype() { return GetSingleton()->IGetArchetype<T, types...>(); }
 
         // get archetype by list of component names
-        static inline std::shared_ptr<Archetype> GetArchetype(TDynamicArray<UniqueString>& componentNames) { return GetSingleton()->IGetArchetype(componentNames); }
+        static inline std::shared_ptr<Archetype> GetArchetype(const Signature& signature) { return GetSingleton()->IGetArchetype(signature); }
         
 
     private:
@@ -31,20 +33,20 @@ namespace ASEngine
         std::shared_ptr<Archetype> IGetArchetype();
 
         // get archetype by list of component names internal
-        std::shared_ptr<Archetype> IGetArchetype(TDynamicArray<UniqueString>& componentNames);
+        std::shared_ptr<Archetype> IGetArchetype(const Signature& signature);
 
         // create archetype
         template <typename T, typename... types>
         void CreateArchetype();
 
         // create archetype based on list of component names
-        void CreateArchetype(TDynamicArray<UniqueString> &componentNames);
+        void CreateArchetype(const Signature& signature);
 
         // has signature
-        bool HasArchetype(uint32_t signature) const;
+        bool HasArchetype(const Signature& signature) const;
 
         // map signature to corresponding archetype
-        std::unordered_map<uint32_t, std::shared_ptr<Archetype>> m_Archetypes = {};
+        std::unordered_map<Signature, std::shared_ptr<Archetype>> m_Archetypes = {};
     };
 
     // implemetations
@@ -52,28 +54,18 @@ namespace ASEngine
     template <typename T, typename... types>
     std::shared_ptr<Archetype> ArchetypeManager::IGetArchetype()
     {
-        uint32_t signature = ComponentManager::GetSignature<T, types...>();
-        // is archetype doesn't exist create it
-        if (!HasArchetype(signature))
-        {
-            CreateArchetype<T, types...>();
-        }
-
-        return m_Archetypes[signature];
+        Signature signature{};
+        ComponentManager::GetSignature<T, types...>(signature);
+        return IGetArchetype(signature);
     }
 
     // create archetype implementation
     template <typename T, typename... types>
     void ArchetypeManager::CreateArchetype()
     {
-        uint32_t signature = ComponentManager::GetSignature<T, types...>();
-        std::shared_ptr<Archetype> archetype = std::make_shared<Archetype>();
-
-        archetype->AddComponents<T, types...>();
-        m_Archetypes[signature] = archetype;
-        
-        SystemManager::RegisterArchetype(archetype);
-
+        Signature signature{};
+        ComponentManager::GetSignature<T, types...>(signature);
+        CreateArchetype(signature);
     }
 
 } // namespace ASEngine

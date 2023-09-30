@@ -22,6 +22,8 @@
 #include "System.h"
 #include "SystemManager.h"
 
+#include "Signature.h"
+
 namespace ASEngine
 {
     // context of ecs: the world where all the entities exists
