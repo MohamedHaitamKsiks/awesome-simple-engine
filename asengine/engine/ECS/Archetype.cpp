@@ -5,10 +5,9 @@ namespace ASEngine
 
     void Archetype::AddComponent(UniqueString componentName)
     {
-        uint32_t componentSignature = ComponentManager::GetSignature(componentName);
-        if (m_Signature % componentSignature != 0)
+        if (m_Signature.count(componentName) == 0)
         {
-            m_Signature *= componentSignature;
+            m_Signature.emplace(componentName);
             m_ComponentCollections[componentName] = ComponentManager::CreateComponentCollection(componentName);
         }
 

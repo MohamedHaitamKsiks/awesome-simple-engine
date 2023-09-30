@@ -27,6 +27,11 @@ namespace ASEngine
         UniqueString() {};
 
         // compare strings
+        friend inline bool operator<(const UniqueString &uStrLeft, const UniqueString &uStrRight)
+        {
+            return uStrLeft.m_Id < uStrRight.m_Id;
+        };
+
         friend inline bool operator==(const UniqueString& uStrLeft, const UniqueString& uStrRight)
         {
             return uStrLeft.m_Id == uStrRight.m_Id;

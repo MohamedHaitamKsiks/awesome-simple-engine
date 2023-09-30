@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <set>
 #include <algorithm>
 #include <memory>
 
@@ -10,11 +11,11 @@
 #include "Core/String/UniqueString.h"
 
 #include "Component.h"
+#include "Signature.h"
 #include "ComponentManager.h"
 
 namespace ASEngine
 {
-
 
     // component index in the collection
     using ComponentIndex = uint32_t;
@@ -36,7 +37,7 @@ namespace ASEngine
 
 
         // get signature
-        inline uint32_t GetSignature() const
+        inline const Signature& GetSignature() const
         {
             return m_Signature;
         }
@@ -56,7 +57,7 @@ namespace ASEngine
 
     private:
         // signature with all components that compose the archetype
-        uint32_t m_Signature = 1;
+        Signature m_Signature{};
 
         // component collections
         std::unordered_map<UniqueString, std::shared_ptr<BaseComponentCollection>> m_ComponentCollections = {};

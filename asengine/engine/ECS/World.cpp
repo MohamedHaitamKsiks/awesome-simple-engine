@@ -22,7 +22,12 @@ namespace ASEngine
     Entity World::ICreate(EntityBuilder &builder)
     {
         // archetype owner
-        auto archetype = ArchetypeManager::GetArchetype(builder.m_ComponentNames);
+        Signature signature{};
+        for (auto componentName: builder.m_ComponentNames)
+        {
+            signature.emplace(componentName);
+        }
+        auto archetype = ArchetypeManager::GetArchetype(signature);
         
         EntityData data;
         data.ArchetypeOwner = archetype.get();
