@@ -41,7 +41,8 @@ namespace ASEngine
         uint16_t m_IndexArray[VBO_2D_MAX_QUADS * QUAD_2D_INDICES_COUNT];
 
         // vertex array
-        Vertex2DArray m_VertexArray{VBO_2D_MAX_QUADS * QUAD_2D_VERTICES_COUNT};
+        Vertex2D m_VertexArray[VBO_2D_MAX_QUADS * QUAD_2D_VERTICES_COUNT];
+        size_t m_VertexArraySize = 0;
 
         // buffers
         uint32_t m_VertexBuffer;
