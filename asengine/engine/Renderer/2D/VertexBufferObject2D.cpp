@@ -35,8 +35,8 @@ namespace ASEngine
 
     void VertexBufferObject2D::PushQuad(const Quad2D &quad2D)
     {
-        // check if there is still place 
-        if (m_VertexArray.GetSize() + 4 > m_VertexArray.GetCapacity())
+        // check if there is still place
+        if (m_VertexArraySize + 4 > VBO_2D_MAX_QUADS * QUAD_2D_VERTICES_COUNT)
         {
             Submit();
         }
@@ -44,7 +44,8 @@ namespace ASEngine
         // push vertices
         for (auto vertex: quad2D.Vertices)
         {
-            m_VertexArray.Push(vertex);
+            m_VertexArray[m_VertexArraySize] = vertex;
+            m_VertexArraySize++;
         }
     }
 
@@ -52,13 +53,12 @@ namespace ASEngine
 
     void VertexBufferObject2D::Submit()
     {
-        if (m_VertexArray.GetSize() == 0)
+        if (m_VertexArraySize == 0)
             return;
 
-        glBufferSubData(GL_ARRAY_BUFFER, 0, m_VertexArray.GetSize() * sizeof(Vertex2D), m_VertexArray.GetData());
-        glDrawElements(GL_TRIANGLES, m_VertexArray.GetSize() * QUAD_2D_INDICES_COUNT / QUAD_2D_VERTICES_COUNT, GL_UNSIGNED_SHORT, nullptr);
-        m_VertexArray.Clear();
-
+        glBufferSubData(GL_ARRAY_BUFFER, 0, m_VertexArraySize * sizeof(Vertex2D), m_VertexArray);
+        glDrawElements(GL_TRIANGLES, m_VertexArraySize * QUAD_2D_INDICES_COUNT / QUAD_2D_VERTICES_COUNT, GL_UNSIGNED_SHORT, nullptr);
+        m_VertexArraySize = 0;
     }
 
 } // namespace ASEngine
