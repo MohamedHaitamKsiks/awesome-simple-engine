@@ -45,6 +45,9 @@ namespace ASEngine
             // begin rendering context
             static inline void Begin() { GetSingleton()->IBegin(); };
 
+            // begin UI rendering context (ignore camera)
+            static inline void BeginUI() { GetSingleton()->IBeginUI(); };
+
             // end rendering context
             static inline void End() { GetSingleton()->IEnd(); };
         private:
@@ -75,6 +78,9 @@ namespace ASEngine
 
             // begin rendering context internal
             void IBegin();
+
+            // begin UI rendering context (ignore camera) internal
+            void IBeginUI(); 
 
             // end renderering context internal
             void IEnd();

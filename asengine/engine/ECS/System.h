@@ -53,6 +53,9 @@ namespace ASEngine
         // on render
         virtual void OnRender2D() {};
 
+        // on render ui
+        virtual void OnUIRender2D() {};
+
         // on input event
         virtual void OnInputEvent(const InputEvent& event) {};
 
