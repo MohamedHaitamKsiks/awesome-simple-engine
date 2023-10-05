@@ -43,6 +43,14 @@ namespace ASEngine
         }
     }
 
+    void SystemManager::IUIRender2D()
+    {
+        for (auto system : m_Systems)
+        {
+            system->OnUIRender2D();
+        }
+    }
+
     void SystemManager::IProcessInputEvent(const InputEvent &event)
     {
         for (auto system : m_Systems)

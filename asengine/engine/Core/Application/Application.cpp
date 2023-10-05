@@ -80,7 +80,11 @@ namespace ASEngine {
 		Renderer2D::Begin();
 		World::Render2D();
 		Renderer2D::End(); 
-	
+
+		// render ui
+		Renderer2D::BeginUI();
+		World::UIRender2D();
+		Renderer2D::End();
 	}
 
 

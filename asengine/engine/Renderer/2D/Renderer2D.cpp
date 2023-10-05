@@ -83,6 +83,16 @@ namespace ASEngine
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
+    void Renderer2D::IBeginUI()
+    {
+        // cache projection matrices
+        m_ViewProjectionMatrix = Viewport::GetProjectionMatrix();
+        m_CameraProjectionMatrix = mat3::IDENTITY();
+        // set materials and shaders to null
+        m_CurrentShaderID = CHUNK_NULL;
+        m_CurrentMaterialID = CHUNK_NULL;
+    }
+
     void Renderer2D::IEnd()
     {
         // submit last batch

@@ -30,6 +30,9 @@ namespace ASEngine
         // render all system
         static void inline Render2D() { GetSingleton()->IRender2D(); };
 
+        // render all system ui
+        static void inline UIRender2D() { GetSingleton()->IUIRender2D(); };
+
         // process input for all system
         static void inline ProcessInputEvent(const InputEvent &event) { GetSingleton()->IProcessInputEvent(event); };
 
@@ -43,6 +46,7 @@ namespace ASEngine
         void ICreate();
         void IUpdate(float delta);
         void IRender2D();
+        void IUIRender2D();
         void IProcessInputEvent(const InputEvent& event);
     };
 

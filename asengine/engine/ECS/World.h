@@ -48,6 +48,12 @@ namespace ASEngine
             SystemManager::Render2D();
         }
 
+        // renderer the ui
+        static inline void UIRender2D()
+        {
+            SystemManager::UIRender2D();
+        }
+
         // update the world
         static inline void Update(float delta)
         {
