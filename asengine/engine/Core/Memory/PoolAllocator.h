@@ -10,6 +10,7 @@
 #include <cassert>
 
 #include "DynamicArray.h"
+#include "Core/Log/Log.h"
 
 namespace ASEngine {
 
@@ -21,14 +22,12 @@ namespace ASEngine {
     class PoolAllocator
     {
     public:
-        PoolAllocator(size_t capacity); 
 
         // allocate chunk in pool allcoator
-        ChunkID Alloc();
-
+        virtual ChunkID Alloc() = 0;
 
         // free chunk 
-        void Free(ChunkID chunkID);
+        virtual void Free(ChunkID chunkID) = 0;
 
         // get pool usage
         inline size_t GetSize()  const 
@@ -36,9 +35,15 @@ namespace ASEngine {
             return m_Size;
         };
 
+        // get pool capacityt
+        inline size_t GetCapacity() const
+        {
+            return m_Capacity;
+        };
 
-    private:
+    protected:
         size_t m_Size = 0;
+        size_t m_Capacity = 0;
 
         // pool list of free chunks
         TDynamicArray<ChunkID> m_FreeChunkStack{};
@@ -60,9 +65,19 @@ namespace ASEngine {
             bool Used = false;
         };
 
-        TPoolAllocator(size_t capacity) : PoolAllocator(capacity)
+        TPoolAllocator() {};
+
+        TPoolAllocator(size_t capacity)
         {
-            m_Data.Reserve(capacity);
+            m_Capacity = capacity;
+            
+            for (size_t i = 0; i < capacity; i++)
+            {
+                m_FreeChunkStack.Push((ChunkID)capacity - 1 - i);
+
+                m_Data.Add();
+                m_Data[i].Used = false;
+            }
         }
 
         ~TPoolAllocator()
@@ -72,23 +87,27 @@ namespace ASEngine {
         // check if chunkid is free
         inline bool IsFree(ChunkID chunkID)
         {
-            return chunkID >= GetSize() || !m_Data[chunkID].Used;
+            return chunkID >= GetCapacity() || !m_Data[chunkID].Used;
         };
 
-        // get capacity
-        inline size_t GetCapacity()
-        {
-            return m_Data.GetCapacity();
-        };
 
         // allocate chunk and return the address
         ChunkID Alloc()
         {
-            ChunkID allocatedChunkID = PoolAllocator::Alloc();
-            if (allocatedChunkID == GetSize() - 1)
+            ChunkID allocatedChunkID;
+            if (m_FreeChunkStack.GetSize() > 0)
+            {
+                // pop free value
+                allocatedChunkID = m_FreeChunkStack.Pop();
+            }
+            else
             {
                 m_Data.Add();
+                allocatedChunkID = m_Capacity;
+                m_Capacity++;
             }
+            
+            m_Size++;
             m_Data[allocatedChunkID].Used = true;
             return allocatedChunkID;
         }
@@ -105,16 +124,23 @@ namespace ASEngine {
         void Free(ChunkID chunkID)
         {
             assert(m_Data[chunkID].Used);
-             // call destructor to logically destroy
-             m_Data[chunkID].Data.~T();
-             m_Data[chunkID].Used = false;
+            // call destructor to logically destroy
+            m_Data[chunkID].Data.~T();
+            m_Data[chunkID].Used = false;
 
-             // free chunk
-             PoolAllocator::Free(chunkID);
+            // free chunk
+            m_Size--;
+            m_FreeChunkStack.Push(chunkID);
         }
 
         // get data at 
         inline T& Get(ChunkID chunkID)
+        {
+            return m_Data[chunkID].Data;
+        };
+
+        // get data at
+        inline const T &Get(ChunkID chunkID) const
         {
             return m_Data[chunkID].Data;
         };
