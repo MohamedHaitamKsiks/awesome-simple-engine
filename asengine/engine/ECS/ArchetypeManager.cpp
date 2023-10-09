@@ -2,8 +2,17 @@
 
 namespace ASEngine
 {
+    ArchetypeManager::~ArchetypeManager()
+    {
+        // destroy all archetypes
+        for (auto& pair: m_Archetypes)
+        {
+            Archetype* archetype = pair.second;
+            delete archetype;
+        }
+    }
 
-    std::shared_ptr<Archetype> ArchetypeManager::IGetArchetype(const Signature& signature)
+    Archetype* ArchetypeManager::IGetArchetype(const Signature& signature)
     {
         // is archetype doesn't exist create it
         if (!HasArchetype(signature))
@@ -15,15 +24,13 @@ namespace ASEngine
 
     void ArchetypeManager::CreateArchetype(const Signature& signature)
     {
-        std::shared_ptr<Archetype> archetype = std::make_shared<Archetype>();
+        Archetype* archetype = new Archetype();
 
         for (auto& name: signature)
         {
             archetype->AddComponent(name);
         }
         m_Archetypes[signature] = archetype;
-
-        SystemManager::RegisterArchetype(archetype);
     }
 
     bool ArchetypeManager::HasArchetype(const Signature& signature) const

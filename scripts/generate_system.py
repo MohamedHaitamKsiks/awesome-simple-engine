@@ -17,12 +17,13 @@ def generate_system_header_code(name: str):
 
     #generate system class
     structName = name
-    codeLines.append(f"class {structName}: public System<>")
+    codeLines.append(f"class {structName}: public ISystem")
     codeLines.append("{\n")
 
     codeLines.append("\tvoid OnCreate();")
     codeLines.append("\tvoid OnUpdate(float delta);")
     codeLines.append("\tvoid OnRender2D();")
+    codeLines.append("\tvoid OnUIRender2D();")
     codeLines.append("\tvoid OnInputEvent(const InputEvent& event);")
 
     codeLines.append("\n};")
@@ -42,6 +43,9 @@ def generate_system_source_code(name: str):
     codeLines.append("{\n\t// insert code ...\n};\n")
 
     codeLines.append(f"void {name}::OnRender2D()")
+    codeLines.append("{\n\t// insert code ...\n};\n")
+
+    codeLines.append(f"void {name}::OnUIRender2D()")
     codeLines.append("{\n\t// insert code ...\n};\n")
 
     codeLines.append(f"void {name}::OnInputEvent(const InputEvent& event)")

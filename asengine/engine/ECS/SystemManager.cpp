@@ -2,20 +2,11 @@
 
 namespace ASEngine
 {
-    void SystemManager::IRegisterArchetype(std::shared_ptr<Archetype> archetype)
+    SystemManager::~SystemManager()
     {
-        const auto& archetypeSignature = archetype->GetSignature();
-
         for (auto system: m_Systems)
         {
-            const auto& systemSignature = system->GetSignature();
-            //check if system signature is a part of archetype signature
-            if (std::includes(archetypeSignature.begin(), archetypeSignature.end(), systemSignature.begin(), systemSignature.end()) )
-            {
-                // add archetype to the system
-                system->AddArchetype(archetype);
-            }
-            
+            delete system;
         }
     }
 
