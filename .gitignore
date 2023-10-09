@@ -2,7 +2,7 @@
 .vscode/
 run.sh
 demos/
-cozy-autumn-project/
+demo/
 project-template/assets/scenes/main.scene.json
 project-template/**/*.wav
 project-template/**/*.png

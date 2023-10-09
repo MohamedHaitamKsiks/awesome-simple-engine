@@ -27,10 +27,10 @@ namespace ASEngine
         {
             signature.emplace(componentName);
         }
-        auto archetype = ArchetypeManager::GetArchetype(signature);
+        auto* archetype = ArchetypeManager::GetArchetype(signature);
         
         EntityData data;
-        data.ArchetypeOwner = archetype.get();
+        data.ArchetypeOwner = archetype;
         data.IsDestroyed = false;
         data.Persistent = builder.Persistent;
 

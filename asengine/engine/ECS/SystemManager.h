@@ -5,6 +5,7 @@
 #include <set>
 #include <vector>
 
+#include "Core/Memory/DynamicArray.h"
 #include "Core/InputSystem/InputEvent.h"
 #include "Core/Singleton/Singleton.h"
 
@@ -15,12 +16,13 @@ namespace ASEngine
     class SystemManager: public Singleton<SystemManager>
     {
     public:
+        // destructor
+        ~SystemManager();
+
         // register system to the system manager
         template <typename T>
         static void inline RegisterSystem() { GetSingleton()->IRegisterSystem<T>(); };
-        // register archetype to system manager
-        static void inline  RegisterArchetype(std::shared_ptr<Archetype> archetype) { GetSingleton()->IRegisterArchetype(archetype);};
-        
+
         // create all system
         static void inline Create() { GetSingleton()->ICreate(); }
 
@@ -37,11 +39,10 @@ namespace ASEngine
         static void inline ProcessInputEvent(const InputEvent &event) { GetSingleton()->IProcessInputEvent(event); };
 
     private:
-        std::vector<std::shared_ptr<BaseSystem>> m_Systems = {};
+        TDynamicArray<ISystem*> m_Systems = {};
 
         template <typename T>
         void IRegisterSystem();
-        void IRegisterArchetype(std::shared_ptr<Archetype> archetype);
        
         void ICreate();
         void IUpdate(float delta);
@@ -55,30 +56,31 @@ namespace ASEngine
     void SystemManager::IRegisterSystem()
     {
         // check if T is a system
-        static_assert(std::is_base_of_v<BaseSystem, T>);
+        static_assert(std::is_base_of_v<ISystem, T>);
 
         // create new system
-        std::shared_ptr<BaseSystem> system = std::make_shared<T>();
+        ISystem* system = new T();
         bool isSystemInserted = false;
 
         // insert new system and keep order
-        std::vector<std::shared_ptr<BaseSystem>> newSystems{};
+        TDynamicArray<ISystem*> newSystems{};
 
-        for (int i = 0; i < m_Systems.size(); i++)
+        for (int i = 0; i < m_Systems.GetSize(); i++)
         {
             if (!isSystemInserted && m_Systems[i]->GetPriority() > system->GetPriority())
             {
-                newSystems.push_back(system);
+                newSystems.Push(system);
                 isSystemInserted = true;
             }
-            newSystems.push_back(m_Systems[i]);
+            newSystems.Push(m_Systems[i]);
         }
         
         if (!isSystemInserted)
-            newSystems.push_back(system);
+            newSystems.Push(system);
 
         // copy new systems
         m_Systems = newSystems;
+
     };
 } // namespace ASEngine
 

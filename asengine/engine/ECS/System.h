@@ -17,8 +17,8 @@
 
 namespace ASEngine
 {
-    // base system class
-    class BaseSystem
+    // system interface
+    class ISystem
     {
     public:
 
@@ -26,22 +26,6 @@ namespace ASEngine
         inline int GetPriority() const
         {
             return m_Priority;
-        };
-
-        // get signature
-        inline const Signature& GetSignature() const
-        {
-            return m_Signature;
-        };
-
-        inline TDynamicArray<std::weak_ptr<Archetype>>& GetArchetypes()
-        {
-            return m_Archetypes;
-        };
-
-        inline void AddArchetype(std::weak_ptr<Archetype> archetype)
-        {
-            m_Archetypes.Push(archetype);
         };
 
         // on create
@@ -59,50 +43,13 @@ namespace ASEngine
         // on input event
         virtual void OnInputEvent(const InputEvent& event) {};
 
-    protected:
-        // system signature with it's component requirements
-        Signature m_Signature{};
-
+    private:
         // system priority
         int m_Priority = 0;
 
         // archetypes list
-        TDynamicArray<std::weak_ptr<Archetype>> m_Archetypes{};
+        TDynamicArray<Archetype*> m_Archetypes{};
     };
-
-
-    // system interaface
-    template <typename T, typename... types>
-    class System: public BaseSystem
-    {
-    public:
-        // constructor
-        System() 
-        {
-            ComponentManager::GetSignature<T, types...>(m_Signature);
-        };
-
-        // foreach entiy with signature of system
-        void ForEach(std::function<void(T&, types&...)> callback)
-        {
-            for (auto archetype: m_Archetypes)
-            {
-                ComponentCollection<T>& collection = archetype.lock()->template GetComponentCollection<T>();
-                std::tuple<ComponentCollection<types> &...> collections(archetype.lock()->template GetComponentCollection<types>()...);
-
-                for (ComponentIndex i = 0; i < collection.GetSize(); i++)
-                {   
-                    std::apply([callback, &collection, &i] (ComponentCollection<types> &... collections)
-                    {
-                        callback(collection[i], collections[i]...);
-                    }, collections);
-
-                }
-            }
-        };
-
-    };
-
 } // namespace ASEngine
 
 

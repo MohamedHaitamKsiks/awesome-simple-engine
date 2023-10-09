@@ -16,24 +16,38 @@
 
 namespace ASEngine
 {
-    class ArchetypeManager:public Singleton<ArchetypeManager>
+    class ArchetypeManager: public Singleton<ArchetypeManager>
     {
     public:
+        // destructor
+        ~ArchetypeManager();
+
         // get archetype 
         template <typename T, typename... types>
-        static inline std::shared_ptr<Archetype> GetArchetype() { return GetSingleton()->IGetArchetype<T, types...>(); }
+        static inline Archetype* GetArchetype() 
+        { 
+            return GetSingleton()->IGetArchetype<T, types...>(); 
+        }
 
-        // get archetype by list of component names
-        static inline std::shared_ptr<Archetype> GetArchetype(const Signature& signature) { return GetSingleton()->IGetArchetype(signature); }
+        // get archetype by signature
+        static inline Archetype* GetArchetype(const Signature& signature) 
+        { 
+            return GetSingleton()->IGetArchetype(signature); 
+        }
         
+        // get all registered archetypes
+        static inline const std::unordered_map<Signature, Archetype*>& GetArchetypes()
+        {
+            return GetSingleton()->m_Archetypes;
+        };
 
     private:
         // get archetype internal
         template <typename T, typename... types>
-        std::shared_ptr<Archetype> IGetArchetype();
+        Archetype* IGetArchetype();
 
         // get archetype by list of component names internal
-        std::shared_ptr<Archetype> IGetArchetype(const Signature& signature);
+        Archetype* IGetArchetype(const Signature& signature);
 
         // create archetype
         template <typename T, typename... types>
@@ -46,13 +60,13 @@ namespace ASEngine
         bool HasArchetype(const Signature& signature) const;
 
         // map signature to corresponding archetype
-        std::unordered_map<Signature, std::shared_ptr<Archetype>> m_Archetypes = {};
+        std::unordered_map<Signature, Archetype*> m_Archetypes = {};
     };
 
     // implemetations
     // get archetype implementation
     template <typename T, typename... types>
-    std::shared_ptr<Archetype> ArchetypeManager::IGetArchetype()
+    Archetype* ArchetypeManager::IGetArchetype()
     {
         Signature signature{};
         ComponentManager::GetSignature<T, types...>(signature);
