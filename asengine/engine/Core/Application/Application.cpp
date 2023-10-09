@@ -74,7 +74,7 @@ namespace ASEngine {
 		GetSingleton()->m_InputEventQueue.Clear();
 
 		// update here..
-		World::Update(delta);
+		World::Update(delta * GetSingleton()->TimeScale);
 
 		// render world 2d
 		Renderer2D::Begin();
