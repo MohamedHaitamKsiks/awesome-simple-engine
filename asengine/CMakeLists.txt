@@ -20,6 +20,8 @@ add_library(
     STATIC
     #serialization
     engine/Core/Serialization/Serializer.cpp
+    #time 
+    engine/Core/Time/Time.cpp
     #memory
     engine/Core/Memory/PoolAllocator.cpp
     #strings

@@ -8,6 +8,7 @@
 #include "Core/Memory/PoolAllocator.h"
 #include "Core/Memory/DynamicArray.h"
 #include "Core/Singleton/Singleton.h"
+#include "Core/Time/Time.h"
 
 #include "Entity.h"
 #include "EntityData.h"
@@ -57,14 +58,7 @@ namespace ASEngine
         // update the world
         static inline void Update(float delta)
         {
-            if (GetSingleton()->m_IsFirstFrame)
-            {
-                SystemManager::Create();
-                GetSingleton()->m_IsFirstFrame = false;
-            }
-
-            SystemManager::Update(delta);
-            GetSingleton()->CleanDestroyQueue();
+            GetSingleton()->IUpdate(delta);
         }
 
         // process input
@@ -84,18 +78,17 @@ namespace ASEngine
         TDynamicArray<Entity> m_DestroyQueue{};
         bool m_IsFirstFrame = true;
 
+        float m_FixedTimer = 0.0f;
+
         // clear destroy queue executed at the end of the frame to delete
         void CleanDestroyQueue();
 
         // internal singleton functions
 
-        // create entity
         Entity ICreate(EntityBuilder &builder);
-
-        // destroy entity
         void IDestroy(Entity entity);
-
         void IDestroyAll();
+        void IUpdate(float delta);
 
     };
 

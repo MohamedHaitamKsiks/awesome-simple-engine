@@ -34,6 +34,9 @@ namespace ASEngine
         // on update
         virtual void OnUpdate(float delta) {};
 
+        // on fixed update
+        virtual void OnFixedUpdate(float delta) {};
+
         // on render
         virtual void OnRender2D() {};
 

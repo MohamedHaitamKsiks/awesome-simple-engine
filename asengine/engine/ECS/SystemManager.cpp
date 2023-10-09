@@ -26,6 +26,14 @@ namespace ASEngine
         }
     }
 
+    void SystemManager::IFixedUpdate(float delta)
+    {
+        for (auto system : m_Systems)
+        {
+            system->OnFixedUpdate(delta);
+        }
+    }
+
     void SystemManager::IRender2D()
     {
         for (auto system : m_Systems)
