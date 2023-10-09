@@ -38,6 +38,9 @@ namespace ASEngine {
 	//application
 	class Application:public Singleton<Application> {
 	public:
+		// application time scale (controls speed of update)
+		float TimeScale = 1.0f;
+
 		// constructors
 		Application(){};
 		Application(Platform platform);
