@@ -15,6 +15,9 @@ namespace ASEngine
     // base component type
     struct Component
     {
+        // entity owner
+        Entity Owner = CHUNK_NULL;
+
         Component() = default;
         ~Component() = default;
 
