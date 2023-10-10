@@ -92,7 +92,7 @@ namespace ASEngine
         m_FixedTimer += delta;
         while (m_FixedTimer >= Time::FixedTimeStep)
         {
-            SystemManager::FixedUpdate(Time::FixedTimeStep);
+            SystemManager::FixedUpdate(Time::FixedTimeStep * Time::TimeScale);
             m_FixedTimer -= Time::FixedTimeStep;
         }
 
