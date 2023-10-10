@@ -14,5 +14,6 @@
 		"keepAspectRatio": true,
 		"fullscreen": false
 	},
+	"fixedTimeStep": 0.02,
 	"mainScene": "scenes/main.scene.json" 
 }

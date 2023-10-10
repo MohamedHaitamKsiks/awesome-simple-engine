@@ -29,6 +29,9 @@ namespace ASEngine
         // update all system
         static void inline Update(float delta) { GetSingleton()->IUpdate(delta); };
 
+        // fixed update systems
+        static void inline FixedUpdate(float delta) { GetSingleton()->IFixedUpdate(delta); };
+
         // render all system
         static void inline Render2D() { GetSingleton()->IRender2D(); };
 
@@ -46,6 +49,7 @@ namespace ASEngine
        
         void ICreate();
         void IUpdate(float delta);
+        void IFixedUpdate(float delta);
         void IRender2D();
         void IUIRender2D();
         void IProcessInputEvent(const InputEvent& event);

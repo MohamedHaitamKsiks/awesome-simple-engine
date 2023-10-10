@@ -22,6 +22,7 @@ def generate_system_header_code(name: str):
 
     codeLines.append("\tvoid OnCreate();")
     codeLines.append("\tvoid OnUpdate(float delta);")
+    codeLines.append("\tvoid OnFixedUpdate(float delta);")
     codeLines.append("\tvoid OnRender2D();")
     codeLines.append("\tvoid OnUIRender2D();")
     codeLines.append("\tvoid OnInputEvent(const InputEvent& event);")
@@ -40,6 +41,9 @@ def generate_system_source_code(name: str):
     codeLines.append("{\n\t// insert code ...\n};\n")
 
     codeLines.append(f"void {name}::OnUpdate(float delta)")
+    codeLines.append("{\n\t// insert code ...\n};\n")
+
+    codeLines.append(f"void {name}::OnFixedUpdate(float delta)")
     codeLines.append("{\n\t// insert code ...\n};\n")
 
     codeLines.append(f"void {name}::OnRender2D()")

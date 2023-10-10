@@ -80,6 +80,26 @@ namespace ASEngine
         }
     }
 
+    void World::IUpdate(float delta)
+    {
+        if (m_IsFirstFrame)
+        {
+            SystemManager::Create();
+            m_IsFirstFrame = false;
+        }
+
+        // call fixed steps
+        m_FixedTimer += delta;
+        while (m_FixedTimer >= Time::FixedTimeStep)
+        {
+            SystemManager::FixedUpdate(Time::FixedTimeStep);
+            m_FixedTimer -= Time::FixedTimeStep;
+        }
+
+        SystemManager::Update(delta * Time::TimeScale);
+        CleanDestroyQueue();
+    }
+
     void World::CleanDestroyQueue()
     {
         for (auto entity: m_DestroyQueue)
@@ -91,5 +111,6 @@ namespace ASEngine
         }
         m_DestroyQueue.Clear();
     }
+
 
 } // namespace ASEngine

@@ -3,7 +3,7 @@
 #define ASENGINE_APPLICATION_H
 
 #include "Core/Singleton/Singleton.h"
-
+#include "Core/Time/Time.h"
 #include "Core/Memory/DynamicArray.h"
 #include "Core/Window/Window.h"
 #include "Core/String/UniqueString.h"
@@ -38,8 +38,6 @@ namespace ASEngine {
 	//application
 	class Application:public Singleton<Application> {
 	public:
-		// application time scale (controls speed of update)
-		float TimeScale = 1.0f;
 
 		// constructors
 		Application(){};
@@ -70,13 +68,17 @@ namespace ASEngine {
 		};
 	
 	private:
-		void TerminateResourceManagers();
-
 		// application platform
 		Platform m_Platform = Platform::ANDROID_DEVICES;
-		
+
 		// event queue
 		TDynamicArray<InputEvent> m_InputEventQueue{};
+
+		// fixed time step
+		float m_FixedTimeStep = 0.02f;
+		float m_FixedTimer = 0.0f;
+
+		void TerminateResourceManagers();
 	};
 
 

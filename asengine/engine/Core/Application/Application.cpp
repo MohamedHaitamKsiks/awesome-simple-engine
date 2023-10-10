@@ -74,7 +74,7 @@ namespace ASEngine {
 		GetSingleton()->m_InputEventQueue.Clear();
 
 		// update here..
-		World::Update(delta * GetSingleton()->TimeScale);
+		World::Update(delta);
 
 		// render world 2d
 		Renderer2D::Begin();
@@ -118,6 +118,9 @@ namespace ASEngine {
 		bool windowIsFullscreen = projectSettings["window"]["fullscreen"];
 		if (GetSingleton()->m_Platform != Platform::ANDROID_DEVICES)
 			Window::SetFullscreen(windowIsFullscreen);
+
+		// set fixed time step
+		Time::FixedTimeStep = projectSettings["fixedTimeStep"];
 
 		// load main scene
 		UniqueString mainScenePath = UniqueString(std::string(projectSettings["mainScene"]));
