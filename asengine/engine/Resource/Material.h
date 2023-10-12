@@ -57,6 +57,8 @@ namespace ASEngine {
             CopyToUniformBuffer(&value, info.Offset, sizeof(T));
         }
 
+        const ShaderUniformInfo& GetShaderParamInfo(UniqueString param) const;
+
         // get shader
         inline ResourceID GetShaderID() const
         {
@@ -68,11 +70,21 @@ namespace ASEngine {
         // copy buffer to material's uniform buffer
         void CopyToUniformBuffer(const void *buffer, size_t offset, size_t size);
 
+        // deserialize and set
+        template<typename T>
+        void DeserializeAndSet( UniqueString param, const Json& paramValue)
+        {
+            T value;
+            Serializer<T>::Deserialize(paramValue, value);
+            SetShaderParam(param, value);
+        }
+
         // shader
         ResourceID m_ShaderID = CHUNK_NULL;
         // buffer of all uniforms values
         uint8_t* m_UniformBuffer = nullptr;
 
+        friend class Serializer<Material>;
     };
 
 } //ASEngine
