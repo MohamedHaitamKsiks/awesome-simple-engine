@@ -47,4 +47,14 @@ elif command == "generate-system":
     systemName = sys.argv[2]
     os.system(f"python3 {scriptFolder}/generate_system.py {systemName} {os.getcwd()}")
 
+elif command == "generate-module":
+    assert(argumentNumber == 3)
+    moduleName = sys.argv[2]
+    os.system(f"python3 {scriptFolder}/generate_module.py {moduleName}")
+
+elif command == "generate-resource":
+    assert(argumentNumber == 3)
+    moduleName = sys.argv[2]
+    os.system(f"python3 {scriptFolder}/generate_resource.py {moduleName}")
+
 #os.system(f"python3 {scriptFolder}/build_project.py test-project linux debug")

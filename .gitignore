@@ -1,8 +1,7 @@
 .tmp*
 .vscode/
 run.sh
-demos/
-demo/
 project-template/assets/scenes/main.scene.json
 project-template/**/*.wav
 project-template/**/*.png
+TestProject

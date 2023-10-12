@@ -15,6 +15,15 @@ Commands list:
 + generate-system <system name>:
     Generate new system.
 
++ generate-resource <resource name>:
+    Generate new resource.
+
++ generate-module <module name>:
+    Generate new module.
+
++ import-module <module name>:
+    Import Module from modules library to your project
+
 + run:
     Same as build for linux in debug.
 

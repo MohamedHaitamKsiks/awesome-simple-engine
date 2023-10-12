@@ -27,7 +27,7 @@ assert(len(sys.argv) == 4)
 projectPath = sys.argv[1]
 
 #genearte registry.cpp
-generate_registry.generate_registry(projectPath)
+#generate_registry.generate_registry(projectPath)
 
 #get platform
 platform = sys.argv[2]
@@ -82,7 +82,7 @@ else:
 shutil.copytree(f"{projectPath}/assets", assetsPath, dirs_exist_ok=True)
 
 # create import.json file
-os.chdir(assetsPath)
+"""os.chdir(assetsPath)
 fonts = glob("**/*.font.json", recursive=True)
 sprites = glob("**/*.sprite.json", recursive=True)
 shaders = glob("**/*.glsl", recursive=True)
@@ -103,7 +103,7 @@ os.chdir(workingDirectory)
 importFile = open(f"{assetsPath}/import.json", "w")
 importFile.write(json.dumps(importAll, indent=4))
 importFile.close()
-
+"""
 
 if platform == "linux":
     os.chdir(f"{workingDirectory}/{tmpFileName}/build")

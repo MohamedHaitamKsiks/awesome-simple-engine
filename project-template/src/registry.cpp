@@ -1,6 +1,6 @@
 #include "registry.h"
 
-void ECSRegistry()
+void Registry()
 {
-
+    
 }

@@ -80,14 +80,19 @@ bool DesktopApplication::Init()
     Window::TitleSignal().Connect(std::bind(&DesktopApplication::OnWindowSetTitle, this, std::placeholders::_1));
     Window::FullscreenSignal().Connect(std::bind(&DesktopApplication::OnWindowSetFullscreen, this, std::placeholders::_1));
 
-    // ecs registry
-    ECSRegistry();
-
-    // load resources
+    // init resource managers
     Application::InitResourceManagers();
 
     // load project settings
     Application::LoadProjectSettings();
+
+    // module registry
+    Registry();
+
+    // init modules
+    ModuleManager::InitResourceManagers();
+    ModuleManager::RegisterComponents();
+    ModuleManager::RegisterSystems();
 
     return true;
 }

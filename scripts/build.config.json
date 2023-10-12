@@ -17,5 +17,6 @@
         }
     },
     "asenginePath": "../asengine/build",
-    "asengineSourcePath": "../asengine"
+    "asengineSourcePath": "../asengine",
+    "modulesPath": "../modules"
 }

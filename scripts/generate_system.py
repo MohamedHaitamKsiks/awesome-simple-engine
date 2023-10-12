@@ -72,15 +72,10 @@ if __name__ == "__main__":
     headerCode = generate_system_header_code(systemName)
     sourceCode = generate_system_source_code(systemName)
 
-    #save code
-    #header
-    systemFileName = f"{systemName}.h"
-    systemFile = open(f"{projectPath}/src/systems/{systemFileName}", "w")
-    systemFile.write(headerCode)
-    systemFile.close()
+    #save header code
+    with open(f"systems/{systemName}.h", "w") as systemFile:
+        systemFile.write(headerCode)
 
-    #source
-    systemFileName = f"{systemName}.cpp"
-    systemFile = open(f"{projectPath}/src/systems/{systemFileName}", "w")
-    systemFile.write(sourceCode)
-    systemFile.close()
+    #save source code
+    with open(f"systems/{systemName}.cpp", "w") as systemFile:
+        systemFile.write(sourceCode)
