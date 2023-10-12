@@ -3,16 +3,17 @@ set(CMAKE_CXX_STANDARD 23)
 
 project(asengine-project)
 
-
-FILE(GLOB_RECURSE SRCFILES *.cpp)
-
-
 add_library(
     asengine-project
     STATIC
-    ${SRCFILES}
+    registry.cpp
 )
 
 target_link_libraries(
     asengine-project
+)
+
+set(PROJECT_LIBRARIES 
+    asengine-project
+    PARENT_SCOPE
 )

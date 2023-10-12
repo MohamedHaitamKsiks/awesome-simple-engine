@@ -21,6 +21,8 @@ namespace ASEngine {
 		AudioEngine::Init();
 		// init ecs world
 		World::Init();
+		// init module manager
+		ModuleManager::Init();
 
 		Debug::Log("Application init complete");
 	}
@@ -30,6 +32,7 @@ namespace ASEngine {
 		ResourceManager<Scene>::Terminate();
 		World::Terminate();
 		TerminateResourceManagers();
+		ModuleManager::Terminate();
 		Renderer2D::Terminate();
 		Viewport::Terminate();
 		AudioEngine::Terminate();
@@ -45,22 +48,16 @@ namespace ASEngine {
 
 	void Application::InitResourceManagers()
 	{
-		ResourceManager<Shader>::Init("Shaders");
-		ResourceManager<Material>::Init("Materials");
-		ResourceManager<Sprite>::Init("Sprites");
-		ResourceManager<Font>::Init("Fonts");
-		ResourceManager<Audio>::Init("Audios");
-		ResourceManager<Scene>::Init("Scenes");
-
-		Debug::Log("Init resource manages");
+		ResourceManager<Shader>::Init();
+		ResourceManager<Material>::Init();
+		ResourceManager<Audio>::Init();
+		ResourceManager<Scene>::Init();
 	}
 
 	void Application::TerminateResourceManagers()
 	{
 		ResourceManager<Shader>::Terminate();
 		ResourceManager<Material>::Terminate();
-		ResourceManager<Sprite>::Terminate();
-		ResourceManager<Font>::Terminate();
 		ResourceManager<Audio>::Terminate();
 	}
 

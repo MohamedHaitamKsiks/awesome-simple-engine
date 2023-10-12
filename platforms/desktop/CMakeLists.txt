@@ -24,7 +24,6 @@ add_compile_definitions(GLEW_STATIC GLEW_BUILD)
 #include the engine 
 include_directories(asengine/include/engine)
 include_directories(asengine/include/dependencies/glew)
-include_directories(asengine/include/dependencies/freetype)
 link_directories(asengine/lib)
 
 #add project
@@ -36,11 +35,13 @@ add_executable(build  main.cpp DesktopApplication.cpp )
 
 target_link_libraries(
     build
-    asengine-project
+    ${PROJECT_LIBRARIES}
     asengine
     OpenGL::GL
     glfw
 )
+
+message(">> " ${PROJECT_LIBRARIES})
 
 
 

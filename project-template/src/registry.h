@@ -1,10 +1,11 @@
-#ifndef ASENGINE_ECS_REGISTRY_H
-#define ASENGINE_ECS_REGISTRY_H
+#ifndef ASENGINE_REGISTRY_H
+#define ASENGINE_REGISTRY_H
 
 #include "ASEngine.h"
+
 using namespace ASEngine;
 
-// register ecs
-void ECSRegistry();
+// register modules
+void Registry();
 
 #endif

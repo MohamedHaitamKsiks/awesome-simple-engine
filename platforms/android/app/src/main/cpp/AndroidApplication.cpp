@@ -10,10 +10,15 @@ void AndroidApplication::init(android_app* _app) {
 	context = new AndroidEGLContext(app);
 
 	ASEngine::Application::Create(ASEngine::Platform::ANDROID_DEVICES);
-	ECSRegistry();
 
 	ASEngine::Application::InitResourceManagers();
 	ASEngine::Application::LoadProjectSettings();
+
+	Registry();
+
+	ASEngine::ModuleManager::InitResourceManagers();
+	ASEngine::ModuleManager::RegisterComponents();
+	ASEngine::ModuleManager::RegisterSystems();
 }
 
 void AndroidApplication::update(float delta) {

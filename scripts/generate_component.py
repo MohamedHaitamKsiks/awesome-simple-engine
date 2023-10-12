@@ -40,13 +40,9 @@ if __name__ == "__main__":
     code = generate_component_code(componentName)
 
     #save header code
-    componentFileName = f"{componentName}.h"
-    componentFile = open(f"{projectPath}/src/components/{componentFileName}", "w")
-    componentFile.write(code)
-    componentFile.close()
+    with open(f"components/{componentName}.h", "w") as componentFile:
+        componentFile.write(code)
 
     #save source code
-    componentFileName = f"{componentName}.cpp"
-    componentFile = open(f"{projectPath}/src/components/{componentFileName}", "w")
-    componentFile.write(f'#include "{componentName}.h"\n\nEXPORT({componentName}, /*fields...*/)')
-    componentFile.close()
+    with open(f"components/{componentName}.cpp", "w") as componentFile:
+        componentFile.write(f'#include "{componentName}.h"\n\nEXPORT({componentName}, /*fields...*/)')

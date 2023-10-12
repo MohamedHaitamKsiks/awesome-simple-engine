@@ -18,6 +18,8 @@ endif()
 add_library(
     asengine
     STATIC
+    #modules
+    engine/Module/ModuleManager.cpp
     #serialization
     engine/Core/Serialization/Serializer.cpp
     #time 
@@ -52,10 +54,8 @@ add_library(
     engine/Shape/Rectangle.cpp
     #resource
     engine/Resource/Image.cpp
-    engine/Resource/Sprite.cpp
     engine/Resource/Material.cpp
     engine/Resource/Shader.cpp
-    engine/Resource/Font.cpp
     engine/Resource/Scene.cpp
     engine/Resource/Audio.cpp
     #rendering
@@ -74,10 +74,6 @@ add_library(
     engine/Thirdparty/miniaudio.c
 )
 
-include_directories(dependencies/freetype/include)
-add_subdirectory(dependencies/freetype)
-
-
 if(NOT ANDROID)
     # add opengl
     find_package(OpenGL REQUIRED)
@@ -95,13 +91,11 @@ if(NOT ANDROID)
         asengine
         glew
         OpenGL::GL
-        freetype
     )
 
 else()
     target_link_libraries(
         asengine
-        freetype
     )
 
 endif()
