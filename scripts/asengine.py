@@ -57,4 +57,8 @@ elif command == "generate-resource":
     moduleName = sys.argv[2]
     os.system(f"python3 {scriptFolder}/generate_resource.py {moduleName}")
 
+elif command == "import-module":
+    assert(argumentNumber == 3)
+    moduleName = sys.argv[2]
+    os.system(f"python3 {scriptFolder}/import_module.py {moduleName}")
 #os.system(f"python3 {scriptFolder}/build_project.py test-project linux debug")
