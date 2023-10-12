@@ -14,10 +14,6 @@ namespace ASEngine
         }
     }
 
-    bool Material::Load(const std::string &materialPath)
-    {
-        return true;
-    }
 
     void Material::Create(ResourceID shaderID)
     {
@@ -27,6 +23,13 @@ namespace ASEngine
 
         // allocate uniform buffer
         m_UniformBuffer = new uint8_t[shader.m_UniformBufferSize];
+    }
+
+    const ShaderUniformInfo& Material::GetShaderParamInfo(UniqueString param) const
+    {
+        auto &shader = ResourceManager<Shader>::Get(m_ShaderID);
+        int paramID = shader.m_UniformNames[param];
+        return shader.m_Uniforms[paramID];
     }
 
     void Material::CopyToUniformBuffer(const void *buffer, size_t offset, size_t size)
@@ -87,6 +90,69 @@ namespace ASEngine
     void Serializer<Material>::Deserialize(const Json &object, Material &dest)
     {
         assert(object.is_object());
+        // get shader
+        std::string shaderPath = object["ShaderName"];
+        ResourceID shaderID = ResourceManager<Shader>::GetResourceId(UniqueString(shaderPath));
+
+        // create material
+        dest.Create(shaderID);
+
+        auto paramList = object["Params"];
+        for (auto& item: paramList.items())
+        {
+            auto& paramName = item.key();
+            auto& paramValue = item.value();
+
+            UniqueString param = UniqueString(std::string(paramName));
+            const auto& info = dest.GetShaderParamInfo(param);
+
+            switch (info.Type)
+            {
+            case ShaderUniformType::INT:
+                dest.DeserializeAndSet<int>(param, paramValue);
+                break;
+            case ShaderUniformType::FLOAT:
+                dest.DeserializeAndSet<float>(param, paramValue);
+                break;
+            case ShaderUniformType::VEC2:
+                dest.DeserializeAndSet<vec2>(param, paramValue);
+                break;
+            case ShaderUniformType::VEC3:
+                break;
+            case ShaderUniformType::VEC4:
+                dest.DeserializeAndSet<Color>(param, paramValue);
+                break;
+            case ShaderUniformType::MAT3:
+                break;
+            case ShaderUniformType::SAMPLER_2D:
+                // load texture and add it to material
+                std::string imagePath;
+                Serializer<std::string>::Deserialize(paramValue, imagePath);
+
+                Image image{};
+                image.Load(imagePath);
+
+                Texture texture = Texture::LoadFromImage(image);
+
+                // set texture
+                dest.SetShaderParam(param, texture);
+                break;
+            }
+        }
+    }
+
+    bool Material::Load(const std::string &materialPath)
+    {
+        File materialFile;
+        materialFile.Open(materialPath, FileOpenMode::READ);
+
+        std::string materialContent = materialFile.ReadText();
+        Json materialObject = Json::parse(materialContent);
+
+        Serializer<Material>::Deserialize(materialObject, *this);
+
+        materialFile.Close();
+        return true;
     }
 
 } // ASEngine
