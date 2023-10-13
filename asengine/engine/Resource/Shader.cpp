@@ -20,11 +20,11 @@ namespace ASEngine
         }
     }
 
-    bool Shader::Load(const std::string &shaderFile)
+    bool Shader::Load(const std::string &path)
     {
         // read file
         File file;
-        file.Open(shaderFile, FileOpenMode::READ);
+        if (!file.Open(path, FileOpenMode::READ)) return false;
         std::string shaderCode = file.ReadText();
         file.Close();
 

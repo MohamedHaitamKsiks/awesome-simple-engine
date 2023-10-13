@@ -141,17 +141,16 @@ namespace ASEngine
         }
     }
 
-    bool Material::Load(const std::string &materialPath)
+    bool Material::Load(const std::string &path)
     {
         File materialFile;
-        materialFile.Open(materialPath, FileOpenMode::READ);
-
+        if (!materialFile.Open(path, FileOpenMode::READ)) return false;
         std::string materialContent = materialFile.ReadText();
-        Json materialObject = Json::parse(materialContent);
+        materialFile.Close();
 
+        Json materialObject = Json::parse(materialContent);
         Serializer<Material>::Deserialize(materialObject, *this);
 
-        materialFile.Close();
         return true;
     }
 

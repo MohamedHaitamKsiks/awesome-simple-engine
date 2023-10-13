@@ -26,7 +26,7 @@ namespace ASEngine
         ~Shader();
 
         // load shader file
-        bool Load(const std::string& shaderFile );
+        bool Load(const std::string &path);
 
         // bind shader
         void Bind();

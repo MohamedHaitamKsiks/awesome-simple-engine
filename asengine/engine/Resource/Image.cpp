@@ -28,13 +28,13 @@ namespace ASEngine {
         m_Pixels = nullptr;
     }
 
-    bool Image::Load(const std::string& imagePath) 
+    bool Image::Load(const std::string& path) 
     {
         //read image file
         File imageFile;
-        if(!imageFile.Open(imagePath, FileOpenMode::READ)) 
+        if(!imageFile.Open(path, FileOpenMode::READ)) 
         {
-            Debug::Log("Cannot open image:", imagePath);
+            Debug::Log("Cannot open image:", path);
             return false;
         }
 

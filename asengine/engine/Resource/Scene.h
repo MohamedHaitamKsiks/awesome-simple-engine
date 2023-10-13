@@ -25,6 +25,9 @@ namespace ASEngine {
 		// load scene from list of entities
 		bool Load(TDynamicArray<EntityBuilder>& builders);
 
+		// load scene from path
+		bool Load(const std::string &path);
+
 		// add entity
 		void AddEntityBuilder(const EntityBuilder& builder);
 

@@ -11,11 +11,11 @@ namespace ASEngine
         }
     }
 
-    bool Audio::Load(const std::string& audioPath)
+    bool Audio::Load(const std::string& path)
     {
         // open file
         File audioFile;
-        audioFile.Open(audioPath, FileOpenMode::READ);
+        audioFile.Open(path, FileOpenMode::READ);
 
         // read audio data
         const size_t size = audioFile.GetSize();

@@ -22,10 +22,10 @@ namespace ASEngine {
     class ResourceManager
     {
     public:
-        ResourceManager();
+        ResourceManager(const std::string &name);
 
         // initiate resource manager
-        static void Init();
+        static void Init(const std::string& name);
 
         // get resource manager
         static inline ResourceManager<T>* GetSingleton()
@@ -71,6 +71,7 @@ namespace ASEngine {
 
         TPoolAllocator<T> m_Resources{UINT16_MAX};
         std::unordered_map<UniqueString, ResourceID> m_ResourceIds;
+        std::string m_ResourceName;
 
         // add new resource and give it a name
         ResourceID IAdd(const UniqueString& resourceName);
@@ -80,9 +81,6 @@ namespace ASEngine {
 
         // remove resource by id
         void IRemove(ResourceID resourceId);
-
-        // load all resources
-        void LoadAll(const std::string& resourceName);
     };
 
 } // ASEngine
@@ -95,16 +93,49 @@ namespace ASEngine
     ResourceManager<T> *ResourceManager<T>::s_Singleton = nullptr;
 
     template <typename T>
-    ResourceManager<T>::ResourceManager()
+    ResourceManager<T>::ResourceManager(const std::string& name)
     {
         static_assert(std::is_base_of_v<Resource, T>);
+        m_ResourceName = name;
+
+        // load all resources
+        File importFile;
+        if (!importFile.Open("import.json", FileOpenMode::READ))
+        {
+            Debug::Log("import.json IS MISSING!");
+            return;
+        }
+        Json importObject = Json::parse(importFile.ReadText());
+        importFile.Close();
+
+        // get imports
+        if (!importObject.contains(name)) return;
+
+        auto& pathList = importObject[name];
+        for (auto& path: pathList)
+        {
+            UniqueString resourceName = UniqueString(std::string(path));
+            ResourceID resourceID = IAdd(resourceName);
+
+            auto &resource = m_Resources.Get(resourceID);
+            if (!resource.Load(path)) 
+            {
+                Debug::Log("Can't find ", path);
+                IRemove(resourceID);
+                return;
+            }
+            Debug::Log(path, " Loaded.");
+        }
+
     }
 
     template <typename T>
-    void ResourceManager<T>::Init()
+    void ResourceManager<T>::Init(const std::string& name)
     {
         if (!s_Singleton)
-            s_Singleton = new ResourceManager<T>();
+        {
+            s_Singleton = new ResourceManager<T>(name);
+        }
     }
 
     template <typename T>
