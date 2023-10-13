@@ -29,7 +29,7 @@ namespace ASEngine {
         ~Material();
 
         // create material based on file
-        bool Load(const std::string& materialPath);
+        bool Load(const std::string& path);
     
         // create material based on shade
         void Create(ResourceID shaderID);

@@ -30,7 +30,7 @@ namespace ASEngine {
         ~Image();
 
         //load image
-        bool Load(const std::string& imagePath);
+        bool Load(const std::string& path);
     
         // get image pixels
         inline uint8_t* GetPixels() const { return m_Pixels; };

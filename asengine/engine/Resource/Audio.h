@@ -18,7 +18,7 @@ namespace ASEngine
         ~Audio();
 
         // load by path (.wav only now)
-        bool Load(const std::string& audioPath);
+        bool Load(const std::string& path);
 
         // get data
         inline float* GetData() const

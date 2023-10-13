@@ -48,10 +48,10 @@ namespace ASEngine {
 
 	void Application::InitResourceManagers()
 	{
-		ResourceManager<Shader>::Init();
-		ResourceManager<Material>::Init();
-		ResourceManager<Audio>::Init();
-		ResourceManager<Scene>::Init();
+		ResourceManager<Shader>::Init("Shaders");
+		ResourceManager<Material>::Init("Materials");
+		ResourceManager<Audio>::Init("Audios");
+		ResourceManager<Scene>::Init("Scenes");
 	}
 
 	void Application::TerminateResourceManagers()

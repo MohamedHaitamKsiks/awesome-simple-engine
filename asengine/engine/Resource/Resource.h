@@ -20,6 +20,8 @@ namespace ASEngine
         {
             return m_Owner;
         }
+        // load function
+        virtual bool Load(const std::string& path) { return true; };
 
     private:
         bool m_Owner = true;

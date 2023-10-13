@@ -14,6 +14,7 @@ namespace ASEngine
         return true;
     }
 
+
     void Scene::AddEntityBuilder(const EntityBuilder &builder)
     {
         m_Builders.Push(builder);
@@ -65,7 +66,22 @@ namespace ASEngine
             dest.AddEntityBuilder(builder);
 
         }
+    }
 
+    bool Scene::Load(const std::string &path)
+    {
+        // open scene file
+        File sceneFile;
+        if (!sceneFile.Open(path, FileOpenMode::READ))
+            return false;
+        auto sceneText = sceneFile.ReadText();
+        sceneFile.Close();
+
+        // deserialize scene
+        Json sceneObject = Json::parse(sceneText);
+        Serializer<Scene>::Deserialize(sceneObject, *this);
+
+        return true;
     }
 
 } // ASEngine
