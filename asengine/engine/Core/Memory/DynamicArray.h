@@ -49,6 +49,11 @@ namespace ASEngine
                 Reserve(capacity);
             }
 
+            TDynamicArray(const std::vector<T>& vector)
+            {
+                m_Data = vector;
+            }
+
             TDynamicArray(const TDynamicArray<T>& array)
             {
                 m_Data = array.m_Data;
@@ -56,6 +61,12 @@ namespace ASEngine
 
             // get data
             inline T* GetData()
+            {
+                return m_Data.data();
+            }
+
+            // get data
+            inline const T *GetData() const
             {
                 return m_Data.data();
             }

@@ -13,6 +13,7 @@
 #include "Color.h"
 
 #include "2D/Vertex2D.h"
+#include "3D/Vertex3D.h"
 
 namespace ASEngine
 {
@@ -46,19 +47,22 @@ namespace ASEngine
         static void Use(ShaderProgram program);
 
         // Bind vertex 2d for vertex buffer 2d
-        void BindVertex2D();
+        void BindVertex2D() const;
+
+        // Bind vertex 3d for vertex buffer 2d
+        void BindVertex3D() const;
 
         // get unifrom location for a fragment shader
-        ShaderUniform GetUniformLocation(const std::string& param);
+        ShaderUniform GetUniformLocation(const std::string& param) const;
 
         // get count of uniform variables
-        int GetUniformCount();
+        int GetUniformCount() const;
 
         // get shader param info by index
-        ShaderUniformInfo GetUniformInfo(int index); 
+        ShaderUniformInfo GetUniformInfo(int index) const; 
 
         // get all shader uniform infos
-        std::vector<ShaderUniformInfo> GetAllUniformInfo();
+        std::vector<ShaderUniformInfo> GetAllUniformInfo() const;
 
     private:
         // constructor 

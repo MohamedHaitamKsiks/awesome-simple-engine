@@ -24,10 +24,10 @@ namespace ASEngine
         Quad2D() {};
 
         // create normal quad
-        Quad2D(const vec2& size, mat3& transform, const Color& modulate);
+        Quad2D(const vec2& size, const mat3& transform, const Color& modulate);
 
         // create quad width frames
-        Quad2D(const vec2 &size, mat3 &transform, const Color &modulate, int hFrame, int hFrames, int vFrame, int vFrames);
+        Quad2D(const vec2 &size, const mat3 &transform, const Color &modulate, int hFrame, int hFrames, int vFrame, int vFrames);
     };
 
 } // namespace ASEngine

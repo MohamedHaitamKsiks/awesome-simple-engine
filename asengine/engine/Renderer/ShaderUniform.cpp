@@ -31,4 +31,8 @@ namespace ASEngine
     {
         glUniformMatrix3fv(m_UniformLocation, 1, GL_TRUE, (GLfloat *)value);
     }
+    void ShaderUniform::SetMat4(const float *value)
+    {
+        glUniformMatrix4fv(m_UniformLocation, 1, GL_TRUE, (GLfloat *)value);
+    }
 } // namespace ASEngine

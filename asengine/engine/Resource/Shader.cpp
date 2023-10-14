@@ -49,7 +49,6 @@ namespace ASEngine
     void Shader::Bind()
     {
         ShaderProgram::Use(m_Program);
-        m_Program.BindVertex2D();
     }
 
 } // namespace ASEngine
