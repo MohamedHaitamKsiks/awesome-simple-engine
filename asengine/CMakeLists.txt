@@ -69,7 +69,8 @@ add_library(
     #3d
     engine/Renderer/3D/Renderer3D.cpp
     engine/Renderer/3D/VertexBufferObject3D.cpp
-    #2d
+    engine/Renderer/3D/InstanceBufferObject3D.cpp
+    #2ds
     engine/Renderer/2D/Quad2D.cpp
     engine/Renderer/2D/Renderer2D.cpp
     engine/Renderer/2D/VertexBufferObject2D.cpp

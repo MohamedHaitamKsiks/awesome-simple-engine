@@ -28,6 +28,11 @@ namespace ASEngine
         glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, nullptr);
     }
 
+    void VertexBufferObject3D::DrawInstanced(size_t instanceCount)
+    {
+        glDrawElementsInstanced(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, nullptr, instanceCount);
+    }
+
     void VertexBufferObject3D::Destroy()
     {
         glDeleteBuffers(1, &m_VertexBuffer);

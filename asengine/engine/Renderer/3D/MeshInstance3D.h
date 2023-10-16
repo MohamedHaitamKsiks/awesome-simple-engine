@@ -24,7 +24,7 @@ namespace ASEngine
     {
         Mesh3D Mesh;
         ResourceID MaterialID;
-        mat4 Transform;
+        TDynamicArray<mat4> Transforms;
     };
 
 } // ASEngine

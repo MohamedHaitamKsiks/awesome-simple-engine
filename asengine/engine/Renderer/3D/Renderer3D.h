@@ -6,10 +6,13 @@
 #include "Core/Memory/PoolAllocator.h"
 
 #include "Renderer/GraphicsAPI.h"
+#include "Renderer/Viewport.h"
 
+#include "InstanceBufferObject3D.h"
 #include "VertexBufferObject3D.h"
 #include "MeshInstance3D.h"
 #include "Mesh3D.h"
+#include "Camera3D.h"
 
 namespace ASEngine
 {
@@ -18,6 +21,8 @@ namespace ASEngine
     class Renderer3D : public Singleton<Renderer3D>
     {
     public:
+        Renderer3D();
+
         // register mesh to renderer
         static inline Mesh3D RegisterMesh(const MeshInfo3D& meshInfo3D)
         {
@@ -54,12 +59,33 @@ namespace ASEngine
         {
             GetSingleton()->IDraw();
         }
+
+        // get camera 3d
+        static inline Camera3D& GetCamera3D()
+        {
+            return GetSingleton()->m_Camera3D;
+        }
     private:
+        // camera data
+        Camera3D m_Camera3D{};
+
         // registered meshes as vbos
         TPoolAllocator<VertexBufferObject3D> m_Meshes{UINT16_MAX};
         
         // mesh instances
         TPoolAllocator<MeshInstanceInfo3D> m_MeshInstances{UINT16_MAX};
+
+        // cache projection matrix
+        mat4 m_ProjectionMatrix = mat4::IDENTITY();
+
+        // cache camera transform matrix
+        mat4 m_CameraMatrix = mat4::IDENTITY();
+
+        // cache uniform names
+        UniqueString m_ProjectionParamName;
+        UniqueString m_CameraParamName;
+        UniqueString m_TransformParamName;
+
 
         // register mesh to renderer
         Mesh3D IRegisterMesh(const MeshInfo3D &meshInfo3D);
@@ -72,6 +98,9 @@ namespace ASEngine
 
         // get mesh instance info
         MeshInstanceInfo3D &IGetMeshInstanceInfo(MeshInstance3D meshInstance3D);
+        
+        // instance buffer object (data for gpu instancing)
+        InstanceBufferObject3D m_IBO3D;
 
         // destroy mesh isntance
         void IDestroyMeshInstance(MeshInstance3D meshInstance3D);

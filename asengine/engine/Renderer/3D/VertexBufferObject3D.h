@@ -23,6 +23,9 @@ namespace ASEngine
         // draw call 
         void Draw();
 
+        // draw instanced
+        void DrawInstanced(size_t instanceCount);
+
         // destroy buffer
         void Destroy();
     private:

@@ -62,6 +62,7 @@ bool DesktopApplication::Init()
 
     /* Make the window's context current */
     glfwMakeContextCurrent(m_Window);
+    glfwSwapInterval(0);
     glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, GLFW_FALSE);
 
     /* listen to keyboard events */

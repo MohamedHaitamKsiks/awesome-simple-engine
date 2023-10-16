@@ -39,6 +39,9 @@ namespace ASEngine {
             }};
         };
 
+        // get transpose of matrix
+        mat4 Transpose();
+
         // scale
         inline static mat4 Scale(const vec3& s)
         {
@@ -63,6 +66,22 @@ namespace ASEngine {
             }};
         }
 
+        // rotations
+        // rotation around X
+        static mat4 RotationX(float angle);
+
+        // rotation around Y
+        static mat4 RotationY(float angle);
+
+        // rotation around Z
+        static mat4 RotationZ(float angle);
+
+        // get orthographic projection
+        static mat4 OrthographicProjection(float width, float height, float near, float far);
+
+        // get persperctive projection
+        static mat4 PerspectiveProjection(float aspectRatio, float fov, float near, float far);
+        
         // tostring matrix
         std::string ToString();
 
@@ -118,6 +137,8 @@ namespace ASEngine {
             }
             return res;
         }
+
+        
     };
 
 } //ASEngine

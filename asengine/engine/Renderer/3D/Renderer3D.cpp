@@ -2,6 +2,15 @@
 
 namespace ASEngine
 {
+    Renderer3D::Renderer3D()
+    {
+        m_ProjectionParamName = UniqueString("u_Projection");
+        m_CameraParamName = UniqueString("u_Camera");
+        m_TransformParamName = UniqueString("u_Transform");
+    
+        m_IBO3D.Create();
+    }
+
     Mesh3D Renderer3D::IRegisterMesh(const MeshInfo3D &meshInfo3D)
     {
         Mesh3D mesh3D = m_Meshes.Alloc();
@@ -34,6 +43,13 @@ namespace ASEngine
 
     void Renderer3D::IDraw()
     {
+        // calculate cache projection matrix
+        vec2 viewportSize = Viewport::GetSize();
+        m_ProjectionMatrix = mat4::PerspectiveProjection(viewportSize.x / viewportSize.y, m_Camera3D.FOV, m_Camera3D.Near, m_Camera3D.Far);
+        
+        // calculate camera matrix
+        m_CameraMatrix = mat4::Translate(m_Camera3D.Position * -1.0f);
+
         // draw all instances
         for (ChunkID id = 0; id < m_MeshInstances.GetCapacity(); id++)
         {
@@ -41,28 +57,27 @@ namespace ASEngine
             if (m_MeshInstances.IsFree(id)) continue;
             auto& meshInstanceInfo = m_MeshInstances.Get(id);
 
-            // get mesh vbo and bind it
-            auto& vbo3D = m_Meshes.Get(meshInstanceInfo.Mesh);
-            vbo3D.Bind();
-            
-
             // get material & shader and bind them
             auto& material = ResourceManager<Material>::Get(meshInstanceInfo.MaterialID);
             ResourceID shaderID = material.GetShaderID();
             auto& shader = ResourceManager<Shader>::Get(shaderID);
-
             shader.Bind();
+            
+            material.SetShaderParam(m_ProjectionParamName, m_ProjectionMatrix);
+            material.SetShaderParam(m_CameraParamName, m_CameraMatrix);
+            material.Bind();
+
+            // send instance data
+            m_IBO3D.Bind();
+            m_IBO3D.SendData(meshInstanceInfo.Transforms);
+
+            // send vbo data
+            auto& vbo3D = m_Meshes.Get(meshInstanceInfo.Mesh);
+            vbo3D.Bind();
             shader.GetShaderProgram().BindVertex3D();
 
-            // set transform 
-            //material.SetShaderParam(UniqueString("u_Transform"), meshInstanceInfo.Transform);
-            
-            //material.Bind();
-            
-            // draw call
-            vbo3D.Draw();
-
-           
+            // get mesh vbo and bind it
+            vbo3D.DrawInstanced(meshInstanceInfo.Transforms.GetSize());
         }
     }
 

@@ -60,6 +60,8 @@ namespace ASEngine
 
     void Renderer2D::IBegin()
     {
+        glClear(GL_DEPTH_BUFFER_BIT);
+
         // cache projection matrices
         m_ViewProjectionMatrix = Viewport::GetProjectionMatrix();
         m_CameraProjectionMatrix = mat3::Rotation(m_Camera2D.Rotation * -1.0f) * mat3::Scale(vec2::ONE() * m_Camera2D.Zoom) * mat3::Translate(m_Camera2D.Position * -1.0f);
