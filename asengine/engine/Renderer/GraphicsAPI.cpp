@@ -9,6 +9,10 @@ namespace ASEngine
         glewInit();
         #endif
 
+        // print gpu used
+        const GLubyte *renderer = glGetString(GL_RENDERER);
+        Debug::Log(renderer);
+
         // enable blend
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);

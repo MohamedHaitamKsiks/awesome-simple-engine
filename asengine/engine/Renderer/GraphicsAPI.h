@@ -10,6 +10,8 @@
 
 #endif
 
+#include "Core/Log/Log.h"
+
 namespace ASEngine
 {
     class GraphicsAPI

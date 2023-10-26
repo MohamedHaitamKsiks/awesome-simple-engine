@@ -67,6 +67,7 @@ add_library(
     engine/Renderer/ShaderProgram.cpp
     engine/Renderer/ShaderUniform.cpp
     #3d
+    engine/Renderer/3D/Mesh3D.cpp
     engine/Renderer/3D/Renderer3D.cpp
     engine/Renderer/3D/VertexBufferObject3D.cpp
     engine/Renderer/3D/InstanceBufferObject3D.cpp

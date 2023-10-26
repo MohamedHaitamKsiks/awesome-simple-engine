@@ -78,6 +78,7 @@ namespace ASEngine
 
             // get mesh vbo and bind it
             vbo3D.DrawInstanced(meshInstanceInfo.Transforms.GetSize());
+
         }
     }
 

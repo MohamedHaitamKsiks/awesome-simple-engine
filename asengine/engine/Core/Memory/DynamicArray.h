@@ -149,7 +149,7 @@ namespace ASEngine
                 {
                     m_Array = array;
                     m_Index = index;
-                }
+                };
 
                 inline size_t GetIndex() const { return m_Index; };
 
@@ -165,7 +165,7 @@ namespace ASEngine
                     return *this;
                 };
 
-                inline T &operator*(void) const
+                inline T &operator*(void)
                 {
                     return m_Array->m_Data[m_Index];
                 };
