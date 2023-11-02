@@ -7,12 +7,15 @@ namespace ASEngine
     struct quat
     {
         // quaternion axies
+        // real part
         float x;
+        // vector part
         float y;
         float z;
         float w;
 
-        // 
+        // define operaions
+        
         
     };
 } // namespace ASEngine
