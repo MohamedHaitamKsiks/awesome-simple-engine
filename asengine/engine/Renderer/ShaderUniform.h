@@ -27,6 +27,7 @@ namespace ASEngine
         void SetVec4(const float* value);
         
         void SetMat3(const float* value);
+        void SetMat4(const float *value);
 
     private:
         int m_UniformLocation = -1;
@@ -42,6 +43,7 @@ namespace ASEngine
         VEC3,
         VEC4,
         MAT3,
+        MAT4,
         SAMPLER_2D
     };
 

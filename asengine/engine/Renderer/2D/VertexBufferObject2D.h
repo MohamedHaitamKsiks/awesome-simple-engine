@@ -30,6 +30,9 @@ namespace ASEngine
         // create buffer
         void Create();
 
+        // bind buffer
+        void Bind();
+
         // add quad
         void PushQuad(const Quad2D& quad2D);
 

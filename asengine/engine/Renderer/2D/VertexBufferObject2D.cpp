@@ -33,6 +33,12 @@ namespace ASEngine
 
     }
 
+    void VertexBufferObject2D::Bind()
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+    }
+
     void VertexBufferObject2D::PushQuad(const Quad2D &quad2D)
     {
         // check if there is still place

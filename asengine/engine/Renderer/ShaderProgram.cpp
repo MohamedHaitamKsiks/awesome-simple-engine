@@ -3,7 +3,7 @@
 namespace ASEngine
 {
    
-    void ShaderProgram::BindVertex2D()
+    void ShaderProgram::BindVertex2D() const
     {
         // get position attribute
         int vPosition = glGetAttribLocation(m_GLProgram, "v_Position");
@@ -16,6 +16,26 @@ namespace ASEngine
         // get modulate attribute
         int vModulate = glGetAttribLocation(m_GLProgram, "v_Modulate");
         glVertexAttribPointer(vModulate, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (const void *)offsetof(Vertex2D, Modulate));
+        glEnableVertexAttribArray(vModulate);
+    }
+
+    void ShaderProgram::BindVertex3D() const
+    {
+        // get position attribute
+        int vPosition = 0;
+        glVertexAttribPointer(vPosition, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (const void *)offsetof(Vertex3D, Position));
+        glEnableVertexAttribArray(vPosition);
+        // get normal attribute
+        int vNormal = 1;
+        glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (const void *)offsetof(Vertex3D, Normal));
+        glEnableVertexAttribArray(vNormal);
+        // get texture coordinates attribute
+        int vTextureCoord = 2;
+        glVertexAttribPointer(vTextureCoord, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (const void *)offsetof(Vertex3D, UV));
+        glEnableVertexAttribArray(vTextureCoord);
+        // get modulate attribute
+        int vModulate = 3;
+        glVertexAttribPointer(vModulate, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (const void *)offsetof(Vertex3D, Modulate));
         glEnableVertexAttribArray(vModulate);
     }
 
@@ -73,20 +93,20 @@ namespace ASEngine
         glUseProgram(program.m_GLProgram);
     }
 
-    ShaderUniform ShaderProgram::GetUniformLocation(const std::string &param)
+    ShaderUniform ShaderProgram::GetUniformLocation(const std::string &param) const
     {
         int uniformLocation = glGetUniformLocation(m_GLProgram, param.c_str());
         return ShaderUniform(uniformLocation);
     }
 
-    int ShaderProgram::GetUniformCount()
+    int ShaderProgram::GetUniformCount() const
     {
         int count;
         glGetProgramiv(m_GLProgram, GL_ACTIVE_UNIFORMS, &count);
         return count;
     }
 
-    std::vector<ShaderUniformInfo> ShaderProgram::GetAllUniformInfo()
+    std::vector<ShaderUniformInfo> ShaderProgram::GetAllUniformInfo() const
     {
         std::vector<ShaderUniformInfo> infos = {};
 
@@ -107,7 +127,7 @@ namespace ASEngine
         return infos;
     }
 
-    ShaderUniformInfo ShaderProgram::GetUniformInfo(int index)
+    ShaderUniformInfo ShaderProgram::GetUniformInfo(int index) const
     {
         // get unifrom information
         GLchar name[SHADER_UNIFORM_NAME_LENGTH];
@@ -145,6 +165,10 @@ namespace ASEngine
         case GL_FLOAT_MAT3:
             info.Type = ShaderUniformType::MAT3;
             info.Size = sizeof(float[9]);
+            break;
+        case GL_FLOAT_MAT4:
+            info.Type = ShaderUniformType::MAT4;
+            info.Size = sizeof(float[16]);
             break;
         case GL_SAMPLER_2D:
             info.Type = ShaderUniformType::SAMPLER_2D;

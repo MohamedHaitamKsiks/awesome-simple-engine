@@ -33,11 +33,10 @@ in vec4 MODULATE;
 
 out vec4 fragColor;
 
-uniform sampler2D u_Texture;
 
 void main() 
 {
-    fragColor = texture(u_Texture, UV) * MODULATE;
+    fragColor = MODULATE;
 }
 
 #endif

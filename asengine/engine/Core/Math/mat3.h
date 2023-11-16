@@ -77,8 +77,13 @@ namespace ASEngine {
             return &(data[3 * j]);
         };
 
+        inline const float *operator[](int j) const
+        {
+            return &(data[3 * j]);
+        };
+
         // matrix multiplication
-        friend inline mat3 operator*(mat3 a, mat3 b)
+        friend inline mat3 operator*(const mat3& a, const mat3& b)
         {
             mat3 res = mat3::ZEROS();
 
@@ -94,7 +99,7 @@ namespace ASEngine {
         };
 
         // matrix multiplication with vector
-        friend inline vec2 operator*(mat3& a, const vec2& v)
+        friend inline vec2 operator*(const mat3& a, const vec2& v)
         {
             float vector[] = {v.x, v.y, 1.0f};
             float res[] = {0.0f, 0.0f, 0.0f};
@@ -108,7 +113,7 @@ namespace ASEngine {
 
 
         // matrix addition
-        friend inline mat3 operator+(mat3& a, mat3& b)
+        friend inline mat3 operator+(const mat3& a, const mat3& b)
         {
             mat3 res;
 
@@ -118,20 +123,6 @@ namespace ASEngine {
                     res[j][i] = a[j][i] + b[j][i];
             }
             return res;
-        }
-
-        //equal
-        friend inline bool operator==(mat3& a, mat3& b)
-        {
-            for (int j = 0; j < 3; j++) 
-            {
-                for (int i = 0; i < 3; i++) 
-                {
-                    if (a[j][i] != b[j][i])
-                        return false;
-                }
-            }
-            return true;
         }
     };
 

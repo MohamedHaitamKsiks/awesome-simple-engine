@@ -4,18 +4,6 @@ namespace ASEngine
 {
     Renderer2D::Renderer2D()
     {
-        // init glew for desktop devices
-        #ifndef __ANDROID__
-        glewInit();
-        #endif
-
-        // enable blend
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        // set clear color
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         // create the vbo2D
         m_Vbo2D.Create();
@@ -72,6 +60,8 @@ namespace ASEngine
 
     void Renderer2D::IBegin()
     {
+        glClear(GL_DEPTH_BUFFER_BIT);
+
         // cache projection matrices
         m_ViewProjectionMatrix = Viewport::GetProjectionMatrix();
         m_CameraProjectionMatrix = mat3::Rotation(m_Camera2D.Rotation * -1.0f) * mat3::Scale(vec2::ONE() * m_Camera2D.Zoom) * mat3::Translate(m_Camera2D.Position * -1.0f);
@@ -79,8 +69,7 @@ namespace ASEngine
         m_CurrentShaderID = CHUNK_NULL;
         m_CurrentMaterialID = CHUNK_NULL;
 
-        // clear background
-        glClear(GL_COLOR_BUFFER_BIT);
+        m_Vbo2D.Bind();
     }
 
     void Renderer2D::IBeginUI()
@@ -91,6 +80,8 @@ namespace ASEngine
         // set materials and shaders to null
         m_CurrentShaderID = CHUNK_NULL;
         m_CurrentMaterialID = CHUNK_NULL;
+
+        m_Vbo2D.Bind();
     }
 
     void Renderer2D::IEnd()
@@ -121,6 +112,8 @@ namespace ASEngine
 
                 // bind shader
                 shader.Bind();
+                const auto& program = shader.GetShaderProgram();
+                program.BindVertex2D();
             }
 
             // set projection matrices

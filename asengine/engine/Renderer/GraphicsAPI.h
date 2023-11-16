@@ -10,4 +10,23 @@
 
 #endif
 
+#include "Core/Log/Log.h"
+
+namespace ASEngine
+{
+    class GraphicsAPI
+    {
+    public:
+        // init opengl
+        static void Init();
+
+        // clear screen 
+        static inline void Clear()
+        {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
+    };
+} // namespace ASEngine
+
+
 #endif // ASENGINE_GRAPHICS_API_H

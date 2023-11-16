@@ -69,6 +69,9 @@ namespace ASEngine
             case ShaderUniformType::MAT3:
                 info.Location.SetMat3((float *)value);
                 break;
+            case ShaderUniformType::MAT4:
+                info.Location.SetMat4((float *)value);
+                break;
             case ShaderUniformType::SAMPLER_2D:
                 Texture texture = *((Texture *)value);
                 texture.BindSampler(currentSlot);

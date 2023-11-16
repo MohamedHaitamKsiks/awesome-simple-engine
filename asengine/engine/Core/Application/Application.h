@@ -15,8 +15,10 @@
 #include "Audio/AudioEngine.h"
 
 #include "Renderer/Viewport.h"
+#include "Renderer/GraphicsAPI.h"
 #include "Renderer/TextureManager.h"
 #include "Renderer/2D/Renderer2D.h"
+#include "Renderer/3D/Renderer3D.h"
 
 #include "Resource/ResourceManager.h"
 #include "Resource/Image.h"

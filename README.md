@@ -4,8 +4,34 @@ Cross-platform game engine written with c++.
 
 ## Features
 
+### 3D Renderer
 
-### 2D OpenGL Renderer
+The renderer uses a mix of batching and gpu instancing to optimise draw calls. 
+
+Let's draw some cubes as a example:
+```cpp
+  // ...
+  // register mesh
+  Mesh3D mesh = Renderer3D::RegisterMesh(cubeMeshInfo);
+  //...
+
+  // init mesh instance info
+  MeshInstanceInfo3D meshInstaneInfo;
+	meshInstaneInfo.Mesh = mesh;
+	meshInstaneInfo.MaterialID = ResourceManager<Material>::GetResourceId(UniqueString("materials/material3D.json"));
+  // init list of transforms each one is going to result in a new instance of the mesh.
+	meshInstaneInfo.Transforms = TDynamicArray<mat4>();
+
+  // add transforms ...
+
+  // register mesh isntance 
+  MeshInstance3D instance = Renderer3D::RegisterMeshInstance(meshInstanceInfo);
+
+
+```
+
+
+### 2D Renderer
 
 The renderer uses batch rendering with 16000 quads per draw call.
 

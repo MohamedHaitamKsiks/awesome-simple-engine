@@ -13,8 +13,12 @@ namespace ASEngine {
 		Window::Init();
 		// init viewport
 		Viewport::Init();
+		// init graphics api
+		GraphicsAPI::Init();
 		// init renderer 2d
 		Renderer2D::Init();
+		// init renderer 33d
+		Renderer3D::Init();
 		// init texture manager
 		TextureManager::Init();
 		// init audio engine
@@ -33,6 +37,7 @@ namespace ASEngine {
 		World::Terminate();
 		TerminateResourceManagers();
 		ModuleManager::Terminate();
+		Renderer3D::Terminate();
 		Renderer2D::Terminate();
 		Viewport::Terminate();
 		AudioEngine::Terminate();
@@ -73,6 +78,12 @@ namespace ASEngine {
 		// update here..
 		World::Update(delta);
 
+		// clear screen
+		GraphicsAPI::Clear();
+
+		// draw 3d
+		Renderer3D::Draw();
+
 		// render world 2d
 		Renderer2D::Begin();
 		World::Render2D();
@@ -82,6 +93,7 @@ namespace ASEngine {
 		Renderer2D::BeginUI();
 		World::UIRender2D();
 		Renderer2D::End();
+
 	}
 
 

@@ -33,6 +33,8 @@ add_library(
     engine/Core/Math/Random.cpp
     engine/Core/Math/mat3.cpp
     engine/Core/Math/vec2.cpp
+    engine/Core/Math/mat4.cpp
+    engine/Core/Math/vec3.cpp
     #window
     engine/Core/Window/Window.cpp
     #input
@@ -59,10 +61,17 @@ add_library(
     engine/Resource/Scene.cpp
     engine/Resource/Audio.cpp
     #rendering
+    engine/Renderer/GraphicsAPI.cpp
     engine/Renderer/TextureManager.cpp
     engine/Renderer/Viewport.cpp
     engine/Renderer/ShaderProgram.cpp
     engine/Renderer/ShaderUniform.cpp
+    #3d
+    engine/Renderer/3D/Mesh3D.cpp
+    engine/Renderer/3D/Renderer3D.cpp
+    engine/Renderer/3D/VertexBufferObject3D.cpp
+    engine/Renderer/3D/InstanceBufferObject3D.cpp
+    #2ds
     engine/Renderer/2D/Quad2D.cpp
     engine/Renderer/2D/Renderer2D.cpp
     engine/Renderer/2D/VertexBufferObject2D.cpp

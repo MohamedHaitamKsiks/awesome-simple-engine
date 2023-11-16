@@ -31,6 +31,12 @@ namespace ASEngine
         // bind shader
         void Bind();
 
+        // get shader program
+        inline const ShaderProgram& GetShaderProgram() const
+        {
+            return m_Program;
+        }
+
     private:
         ShaderProgram m_Program = SHADER_NULL;
         // size of buffer
