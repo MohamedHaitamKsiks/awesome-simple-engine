@@ -17,10 +17,10 @@ Let's draw some cubes as a example:
 
   // init mesh instance info
   MeshInstanceInfo3D meshInstaneInfo;
-	meshInstaneInfo.Mesh = mesh;
-	meshInstaneInfo.MaterialID = ResourceManager<Material>::GetResourceId(UniqueString("materials/material3D.json"));
+  meshInstaneInfo.Mesh = mesh;
+  meshInstaneInfo.MaterialID = ResourceManager<Material>::GetResourceId(UniqueString("materials/material3D.json"));
   // init list of transforms each one is going to result in a new instance of the mesh.
-	meshInstaneInfo.Transforms = TDynamicArray<mat4>();
+  meshInstaneInfo.Transforms = TDynamicArray<mat4>();
 
   // add transforms ...
 
