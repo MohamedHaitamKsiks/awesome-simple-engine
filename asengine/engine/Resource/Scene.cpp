@@ -1,5 +1,3 @@
-
-
 #include "Scene.h"
 
 namespace ASEngine 
@@ -48,23 +46,9 @@ namespace ASEngine
         
         for(auto& entity: object)
         {
-            assert(entity.is_object());
-
             EntityBuilder builder;
-            for (auto& component: entity.items())
-            {
-                UniqueString componentName = UniqueString(component.key());
-
-                Component* componentValue = ComponentManager::MakeComponent(componentName, nullptr);
-                ComponentManager::Deserialize(componentName, component.value(), componentValue);
-
-                builder.AddComponent(componentName, componentValue);
-
-                ComponentManager::DeleteComponent(componentName, componentValue);
-            }
-
+            Serializer<EntityBuilder>::Deserialize(entity, builder);
             dest.AddEntityBuilder(builder);
-
         }
     }
 

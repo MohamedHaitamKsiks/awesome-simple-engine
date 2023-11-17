@@ -1,5 +1,10 @@
 #include "Serializer.h"
 
+#include "Core/String/UniqueString.h"
+#include "Core/Math/vec2.h"
+#include "Renderer/Color.h"
+#include "ECS/EntityBuilder.h"
+
 namespace ASEngine
 {
     // defined implementation for known serializable types
@@ -108,6 +113,31 @@ namespace ASEngine
         Serializer<float>::Deserialize(object.at("g"), dest.g);
         Serializer<float>::Deserialize(object.at("b"), dest.b);
         Serializer<float>::Deserialize(object.at("a"), dest.a);
+    }
+
+    // Entity Builder
+    template <>
+    Json Serializer<EntityBuilder>::Serialize(const EntityBuilder &value)
+    {
+        Json object = Json({});
+        // add later ...
+        return object;
+    }
+    template <>
+    void Serializer<EntityBuilder>::Deserialize(const Json &object, EntityBuilder &dest)
+    {
+        assert(object.is_object());
+        for (auto &component : object.items())
+        {
+            UniqueString componentName = UniqueString(component.key());
+
+            Component *componentValue = ComponentManager::MakeComponent(componentName, nullptr);
+            ComponentManager::Deserialize(componentName, component.value(), componentValue);
+
+            dest.AddComponent(componentName, componentValue);
+
+            ComponentManager::DeleteComponent(componentName, componentValue);
+        }
     }
 
 } // namespace ASEngine
