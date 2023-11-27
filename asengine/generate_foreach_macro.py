@@ -1,7 +1,7 @@
 import sys
 
 #file path
-file_path = "asengine/engine/Macros/Foreach.h"
+file_path = "engine/Macros/Foreach.h"
 
 # include guards
 file_head = '''

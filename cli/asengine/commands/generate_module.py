@@ -4,7 +4,7 @@ import pathlib
 import shutil
 
 # generate module name in working dir
-def generateModuleFiles(moduleName):
+def generateModule(moduleName: str):
     #generate folders
     os.mkdir("components")
     os.mkdir("systems")
@@ -44,12 +44,12 @@ class { moduleName } : public IModule
 
 void {moduleName}::RegisterComponents() 
 {'{'}
-    // add components
+    // register components
 {'}'}
 
 void {moduleName}::RegisterSystems()
 {'{'}
-    // add systems
+    // register systems
 {'}'}
 
 void {moduleName}::InitResourceManagers()
@@ -100,5 +100,5 @@ if __name__ == "__main__":
     # generate source files
     os.chdir("src")
 
-    generateModuleFiles(moduleName)
+    generateModule(moduleName)
 

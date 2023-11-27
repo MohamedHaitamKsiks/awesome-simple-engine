@@ -51,13 +51,12 @@ def generate_include_files():
     entryPointFile.write(newEntryPointList)
     entryPointFile.close()
 
-
 # compile engine 
 def compile_engine_for(plarform):
     #engine path
     enginePath = os.getcwd()
     #cmake toolchains path
-    cmakeToolChainsPath = str(pathlib.Path(enginePath).parent) + "/cmake-toolchains"
+    cmakeToolChainsPath = str(pathlib.Path(enginePath).parent) + "/cli/asengine/resources/cmake-toolchains"
     print(cmakeToolChainsPath)
     #create build folder
     buildFolderPath = "build/lib/" + plarform
