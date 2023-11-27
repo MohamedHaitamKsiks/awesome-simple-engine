@@ -3,8 +3,8 @@ import sys
 import os
 import shutil
 import json
-from commands.status import *
-from commands.script_path import *
+from asengine.commands.status import *
+from asengine.commands.script_path import *
 
 def buildProject(configPath: str, projectPath: str, platform: str) -> bool:
     # check project validity

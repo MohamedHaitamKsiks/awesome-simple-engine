@@ -1,8 +1,8 @@
 import os
 import sys
 import shutil
-from commands.script_path import *
-from commands.generate_module import generateModule
+from asengine.commands.script_path import *
+from asengine.commands.generate_module import generateModule
 
 
 def generateProject(projectName: str, projectTemplatePath: str):
