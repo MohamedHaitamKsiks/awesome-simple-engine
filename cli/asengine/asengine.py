@@ -3,15 +3,15 @@
 #imports...
 import sys
 
-from commands.generate_project import generateProject
-from commands.generate_component import generateComponent
-from commands.generate_module import generateModule
-from commands.generate_system import generateSystem
-from commands.generate_resource import generateResource
-from commands.documentation import showDocumentation
-from commands.status import getProjectStatus
-from commands.build_project import buildProject
-from commands.script_path import *
+from asengine.commands.generate_project import generateProject
+from asengine.commands.generate_component import generateComponent
+from asengine.commands.generate_module import generateModule
+from asengine.commands.generate_system import generateSystem
+from asengine.commands.generate_resource import generateResource
+from asengine.commands.documentation import showDocumentation
+from asengine.commands.status import getProjectStatus
+from asengine.commands.build_project import buildProject
+from asengine.commands.script_path import *
 
 
 def executeCommand(command: str, args: list[str] = []):
