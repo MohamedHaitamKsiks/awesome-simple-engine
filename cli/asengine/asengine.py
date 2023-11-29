@@ -22,7 +22,7 @@ def executeCommand(command: str, args: list[str] = []):
             showDocumentation(relativeTo(scriptPath, "./resources/documentation.txt"))
 
         case "status":
-            getProjectStatus("./")
+            print(getProjectStatus("./"))
 
         case "run":
             buildProject(relativeTo(scriptPath, "./resources/build.config.json"), ".", "linux")
@@ -53,7 +53,7 @@ def executeCommand(command: str, args: list[str] = []):
 
         case _:
             print(f"The command '{command}' is invalid!\n")
-            showDocumentation(relativeTo(scriptPath, "./resources/documentation.json"))
+            executeCommand("help", [])
 
 def main():
     #get command

@@ -132,9 +132,9 @@ namespace ASEngine {
 		Time::FixedTimeStep = projectSettings["fixedTimeStep"];
 
 		// load main scene
-		UniqueString mainScenePath = UniqueString(std::string(projectSettings["mainScene"]));
-		ResourceID sceneID = ResourceManager<Scene>::GetResourceId(UniqueString(mainScenePath));
-		Scene& mainScene = ResourceManager<Scene>::Get(sceneID);
+		auto mainScenePath = std::string(projectSettings["mainScene"]);
+		ResourceID sceneID = ResourceManager<Scene>::GetResourceID(mainScenePath);
+		auto& mainScene = ResourceManager<Scene>::Get(sceneID);
 		mainScene.Instantiate();
 	}
 

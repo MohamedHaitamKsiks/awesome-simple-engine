@@ -21,12 +21,12 @@ bool ASEngine::UnitTest::Run()
         try
         {
             testCallback();
-            Debug::Log(testName, " PASS");
+            Debug::Log(testName, "PASS");
         }
         catch (TestFailException failException)
         {
             testResult = false;
-            Debug::Log(testName, " FAILED");
+            Debug::Log(testName, "FAILED");
         }
     }
 

@@ -3,11 +3,14 @@
 
 #include "Core/Log/Log.h"
 
+#include<cstdlib>
+
 #include<unordered_map>
 #include<string>
 #include<functional>
 #include<stdexcept>
 
+#define RUN_TESTS(test) exit(1 - static_cast<int>(test.Run()))
 
 namespace ASEngine
 {
@@ -18,8 +21,10 @@ namespace ASEngine
     public:
         char *what()
         {
-            return "Custom C++ Exception";
+            return exceptionMessage;
         }
+    private:
+        char* exceptionMessage = (char*) "Test Fail Exception";
     };
 
 

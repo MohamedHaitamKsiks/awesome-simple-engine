@@ -22,19 +22,19 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> bool:
 
     # check platform validity
     assert (platform in ("windows", "linux", "android"))
-    platformPath = config["targets"][platform]["platformPath"]
 
     # get config directory
     configDir = dirPath(configPath)
 
     #get asengine path
+    platformPath = relativeTo(configDir, config["targets"][platform]["platformPath"])
     asenginePath = relativeTo(configDir, config["asenginePath"])
     asengineSourcePath = relativeTo(configDir, config["asengineSourcePath"])
     cmakeWindowsToolChain = relativeTo(configDir, config["cmakeWindowsToolchain"])
 
     #generated tmp folder name
     tmpFileName = f".tmp.{ platform }"
-    tmpPath = relativeTo(configDir, tmpFileName)
+    tmpPath = relativeTo(projectPath, tmpFileName)
     #craete and copy platfrom to .tmp
     shutil.copytree(platformPath, tmpPath, dirs_exist_ok=True)
 
@@ -46,7 +46,7 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> bool:
                         dirs_exist_ok=True, 
                         ignore=shutil.ignore_patterns("build"))
         
-        shutil.copytree(relativeTo(asengineSourcePath, "./build/include"), 
+        shutil.copytree(relativeTo(asenginePath, "./include"), 
                         relativeTo(tmpPath, "./app/src/main/cpp/asengine/include"), 
                         dirs_exist_ok=True)
 
@@ -86,7 +86,13 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> bool:
 
         os.system("cmake .. ")
         os.system("make")
-        os.system("./build")
+
+        # check if build has been create which signals that the compilation was successeful
+        if not os.path.exists("build"):
+            return False
+        
+        # run app
+        print(os.system("./build"))
         os.chdir(projectPath)
 
     elif platform == "windows":
@@ -108,7 +114,7 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> bool:
         avdName = config["targets"]["android"]["avdName"]
 
         #build debug
-        os.chdir(f"{projectPath}/{tmpFileName}")
+        os.chdir(tmpPath)
 
         #set local.properties for android
         os.system(f"echo 'sdk.dir = {sdkPath}' > local.properties")

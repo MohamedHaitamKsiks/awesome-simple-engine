@@ -95,7 +95,7 @@ namespace ASEngine
         assert(object.is_object());
         // get shader
         std::string shaderPath = object["ShaderName"];
-        ResourceID shaderID = ResourceManager<Shader>::GetResourceId(UniqueString(shaderPath));
+        ResourceID shaderID = ResourceManager<Shader>::GetResourceID(UniqueString(shaderPath));
 
         // create material
         dest.Create(shaderID);

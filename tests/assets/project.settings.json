@@ -1,0 +1,19 @@
+{
+	"name": "ASEgnine Projet",
+	"viewport": {
+		"size":{
+			"width": 320,
+			"height": 180
+		}
+	},
+	"window": {
+		"size": {
+			"width": 640,
+			"height": 360
+		},
+		"keepAspectRatio": true,
+		"fullscreen": false
+	},
+	"fixedTimeStep": 0.02,
+	"mainScene": "scenes/main.scene.json" 
+}

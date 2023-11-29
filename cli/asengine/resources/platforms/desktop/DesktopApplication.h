@@ -16,7 +16,7 @@ using namespace ASEngine;
 class DesktopApplication 
 {
 public:
-    void Start();
+    void Start(bool headless=false);
 
 private:
 
@@ -36,8 +36,11 @@ private:
     // mouse current position
     static vec2 s_MousePosition;
 
+    // create window for desktop application
+    bool CreateWindow();
+
     //init desktop application
-    bool Init();
+    void Init();
 
     //update desktop application
     void Update(float delta);
