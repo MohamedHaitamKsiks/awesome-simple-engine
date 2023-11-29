@@ -24,7 +24,7 @@ namespace ASEngine
             return exceptionMessage;
         }
     private:
-        char* exceptionMessage = (char*) "Test Fail Exception";
+        char* exceptionMessage = const_cast<char*>("Test Fail Exception");
     };
 
 
