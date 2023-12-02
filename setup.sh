@@ -7,6 +7,7 @@ cd ..
 CLI_ASENGINE_PATH="cli/asengine/resources/asengine"
 
 #create asengine folder in cli
+rm -r $CLI_ASENGINE_PATH
 mkdir -p $CLI_ASENGINE_PATH
 
 # copy include

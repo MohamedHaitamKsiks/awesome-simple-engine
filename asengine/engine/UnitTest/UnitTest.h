@@ -1,6 +1,7 @@
 #ifndef ASENGINE_UNIT_TEST_H
 #define ASENGINE_UNIT_TEST_H
 
+#include "Macros/Foreach.h"
 #include "Core/Log/Log.h"
 
 #include<cstdlib>
@@ -10,7 +11,20 @@
 #include<functional>
 #include<stdexcept>
 
-#define RUN_TESTS(test) exit(1 - static_cast<int>(test.Run()))
+#define RUN_TESTS(...) exit(FOREACH(RUN_TEST, __VA_ARGS__) 0)
+
+#define RUN_TEST(test) test() + 
+
+#define UNIT_TEST(testName, body)   \
+    int testName() {                \
+        ASEngine::UnitTest test{};  \
+        body                        \
+        return 1 - static_cast<int>(test.Run()); \
+    } 
+
+#define UNIT_TEST_CASE(testCase, body) ( test.Test(testCase, [&] () { body }) )
+
+#define EXPECT(predicat) test.Expect(predicat)
 
 namespace ASEngine
 {

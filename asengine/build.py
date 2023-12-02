@@ -5,7 +5,7 @@ import shutil
 import sys
 
 # generate include files
-def generate_include_files():
+def generateIncludeFiles():
     #add dependencies
     dependenciesFolder = pathlib.Path("dependencies").iterdir()
     for folder in dependenciesFolder:
@@ -52,7 +52,7 @@ def generate_include_files():
     entryPointFile.close()
 
 # compile engine 
-def compile_engine_for(plarform):
+def compileEngineFor(plarform):
     #engine path
     enginePath = os.getcwd()
     #cmake toolchains path
@@ -69,7 +69,7 @@ def compile_engine_for(plarform):
     elif plarform == "windows":
         os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={cmakeToolChainsPath}/mingw-w64-x86_64.cmake {enginePath}")
     #make
-    os.system("make")
+    print("Compilation result:", os.system("make"))
 
     #combine into one static librarty
     #create .mri file
@@ -100,11 +100,11 @@ def compile_engine_for(plarform):
     os.chdir(enginePath)
 
 #main
-generate_include_files()
+generateIncludeFiles()
 
 if len(sys.argv) == 2 and sys.argv[1]:
-    compile_engine_for(sys.argv[1])
+    compileEngineFor(sys.argv[1])
 
 else:
-    compile_engine_for("linux")
-    compile_engine_for("windows")
+    compileEngineFor("linux")
+    compileEngineFor("windows")
