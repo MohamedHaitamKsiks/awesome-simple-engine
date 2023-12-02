@@ -5,18 +5,18 @@
             "emulatorPath": "emulator",
             "avdName": "Pixel_3a_API_34_extension_level_7_x86_64",
             "type": "mobile",
-            "platformPath": "./platforms/android"
+            "platformPath": "./.platforms/android"
         },
         "linux": {
             "type": "desktop",
-            "platformPath": "./platforms/desktop" 
+            "platformPath": "./.platforms/desktop" 
         },
         "windows": {
             "type": "desktop",
-            "platformPath": "./platforms/desktop"
+            "platformPath": "./.platforms/desktop"
         }
     },
-    "asenginePath": "./asengine/build",
-    "asengineSourcePath": "./asenigne/src",
+    "asenginePath": "./.asengine/build",
+    "asengineSourcePath": "./.asenigne/src",
     "cmakeWindowsToolchain": "./cmake-toolchains/mingw-w64-x86_64.cmake"
 }

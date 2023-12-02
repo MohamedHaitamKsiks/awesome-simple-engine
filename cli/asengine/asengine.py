@@ -33,7 +33,7 @@ def executeCommand(command: str, args: list[str] = []):
 
         case "generate-project":
             assert(len(args) == 1)
-            generateProject(args[0], relativeTo(scriptPath, "./resources/project_template"))
+            generateProject(args[0], relativeTo(scriptPath, "./resources/.project_template"))
 
         case "generate-component":
             assert(len(args) == 1)
