@@ -4,6 +4,9 @@ cd asengine
 python3 build.py
 cd ..
 
+cp -r platforms cli/asengine/resources/platforms
+cp -r project_template cli/asengine/resources/project_template
+
 CLI_ASENGINE_PATH="cli/asengine/resources/asengine"
 
 #create asengine folder in cli
