@@ -30,6 +30,13 @@ namespace ASEngine {
 		std::cout<< message << "\n";
 	}
 
+	std::string Debug::Colorized(Debug::TextColor color, const std::string &str)
+	{
+		std::stringstream ss;
+		ss << "\x1B[" << color << "m" << str << "\033[0m";
+		return ss.str();
+	}
+
 } // ASEngine
 
 #endif

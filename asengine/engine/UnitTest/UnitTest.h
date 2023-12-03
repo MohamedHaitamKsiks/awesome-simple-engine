@@ -10,6 +10,7 @@
 #include<string>
 #include<functional>
 #include<stdexcept>
+#include<chrono>
 
 #define RUN_TESTS(...) exit(FOREACH(RUN_TEST, __VA_ARGS__) 0)
 
@@ -17,7 +18,7 @@
 
 #define UNIT_TEST(testName, body)   \
     int testName() {                \
-        ASEngine::UnitTest test{};  \
+        ASEngine::UnitTest test(#testName);  \
         body                        \
         return 1 - static_cast<int>(test.Run()); \
     } 
@@ -46,6 +47,9 @@ namespace ASEngine
     class UnitTest
     {
     public:
+
+        UnitTest(const std::string& testSuitName): m_TestSuitName(testSuitName) {};
+
         // start case
         void Test(const std::string& testCaseName, const std::function<void()>& testCallback);
 
@@ -58,6 +62,7 @@ namespace ASEngine
     private:
         // test suits
         std::unordered_map<std::string, std::function<void()>> m_TestCases{};
+        std::string m_TestSuitName = "TestSuit";
 
     };
 } // namespace ASEngine
