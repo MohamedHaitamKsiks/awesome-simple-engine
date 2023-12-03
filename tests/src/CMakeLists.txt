@@ -3,6 +3,8 @@ set(CMAKE_CXX_STANDARD 23)
 
 project(asengine-project)
 
+add_subdirectory(TestModule)
+
 add_library(
     asengine-project
     STATIC
@@ -15,5 +17,6 @@ target_link_libraries(
 
 set(PROJECT_LIBRARIES 
     asengine-project
+    TestModule
     PARENT_SCOPE
 )

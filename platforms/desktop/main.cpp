@@ -5,6 +5,6 @@
 int main() {
     DesktopApplication application{};
     application.Start();
-
+    
     return 0;
 }

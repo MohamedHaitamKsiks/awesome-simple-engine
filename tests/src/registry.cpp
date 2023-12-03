@@ -1,10 +1,7 @@
 #include "registry.h"
-#include "CoreTest.h"
+#include "TestModule/TestModule.h"
 
 void Registry()
 {
-    RUN_TESTS(
-        CoreTest, 
-        AnotherCoreTest
-    );
+    ModuleManager::RegisterModule<TestModule>();
 }
