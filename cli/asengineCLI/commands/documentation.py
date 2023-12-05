@@ -1,4 +1,4 @@
-from asengine.commands.script_path import *
+from asengineCLI.commands.script_path import *
 
 def showDocumentation(documentationPath: str):
     with open(documentationPath, "r") as docFile:

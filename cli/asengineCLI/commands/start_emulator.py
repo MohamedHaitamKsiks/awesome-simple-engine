@@ -1,7 +1,7 @@
 # run emulator
 import os
 import json
-from asengine.commands.script_path import *
+from asengineCLI.commands.script_path import *
 
 def startAndroidEmulator(configPath: str):
     # get working directory

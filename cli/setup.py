@@ -8,13 +8,13 @@ setup(
     author='KSIKS Mohamed Haitam',
     author_email='haitamksiks2001@gmail.com',
     license='MIT License',
-    packages=['asengine'],
+    packages=['asengineCLI'],
 
     entry_points=
     {
     'console_scripts': 
         [
-        'asengine-cli=asengine.cli:main',
+        'asengine-cli=asengineCLI.cli:main',
         ],
     },
     classifiers=[

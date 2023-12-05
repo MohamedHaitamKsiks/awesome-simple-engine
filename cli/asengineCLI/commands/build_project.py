@@ -3,8 +3,8 @@ import sys
 import os
 import shutil
 import json
-from asengine.commands.status import *
-from asengine.commands.script_path import *
+from asengineCLI.commands.status import *
+from asengineCLI.commands.script_path import *
 
 def buildProject(configPath: str, projectPath: str, platform: str) -> bool:
     # check project validity
@@ -92,7 +92,7 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> bool:
             return False
         
         # run app
-        print(os.system("./build"))
+        os.system("./build")
         os.chdir(projectPath)
 
     elif platform == "windows":

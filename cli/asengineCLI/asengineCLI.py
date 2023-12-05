@@ -3,16 +3,15 @@
 #imports...
 import sys
 
-from asengine.commands.generate_project import generateProject
-from asengine.commands.generate_component import generateComponent
-from asengine.commands.generate_module import generateModule
-from asengine.commands.generate_system import generateSystem
-from asengine.commands.generate_resource import generateResource
-from asengine.commands.documentation import showDocumentation
-from asengine.commands.status import getProjectStatus
-from asengine.commands.build_project import buildProject
-from asengine.commands.script_path import *
-
+from asengineCLI.commands.generate_project import generateProject
+from asengineCLI.commands.generate_component import generateComponent
+from asengineCLI.commands.generate_module import generateModule
+from asengineCLI.commands.generate_system import generateSystem
+from asengineCLI.commands.generate_resource import generateResource
+from asengineCLI.commands.documentation import showDocumentation
+from asengineCLI.commands.status import getProjectStatus
+from asengineCLI.commands.build_project import buildProject
+from asengineCLI.commands.script_path import *
 
 def executeCommand(command: str, args: list[str] = []):
     scriptPath = dirPath(__file__)

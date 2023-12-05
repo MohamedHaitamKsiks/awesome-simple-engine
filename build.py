@@ -52,24 +52,30 @@ def generateIncludeFiles():
     entryPointFile.close()
 
 # compile engine 
-def compileEngineFor(plarform):
+def compileEngineFor(plarform) -> int:
     #engine path
     enginePath = os.getcwd()
     #cmake toolchains path
-    cmakeToolChainsPath = str(pathlib.Path(enginePath).parent) + "/cli/asengine/resources/cmake-toolchains"
+    cmakeToolChainsPath = str(pathlib.Path(enginePath).parent) + "/cli/asengineCLI/resources/cmake-toolchains"
     print(cmakeToolChainsPath)
     #create build folder
     buildFolderPath = "build/lib/" + plarform
     os.makedirs(buildFolderPath, exist_ok=True)
     #compile the engine
     os.chdir(buildFolderPath)
+
+    # keep track of compilation result
+    compilationResult = 0
+
     #cmake
     if plarform == "linux":
-        os.system(f"cmake {enginePath}")
+        compilationResult += os.system(f"cmake {enginePath}")
     elif plarform == "windows":
-        os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={cmakeToolChainsPath}/mingw-w64-x86_64.cmake {enginePath}")
+        windowsCmakeToolchain = f"{cmakeToolChainsPath}/mingw-w64-x86_64.cmake"
+        compilationResult += os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={windowsCmakeToolchain} {enginePath}")
+    
     #make
-    print("Compilation result:", os.system("make"))
+    compilationResult += os.system("make")
 
     #combine into one static librarty
     #create .mri file
@@ -88,7 +94,6 @@ def compileEngineFor(plarform):
     mriCode.append("save")
     mriCode.append("end")
 
-
     #save .mri file
     mriFile = open("asengine.mri", "w")
     mriFile.write('\n'.join(mriCode))
@@ -99,12 +104,24 @@ def compileEngineFor(plarform):
 
     os.chdir(enginePath)
 
+    return compilationResult
+
+#compile engine given arguments (os)
+def compile(platforms: list[str]) -> int:
+    os.chdir("asengine")
+
+    #generate include
+    generateIncludeFiles()
+
+    #compile the engine
+    compilationResult = 0
+    for platform in platforms:
+        compilationResult += compileEngineFor(platform)
+
+    os.chdir("..")
+
+    return compilationResult
+
 #main
-generateIncludeFiles()
-
-if len(sys.argv) == 2 and sys.argv[1]:
-    compileEngineFor(sys.argv[1])
-
-else:
-    compileEngineFor("linux")
-    compileEngineFor("windows")
+if __name__ == "__main__":
+    sys.exit(compile(sys.argv[1:]))        
