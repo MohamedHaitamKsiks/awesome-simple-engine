@@ -15,6 +15,6 @@ UNIT_TEST(UniqueStringTest,
 
     UNIT_TEST_CASE("It should return valid length", 
     {
-        EXPECT(someString.GetLength() == 12);
+        EXPECT(someString.GetLength() == 120);
     });
 });

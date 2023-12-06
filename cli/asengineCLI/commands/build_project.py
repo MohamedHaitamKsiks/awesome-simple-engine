@@ -6,12 +6,15 @@ import json
 from asengineCLI.commands.status import *
 from asengineCLI.commands.script_path import *
 
-def buildProject(configPath: str, projectPath: str, platform: str) -> bool:
+def buildProject(configPath: str, projectPath: str, platform: str) -> int:
+    # error return
+    error = 0 
+
     # check project validity
     isValid, missingRequirements = getProjectIsValid(projectPath)
     if not isValid:
         print('\n'.join(missingRequirements))
-        return False
+        return 1
 
     #load config 
     config = {}
@@ -84,15 +87,11 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> bool:
         if os.path.exists("build"):
             os.remove("build")
 
-        os.system("cmake .. ")
-        os.system("make")
-
-        # check if build has been create which signals that the compilation was successeful
-        if not os.path.exists("build"):
-            return False
+        error |= os.system("cmake .. ")
+        error |= os.system("make")
         
         # run app
-        os.system("./build")
+        error |= os.system("./build")
         os.chdir(projectPath)
 
     elif platform == "windows":
@@ -101,9 +100,9 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> bool:
         if os.path.exists("build.exe"):
             os.remove("build.exe")
 
-        os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={cmakeWindowsToolChain} ..")
-        os.system("make")
-        os.system(f"wine {relativeTo(tmpPath, './build/build.exe')}")
+        error |= os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={cmakeWindowsToolChain} ..")
+        error |= os.system("make")
+        error |= os.system(f"wine {relativeTo(tmpPath, './build/build.exe')}")
         os.chdir(projectPath)
 
     elif platform == "android":
@@ -128,7 +127,7 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> bool:
         os.system(f"./adb shell am start -n com.example.androidsimpleengine/com.example.androidsimpleengine.MainActivity")
         os.chdir(projectPath)
         
-    return True
+    return error
 
 
 if __name__ == "__main__":

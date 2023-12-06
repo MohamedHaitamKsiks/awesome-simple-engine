@@ -14,7 +14,7 @@ setup(
     {
     'console_scripts': 
         [
-        'asengine-cli=asengineCLI.cli:main',
+            'asengine-cli=asengineCLI.cli:main',
         ],
     },
     classifiers=[

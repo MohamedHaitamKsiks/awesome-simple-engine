@@ -13,8 +13,9 @@ from asengineCLI.commands.status import getProjectStatus
 from asengineCLI.commands.build_project import buildProject
 from asengineCLI.commands.script_path import *
 
-def executeCommand(command: str, args: list[str] = []):
+def executeCommand(command: str, args: list[str] = []) -> int:
     scriptPath = dirPath(__file__)
+    error = 0
     
     match command:
         case "help":
@@ -24,11 +25,11 @@ def executeCommand(command: str, args: list[str] = []):
             print(getProjectStatus("./"))
 
         case "run":
-            buildProject(relativeTo(scriptPath, "./resources/build.config.json"), ".", "linux")
+            error |= buildProject(relativeTo(scriptPath, "./resources/build.config.json"), ".", "linux")
 
         case "build":
             assert(len(args) == 1)
-            buildProject(relativeTo(scriptPath, "./resources/build.config.json"), ".", args[0])
+            error |= buildProject(relativeTo(scriptPath, "./resources/build.config.json"), ".", args[0])
 
         case "generate-project":
             assert(len(args) == 1)
@@ -54,13 +55,15 @@ def executeCommand(command: str, args: list[str] = []):
             print(f"The command '{command}' is invalid!\n")
             executeCommand("help", [])
 
-def main():
+    return error
+
+def main() -> None:
     #get command
     argumentNumber = len(sys.argv)
     assert(argumentNumber >= 2)
 
     command = sys.argv[1]
-    executeCommand(command, args=sys.argv[2:])
+    sys.exit(executeCommand(command, args=sys.argv[2:]) % 255)
 
 if __name__ == "__main__":
     main()

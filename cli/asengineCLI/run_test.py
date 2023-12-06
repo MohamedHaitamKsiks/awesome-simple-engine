@@ -1,5 +1,5 @@
 import unittest
-from tests.test_cli import *
+from asengineCLI.tests import *
 
 if __name__ == "__main__":
     unittest.main()

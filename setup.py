@@ -25,7 +25,7 @@ CLI_PLATFORMS_PATH = "cli/asengineCLI/resources/.platforms"
 CLI_TEMPLATE_PATH = "cli/asengineCLI/resources/.project_template"
 
 # compile the engine
-setupResult += compile(["linux", "windows"])
+setupResult |= compile(["linux", "windows"])
 
 # copy platform & template
 shutil.copytree("platforms", CLI_PLATFORMS_PATH, dirs_exist_ok=True)
@@ -53,12 +53,12 @@ shutil.copytree("asengine/engine", CLI_ASENGINE_SOURCE_PATH, dirs_exist_ok=True)
 
 #install/reinstall cli
 os.chdir("cli")
-setupResult += subprocess.check_call([sys.executable, "-m", "pip", "install", "-e", "."])
+setupResult |= subprocess.call([sys.executable, "-m", "pip", "install", "-e", "."])
 os.chdir("..")
 
 #run engine's unit tests
 os.chdir("tests")
-setupResult += os.system("asengine-cli run")
+setupResult |= subprocess.call(["asengine-cli", "run"])
 os.chdir("..")
 
 sys.exit(setupResult)
