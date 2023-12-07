@@ -2,6 +2,23 @@
 
 Cross-platform game engine written with c++. 
 
+## Dependencies
+  
+  ### Debian / Ubuntu
+
+  Install depencies:
+
+  ```sh
+    $ sudo apt update &&
+    $ sudo apt-get -y install cmake &&
+    $ sudo apt-get -y install g++-mingw-w64 && 
+    $ sudo apt-get -y install freeglut3-dev
+  ```
+
+  ### Windows
+
+  Use WSL to run ubuntu commands and install dependencies.
+
 ## Features
 
 ### 3D Renderer
