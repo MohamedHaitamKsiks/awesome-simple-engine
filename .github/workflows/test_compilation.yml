@@ -13,11 +13,14 @@ jobs:
         steps:
             -   uses: actions/checkout@v2
 
-            -   run: |
+            -   name: Install dependencies
+                run: |
                     sudo apt update &&
                     sudo apt-get -y install cmake &&
-                    sudo apt-get -y install freeglut3-dev &&
-                    python3 build.py linux 
+                    sudo apt-get -y install freeglut3-dev
+                
+            -   name: Test Compilation
+                run: python3 build.py linux 
 
 
 

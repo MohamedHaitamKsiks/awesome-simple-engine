@@ -116,7 +116,7 @@ def compile(platforms: list[str]) -> int:
     #compile the engine
     compilationResult = 0
     for platform in platforms:
-        compilationResult += compileEngineFor(platform)
+        compilationResult |= compileEngineFor(platform)
 
     os.chdir("..")
 
@@ -124,4 +124,4 @@ def compile(platforms: list[str]) -> int:
 
 #main
 if __name__ == "__main__":
-    sys.exit(compile(sys.argv[1:]))        
+    sys.exit(compile(sys.argv[1:]) % 255)        
