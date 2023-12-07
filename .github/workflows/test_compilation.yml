@@ -7,8 +7,14 @@ on:
         branches: [main]
 
 jobs:
+
+
     build:
-        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest] 
+
+        runs-on: ${{ matrix.os }}
 
         steps:
             -   uses: actions/checkout@v2
@@ -17,10 +23,11 @@ jobs:
                 run: |
                     sudo apt update &&
                     sudo apt-get -y install cmake &&
+                    sudo apt-get -y install g++-mingw-w64 && 
                     sudo apt-get -y install freeglut3-dev
                 
             -   name: Test Compilation
-                run: python3 build.py linux 
+                run: python3 build.py linux windows
 
 
 
