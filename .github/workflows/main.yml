@@ -12,16 +12,12 @@ jobs:
 
         steps:
             -   uses: actions/checkout@v2
-            -   uses: jwlawson/actions-setup-cmake@v1.14
-            -   uses: actions/setup-python@v4
-                with:
-                    python-version: 3.10.12
-            
-            -   run: sudo apt update
-            -   run: sudo apt-get install freeglut3-dev
 
-            -   name: Compiling the engine
-                run: python3 build.py linux
+            -   run: |
+                    sudo apt update &&
+                    sudo apt-get -y install cmake &&
+                    sudo apt-get -y install freeglut3-dev &&
+                    python3 build.py linux 
 
 
 
