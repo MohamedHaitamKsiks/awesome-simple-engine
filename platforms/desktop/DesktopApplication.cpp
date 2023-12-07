@@ -1,18 +1,23 @@
 #include "DesktopApplication.h"
 
-void DesktopApplication::Start()
+void DesktopApplication::Start(bool headless)
 {
-    if (!Init())
+    // don't create window if headless
+    if (!headless)
     {
-        Debug::Log("Application coudn't started!");
-        return;
+        // init window
+        if (!CreateWindow())
+        {
+            Debug::Log("Application coudn't started!");
+            return;
+        }
     }
+
+    Init();
 
     // start gameloop
     // delta
     float delta = 0.0f;
-    float fps = 0.0f;
-    float avgFps = 0.0f;
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(m_Window))
@@ -21,12 +26,6 @@ void DesktopApplication::Start()
         auto pastTime = std::chrono::high_resolution_clock::now();
 
         Update(delta);
-        if (delta > 0.0f)
-        {
-            std::stringstream ss;
-            ss << 1.0f / delta << " FPS";
-            Window::SetTitle(ss.str());
-        }
 
         // compute delta
         auto currentTime = std::chrono::high_resolution_clock::now();
@@ -36,7 +35,7 @@ void DesktopApplication::Start()
     Terminate();
 }
 
-bool DesktopApplication::Init()
+bool DesktopApplication::CreateWindow()
 {
     /* Initialize the library */
     if (!glfwInit())
@@ -80,6 +79,11 @@ bool DesktopApplication::Init()
     Window::TitleSignal().Connect(std::bind(&DesktopApplication::OnWindowSetTitle, this, std::placeholders::_1));
     Window::FullscreenSignal().Connect(std::bind(&DesktopApplication::OnWindowSetFullscreen, this, std::placeholders::_1));
 
+    return true;
+}
+
+void DesktopApplication::Init()
+{
     // init resource managers
     Application::InitResourceManagers();
 
@@ -93,8 +97,6 @@ bool DesktopApplication::Init()
     ModuleManager::InitResourceManagers();
     ModuleManager::RegisterComponents();
     ModuleManager::RegisterSystems();
-
-    return true;
 }
 
 void DesktopApplication::Update(float delta)

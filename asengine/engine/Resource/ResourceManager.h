@@ -61,9 +61,15 @@ namespace ASEngine {
         };
 
         //get resource id by name, make sure to cache it if you want to use it multiple time.
-        static inline ResourceID GetResourceId(const UniqueString& resourceName)
+        static inline ResourceID GetResourceID(const UniqueString& resourceName)
         { 
             return GetSingleton()->m_ResourceIds[resourceName];
+        };
+
+        // get resource id by name, make sure to cache it if you want to use it multiple time.
+        static inline ResourceID GetResourceID(const std::string &resourceName)
+        {
+            return GetSingleton()->m_ResourceIds[UniqueString(resourceName)];
         };
 
     private:

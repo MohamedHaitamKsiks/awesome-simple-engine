@@ -2,7 +2,6 @@
 cmake_minimum_required(VERSION 3.22.1)
 set(CMAKE_CXX_STANDARD 23)
 
-
 project(asengine)
 include_directories(engine)
 
@@ -79,6 +78,8 @@ add_library(
     engine/Animation/Interpolation/Interpolate.cpp
     #audio
     engine/Audio/AudioEngine.cpp
+    #testing
+    engine/UnitTest/UnitTest.cpp
     #thirdparty
     engine/Thirdparty/miniaudio.c
 )

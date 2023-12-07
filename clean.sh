@@ -1,1 +1,0 @@
-find  . -name '.tmp*' -exec rm -r {} \;

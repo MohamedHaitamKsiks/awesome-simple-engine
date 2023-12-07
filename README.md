@@ -1,6 +1,6 @@
 # Awesome Simple Engine
 
-Cross-platform game engine written with c++.
+Cross-platform game engine written with c++. 
 
 ## Features
 
@@ -170,7 +170,6 @@ We are not done yet, you need to register your components and systems to the mod
 4. UniqueStrings
 
 5. Modules
-
 
 ## Future of the engine.
 
