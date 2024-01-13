@@ -10,7 +10,6 @@ namespace ASEngine
             m_Signature.emplace(componentName);
             m_ComponentCollections[componentName] = ComponentManager::CreateComponentCollection(componentName);
         }
-
     }
 
     ComponentIndex Archetype::AddEntity(Entity entity)

@@ -1,4 +1,3 @@
-
 #ifndef ASENGINE_COLOR_H
 #define ASENGINE_COLOR_H
 

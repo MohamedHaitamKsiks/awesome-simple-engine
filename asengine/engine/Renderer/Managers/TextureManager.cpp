@@ -2,71 +2,54 @@
 
 namespace ASEngine
 {
-
-    TextureManager::TextureManager()
+    TextureID TextureManager::LoadFromImage(const Image &image, TextureFilter filter = TextureFilter::NEAREST)
     {
-    }
+        // create texture info
+        TextureInfo textureInfo{};
+        textureInfo.Width = image.GetWidth();
+        textureInfo.Height = image.GetHeight();
+        textureInfo.Filter = filter;
 
-    TextureManager::~TextureManager()
-    {
-    }
-
-    TextureID TextureManager::LoadFromImage(const Image &image)
-    {
+    #ifdef OPENGL
         // create GL texture
         GLuint texture;
-        TextureFormat format;
         // load open gl texture
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);        
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         // image format
         switch (image.GetFormat())
         {
         case ImageFormat::RGBA:
-            format = TextureFormat::RGBA;
+            textureInfo.Format = TextureFormat::RGBA;
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.GetWidth(), image.GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetPixels());
             break;
         case ImageFormat::GRAYSCALE:
-            format = TextureFormat::LUMINANCE;
+            textureInfo.Format = TextureFormat::LUMINANCE;
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, image.GetWidth(), image.GetHeight(), 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, image.GetPixels());
             break;
         case ImageFormat::GRAYSCALE_ALPHA:
-            format = TextureFormat::LUMINANCE_ALPHA;
+            textureInfo.Format = TextureFormat::LUMINANCE_ALPHA;
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, image.GetWidth(), image.GetHeight(), 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, image.GetPixels());
             break;
         }
-
-        // create texture info
-        TextureInfo info
-        {
-            texture, 
-            image.GetWidth(), 
-            image.GetHeight(),
-            format
-        };
+        textureInfo.GLTexture = texture;
+    
+    #endif // OPENGL
         // create new texture info and return the texture id
-        return m_Textures.Push(info);
-        
+        return m_TextureInfos.Push(textureInfo);
     }
 
-    void TextureManager::BindSampler(TextureID id, SamplerSlot slot)
+    void TextureManager::Destroy(TextureID textureID)
     {
-        GLuint texture = GetInfo(id).GLTexture;
-        glActiveTexture(GL_TEXTURE0 + slot);
-        glBindTexture(GL_TEXTURE_2D, texture);
-    }
+    #ifdef OPENGL
+        auto& textureInfo = GetTextureInfo(textureID);
+        glDeleteTextures(1, &textureInfo.GLTexture);
+    #endif // OPENGL
 
-    void TextureManager::Destroy(TextureID id)
-    {
-        // delete opengl texture
-        GLuint texture = GetInfo(id).GLTexture;
-        glDeleteTextures(1, &texture);
-
-        // free texture info
-        m_Textures.Free(id);
+        m_TextureInfos.Free(textureID);
     }
 } // namespace ASEngine
