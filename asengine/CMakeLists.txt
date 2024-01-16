@@ -2,9 +2,6 @@
 cmake_minimum_required(VERSION 3.22.1)
 set(CMAKE_CXX_STANDARD 23)
 
-set(SPIRV_CROSS_STATIC)
-set(SPIRV_CROSS_ENABLE_C_API OFF)
-
 project(asengine)
 include_directories(engine)
 
@@ -19,6 +16,10 @@ endif()
 # link SPIRV-Cross
 add_subdirectory(dependencies/SPIRV-Cross)
 include_directories(dependencies/SPIRV-Cross)
+
+add_subdirectory(dependencies/glslang)
+include_directories(dependencies/glslang/Public)
+
 
 add_library(
     asengine
@@ -113,6 +114,7 @@ else()
     target_link_libraries(
         asengine
         spirv_cross_glsl
+        glslang
     )
 
 endif()

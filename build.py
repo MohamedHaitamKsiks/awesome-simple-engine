@@ -9,7 +9,8 @@ def generateIncludeFiles():
     #add dependencies
     dependenciesFolder = pathlib.Path("dependencies").iterdir()
     for folder in dependenciesFolder:
-        shutil.copytree(f"{str(folder)}/include", "build/include/dependencies/" + str(folder.name), dirs_exist_ok=True)
+        if pathlib.Path(f"{str(folder)}/include").is_dir():
+            shutil.copytree(f"{str(folder)}/include", "build/include/dependencies/" + str(folder.name), dirs_exist_ok=True)
 
     #entrypoint for include file (include it to include all the engine)
     entryPointList = ["#ifndef ASENGINE_H\n#define ASENGINE_H\n"]
@@ -52,7 +53,7 @@ def generateIncludeFiles():
     entryPointFile.close()
 
 # compile engine 
-def compileEngineFor(plarform) -> int:
+def compileEngineFor(plarform, graphicsAPI = "") -> int:
     #engine path
     enginePath = os.getcwd()
     #cmake toolchains path
