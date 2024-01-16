@@ -5,8 +5,10 @@
 #include "Core/Error/Exception.h"
 #include "Core/Memory/PoolAllocator.h"
 #include "Renderer/GraphicsAPI.h"
+#include "BufferManager.h"
 
 #include <unordered_map>
+
 
 namespace ASEngine
 {
@@ -36,15 +38,22 @@ namespace ASEngine
     {
         uint32_t Binding;
         size_t Size = 0;
+        BufferID UniformBufferID;
 
         // shader layout 
         std::unordered_map<UniqueString, ShaderUniformBufferIdentifier> Identifiers{};
     };
 
-    // sampler 2d info
-    struct Sampler2DInfo
+    // sampler info
+    struct ShaderSamplerInfo
     {
+        UniqueString Name;
         uint32_t Binding;
+    // opengl specifications
+    #ifdef OPENGL
+        GLuint TextureIndex;
+        GLuint Location;
+    #endif // OPENGL
     };
 
     // shader type
@@ -55,6 +64,17 @@ namespace ASEngine
         FRAGMENT = (1u << 1)
     };
 
+    // shader params
+    struct ShaderParams
+    {
+        std::unordered_map<UniqueString, ShaderUniformBufferInfo> UniformBuffers = {};
+        std::unordered_map<UniqueString, ShaderSamplerInfo> Samplers = {};
+    
+        // add other shader params
+        void Add(const ShaderParams& params);
+    };
+    
+
     // shader info
     struct ShaderInfo
     {
@@ -64,7 +84,7 @@ namespace ASEngine
         #endif // OPENGL
 
         ShaderType Type = ShaderType::NONE;
-        std::unordered_map<UniqueString, ShaderUniformBufferInfo> UniformBuffers = {};
+        ShaderParams Params{};
     };
 
     // shader creation fail exception

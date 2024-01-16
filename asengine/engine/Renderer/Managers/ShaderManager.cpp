@@ -3,12 +3,19 @@
 
 namespace ASEngine
 {
+    void ShaderParams::Add(const ShaderParams &params)
+    {
+        this->Samplers.insert(params.Samplers.begin(), params.Samplers.end());
+        this->UniformBuffers.insert(params.UniformBuffers.begin(), params.UniformBuffers.end());
+    }
+
     // this functions is defined here and cannot be used by other files
     // I did this so that spirv_glsl do not get included  
-    void ShaderManagerLoadShaderInfo(const spirv_cross::CompilerGLSL &glsl, ShaderInfo &info)
+    void ShaderManagerLoadShaderParams(const spirv_cross::CompilerGLSL &glsl, ShaderParams &params)
     {
         spirv_cross::ShaderResources resources = glsl.get_shader_resources();
 
+        // get uniform buffers
         for (auto& uniformBuffer: resources.uniform_buffers) 
         {
             ShaderUniformBufferInfo ubInfo{};
@@ -66,9 +73,18 @@ namespace ASEngine
             }
 
 
-            info.UniformBuffers[UniqueString(uniformBuffer.name)] = ubInfo;
+            params.UniformBuffers[UniqueString(uniformBuffer.name)] = ubInfo;
         }
 
+        // get samplers
+        for (auto& sampler: resources.sampled_images)
+        {
+            ShaderSamplerInfo samplerInfo{};
+            samplerInfo.Name = UniqueString(sampler.name);
+            samplerInfo.Binding = glsl.get_decoration(sampler.id, spv::DecorationBinding);
+
+            params.Samplers[samplerInfo.Name] = samplerInfo;
+        }
     }
 
     ShaderID ShaderManager::Create(const SpirvBinary &spirv, ShaderType type)
@@ -76,13 +92,13 @@ namespace ASEngine
         // get spirv data
         ShaderInfo info{};
         info.Type = type;
-        info.UniformBuffers = {};
+        info.Params = ShaderParams{};
 
         // create spirv_compiler
         spirv_cross::CompilerGLSL glsl(spirv);
         
-        // load shader infos
-        ShaderManagerLoadShaderInfo(glsl, info);
+        // load shader params
+        ShaderManagerLoadShaderParams(glsl, info.Params);
 
 
     // create opengl shader

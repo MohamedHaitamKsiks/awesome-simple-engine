@@ -14,12 +14,12 @@
 #include "Renderer/Color.h"
 #include "Renderer/GraphicsAPI.h"
 
+#include "BufferManager.h"
 #include "ShaderManager.h"
+#include "TextureManager.h"
 
 namespace ASEngine
 {
-
-
     // shader progarm info
     struct ShaderProgramInfo
     {
@@ -27,11 +27,8 @@ namespace ASEngine
     #ifdef OPENGL
         GLint GLProgramID = -1;
     #endif
-        ShaderType Type = ShaderType::NONE;
-
-    private: 
-        void FetchUniforms();
-        friend class ShaderProgramManager;
+        // shader params
+        ShaderParams Params{};
     };
 
     // shader program id
@@ -44,7 +41,7 @@ namespace ASEngine
     class ShaderProgramManager
     {
     public:
-        ShaderProgramManager(ShaderManager* shaderManager);
+        ShaderProgramManager() {};
         ~ShaderProgramManager() {};
 
         /* create shader program from fragment and vertex shader, 
@@ -60,6 +57,12 @@ namespace ASEngine
             return m_ShaderProgramInfos.Get(shaderProgramID);
         }
 
+        // bind uniform buffer
+        void SetUniformBuffer(ShaderProgramID shaderProgramID, UniqueString uniformBufferName, const ByteBuffer& buffer);
+
+        // bind texture to sampler
+        void SetSampler(ShaderProgramID shaderProgramID, UniqueString samplerName, TextureID textureID);
+
         // destroy shader program
         void Destroy(ShaderProgramID shaderProgramID);
 
@@ -67,8 +70,6 @@ namespace ASEngine
         TPoolAllocator<ShaderProgramInfo> m_ShaderProgramInfos{2};
         // keep track of current chunk
         ShaderProgramID m_CurrentShaderProgram = CHUNK_NULL;
-        // shader manager dependencie
-        ShaderManager* m_ShaderManager;    
     };
 
 } // namespace ASEngine

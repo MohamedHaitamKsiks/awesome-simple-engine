@@ -16,6 +16,9 @@ layout(binding = 0) uniform Params
     mat3 Camera[2][4];
 } params;
 
+// samplers
+layout(binding = 1) uniform sampler2D Texture; 
+
 // main function is generated
 void main() {
     UV = v_TextureCoord;

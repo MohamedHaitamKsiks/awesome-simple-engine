@@ -3,6 +3,7 @@
 
 #include "Core/Error/Exception.h"
 #include "Core/Memory/PoolAllocator.h"
+#include "Core/Memory/ByteBuffer.h"
 
 #include "Renderer/GraphicsAPI.h"
 
@@ -13,6 +14,7 @@ namespace ASEngine
     {
         INDEX,
         ARRAY,
+        UNIFORM_BUFFER,
         // number of buffer types
         COUNT
     };
@@ -47,9 +49,7 @@ namespace ASEngine
             return m_BufferInfos.Get(bufferID);
         }
 
-        void Allocate(BufferID bufferID, size_t size, const void* data = nullptr);
-        
-        void SetData(BufferID bufferID, size_t offset, size_t size, const void* data);
+        void SetData(BufferID bufferID, const ByteBuffer& buffer);
 
         void Delete(BufferID bufferID);
 

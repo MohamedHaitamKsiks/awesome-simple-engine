@@ -43,11 +43,11 @@ UNIT_TEST(ShaderManagerTest,
     UNIT_TEST_CASE("It should have one uniform buffer named 'Params'", 
     {
         EXPECT(shaderInfo.Type == ShaderType::VERTEX);
-        EXPECT(shaderInfo.UniformBuffers.size() == 1);
-        EXPECT(shaderInfo.UniformBuffers.find(paramName) != shaderInfo.UniformBuffers.end());
+        EXPECT(shaderInfo.Params.UniformBuffers.size() == 1);
+        EXPECT(shaderInfo.Params.UniformBuffers.find(paramName) != shaderInfo.Params.UniformBuffers.end());
     });
 
-    auto &uniformBuffer = shaderInfo.UniformBuffers[paramName];
+    auto &uniformBuffer = shaderInfo.Params.UniformBuffers[paramName];
 
     UNIT_TEST_CASE("uniform buffer 'Params' should be of size 108 * sizeof(floats)", 
     {
@@ -96,5 +96,14 @@ UNIT_TEST(ShaderManagerTest,
         EXPECT(cameraIdentifier.ArrayDimentions.GetSize() == 2);
         EXPECT(cameraIdentifier.ArrayDimentions[1] == 2);
         EXPECT(cameraIdentifier.ArrayDimentions[0] == 4);
+    });
+
+    // test samplers
+    UniqueString textureName = UniqueString("Texture");
+
+    UNIT_TEST_CASE("It should have a sampler named 'Texture'",
+    {
+        EXPECT(shaderInfo.Params.Samplers.find(textureName) != shaderInfo.Params.Samplers.end());
+        EXPECT(shaderInfo.Params.Samplers[textureName].Binding == 1);
     });
 });

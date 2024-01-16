@@ -1,4 +1,3 @@
-#define OPENGL
 #include "BufferManager.h"
 
 namespace ASEngine
@@ -22,6 +21,10 @@ namespace ASEngine
         case BufferType::INDEX:
             bufferInfo.GLBufferType = GL_ELEMENT_ARRAY_BUFFER;
             break;
+        
+        case BufferType::UNIFORM_BUFFER:
+            bufferInfo.GLBufferType = GL_UNIFORM_BUFFER:
+            break;
 
         default:
             throw BufferInvalidTypeException();
@@ -33,30 +36,16 @@ namespace ASEngine
         m_BufferInfos.Push(bufferInfo);
     }
 
-    void BufferManager::Allocate(BufferID bufferID, size_t size, const void *data)
+    void BufferManager::SetData(BufferID bufferID, const ByteBuffer &buffer)
     {
         auto &bufferInfo = m_BufferInfos.Get(bufferID);
-    
-    #ifdef OPENGL
-        glBindBuffer(bufferInfo.GLBufferType, bufferInfo.GLBufferID);
-        glBufferData(bufferInfo.GLBufferType, size, data, GL_DYNAMIC_DRAW);
-    #endif // OPENGL
 
-        bufferInfo.Size = size;        
-    }
-
-    void BufferManager::SetData(BufferID bufferID, size_t offset, size_t size, const void *data)
-    {
-        const auto& bufferInfo = GetBufferInfo(bufferID);
-        
-        // check offset and size in buffer's range
-        if (offset + size > bufferInfo.Size)
-            throw BufferOutOfRangeException();
-        
-    #ifdef OPENGL
+#ifdef OPENGL
         glBindBuffer(bufferInfo.GLBufferType, bufferInfo.GLBufferID);
-        glBufferSubData(bufferInfo.GLBufferType, offset, size, data);
-    #endif // OPENGl
+        glBufferData(bufferInfo.GLBufferType, buffer.GetSize(), buffer.GetData(), GL_DYNAMIC_DRAW);
+#endif // OPENGL
+
+        bufferInfo.Size = buffer.GetSize();
     }
 
     void BufferManager::Delete(BufferID bufferID)
