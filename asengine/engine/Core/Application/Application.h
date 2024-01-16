@@ -16,7 +16,7 @@
 
 #include "Renderer/Viewport.h"
 #include "Renderer/GraphicsAPI.h"
-#include "Renderer/TextureManager.h"
+#include "Renderer/Renderer.h"
 #include "Renderer/2D/Renderer2D.h"
 #include "Renderer/3D/Renderer3D.h"
 

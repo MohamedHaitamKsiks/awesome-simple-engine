@@ -17,29 +17,23 @@ namespace ASEngine
 
     void Material::Create(ResourceID shaderID)
     {
-        // get shader
+        /*// get shader
         m_ShaderID = shaderID;
         auto &shader = ResourceManager<Shader>::Get(m_ShaderID);
 
         // allocate uniform buffer
-        m_UniformBuffer = new uint8_t[shader.m_UniformBufferSize];
+        m_UniformBuffer = new uint8_t[shader.m_UniformBufferSize];*/
     }
 
-    const ShaderUniformInfo& Material::GetShaderParamInfo(UniqueString param) const
-    {
-        auto &shader = ResourceManager<Shader>::Get(m_ShaderID);
-        int paramID = shader.m_UniformNames[param];
-        return shader.m_Uniforms[paramID];
-    }
 
     void Material::CopyToUniformBuffer(const void *buffer, size_t offset, size_t size)
     {
-        memcpy(m_UniformBuffer + offset, buffer, size);
+        //memcpy(m_UniformBuffer + offset, buffer, size);
     }
 
     void Material::Bind()
     {
-        auto& shader = ResourceManager<Shader>::Get(m_ShaderID);
+        /*auto& shader = ResourceManager<Shader>::Get(m_ShaderID);
 
         for (auto info : shader.m_Uniforms)
         {
@@ -79,20 +73,20 @@ namespace ASEngine
                 currentSlot++;
                 break;
             }
-        }
+        }*/
     }
 
     // material
     template <>
     Json Serializer<Material>::Serialize(const Material &value)
     {
-        Json materialObject = Json({});
-        return materialObject;
+        /*Json materialObject = Json({});
+        return materialObject;*/
     }
     template <>
     void Serializer<Material>::Deserialize(const Json &object, Material &dest)
     {
-        assert(object.is_object());
+        /*assert(object.is_object());
         // get shader
         std::string shaderPath = object["ShaderName"];
         ResourceID shaderID = ResourceManager<Shader>::GetResourceID(UniqueString(shaderPath));
@@ -141,7 +135,7 @@ namespace ASEngine
                 dest.SetShaderParam(param, texture);
                 break;
             }
-        }
+        }*/
     }
 
     bool Material::Load(const std::string &path)

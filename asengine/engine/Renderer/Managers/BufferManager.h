@@ -26,7 +26,7 @@ namespace ASEngine
     #ifdef OPENGL
         GLuint GLBufferID;
         GLuint GLBufferType;
-    #endif OPENGL
+    #endif //OPENGL
         BufferType Type;
         size_t Size = 0;
     };

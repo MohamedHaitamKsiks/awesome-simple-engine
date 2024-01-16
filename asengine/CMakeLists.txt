@@ -2,6 +2,9 @@
 cmake_minimum_required(VERSION 3.22.1)
 set(CMAKE_CXX_STANDARD 23)
 
+set(SPIRV_CROSS_STATIC)
+set(SPIRV_CROSS_ENABLE_C_API OFF)
+
 project(asengine)
 include_directories(engine)
 
@@ -13,6 +16,9 @@ else()
     set(FILESYSTEM_SOURCES ${FILESYSTEM_SOURCES} engine/Core/FileSystem/FileDesktop.cpp)
 endif()
 
+# link SPIRV-Cross
+add_subdirectory(dependencies/SPIRV-Cross)
+include_directories(dependencies/SPIRV-Cross)
 
 add_library(
     asengine
@@ -60,11 +66,12 @@ add_library(
     engine/Resource/Scene.cpp
     engine/Resource/Audio.cpp
     #rendering
-    engine/Renderer/GraphicsAPI.cpp
-    engine/Renderer/TextureManager.cpp
+    engine/Renderer/Managers/BufferManager.cpp
+    engine/Renderer/Managers/ShaderManager.cpp
+    engine/Renderer/Managers/ShaderProgramManager.cpp
+    engine/Renderer/Managers/TextureManager.cpp
+    engine/Renderer/Renderer.cpp
     engine/Renderer/Viewport.cpp
-    engine/Renderer/ShaderProgram.cpp
-    engine/Renderer/ShaderUniform.cpp
     #3d
     engine/Renderer/3D/Mesh3D.cpp
     engine/Renderer/3D/Renderer3D.cpp
@@ -74,8 +81,6 @@ add_library(
     engine/Renderer/2D/Quad2D.cpp
     engine/Renderer/2D/Renderer2D.cpp
     engine/Renderer/2D/VertexBufferObject2D.cpp
-    #tween
-    engine/Animation/Interpolation/Interpolate.cpp
     #audio
     engine/Audio/AudioEngine.cpp
     #testing
@@ -100,12 +105,14 @@ if(NOT ANDROID)
     target_link_libraries(
         asengine
         glew
+        spirv_cross_glsl
         OpenGL::GL
     )
 
 else()
     target_link_libraries(
         asengine
+        spirv_cross_glsl
     )
 
 endif()

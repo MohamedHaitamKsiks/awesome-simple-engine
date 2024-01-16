@@ -10,9 +10,6 @@
 #include "Core/String/UniqueString.h"
 #include "Core/Serialization/Serializer.h"
 
-#include "Renderer/ShaderUniform.h"
-#include "Renderer/ShaderProgram.h"
-
 #include "Resource.h"
 
 namespace ASEngine
@@ -31,19 +28,14 @@ namespace ASEngine
         // bind shader
         void Bind();
 
-        // get shader program
-        inline const ShaderProgram& GetShaderProgram() const
-        {
-            return m_Program;
-        }
 
     private:
-        ShaderProgram m_Program = SHADER_NULL;
+        /*ShaderProgram m_Program = SHADER_NULL;
         // size of buffer
         int m_UniformBufferSize = 0;
         // hashmap of all unifroms
         std::vector<ShaderUniformInfo> m_Uniforms = {};
-        std::unordered_map<UniqueString, int> m_UniformNames = {};
+        std::unordered_map<UniqueString, int> m_UniformNames = {};*/
 
         friend class Material;
     };

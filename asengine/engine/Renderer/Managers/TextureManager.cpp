@@ -2,7 +2,7 @@
 
 namespace ASEngine
 {
-    TextureID TextureManager::LoadFromImage(const Image &image, TextureFilter filter = TextureFilter::NEAREST)
+    TextureID TextureManager::CreateFromImage(const Image &image, TextureFilter filter)
     {
         // create texture info
         TextureInfo textureInfo{};

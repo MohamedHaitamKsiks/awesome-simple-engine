@@ -27,6 +27,7 @@ namespace ASEngine
 
     void Renderer2D::OnWindowChangeSize(int width, int height)
     {
+        /*
         // get aspect ratio of viewport
         float viewportAspectRatio = Viewport::GetSize().x / Viewport::GetSize().y;
 
@@ -55,16 +56,19 @@ namespace ASEngine
             int newHeight = (int)(width / viewportAspectRatio);
             int viewportPosition = (height - newHeight) / 2;
             glViewport(0, viewportPosition, width, newHeight);
-        }
+        }*/
     }
 
     void Renderer2D::IBegin()
     {
-        glClear(GL_DEPTH_BUFFER_BIT);
+        //glClear(GL_DEPTH_BUFFER_BIT);
 
         // cache projection matrices
         m_ViewProjectionMatrix = Viewport::GetProjectionMatrix();
-        m_CameraProjectionMatrix = mat3::Rotation(m_Camera2D.Rotation * -1.0f) * mat3::Scale(vec2::ONE() * m_Camera2D.Zoom) * mat3::Translate(m_Camera2D.Position * -1.0f);
+        m_CameraProjectionMatrix = mat3::Rotation(m_Camera2D.Rotation * -1.0f) * 
+            mat3::Scale(vec2::ONE() * m_Camera2D.Zoom) * 
+            mat3::Translate(m_Camera2D.Position * -1.0f);
+
         // set materials and shaders to null
         m_CurrentShaderID = CHUNK_NULL;
         m_CurrentMaterialID = CHUNK_NULL;
@@ -93,7 +97,7 @@ namespace ASEngine
     void Renderer2D::IDrawQuad(const Quad2D &quad2D, ResourceID materialID)
     {
         
-        // check material changed
+        /*// check material changed
         if (materialID != m_CurrentMaterialID)
         {
             // submit current batch
@@ -125,7 +129,7 @@ namespace ASEngine
         }
 
         // add quad to current batch
-        m_Vbo2D.PushQuad(quad2D);
+        m_Vbo2D.PushQuad(quad2D);*/
     }
 
 } // namespace ASEngine

@@ -12,12 +12,6 @@ namespace ASEngine
     {
         if (!IsOwner())
             return;
-
-        if (m_Program != SHADER_NULL)
-        {
-            ShaderProgram::Destroy(m_Program);
-            m_Program = SHADER_NULL;
-        }
     }
 
     bool Shader::Load(const std::string &path)
@@ -28,7 +22,7 @@ namespace ASEngine
         std::string shaderCode = file.ReadText();
         file.Close();
 
-        // compile shader code
+        /*// compile shader code
         m_Program = ShaderProgram::Create(shaderCode);
 
         // get params
@@ -42,13 +36,13 @@ namespace ASEngine
             m_UniformNames.insert({m_Uniforms[i].Name, i});
             m_UniformBufferSize += info.Size;
         }
-
+*/
         return true;
     }
 
     void Shader::Bind()
     {
-        ShaderProgram::Use(m_Program);
+        //ShaderProgram::Use(m_Program);
     }
 
 } // namespace ASEngine

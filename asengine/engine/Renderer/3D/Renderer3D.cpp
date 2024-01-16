@@ -43,7 +43,7 @@ namespace ASEngine
 
     void Renderer3D::IDraw()
     {
-        // calculate cache projection matrix
+        /*// calculate cache projection matrix
         vec2 viewportSize = Viewport::GetSize();
         m_ProjectionMatrix = mat4::PerspectiveProjection(viewportSize.x / viewportSize.y, m_Camera3D.FOV, m_Camera3D.Near, m_Camera3D.Far);
         
@@ -79,7 +79,7 @@ namespace ASEngine
             // get mesh vbo and bind it
             vbo3D.DrawInstanced(meshInstanceInfo.Transforms.GetSize());
 
-        }
+        }*/
     }
 
 } // namespace ASEngine

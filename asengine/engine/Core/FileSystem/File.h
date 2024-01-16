@@ -61,8 +61,6 @@ namespace ASEngine {
         //read text and return string
         std::string ReadText();
 
-
-
     private:
         size_t m_Size = 0;
         FileOpenMode m_Mode = FileOpenMode::NONE;

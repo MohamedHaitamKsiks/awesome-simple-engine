@@ -65,7 +65,7 @@ namespace ASEngine
     void Renderer::InitManagers()
     {
         m_ShaderManager = std::make_unique<ShaderManager>();
-        m_ShaderProgramManager = std::make_unique<ShaderProgramManager>();
-        m_ShaderManager = std::make_unique<ShaderManager>();
+        m_ShaderProgramManager = std::make_unique<ShaderProgramManager>(m_ShaderManager.get());
+        m_TextureManager = std::make_unique<TextureManager>();
     }
 } // namespace ASEngine

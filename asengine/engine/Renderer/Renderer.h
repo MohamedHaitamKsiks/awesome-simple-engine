@@ -22,7 +22,7 @@ namespace ASEngine
         ~Renderer() {};
 
         // get texture manager
-        static inline TextureManager* GetTextureManager()
+        inline TextureManager* GetTextureManager()
         {
             return GetSingleton()->m_TextureManager.get();
         }

@@ -14,8 +14,6 @@
 
 #include "Renderer/GraphicsAPI.h"
 #include "Renderer/Viewport.h"
-#include "Renderer/ShaderUniform.h"
-#include "Renderer/ShaderProgram.h"
 
 #include "Camera2D.h"
 #include "VertexBufferObject2D.h"

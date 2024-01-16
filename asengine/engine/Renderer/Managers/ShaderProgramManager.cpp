@@ -1,4 +1,3 @@
-#define OPENGL
 #include "ShaderProgramManager.h"
 
 namespace ASEngine
@@ -91,17 +90,17 @@ namespace ASEngine
     {
         // create shader program info
         ShaderProgramInfo info{};
-        info.Type = ShaderType::VERTEX | ShaderType::FRAGMENT;
+        //info.Type = ShaderType::VERTEX | ShaderType::FRAGMENT;
         
         // get vertex shader info
         auto& vertexShaderInfo = m_ShaderManager->GetShaderInfo(vertexShaderID);
         if(vertexShaderInfo.Type != ShaderType::VERTEX)
-            throw ShaderProgramCreateFailException("Expecting First shaderID to be of type ShaderType::VERTEX");
+            throw Exception("Expecting First shaderID to be of type ShaderType::VERTEX");
 
         // get fragment shader info
         auto &fragmentShaderInfo = m_ShaderManager->GetShaderInfo(fragmentShaderID);
         if (fragmentShaderInfo.Type != ShaderType::FRAGMENT)
-            throw ShaderProgramCreateFailException("Expecting Second shaderID to be of type ShaderType::FRAGMENT");
+            throw Exception("Expecting Second shaderID to be of type ShaderType::FRAGMENT");
 
     // opengl specification
     #ifdef OPENGL

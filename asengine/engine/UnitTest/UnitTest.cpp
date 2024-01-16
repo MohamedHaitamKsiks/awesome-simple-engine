@@ -8,11 +8,14 @@ void ASEngine::UnitTest::Test(const std::string &testCaseName, const std::functi
     m_TestCases[testCaseName] = testCallback;
 }
 
-void ASEngine::UnitTest::Expect(bool predicat)
+void ASEngine::UnitTest::Expect(bool predicat, const std::string& file, uint32_t line, const std::string& errorMessage )
 {
     if (!predicat)
-        throw TestFailException();
-
+    {
+        std::stringstream errorSS;
+        errorSS << file << ":" << line << ": Wrong predicat: " << errorMessage;
+        throw TestFailException(errorSS.str());
+    }
 }
 
 bool ASEngine::UnitTest::Run()
@@ -50,10 +53,10 @@ bool ASEngine::UnitTest::Run()
         catch (TestFailException failException)
         {
             testResult = false;
-            Debug::Log(Debug::Colorized(Debug::RED_FG,"  x", testName));
+            Debug::Error("  x", testName);
+            Debug::Error("\t", failException.what());
         }
 
-        
     }
 
     // print result

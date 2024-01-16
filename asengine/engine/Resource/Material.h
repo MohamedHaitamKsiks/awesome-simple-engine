@@ -14,7 +14,6 @@
 #include "Core/Serialization/Serializer.h"
 
 #include "Renderer/Color.h"
-#include "Renderer/ShaderProgram.h"
 
 #include "ResourceManager.h"
 #include "Resource.h"
@@ -41,7 +40,7 @@ namespace ASEngine {
         template<typename T>
         void SetShaderParam(const UniqueString& param, const T& value)
         {
-            // get shader
+            /*// get shader
             auto &shader = ResourceManager<Shader>::Get(m_ShaderID);
             // get shader info
             int paramIndex = shader.m_UniformNames[param];
@@ -54,10 +53,8 @@ namespace ASEngine {
             }
 
             // copy value to buffer
-            CopyToUniformBuffer(&value, info.Offset, sizeof(T));
+            CopyToUniformBuffer(&value, info.Offset, sizeof(T));*/
         }
-
-        const ShaderUniformInfo& GetShaderParamInfo(UniqueString param) const;
 
         // get shader
         inline ResourceID GetShaderID() const
@@ -74,9 +71,9 @@ namespace ASEngine {
         template<typename T>
         void DeserializeAndSet( UniqueString param, const Json& paramValue)
         {
-            T value;
+            /*T value;
             Serializer<T>::Deserialize(paramValue, value);
-            SetShaderParam(param, value);
+            SetShaderParam(param, value);*/
         }
 
         // shader

@@ -18,41 +18,7 @@
 
 namespace ASEngine
 {
-    // uniform 
-    using UniformName = UniqueString;
 
-    // shadaer uniform variable type
-    enum class ShaderUniformType
-    {
-        UNDEFINED,
-        INT,
-        FLOAT,
-        VEC2,
-        VEC3,
-        VEC4,
-        MAT3,
-        MAT4,
-        SAMPLER_2D
-    };
-
-    // shader params info
-    struct ShaderParamInfo
-    {
-    // opengl specification
-    #ifdef OPENGL
-        GLint GLUniformLocation = -1;
-    #endif // OPENGL
-        // uniform name
-        UniformName Name = UNIQUE_STRING_NULL;
-        // unifrom type
-        ShaderUniformType Type = ShaderUniformType::UNDEFINED;
-        // uniform size
-        size_t Size = 0;
-        // uniform index
-        int Index = 0;
-        // uniform offset
-        int Offset = 0;
-    };
 
     // shader progarm info
     struct ShaderProgramInfo
@@ -61,7 +27,6 @@ namespace ASEngine
     #ifdef OPENGL
         GLint GLProgramID = -1;
     #endif
-        std::unordered_map<UniformName, ShaderUniformInfo> UniformInfos; 
         ShaderType Type = ShaderType::NONE;
 
     private: 
@@ -93,11 +58,6 @@ namespace ASEngine
         inline ShaderProgramInfo& GetShaderProgramInfo(ShaderProgramID shaderProgramID)
         {
             return m_ShaderProgramInfos.Get(shaderProgramID);
-        }
-
-        inline ShaderUniformInfo GetUniformInfo(ShaderProgramID shaderProgramID, UniqueString uniformName)
-        {
-            return GetShaderProgramInfo(shaderProgramID).UniformInfos[uniformName];
         }
 
         // destroy shader program
