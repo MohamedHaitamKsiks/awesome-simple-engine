@@ -10,6 +10,8 @@
 #include "Core/String/UniqueString.h"
 #include "Core/Serialization/Serializer.h"
 
+#include "Renderer/Renderer.h"
+
 #include "Resource.h"
 
 namespace ASEngine
@@ -28,14 +30,13 @@ namespace ASEngine
         // bind shader
         void Bind();
 
-
     private:
-        /*ShaderProgram m_Program = SHADER_NULL;
-        // size of buffer
-        int m_UniformBufferSize = 0;
-        // hashmap of all unifroms
-        std::vector<ShaderUniformInfo> m_Uniforms = {};
-        std::unordered_map<UniqueString, int> m_UniformNames = {};*/
+        // keep shader ids to free them when deleting shader
+        ShaderID m_VertexShaderID = CHUNK_NULL;
+        ShaderID m_FragmentShaderID = CHUNK_NULL;
+
+        // shader program
+        ShaderProgramID m_ShaderProgramID = CHUNK_NULL;
 
         friend class Material;
     };

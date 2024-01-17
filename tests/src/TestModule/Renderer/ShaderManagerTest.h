@@ -5,11 +5,12 @@ using namespace ASEngine;
 
 UNIT_TEST(ShaderManagerTest, 
 {
-    // load spirv
+
+     // load spirv
     SpirvBinary spirv{};
 
     File spirvFile;
-    spirvFile.Open("shaders/test.spv", FileOpenMode::READ);
+    spirvFile.Open("shaders/test.vert.spv", FileOpenMode::READ);
 
     size_t spirvSize = spirvFile.GetSize() / sizeof(uint32_t);
     auto spirvData = std::make_unique<uint32_t[]>(spirvSize);
@@ -46,6 +47,7 @@ UNIT_TEST(ShaderManagerTest,
         EXPECT(shaderInfo.Params.UniformBuffers.size() == 1);
         EXPECT(shaderInfo.Params.UniformBuffers.find(paramName) != shaderInfo.Params.UniformBuffers.end());
     });
+
 
     auto &uniformBuffer = shaderInfo.Params.UniformBuffers[paramName];
 

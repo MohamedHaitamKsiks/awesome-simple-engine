@@ -10,39 +10,36 @@ namespace ASEngine
 
     Shader::~Shader()
     {
-        if (!IsOwner())
-            return;
-    }
+        // delete shader program
+        ShaderProgramManager* shaderProgramManager = Renderer::GetShaderProgramManager();
+        if (m_ShaderProgramID != CHUNK_NULL)
+            shaderProgramManager->Destroy(m_ShaderProgramID);
+
+        // delete shaders
+        ShaderManager* shaderManager = Renderer::GetShaderManager();
+        if (m_FragmentShaderID != CHUNK_NULL)
+            shaderManager->Delete(m_FragmentShaderID);
+
+        if (m_VertexShaderID != CHUNK_NULL)
+            shaderManager->Delete(m_VertexShaderID);
+        }
 
     bool Shader::Load(const std::string &path)
     {
         // read file
         File file;
-        if (!file.Open(path, FileOpenMode::READ)) return false;
+        if (!file.Open(path, FileOpenMode::READ)) 
+            return false;
+            
         std::string shaderCode = file.ReadText();
         file.Close();
 
-        /*// compile shader code
-        m_Program = ShaderProgram::Create(shaderCode);
-
-        // get params
-        m_Uniforms = std::vector(m_Program.GetAllUniformInfo());
-        m_UniformNames.reserve(m_Uniforms.size());
-
-        // add params
-        for (int i = 0; i < m_Uniforms.size(); i++)
-        {
-            ShaderUniformInfo info = m_Uniforms[i];
-            m_UniformNames.insert({m_Uniforms[i].Name, i});
-            m_UniformBufferSize += info.Size;
-        }
-*/
         return true;
     }
 
     void Shader::Bind()
     {
-        //ShaderProgram::Use(m_Program);
+        Renderer::GetShaderProgramManager()->Bind(m_ShaderProgramID);
     }
 
 } // namespace ASEngine

@@ -17,9 +17,6 @@ endif()
 add_subdirectory(dependencies/SPIRV-Cross)
 include_directories(dependencies/SPIRV-Cross)
 
-add_subdirectory(dependencies/glslang)
-include_directories(dependencies/glslang/Public)
-
 
 add_library(
     asengine
@@ -114,7 +111,6 @@ else()
     target_link_libraries(
         asengine
         spirv_cross_glsl
-        glslang
     )
 
 endif()

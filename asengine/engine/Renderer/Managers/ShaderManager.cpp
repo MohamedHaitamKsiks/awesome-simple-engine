@@ -1,6 +1,5 @@
 #include "ShaderManager.h"
 #include "spirv_glsl.hpp"
-#include "ShaderLang.h"
 
 namespace ASEngine
 {
