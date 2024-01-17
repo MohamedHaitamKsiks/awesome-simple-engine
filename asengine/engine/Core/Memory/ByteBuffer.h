@@ -19,8 +19,13 @@ namespace ASEngine
         // create buffer with size and data
         ByteBuffer(const void *data, size_t size);
 
+        // copy byte buffer
+        ByteBuffer(const ByteBuffer& buffer);
+
+        ByteBuffer& operator=(const ByteBuffer& buffer);
         // cleanup
         ~ByteBuffer();
+
 
         // set buffer data (can change size of the pointer)
         inline void SetData(const void *data, size_t size)
@@ -46,6 +51,9 @@ namespace ASEngine
     private:
         void* m_Data = nullptr;
         size_t m_Size = 0;
+
+        // copy byte buffer and erase current one
+        void Copy(const ByteBuffer& buffer);
     };
 } // namespace ASEngine
 

@@ -12,6 +12,17 @@ namespace ASEngine
         SetData(data, size);
     }
 
+    ByteBuffer::ByteBuffer(const ByteBuffer &buffer)
+    {
+        Copy(buffer);
+    }
+
+    ByteBuffer &ByteBuffer::operator=(const ByteBuffer &buffer)
+    {
+        Copy(buffer);
+        return *this;
+    }
+
     ByteBuffer::~ByteBuffer()
     {
         free(m_Data);
@@ -35,6 +46,17 @@ namespace ASEngine
         if (data)
             memcpy(m_Data, data, size);
     }
-    
+
+    void ByteBuffer::Copy(const ByteBuffer &buffer)
+    {
+        if (m_Data)
+        {
+            free(m_Data);
+            m_Size = 0;
+        }
+
+        SetData(buffer.GetData(), buffer.GetSize());
+    }
+
 } // namespace ASEngine
 

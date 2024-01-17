@@ -37,25 +37,18 @@ namespace ASEngine {
         // bind material before drawing
         void Bind();
 
-        // set shader param
+        // set uniform buffer
+        void SetUniformBuffer(UniqueString uniformBufferName, const ByteBuffer& buffer);
+
+        // set uniform buffer param
         template<typename T>
-        void SetShaderParam(const UniqueString& param, const T& value)
+        void SetUniformBufferParam(UniqueString uniformBufferName, UniqueString paramName, const T& value)
         {
-            /*// get shader
-            auto &shader = ResourceManager<Shader>::Get(m_ShaderID);
-            // get shader info
-            int paramIndex = shader.m_UniformNames[param];
-            ShaderUniformInfo info = shader.m_Uniforms[paramIndex];
-
-            // check if sizeof T is the same as param info
-            if (info.Size != sizeof(T))
-            {
-                return;
-            }
-
-            // copy value to buffer
-            CopyToUniformBuffer(&value, info.Offset, sizeof(T));*/
+            
         }
+
+        //set sampler
+        void SetSampler(UniqueString samplerName, TextureID textureID);
 
         // get shader
         inline ResourceID GetShaderID() const
@@ -87,6 +80,8 @@ namespace ASEngine {
         friend class Serializer<Material>;
     };
 
-} //ASEngine
+
+
+} // ASEngine
 
 #endif //ASENGINE_MATERIAL_H
