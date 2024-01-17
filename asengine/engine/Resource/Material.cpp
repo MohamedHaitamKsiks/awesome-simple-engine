@@ -4,14 +4,7 @@ namespace ASEngine
 {
     Material::~Material()
     {
-        if (!IsOwner())
-            return;
-            
-        if (m_UniformBuffer)
-        {
-            delete[] m_UniformBuffer;
-            m_UniformBuffer = nullptr;
-        }
+        
     }
 
 

@@ -29,6 +29,7 @@ add_library(
     engine/Core/Time/Time.cpp
     #memory
     engine/Core/Memory/PoolAllocator.cpp
+    engine/Core/Memory/ByteBuffer.cpp
     #strings
     engine/Core/String/UniqueString.cpp
     engine/Core/String/UniqueStringManager.cpp

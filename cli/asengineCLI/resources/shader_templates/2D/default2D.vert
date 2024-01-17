@@ -10,16 +10,16 @@ layout(location = 0) out vec2 UV;
 layout(location = 1) out vec4 MODULATE;
     
 //uniform transform
-layout(binding = 0) uniform Rendering
+layout(binding = 0) uniform Render
 {
+    mat3 Projection;
     mat3 View;
-    mat3 Camera;
-} params;
+} render;
 
 // main function is generated
 void main() {
     UV = v_TextureCoord;
     MODULATE = v_Modulate;
 
-    gl_Position = vec4(params.View * params.Camera * vec3(v_Position, 0.0f), 1.0f);
+    gl_Position = vec4(render.Projection * render.View * vec3(v_Position, 0.0f), 1.0f);
 }

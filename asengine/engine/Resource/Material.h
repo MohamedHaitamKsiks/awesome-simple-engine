@@ -12,6 +12,7 @@
 #include "Core/Math/vec2.h"
 #include "Core/Log/Log.h"
 #include "Core/Serialization/Serializer.h"
+#include "Core/Memory/ByteBuffer.h"
 
 #include "Renderer/Color.h"
 
@@ -78,8 +79,10 @@ namespace ASEngine {
 
         // shader
         ResourceID m_ShaderID = CHUNK_NULL;
-        // buffer of all uniforms values
-        uint8_t* m_UniformBuffer = nullptr;
+        
+        // param values  
+        std::unordered_map<UniqueString, ByteBuffer> m_UniformBuffers{};
+        std::unordered_map<UniqueString, TextureID> m_Samplers{};
 
         friend class Serializer<Material>;
     };

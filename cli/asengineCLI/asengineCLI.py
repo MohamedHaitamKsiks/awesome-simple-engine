@@ -12,6 +12,7 @@ from asengineCLI.commands.documentation import showDocumentation
 from asengineCLI.commands.status import getProjectStatus
 from asengineCLI.commands.build_project import buildProject
 from asengineCLI.commands.script_path import *
+from asengineCLI.commands.generate_shader import generateShader
 
 def executeCommand(command: str, args: list[str] = []) -> int:
     scriptPath = dirPath(__file__)
@@ -31,13 +32,22 @@ def executeCommand(command: str, args: list[str] = []) -> int:
             assert(len(args) == 1)
             error |= buildProject(relativeTo(scriptPath, "./resources/build.config.json"), ".", args[0])
 
+        case "generate-shader-3d":
+            assert(len(args) == 1)
+            error |= generateShader(args[0], relativeTo(scriptPath, "./resources/shader_templates"), "3D")
+
+        case "generate-shader-2d":
+            assert(len(args) == 1)
+            error |= generateShader(args[0], relativeTo(scriptPath, "./resources/shader_templates"), "2D")
+
+
         case "generate-project":
             assert(len(args) == 1)
             generateProject(args[0], relativeTo(scriptPath, "./resources/.project_template"))
 
         case "generate-component":
             assert(len(args) == 1)
-            generateComponent(args[0])
+            generateComponent(args[0], args[1])
 
         case "generate-system":
             assert(len(args) == 1)
