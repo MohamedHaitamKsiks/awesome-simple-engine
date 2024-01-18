@@ -1,6 +1,7 @@
 .tmp*
 .vscode/
 build/
+demos/
 
 # Editors
 .vscode/

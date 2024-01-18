@@ -13,6 +13,7 @@
 
 #include "Renderer/Color.h"
 #include "Renderer/GraphicsAPI.h"
+#include "Renderer/VertexInput.h"
 
 #include "BufferManager.h"
 #include "ShaderManager.h"
@@ -29,6 +30,7 @@ namespace ASEngine
     #endif
         // shader params
         ShaderParams Params{};
+        std::unordered_map<VertexAttributeInputRate, VertexInputLayout> VertexInputLayouts;
     };
 
     // shader program id
@@ -46,7 +48,7 @@ namespace ASEngine
 
         /* create shader program from fragment and vertex shader, 
         throws ShaderProgramCreateFailException*/
-        ShaderProgramID Create(ShaderID vertexShaderID, ShaderID fragmentShaderID);
+        ShaderProgramID Create(ShaderID vertexShaderID, ShaderID fragmentShaderID, const std::unordered_map<VertexInputRate, VertexInputLayout>& vertexLayouts);
 
         // bind shader program
         void Bind(ShaderProgramID shaderProgramID);

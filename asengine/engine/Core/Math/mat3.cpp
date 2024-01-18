@@ -9,9 +9,9 @@ namespace ASEngine
         for (int j = 0; j < 3; j++)
         {
             for (int i = 0; i < 3; i++)
-                ss << (*this)[j][i] << ",";
-            
+                ss << (*this)[i][j] << ",";
         }
+        
         return ss.str();
     }
 } // namespace ASEngine

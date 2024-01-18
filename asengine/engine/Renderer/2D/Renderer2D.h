@@ -34,34 +34,35 @@ namespace ASEngine
                 return GetSingleton()->m_Camera2D;
             };
 
-            // draw a quad with a given material
-            static inline void DrawQuad(const Quad2D &quad2D, ResourceID materialID)
-            {
-                GetSingleton()->IDrawQuad(quad2D, materialID);
-            };
-
+            // draw quad
+            void DrawQuad(const Quad2D &quad2D, ResourceID materialID);
+            
             // begin rendering context
-            static inline void Begin() { GetSingleton()->IBegin(); };
-
-            // begin UI rendering context (ignore camera)
-            static inline void BeginUI() { GetSingleton()->IBeginUI(); };
+            void Begin();
 
             // end rendering context
-            static inline void End() { GetSingleton()->IEnd(); };
-        private:
-            // resize signal connection
-            SignalConnection m_ResizeSignalConnection;
+            void End();
 
+            // begin ui
+            void BeginUI();
+
+            // end ui
+            inline void EndUI() 
+            {
+                End();
+            }
+        private:
             // camera2D
             Camera2D m_Camera2D{};
 
-            // cache projection matrices
-            mat3 m_CameraProjectionMatrix = mat3::IDENTITY();
-            mat3 m_ViewProjectionMatrix = mat3::IDENTITY();
+            // cache matrices
+            mat3 m_ViewMatrix = mat3::IDENTITY();
+            mat3 m_ProjectionMatrix = mat3::IDENTITY();
 
             // cache projection matrices names
-            UniqueString m_CameraParamName;
+            UniqueString m_RenderUniformBufferName;
             UniqueString m_ViewParamName;
+            UniqueString m_ProjectionParamName;
 
             // current shader
             ResourceID m_CurrentShaderID = CHUNK_NULL;
@@ -70,21 +71,6 @@ namespace ASEngine
 
             // vertex buffer to batch render
             VertexBufferObject2D m_Vbo2D{};
-
-            // On window change size
-            void OnWindowChangeSize(int width, int height);
-
-            // begin rendering context internal
-            void IBegin();
-
-            // begin UI rendering context (ignore camera) internal
-            void IBeginUI(); 
-
-            // end renderering context internal
-            void IEnd();
-
-            // draw quad internal
-            void IDrawQuad(const Quad2D &quad2D, ResourceID materialID);
     };
 } // namespace ASEngine
 

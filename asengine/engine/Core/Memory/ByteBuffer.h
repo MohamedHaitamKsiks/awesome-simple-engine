@@ -51,7 +51,6 @@ namespace ASEngine
     private:
         void* m_Data = nullptr;
         size_t m_Size = 0;
-
         // copy byte buffer and erase current one
         void Copy(const ByteBuffer& buffer);
     };

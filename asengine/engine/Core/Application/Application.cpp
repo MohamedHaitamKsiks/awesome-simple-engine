@@ -81,14 +81,16 @@ namespace ASEngine {
 		Renderer3D::Draw();
 
 		// render world 2d
-		Renderer2D::Begin();
+		Renderer2D* renderer2D = Renderer2D::GetSingleton();
+
+		renderer2D->Begin();
 		World::Render2D();
-		Renderer2D::End(); 
+		renderer2D->End(); 
 
 		// render ui
-		Renderer2D::BeginUI();
+		renderer2D->BeginUI();
 		World::UIRender2D();
-		Renderer2D::End();
+		renderer2D->End();
 
 	}
 
@@ -99,7 +101,6 @@ namespace ASEngine {
 		projectSettingsFile.Open("project.settings.json", FileOpenMode::READ);
 		std::string projectSettingsString = projectSettingsFile.ReadText();
 		projectSettingsFile.Close();
-		
 
 		//parse to json
 		nlohmann::json projectSettings = nlohmann::json::parse(projectSettingsString);

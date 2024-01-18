@@ -1,10 +1,11 @@
+#define OPENGL
 #include "ShaderProgramManager.h"
 #include "Renderer/Renderer.h"
 
 namespace ASEngine
 {
 
-    ShaderProgramID ShaderProgramManager::Create(ShaderID vertexShaderID, ShaderID fragmentShaderID)
+    ShaderProgramID ShaderProgramManager::Create(ShaderID vertexShaderID, ShaderID fragmentShaderID, const std::unordered_map<VertexInputRate, VertexInputLayout> &vertexLayouts)
     {
         // create shader program info
         ShaderProgramInfo info{};
@@ -25,6 +26,9 @@ namespace ASEngine
         // merge params from vertex and fragment shader
         info.Params.Add(vertexShaderInfo.Params);
         info.Params.Add(fragmentShaderInfo.Params);
+
+        // get vertex layouts
+        info.VertexInputLayouts = std::unordered_map<VertexInputRate, VertexInputLayout>(vertexLayouts);
 
     // opengl specification
     #ifdef OPENGL
@@ -69,7 +73,7 @@ namespace ASEngine
     #ifdef OPENGL
         auto &shaderProgramInfo = GetShaderProgramInfo(shaderProgramID);
         glUseProgram(shaderProgramInfo.GLProgramID);
-
+        
         BufferManager *bufferManager = Renderer::GetBufferManager();
 
         // bind all uniform buffers to respective binding
@@ -78,9 +82,35 @@ namespace ASEngine
             auto &bufferInfo = bufferManager->GetBufferInfo(uniformBufferInfo.UniformBufferID);
             glBindBufferBase(GL_UNIFORM_BUFFER, uniformBufferInfo.Binding, bufferInfo.GLBufferID);
         }
+
 #endif // OPENGL
 
         m_CurrentShaderProgram = shaderProgramID;
+    }
+
+    void ShaderProgramManager::SetUniformBuffer(ShaderProgramID shaderProgramID, UniqueString uniformBufferName, const ByteBuffer &buffer)
+    {
+        auto& shaderProgramInfo = GetShaderProgramInfo(shaderProgramID);
+        BufferID uniformBufferID = shaderProgramInfo.Params.UniformBuffers[uniformBufferName].UniformBufferID;
+        
+        Renderer::GetBufferManager()->SetData(uniformBufferID, buffer);
+    }
+
+    void ShaderProgramManager::SetSampler(ShaderProgramID shaderProgramID, UniqueString samplerName, TextureID textureID)
+    {
+        // get texture info
+        TextureManager* textureManager = Renderer::GetTextureManager();
+        const auto& textureInfo = textureManager->GetTextureInfo(textureID);
+
+        // get sampler info
+        auto &shaderProgramInfo = GetShaderProgramInfo(shaderProgramID);
+        auto &samplerInfo = shaderProgramInfo.Params.Samplers[samplerName];
+    #ifdef OPENGL
+
+        glActiveTexture(GL_TEXTURE0 + samplerInfo.TextureIndex);
+        glBindTexture(GL_TEXTURE_2D, textureInfo.GLTexture);
+
+    #endif // OPENGL
     }
 
     void ShaderProgramManager::Destroy(ShaderProgramID shaderProgramID)

@@ -1,6 +1,7 @@
 #ifndef ASENGINE_RENDERER_H
 #define ASENGINE_RENDERER_H
 
+#include "Core/Signals/Signal.h"
 #include "Core/Singleton/Singleton.h"
 
 #include "Managers/ShaderManager.h"
@@ -9,8 +10,11 @@
 #include "Managers/BufferManager.h"
 
 #include "Color.h"
-
 #include "GraphicsAPI.h"
+
+#include "VertexInput.h"
+
+#include <unordered_map>
 
 namespace ASEngine
 {
@@ -19,10 +23,10 @@ namespace ASEngine
     {
     public:
         Renderer();
-        ~Renderer() {};
+        ~Renderer();
 
         // get texture manager
-        inline TextureManager* GetTextureManager()
+        static inline TextureManager* GetTextureManager()
         {
             return GetSingleton()->m_TextureManager.get();
         }
@@ -45,11 +49,17 @@ namespace ASEngine
             return GetSingleton()->m_BufferManager.get();
         }
 
+        // bind vertex buffer to an input rate
+        void BindVertexBuffer(VertexInputRate inputRate, BufferID vertexBufferID);
+
+        // bind index buffer
+        void BindIndexBuffer(BufferID indexBufferID); 
+
         // draw elements, requires vertex and index buffer to be bounded
-        static void DrawElements(BufferID vertexBufferID, BufferID indexBufferID, size_t indexCount, size_t instanceCount = 1);
+        void DrawElements(size_t instanceCount = 1);
 
         // clear color
-        static void Clear();
+        void Clear();
 
     private:
         // graphics manager
@@ -58,9 +68,18 @@ namespace ASEngine
         std::unique_ptr<TextureManager> m_TextureManager;
         std::unique_ptr<BufferManager> m_BufferManager;
 
+        // signals
+        SignalConnection m_ResizeSignalConnection;
+
+        // binded vertex buffers for each input_rate
+        std::unordered_map<VertexInputRate, BufferID> m_CurrentVertexBuffers{};
+        BufferID m_CurrentIndexBuffer = CHUNK_NULL;
+
         // init managers
         void InitManagers();
-        
+
+        // On window change size
+        void OnWindowChangeSize(int width, int height);
     };
 
     

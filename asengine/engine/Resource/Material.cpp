@@ -22,7 +22,7 @@ namespace ASEngine
         for (auto& [uniformBufferName, uniformBufferInfo]: shaderProgramInfo.Params.UniformBuffers)
         {
             ByteBuffer buffer(uniformBufferInfo.Size);
-            SetUniformBuffer(buffer);
+            SetUniformBuffer(uniformBufferName, buffer);
         }
 
         // init samplers
@@ -49,7 +49,7 @@ namespace ASEngine
         // 2. bind samplers
         for (auto& [samplerName, textureID]: m_Samplers)
         {
-            shaderProgramManager->SetSampler(shaderProgramManager, samplerName, textureID);
+            shaderProgramManager->SetSampler(shaderProgramID, samplerName, textureID);
         }
     }
 

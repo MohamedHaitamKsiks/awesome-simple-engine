@@ -25,7 +25,8 @@ def generateShader(shaderName, shaderTemplates,  type):
     # craete shader resource file
     shaderResource = f'''{"{"}
     "Vertex": "{shaderName}.vert",
-    "Fragment": "{shaderName}.frag"
+    "Fragment": "{shaderName}.frag",
+    "Type": {type}
 {"}"}
 '''
 

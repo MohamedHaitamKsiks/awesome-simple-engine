@@ -44,7 +44,17 @@ namespace ASEngine {
         template<typename T>
         void SetUniformBufferParam(UniqueString uniformBufferName, UniqueString paramName, const T& value)
         {
-            
+            auto &shader = ResourceManager<Shader>::Get(m_ShaderID);
+            ShaderProgramID shaderProgramID = shader.m_ShaderProgramID;
+
+            // get sahder param identifier
+            ShaderProgramManager *shaderProgramManager = Renderer::GetShaderProgramManager();
+            auto& shaderProgramInfo = shaderProgramManager->GetShaderProgramInfo(shaderProgramID);
+            auto& paramIdentifier = shaderProgramInfo.Params.UniformBuffers[uniformBufferName].Identifiers[paramName];
+
+            // set buffer
+            auto& uniformBuffer = m_UniformBuffers[uniformBufferName];
+            uniformBuffer.SetDataAt(&value, sizeof(T), paramIdentifier.Offset);
         }
 
         //set sampler
@@ -58,9 +68,6 @@ namespace ASEngine {
 
 
     private:
-        // copy buffer to material's uniform buffer
-        void CopyToUniformBuffer(const void *buffer, size_t offset, size_t size);
-
         // deserialize and set
         template<typename T>
         void DeserializeAndSet( UniqueString param, const Json& paramValue)
