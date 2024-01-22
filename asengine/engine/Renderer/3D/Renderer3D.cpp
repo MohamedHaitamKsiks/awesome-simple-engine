@@ -4,9 +4,10 @@ namespace ASEngine
 {
     Renderer3D::Renderer3D()
     {
-        m_ProjectionParamName = UniqueString("u_Projection");
-        m_CameraParamName = UniqueString("u_Camera");
-        m_TransformParamName = UniqueString("u_Transform");
+        m_ProjectionParamName = UniqueString("Projection");
+        m_ViewParamName = UniqueString("View");
+        m_ModelParamName = UniqueString("Model");
+        m_RenderUniformBufferName = UniqueString("Render");
     
         m_IBO3D.Create();
     }
@@ -59,12 +60,16 @@ namespace ASEngine
 
             // get material & shader and bind them
             auto& material = ResourceManager<Material>::Get(meshInstanceInfo.MaterialID);
+            
             ResourceID shaderID = material.GetShaderID();
             auto& shader = ResourceManager<Shader>::Get(shaderID);
-            shader.Bind();
             
-            material.SetShaderParam(m_ProjectionParamName, m_ProjectionMatrix);
-            material.SetShaderParam(m_CameraParamName, m_CameraMatrix);
+            shader.Bind();
+
+            material.SetUniformBufferParam(m_RenderUniformBufferName, m_ProjectionParamName, m_ProjectionMatrix);
+            material.SetUniformBufferParam(m_RenderUniformBufferName, m_ViewParamName, m_CameraMatrix);
+            material.SetUniformBufferParam(m_RenderUniformBufferName, m_ModelParamName, mat3::IDENTITY());
+
             material.Bind();
 
             // send instance data
@@ -74,10 +79,9 @@ namespace ASEngine
             // send vbo data
             auto& vbo3D = m_Meshes.Get(meshInstanceInfo.Mesh);
             vbo3D.Bind();
-            shader.GetShaderProgram().BindVertex3D();
 
             // get mesh vbo and bind it
-            vbo3D.DrawInstanced(meshInstanceInfo.Transforms.GetSize());
+            Renderer::GetSingleton()->DrawElements(meshInstanceInfo.Transforms.GetSize());
 
         }
     }

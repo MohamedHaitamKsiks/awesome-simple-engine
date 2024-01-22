@@ -14,13 +14,11 @@ namespace ASEngine {
 		// init viewport
 		Viewport::Init();
 		// init graphics api
-		GraphicsAPI::Init();
+		Renderer::Init();
 		// init renderer 2d
 		Renderer2D::Init();
 		// init renderer 33d
 		Renderer3D::Init();
-		// init texture manager
-		TextureManager::Init();
 		// init audio engine
 		AudioEngine::Init();
 		// init ecs world
@@ -39,6 +37,7 @@ namespace ASEngine {
 		ModuleManager::Terminate();
 		Renderer3D::Terminate();
 		Renderer2D::Terminate();
+		Renderer::Terminate();
 		Viewport::Terminate();
 		AudioEngine::Terminate();
 		Window::Terminate();
@@ -78,21 +77,23 @@ namespace ASEngine {
 		// update here..
 		World::Update(delta);
 
-		// clear screen
-		GraphicsAPI::Clear();
+		// clear
+		Renderer::GetSingleton()->Clear();
 
 		// draw 3d
 		Renderer3D::Draw();
 
 		// render world 2d
-		Renderer2D::Begin();
+		Renderer2D* renderer2D = Renderer2D::GetSingleton();
+
+		renderer2D->Begin();
 		World::Render2D();
-		Renderer2D::End(); 
+		renderer2D->End(); 
 
 		// render ui
-		Renderer2D::BeginUI();
+		renderer2D->BeginUI();
 		World::UIRender2D();
-		Renderer2D::End();
+		renderer2D->End();
 
 	}
 
@@ -103,7 +104,6 @@ namespace ASEngine {
 		projectSettingsFile.Open("project.settings.json", FileOpenMode::READ);
 		std::string projectSettingsString = projectSettingsFile.ReadText();
 		projectSettingsFile.Close();
-		
 
 		//parse to json
 		nlohmann::json projectSettings = nlohmann::json::parse(projectSettingsString);

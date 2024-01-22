@@ -10,6 +10,7 @@ namespace ASEngine
     class Viewport: public Singleton<Viewport>
     {
     public:
+        
         // set view port size
         static inline void SetSize(int width, int height) { GetSingleton()->ISetSize(width, height); };
 

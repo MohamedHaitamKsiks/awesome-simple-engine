@@ -3,6 +3,7 @@
 
 #include "Renderer/GraphicsAPI.h"
 #include "Renderer/Color.h"
+#include "Renderer/VertexInput.h"
 
 #include "Core/Math/vec2.h"
 
@@ -17,6 +18,8 @@ namespace ASEngine
         vec2 Position = vec2::ZERO();
         vec2 UV = vec2::ZERO();
         Color Modulate = Color::WHITE();
+
+        static VertexInputLayout GetVertexInputLayout();
     };
 
 } // ASEngine

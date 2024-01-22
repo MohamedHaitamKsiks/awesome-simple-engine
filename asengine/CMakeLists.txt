@@ -2,6 +2,8 @@
 cmake_minimum_required(VERSION 3.22.1)
 set(CMAKE_CXX_STANDARD 23)
 
+add_compile_definitions(OPENGL)
+
 project(asengine)
 include_directories(engine)
 
@@ -12,6 +14,10 @@ if (ANDROID)
 else() 
     set(FILESYSTEM_SOURCES ${FILESYSTEM_SOURCES} engine/Core/FileSystem/FileDesktop.cpp)
 endif()
+
+# link SPIRV-Cross
+add_subdirectory(dependencies/SPIRV-Cross)
+include_directories(dependencies/SPIRV-Cross)
 
 
 add_library(
@@ -25,6 +31,7 @@ add_library(
     engine/Core/Time/Time.cpp
     #memory
     engine/Core/Memory/PoolAllocator.cpp
+    engine/Core/Memory/ByteBuffer.cpp
     #strings
     engine/Core/String/UniqueString.cpp
     engine/Core/String/UniqueStringManager.cpp
@@ -60,22 +67,23 @@ add_library(
     engine/Resource/Scene.cpp
     engine/Resource/Audio.cpp
     #rendering
-    engine/Renderer/GraphicsAPI.cpp
-    engine/Renderer/TextureManager.cpp
+    engine/Renderer/Managers/BufferManager.cpp
+    engine/Renderer/Managers/ShaderManager.cpp
+    engine/Renderer/Managers/ShaderProgramManager.cpp
+    engine/Renderer/Managers/TextureManager.cpp
+    engine/Renderer/Renderer.cpp
     engine/Renderer/Viewport.cpp
-    engine/Renderer/ShaderProgram.cpp
-    engine/Renderer/ShaderUniform.cpp
     #3d
+    engine/Renderer/3D/Vertex3D.cpp
     engine/Renderer/3D/Mesh3D.cpp
     engine/Renderer/3D/Renderer3D.cpp
     engine/Renderer/3D/VertexBufferObject3D.cpp
     engine/Renderer/3D/InstanceBufferObject3D.cpp
     #2ds
+    engine/Renderer/2D/Vertex2D.cpp
     engine/Renderer/2D/Quad2D.cpp
     engine/Renderer/2D/Renderer2D.cpp
     engine/Renderer/2D/VertexBufferObject2D.cpp
-    #tween
-    engine/Animation/Interpolation/Interpolate.cpp
     #audio
     engine/Audio/AudioEngine.cpp
     #testing
@@ -100,12 +108,14 @@ if(NOT ANDROID)
     target_link_libraries(
         asengine
         glew
+        spirv_cross_glsl
         OpenGL::GL
     )
 
 else()
     target_link_libraries(
         asengine
+        spirv_cross_glsl
     )
 
 endif()

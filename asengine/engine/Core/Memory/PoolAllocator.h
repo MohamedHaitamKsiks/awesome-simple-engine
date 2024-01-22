@@ -9,8 +9,10 @@
 #include <cstring>
 #include <cassert>
 
-#include "DynamicArray.h"
 #include "Core/Log/Log.h"
+#include "Core/Error/Exception.h"
+
+#include "DynamicArray.h"
 
 namespace ASEngine {
 
@@ -22,6 +24,8 @@ namespace ASEngine {
     class PoolAllocator
     {
     public:
+        // exceptions
+        DEFINE_EXCEPTION(FreeUnusedChunkException, "Can't free unused chunk!");
 
         // allocate chunk in pool allcoator
         virtual ChunkID Alloc() = 0;
@@ -123,7 +127,10 @@ namespace ASEngine {
         // free memory
         void Free(ChunkID chunkID)
         {
-            assert(m_Data[chunkID].Used);
+            // check if chunk is used 
+            if (!m_Data[chunkID].Used)
+                throw FreeUnusedChunkException();
+
             // call destructor to logically destroy
             m_Data[chunkID].Data.~T();
             m_Data[chunkID].Used = false;

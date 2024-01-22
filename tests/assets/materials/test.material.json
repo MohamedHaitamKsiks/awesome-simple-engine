@@ -1,0 +1,12 @@
+{
+    "Shaders": {
+        "Vertex": "",
+        "Fragment": ""
+    },
+    "UniformBufferShaders": {
+
+    },
+    "Samplers2D": {
+        
+    }
+}

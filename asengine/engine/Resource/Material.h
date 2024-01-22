@@ -12,9 +12,9 @@
 #include "Core/Math/vec2.h"
 #include "Core/Log/Log.h"
 #include "Core/Serialization/Serializer.h"
+#include "Core/Memory/ByteBuffer.h"
 
 #include "Renderer/Color.h"
-#include "Renderer/ShaderProgram.h"
 
 #include "ResourceManager.h"
 #include "Resource.h"
@@ -37,27 +37,28 @@ namespace ASEngine {
         // bind material before drawing
         void Bind();
 
-        // set shader param
+        // set uniform buffer
+        void SetUniformBuffer(UniqueString uniformBufferName, const ByteBuffer& buffer);
+
+        // set uniform buffer param
         template<typename T>
-        void SetShaderParam(const UniqueString& param, const T& value)
+        void SetUniformBufferParam(UniqueString uniformBufferName, UniqueString paramName, const T& value)
         {
-            // get shader
             auto &shader = ResourceManager<Shader>::Get(m_ShaderID);
-            // get shader info
-            int paramIndex = shader.m_UniformNames[param];
-            ShaderUniformInfo info = shader.m_Uniforms[paramIndex];
+            ShaderProgramID shaderProgramID = shader.m_ShaderProgramID;
 
-            // check if sizeof T is the same as param info
-            if (info.Size != sizeof(T))
-            {
-                return;
-            }
+            // get sahder param identifier
+            ShaderProgramManager *shaderProgramManager = Renderer::GetShaderProgramManager();
+            auto& shaderProgramInfo = shaderProgramManager->GetShaderProgramInfo(shaderProgramID);
+            auto& paramIdentifier = shaderProgramInfo.Params.UniformBuffers[uniformBufferName].Identifiers[paramName];
 
-            // copy value to buffer
-            CopyToUniformBuffer(&value, info.Offset, sizeof(T));
+            // set buffer
+            auto& uniformBuffer = m_UniformBuffers[uniformBufferName];
+            uniformBuffer.SetDataAt(&value, sizeof(T), paramIdentifier.Offset);
         }
 
-        const ShaderUniformInfo& GetShaderParamInfo(UniqueString param) const;
+        //set sampler
+        void SetSampler(UniqueString samplerName, TextureID textureID);
 
         // get shader
         inline ResourceID GetShaderID() const
@@ -67,26 +68,27 @@ namespace ASEngine {
 
 
     private:
-        // copy buffer to material's uniform buffer
-        void CopyToUniformBuffer(const void *buffer, size_t offset, size_t size);
-
         // deserialize and set
         template<typename T>
         void DeserializeAndSet( UniqueString param, const Json& paramValue)
         {
-            T value;
+            /*T value;
             Serializer<T>::Deserialize(paramValue, value);
-            SetShaderParam(param, value);
+            SetShaderParam(param, value);*/
         }
 
         // shader
         ResourceID m_ShaderID = CHUNK_NULL;
-        // buffer of all uniforms values
-        uint8_t* m_UniformBuffer = nullptr;
+        
+        // param values  
+        std::unordered_map<UniqueString, ByteBuffer> m_UniformBuffers{};
+        std::unordered_map<UniqueString, TextureID> m_Samplers{};
 
         friend class Serializer<Material>;
     };
 
-} //ASEngine
+
+
+} // ASEngine
 
 #endif //ASENGINE_MATERIAL_H

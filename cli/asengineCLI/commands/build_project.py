@@ -5,6 +5,7 @@ import shutil
 import json
 from asengineCLI.commands.status import *
 from asengineCLI.commands.script_path import *
+from asengineCLI.commands.compile_shaders import scanAndCompileShaders
 
 def buildProject(configPath: str, projectPath: str, platform: str) -> int:
     # error return
@@ -79,6 +80,11 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
     #copy project assets
     assetsPath = relativeTo(tmpPath, "./app/src/main/assets") if platform == "android" else relativeTo(tmpPath, "./build/assets")
     shutil.copytree(relativeTo(projectPath, "./assets"), assetsPath, dirs_exist_ok=True)
+
+    #scan and compile shaders
+    print("Compiling shaders to SPIR-V")
+    glslangPath = relativeTo(configDir, config["glslang"])
+    error |= scanAndCompileShaders(assetsPath, glslangPath)
 
     # compile and run
     if platform == "linux":

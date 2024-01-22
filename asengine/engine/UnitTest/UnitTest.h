@@ -2,6 +2,7 @@
 #define ASENGINE_UNIT_TEST_H
 
 #include "Macros/Foreach.h"
+#include "Core/Error/Exception.h"
 #include "Core/Log/Log.h"
 
 #include<cstdlib>
@@ -25,23 +26,14 @@
 
 #define UNIT_TEST_CASE(testCase, body) ( test.Test(testCase, [&] () { body }) )
 
-#define EXPECT(predicat) test.Expect(predicat)
+#define EXPECT(predicat) \
+    test.Expect(predicat, __FILE__, __LINE__, #predicat)
 
 namespace ASEngine
 {
 
     // test fail exception
-    class TestFailException: public std::exception
-    {
-    public:
-        char *what()
-        {
-            return exceptionMessage;
-        }
-    private:
-        char* exceptionMessage = const_cast<char*>("Test Fail Exception");
-    };
-
+    DEFINE_EXCEPTION(TestFailException, "Test Failed!");
 
     // unit test container
     class UnitTest
@@ -54,16 +46,21 @@ namespace ASEngine
         void Test(const std::string& testCaseName, const std::function<void()>& testCallback);
 
         // assertion
-        void Expect(bool predicat);
+        void Expect(bool predicat, const std::string &file, uint32_t line, const std::string &errorMessage);
 
         // run tests and returns if test passes are not
         bool Run(); 
+
+        // get test suit name
+        inline const std::string& GetTestSuitName() const
+        {
+            return m_TestSuitName;
+        }
 
     private:
         // test suits
         std::unordered_map<std::string, std::function<void()>> m_TestCases{};
         std::string m_TestSuitName = "TestSuit";
-
     };
 } // namespace ASEngine
 

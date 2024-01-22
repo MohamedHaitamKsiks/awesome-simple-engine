@@ -9,11 +9,10 @@ namespace ASEngine
         m_Height = height;
 
         // compute projection matrix
-        m_ProjectionMatrix = mat3
-        {{
-            2.0f / (float) m_Width, 0.0f, -1.0f,
-            0.0f, -2.0f / (float) m_Height, 1.0f,
-            0.0f, 0.0f, 1.0f
+        m_ProjectionMatrix = mat3{{
+            2.0f / (float) m_Width, 0.0f,                     0.0f, 0.0f,
+            0.0f,                   -2.0f / (float) m_Height, 0.0f, 0.0f,
+            -1.0f,                  1.0f,                     1.0f, 0.0f
         }};
     }
 } // namespace ASEngine

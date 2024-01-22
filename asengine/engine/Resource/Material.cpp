@@ -4,14 +4,7 @@ namespace ASEngine
 {
     Material::~Material()
     {
-        if (!IsOwner())
-            return;
-            
-        if (m_UniformBuffer)
-        {
-            delete[] m_UniformBuffer;
-            m_UniformBuffer = nullptr;
-        }
+        
     }
 
 
@@ -21,78 +14,67 @@ namespace ASEngine
         m_ShaderID = shaderID;
         auto &shader = ResourceManager<Shader>::Get(m_ShaderID);
 
-        // allocate uniform buffer
-        m_UniformBuffer = new uint8_t[shader.m_UniformBufferSize];
-    }
+        // get shader program info
+        ShaderProgramManager* shaderProgramManager = Renderer::GetShaderProgramManager();
+        auto& shaderProgramInfo = shaderProgramManager->GetShaderProgramInfo(shader.m_ShaderProgramID);
 
-    const ShaderUniformInfo& Material::GetShaderParamInfo(UniqueString param) const
-    {
-        auto &shader = ResourceManager<Shader>::Get(m_ShaderID);
-        int paramID = shader.m_UniformNames[param];
-        return shader.m_Uniforms[paramID];
-    }
+        // init uniform buffers
+        for (auto& [uniformBufferName, uniformBufferInfo]: shaderProgramInfo.Params.UniformBuffers)
+        {
+            ByteBuffer buffer(uniformBufferInfo.Size);
+            SetUniformBuffer(uniformBufferName, buffer);
+        }
 
-    void Material::CopyToUniformBuffer(const void *buffer, size_t offset, size_t size)
-    {
-        memcpy(m_UniformBuffer + offset, buffer, size);
+        // init samplers
+        for (auto& [samplerName, samplerInfo]: shaderProgramInfo.Params.Samplers)
+        {
+            SetSampler(samplerName, 0);
+        }
     }
 
     void Material::Bind()
     {
         auto& shader = ResourceManager<Shader>::Get(m_ShaderID);
+        ShaderProgramID shaderProgramID = shader.m_ShaderProgramID;
 
-        for (auto info : shader.m_Uniforms)
+        // bind params
+        ShaderProgramManager *shaderProgramManager = Renderer::GetShaderProgramManager();
+        shaderProgramManager->Bind(shaderProgramID);
+
+        // 1. bind uniform buffers
+        for (auto& [uniformBufferName, uniformBuffer]: m_UniformBuffers)
         {
-            // get value adress
-            uint8_t *value = m_UniformBuffer + info.Offset;
-
-            // sampler counter
-            SamplerSlot currentSlot = 0;
-
-            switch (info.Type)
-            {
-            case ShaderUniformType::INT:
-                info.Location.SetInt((int *)value);
-                break;
-            case ShaderUniformType::FLOAT:
-                info.Location.SetFloat((float *)value);
-                break;
-            case ShaderUniformType::VEC2:
-                info.Location.SetVec2((float *)value);
-                break;
-            case ShaderUniformType::VEC3:
-                info.Location.SetVec3((float *)value);
-                break;
-            case ShaderUniformType::VEC4:
-                info.Location.SetVec4((float *)value);
-                break;
-            case ShaderUniformType::MAT3:
-                info.Location.SetMat3((float *)value);
-                break;
-            case ShaderUniformType::MAT4:
-                info.Location.SetMat4((float *)value);
-                break;
-            case ShaderUniformType::SAMPLER_2D:
-                Texture texture = *((Texture *)value);
-                texture.BindSampler(currentSlot);
-                info.Location.SetInt(&currentSlot);
-                currentSlot++;
-                break;
-            }
+            shaderProgramManager->SetUniformBuffer(shaderProgramID, uniformBufferName, uniformBuffer);
         }
+
+        // 2. bind samplers
+        for (auto& [samplerName, textureID]: m_Samplers)
+        {
+            shaderProgramManager->SetSampler(shaderProgramID, samplerName, textureID);
+        }
+    }
+
+    void Material::SetUniformBuffer(UniqueString uniformBufferName, const ByteBuffer &buffer)
+    {
+        m_UniformBuffers[uniformBufferName] = buffer;
+    }
+
+    void Material::SetSampler(UniqueString samplerName, TextureID textureID)
+    {
+        m_Samplers[samplerName] = textureID;
     }
 
     // material
     template <>
     Json Serializer<Material>::Serialize(const Material &value)
     {
-        Json materialObject = Json({});
-        return materialObject;
+        /*Json materialObject = Json({});
+        return materialObject;*/
     }
     template <>
     void Serializer<Material>::Deserialize(const Json &object, Material &dest)
     {
-        assert(object.is_object());
+        /*assert(object.is_object());
         // get shader
         std::string shaderPath = object["ShaderName"];
         ResourceID shaderID = ResourceManager<Shader>::GetResourceID(UniqueString(shaderPath));
@@ -141,7 +123,7 @@ namespace ASEngine
                 dest.SetShaderParam(param, texture);
                 break;
             }
-        }
+        }*/
     }
 
     bool Material::Load(const std::string &path)

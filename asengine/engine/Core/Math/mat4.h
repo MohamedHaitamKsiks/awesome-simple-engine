@@ -59,10 +59,10 @@ namespace ASEngine {
         {
             return mat4
             {{
-                1.0f, 0.0f, 0.0f, v.x,
-                0.0f, 1.0f, 0.0f, v.y,
-                0.0f, 0.0f, 1.0f, v.z,
-                0.0f, 0.0f, 0.0f, 1.0f
+                1.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 1.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 1.0f, 0.0f,
+                v.x,  v.y,  v.z,  1.0f
             }};
         }
 
@@ -104,8 +104,8 @@ namespace ASEngine {
             {
                 for (int i = 0; i < 4; i++) 
                 {
-                    for (int k = 0; k < 4; k++) 
-                        res[j][i] += a[j][k] * b[k][i];
+                    for (int k = 0; k < 4; k++)
+                        res[i][j] += a[k][j] * b[i][k];
                 }
             }
             return res;
@@ -118,8 +118,8 @@ namespace ASEngine {
             float res[] = {0.0f, 0.0f, 0.0f, 0.0f};
             for (int j = 0; j < 4; j++) 
             {
-                for (int k = 0; k < 4; k++) 
-                    res[j] += a[j][k] * vector[k];
+                for (int k = 0; k < 4; k++)
+                    res[j] += a[k][j] * vector[k];
             }
             return vec3{res[0], res[1], res[2]};
         }

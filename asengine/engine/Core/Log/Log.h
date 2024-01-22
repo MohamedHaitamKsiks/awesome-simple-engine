@@ -56,6 +56,13 @@ namespace ASEngine {
 		// log message to console
 		static void Log(const std::string &message);
 
+		// log error message
+		template<typename T, typename... types>
+		static void Error(T firstValue,types... args)
+		{
+			Log(Colorized(TextColor::RED_FG, firstValue, args...));
+		};
+
 	private:
 		// push args to string stream
 		template <typename T, typename... types>

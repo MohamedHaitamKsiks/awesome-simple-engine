@@ -9,7 +9,7 @@ namespace ASEngine
         for (int j = 0; j < 4; j++)
         {
             for (int i = 0; i < 4; i++)
-                transposed[j][i] = (*this)[i][j];
+                transposed[i][j] = (*this)[j][i];
         }
         return transposed;
     }
@@ -18,8 +18,8 @@ namespace ASEngine
     {
         mat4 b = mat4::IDENTITY();
         b[1][1] = cos(angle);
-        b[1][2] = -sin(angle);
-        b[2][1] = sin(angle);
+        b[2][1] = -sin(angle);
+        b[1][2] = sin(angle);
         b[2][2] = cos(angle);
         return b;
     }
@@ -28,8 +28,8 @@ namespace ASEngine
     {
         mat4 b = mat4::IDENTITY();
         b[0][0] = cos(angle);
-        b[0][2] = -sin(angle);
-        b[2][0] = sin(angle);
+        b[2][0] = -sin(angle);
+        b[0][2] = sin(angle);
         b[2][2] = cos(angle);
         return b;
     }
@@ -38,8 +38,8 @@ namespace ASEngine
     {
         mat4 b = mat4::IDENTITY();
         b[0][0] = cos(angle);
-        b[0][1] = -sin(angle);
-        b[1][0] = sin(angle);
+        b[1][0] = -sin(angle);
+        b[0][1] = sin(angle);
         b[1][1] = cos(angle);
         return b;
     }

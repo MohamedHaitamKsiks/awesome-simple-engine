@@ -18,5 +18,6 @@
     },
     "asenginePath": "./.asengine/build",
     "asengineSourcePath": "./.asenigne/src",
-    "cmakeWindowsToolchain": "./cmake-toolchains/mingw-w64-x86_64.cmake"
+    "cmakeWindowsToolchain": "./cmake-toolchains/mingw-w64-x86_64.cmake",
+    "glslang": "./glslang"
 }

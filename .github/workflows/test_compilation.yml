@@ -3,18 +3,17 @@ name: Test if engine Compiles
 on:
     push:
         branches: [main]
+
     pull_request:
         branches: [main]
 
 jobs:
-
-
     build:
         strategy:
             matrix:
                 os: [ubuntu-latest] 
 
-        runs-on: ${{ matrix.os }}
+        runs-on: ubuntu-latest
 
         steps:
             -   uses: actions/checkout@v2
@@ -29,6 +28,6 @@ jobs:
             -   name: Test Compilation
                 run: python3 build.py linux windows
 
-
+            
 
 

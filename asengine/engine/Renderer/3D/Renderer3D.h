@@ -82,9 +82,10 @@ namespace ASEngine
         mat4 m_CameraMatrix = mat4::IDENTITY();
 
         // cache uniform names
+        UniqueString m_RenderUniformBufferName;
         UniqueString m_ProjectionParamName;
-        UniqueString m_CameraParamName;
-        UniqueString m_TransformParamName;
+        UniqueString m_ViewParamName;
+        UniqueString m_ModelParamName;
 
 
         // register mesh to renderer

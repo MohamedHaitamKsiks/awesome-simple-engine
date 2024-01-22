@@ -1,0 +1,5 @@
+{
+    "Vertex": "default3D.vert",
+    "Fragment": "default3D.frag",
+    "Type": "3D"
+}

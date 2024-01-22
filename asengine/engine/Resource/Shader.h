@@ -10,13 +10,18 @@
 #include "Core/String/UniqueString.h"
 #include "Core/Serialization/Serializer.h"
 
-#include "Renderer/ShaderUniform.h"
-#include "Renderer/ShaderProgram.h"
+#include "Renderer/Renderer.h"
 
 #include "Resource.h"
 
 namespace ASEngine
 {
+    // shader type
+    enum class ShaderType
+    {
+        SHADER_2D,
+        SHADER_3D
+    };
 
     // shader resource
     class Shader: public Resource
@@ -25,25 +30,25 @@ namespace ASEngine
         Shader();
         ~Shader();
 
+        // create
+        bool Create(const std::string& vertexPath, const std::string& fragmentPath, ShaderType type);
+
         // load shader file
         bool Load(const std::string &path);
 
         // bind shader
         void Bind();
 
-        // get shader program
-        inline const ShaderProgram& GetShaderProgram() const
-        {
-            return m_Program;
-        }
-
     private:
-        ShaderProgram m_Program = SHADER_NULL;
-        // size of buffer
-        int m_UniformBufferSize = 0;
-        // hashmap of all unifroms
-        std::vector<ShaderUniformInfo> m_Uniforms = {};
-        std::unordered_map<UniqueString, int> m_UniformNames = {};
+        // keep shader ids to free them when deleting shader
+        ShaderID m_VertexShaderID = CHUNK_NULL;
+        ShaderID m_FragmentShaderID = CHUNK_NULL;
+
+        // shader program
+        ShaderProgramID m_ShaderProgramID = CHUNK_NULL;
+
+        // load spirv from file
+        SpirvBinary LoadSpirv(const std::string& spirvPath);
 
         friend class Material;
     };

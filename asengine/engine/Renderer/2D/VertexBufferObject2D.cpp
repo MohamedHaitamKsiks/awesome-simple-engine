@@ -1,4 +1,5 @@
 #include "VertexBufferObject2D.h"
+#include "Renderer/Renderer.h"
 
 namespace ASEngine
 {
@@ -15,28 +16,19 @@ namespace ASEngine
 
     VertexBufferObject2D::~VertexBufferObject2D()
     {
-        glDeleteBuffers(1, &m_VertexBuffer);
-        glDeleteBuffers(1, &m_IndexBuffer);
+        BufferManager* bufferManager = Renderer::GetBufferManager();
+        bufferManager->Delete(m_IndexBuffer);
+        bufferManager->Delete(m_VertexBuffer);
     }
 
     void VertexBufferObject2D::Create()
     {
-        // create index buffer
-        glGenBuffers(1, &m_IndexBuffer);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_IndexArray), m_IndexArray, GL_STATIC_DRAW);
+        BufferManager *bufferManager = Renderer::GetBufferManager();
 
-        // create vertex buffer
-        glGenBuffers(1, &m_VertexBuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(Quad2D::Vertices) * VBO_2D_MAX_QUADS, nullptr, GL_DYNAMIC_DRAW);
+        m_IndexBuffer = bufferManager->Create(BufferType::INDEX);
+        bufferManager->SetData(m_IndexBuffer, ByteBuffer(m_IndexArray, sizeof(m_IndexArray)));
 
-    }
-
-    void VertexBufferObject2D::Bind()
-    {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+        m_VertexBuffer = bufferManager->Create(BufferType::ARRAY);
     }
 
     void VertexBufferObject2D::PushQuad(const Quad2D &quad2D)
@@ -55,15 +47,20 @@ namespace ASEngine
         }
     }
 
-
-
     void VertexBufferObject2D::Submit()
     {
         if (m_VertexArraySize == 0)
             return;
 
-        glBufferSubData(GL_ARRAY_BUFFER, 0, m_VertexArraySize * sizeof(Vertex2D), m_VertexArray);
-        glDrawElements(GL_TRIANGLES, m_VertexArraySize * QUAD_2D_INDICES_COUNT / QUAD_2D_VERTICES_COUNT, GL_UNSIGNED_SHORT, nullptr);
+        BufferManager *bufferManager = Renderer::GetBufferManager();
+        bufferManager->SetData(m_VertexBuffer, ByteBuffer(m_VertexArray, sizeof(m_VertexArray)));
+        
+        Renderer* renderer = Renderer::GetSingleton();
+
+        renderer->BindVertexBuffer(VertexInputRate::VERTEX, m_VertexBuffer);
+        renderer->BindIndexBuffer(m_IndexBuffer);
+
+        renderer->DrawElements(m_VertexArraySize * QUAD_2D_INDICES_COUNT / QUAD_2D_VERTICES_COUNT);
         m_VertexArraySize = 0;
     }
 
