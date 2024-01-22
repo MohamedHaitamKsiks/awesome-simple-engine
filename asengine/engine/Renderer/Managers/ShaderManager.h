@@ -50,14 +50,14 @@ namespace ASEngine
         UniqueString Name;
         uint32_t Binding;
     // opengl specifications
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         GLuint TextureIndex;
         GLuint Location;
-    #endif // OPENGL
+    #pragma endregion OPENGL_SPECIFICATION
     };
 
     // shader type
-    enum class ShaderType
+    enum class ShaderStage
     {
         NONE = 0,
         VERTEX = (1u << 0),
@@ -79,11 +79,11 @@ namespace ASEngine
     struct ShaderInfo
     {
         // opengl specification
-        #ifdef OPENGL
+        #pragma region OPENGL_SPECIFICATION
             GLint GLShaderID = -1;
-        #endif // OPENGL
+        #pragma endregion OPENGL_SPECIFICATION
 
-        ShaderType Type = ShaderType::NONE;
+        ShaderStage Type = ShaderStage::NONE;
         ShaderParams Params{};
     };
 
@@ -104,7 +104,7 @@ namespace ASEngine
         ~ShaderManager() {};
 
         // create shader from spirv 
-        ShaderID Create(const SpirvBinary& spirv, ShaderType type);
+        ShaderID Create(const SpirvBinary& spirv, ShaderStage type);
 
         // get shader info
         inline ShaderInfo& GetShaderInfo(ShaderID shaderID)

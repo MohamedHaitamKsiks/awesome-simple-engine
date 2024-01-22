@@ -19,18 +19,20 @@
 #include "ShaderManager.h"
 #include "TextureManager.h"
 
+#include <unordered_map>
+
 namespace ASEngine
 {
     // shader progarm info
     struct ShaderProgramInfo
     {
     // opengl specific implementation
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         GLint GLProgramID = -1;
-    #endif
+    #pragma endregion OPENGL_SPECIFICATION
         // shader params
         ShaderParams Params{};
-        std::unordered_map<VertexAttributeInputRate, VertexInputLayout> VertexInputLayouts;
+        std::unordered_map<VertexInputRate, VertexInputLayout> VertexInputLayouts;
     };
 
     // shader program id
@@ -68,10 +70,17 @@ namespace ASEngine
         // destroy shader program
         void Destroy(ShaderProgramID shaderProgramID);
 
+        // get current shader
+        inline ShaderID CurrentShaderProgramID()
+        {
+            return m_CurrentShaderProgram;
+        };
+
     private : 
         TPoolAllocator<ShaderProgramInfo> m_ShaderProgramInfos{2};
         // keep track of current chunk
         ShaderProgramID m_CurrentShaderProgram = CHUNK_NULL;
+    
     };
 
 } // namespace ASEngine

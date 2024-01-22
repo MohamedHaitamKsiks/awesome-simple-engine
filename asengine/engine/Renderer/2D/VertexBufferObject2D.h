@@ -6,13 +6,14 @@
 #include "Core/Log/Log.h"
 #include "Core/Memory/DynamicArray.h"
 
+#include "Renderer/Managers/BufferManager.h"
 #include "Renderer/GraphicsAPI.h"
+
 #include "Vertex2D.h"
 #include "Quad2D.h"
 
 // number of quads you can render per batch
 #define VBO_2D_MAX_QUADS 16383
-
 
 namespace ASEngine
 {
@@ -30,9 +31,6 @@ namespace ASEngine
         // create buffer
         void Create();
 
-        // bind buffer
-        void Bind();
-
         // add quad
         void PushQuad(const Quad2D& quad2D);
 
@@ -41,15 +39,15 @@ namespace ASEngine
 
     private:
         // index array
-        uint16_t m_IndexArray[VBO_2D_MAX_QUADS * QUAD_2D_INDICES_COUNT];
+        uint32_t m_IndexArray[VBO_2D_MAX_QUADS * QUAD_2D_INDICES_COUNT];
 
         // vertex array
         Vertex2D m_VertexArray[VBO_2D_MAX_QUADS * QUAD_2D_VERTICES_COUNT];
         size_t m_VertexArraySize = 0;
 
         // buffers
-        uint32_t m_VertexBuffer;
-        uint32_t m_IndexBuffer;
+        BufferID m_VertexBuffer;
+        BufferID m_IndexBuffer;
 
     };
 

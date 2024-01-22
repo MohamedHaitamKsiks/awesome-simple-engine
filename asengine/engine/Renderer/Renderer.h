@@ -56,7 +56,7 @@ namespace ASEngine
         void BindIndexBuffer(BufferID indexBufferID); 
 
         // draw elements, requires vertex and index buffer to be bounded
-        void DrawElements(size_t instanceCount = 1);
+        void DrawElements(uint32_t indexCount, size_t instanceCount = 1);
 
         // clear color
         void Clear();

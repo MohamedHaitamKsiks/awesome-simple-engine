@@ -77,6 +77,9 @@ namespace ASEngine {
 		// update here..
 		World::Update(delta);
 
+		// clear
+		Renderer::GetSingleton()->Clear();
+
 		// draw 3d
 		Renderer3D::Draw();
 

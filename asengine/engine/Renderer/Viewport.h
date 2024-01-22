@@ -18,7 +18,7 @@ namespace ASEngine
         static inline mat3 GetProjectionMatrix() { return GetSingleton()->m_ProjectionMatrix; };
 
         // get size
-        inline vec2 GetSize()
+        static inline vec2 GetSize()
         {
             return vec2{(float)GetSingleton()->m_Width, (float)GetSingleton()->m_Height};
         };

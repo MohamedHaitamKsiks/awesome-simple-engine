@@ -10,6 +10,7 @@ namespace ASEngine
         {
             for (int i = 0; i < 3; i++)
                 ss << (*this)[i][j] << ",";
+            ss << "\n";
         }
         
         return ss.str();

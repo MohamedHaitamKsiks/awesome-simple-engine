@@ -11,7 +11,7 @@ namespace ASEngine
         BufferInfo bufferInfo{};
         bufferInfo.Type = bufferType;
 
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         switch (bufferInfo.Type)
         {
         case BufferType::ARRAY:
@@ -23,7 +23,7 @@ namespace ASEngine
             break;
         
         case BufferType::UNIFORM_BUFFER:
-            bufferInfo.GLBufferType = GL_UNIFORM_BUFFER:
+            bufferInfo.GLBufferType = GL_UNIFORM_BUFFER;
             break;
 
         default:
@@ -31,7 +31,7 @@ namespace ASEngine
         }
 
         glGenBuffers(1, &bufferInfo.GLBufferID);
-    #endif // OPENGL
+    #pragma endregion OPENGL_SPECIFICATION // OPENGL
 
         m_BufferInfos.Push(bufferInfo);
     }
@@ -40,10 +40,10 @@ namespace ASEngine
     {
         auto &bufferInfo = m_BufferInfos.Get(bufferID);
 
-#ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         glBindBuffer(bufferInfo.GLBufferType, bufferInfo.GLBufferID);
         glBufferData(bufferInfo.GLBufferType, buffer.GetSize(), buffer.GetData(), GL_DYNAMIC_DRAW);
-#endif // OPENGL
+    #pragma endregion OPENGL_SPECIFICATION // OPENGL
 
         bufferInfo.Size = buffer.GetSize();
     }
@@ -52,9 +52,9 @@ namespace ASEngine
     {
         auto& bufferInfo = GetBufferInfo(bufferID);
 
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         glDeleteBuffers(1, &bufferInfo.GLBufferID);
-    #endif // OPENGL
+    #pragma endregion OPENGL_SPECIFICATION // OPENGL
 
         m_BufferInfos.Free(bufferID);
     }

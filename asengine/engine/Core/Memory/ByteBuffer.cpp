@@ -25,7 +25,8 @@ namespace ASEngine
 
     ByteBuffer::~ByteBuffer()
     {
-        free(m_Data);
+        if(m_Data)
+            free(m_Data);
     }
 
     void ByteBuffer::SetDataAt(const void *data, size_t size, size_t offset)
@@ -41,10 +42,11 @@ namespace ASEngine
             {
                 m_Data = malloc(requiredSize);
             }
+            m_Size = requiredSize;
         }
 
         if (data)
-            memcpy(m_Data, data, size);
+            memcpy(reinterpret_cast<char*>(m_Data) + offset, data, size);
     }
 
     void ByteBuffer::Copy(const ByteBuffer &buffer)

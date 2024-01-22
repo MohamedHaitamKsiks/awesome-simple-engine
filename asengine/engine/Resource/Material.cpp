@@ -39,7 +39,8 @@ namespace ASEngine
 
         // bind params
         ShaderProgramManager *shaderProgramManager = Renderer::GetShaderProgramManager();
-        
+        shaderProgramManager->Bind(shaderProgramID);
+
         // 1. bind uniform buffers
         for (auto& [uniformBufferName, uniformBuffer]: m_UniformBuffers)
         {

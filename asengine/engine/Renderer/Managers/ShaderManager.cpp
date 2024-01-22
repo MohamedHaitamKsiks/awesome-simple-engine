@@ -87,7 +87,7 @@ namespace ASEngine
         }
     }
 
-    ShaderID ShaderManager::Create(const SpirvBinary &spirv, ShaderType type)
+    ShaderID ShaderManager::Create(const SpirvBinary &spirv, ShaderStage type)
     {
         // get spirv data
         ShaderInfo info{};
@@ -102,7 +102,7 @@ namespace ASEngine
 
 
     // create opengl shader
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         // compile glsl
         spirv_cross::CompilerGLSL::Options options;
         options.version = 310;
@@ -110,23 +110,24 @@ namespace ASEngine
         glsl.set_common_options(options);
 
         std::string glSource = glsl.compile();
+        const GLchar* glSourceCString = glSource.c_str();
         
         //create opengl shader
         
         GLuint shader;
-        switch(ShaderType)
+        switch(type)
         {
-            ShaderType::VERTEX:
+            case ShaderStage::VERTEX:
                 shader = glCreateShader(GL_VERTEX_SHADER);
                 break;
-            ShaderType::FRAGMENT:
+            case ShaderStage::FRAGMENT:
                 shader = glCreateShader(GL_FRAGMENT_SHADER);
                 break;
             default:
                 throw ShaderCreateFailException("Invalid shader type");
         }
         // compile shader
-        glShaderSource(shader, 1, glSource.c_str(), NULL);
+        glShaderSource(shader, 1, &glSourceCString, NULL);
         glCompileShader(shader);
 
         // error
@@ -139,11 +140,11 @@ namespace ASEngine
             glGetShaderInfoLog(shader, 1024, &log_length, message);
             // Write the error to a log
             Debug::Error(message);
-            throw ShaderCompileFailException();
+            throw ShaderCreateFailException();
         }
 
         info.GLShaderID = shader;
-    #endif // OPENGL
+    #pragma endregion OPENGL_SPECIFICATION // OPENGL
 
         // add info and return ID
         return m_ShaderInfos.Push(info);
@@ -152,9 +153,9 @@ namespace ASEngine
     void ShaderManager::Delete(ShaderID shaderID)
     {
     // delete opengl shader
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         glDeleteShader(GetShaderInfo(shaderID).GLShaderID);
-    #endif
+    #pragma endregion OPENGL_SPECIFICATION
         // delete shader id
         m_ShaderInfos.Free(shaderID);
     }

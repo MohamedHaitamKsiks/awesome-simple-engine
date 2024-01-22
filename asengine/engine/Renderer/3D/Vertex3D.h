@@ -7,6 +7,8 @@
 #include "Core/Math/vec3.h"
 #include "Core/Math/vec2.h"
 
+#include "Renderer/VertexInput.h"
+
 #include <cstddef>
 
 namespace ASEngine
@@ -19,6 +21,7 @@ namespace ASEngine
         vec2 UV = vec2::ZERO();
         Color Modulate = Color::WHITE();
 
+        static VertexInputLayout GetVertexInputLayout();
     };
 
 } // ASEngine

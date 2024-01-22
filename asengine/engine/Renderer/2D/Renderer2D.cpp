@@ -20,41 +20,6 @@ namespace ASEngine
         
     }
 
-    /*
-    void Renderer2D::OnWindowChangeSize(int width, int height)
-    {
-
-        // get aspect ratio of viewport
-        float viewportAspectRatio = Viewport::GetSize().x / Viewport::GetSize().y;
-
-        // get aspect ratio of window
-        float windowAspectRatio = (float) width / (float) height;
-
-        // same aspect ratio
-        float precision = 0.0001f;
-        if (abs(viewportAspectRatio - windowAspectRatio) < precision)
-        {
-            // recompute viewport
-            glViewport(0, 0, width, height);
-        }
-        // window larger than viewport
-        else if (windowAspectRatio > viewportAspectRatio)
-        {
-            // get new width
-            int newWidth = (int) (viewportAspectRatio * height);
-            int viewportPosition = (width - newWidth) / 2;
-            glViewport(viewportPosition, 0, newWidth, height);
-        }
-        // window longuer than viewport
-        else
-        {
-            // get new height
-            int newHeight = (int)(width / viewportAspectRatio);
-            int viewportPosition = (height - newHeight) / 2;
-            glViewport(0, viewportPosition, width, newHeight);
-        }
-    }
-    */
 
     void Renderer2D::Begin()
     {
@@ -63,12 +28,9 @@ namespace ASEngine
         m_ViewMatrix = mat3::Rotation(m_Camera2D.Rotation * -1.0f) * 
             mat3::Scale(vec2::ONE() * m_Camera2D.Zoom) * 
             mat3::Translate(m_Camera2D.Position * -1.0f);
-
         // set materials and shaders to null
         m_CurrentShaderID = CHUNK_NULL;
         m_CurrentMaterialID = CHUNK_NULL;
-
-        m_Vbo2D.Bind();
     }
 
     void Renderer2D::BeginUI()
@@ -76,11 +38,10 @@ namespace ASEngine
         // cache projection matrices
         m_ProjectionMatrix = Viewport::GetProjectionMatrix();
         m_ViewMatrix = mat3::IDENTITY();
+
         // set materials and shaders to null
         m_CurrentShaderID = CHUNK_NULL;
         m_CurrentMaterialID = CHUNK_NULL;
-
-        m_Vbo2D.Bind();
     }
 
     void Renderer2D::End()

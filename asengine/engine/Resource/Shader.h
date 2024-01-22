@@ -16,6 +16,12 @@
 
 namespace ASEngine
 {
+    // shader type
+    enum class ShaderType
+    {
+        SHADER_2D,
+        SHADER_3D
+    };
 
     // shader resource
     class Shader: public Resource
@@ -23,6 +29,9 @@ namespace ASEngine
     public:
         Shader();
         ~Shader();
+
+        // create
+        bool Create(const std::string& vertexPath, const std::string& fragmentPath, ShaderType type);
 
         // load shader file
         bool Load(const std::string &path);
@@ -37,6 +46,9 @@ namespace ASEngine
 
         // shader program
         ShaderProgramID m_ShaderProgramID = CHUNK_NULL;
+
+        // load spirv from file
+        SpirvBinary LoadSpirv(const std::string& spirvPath);
 
         friend class Material;
     };

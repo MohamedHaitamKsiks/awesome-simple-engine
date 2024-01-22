@@ -1,4 +1,3 @@
-#define OPENGL
 #include "ShaderProgramManager.h"
 #include "Renderer/Renderer.h"
 
@@ -15,13 +14,13 @@ namespace ASEngine
 
         // get vertex shader info
         auto& vertexShaderInfo = shaderManager->GetShaderInfo(vertexShaderID);
-        if(vertexShaderInfo.Type != ShaderType::VERTEX)
-            throw Exception("Expecting First shaderID to be of type ShaderType::VERTEX");
+        if(vertexShaderInfo.Type != ShaderStage::VERTEX)
+            throw Exception("Expecting First shaderID to be of type ShaderStage::VERTEX");
 
         // get fragment shader info
         auto &fragmentShaderInfo = shaderManager->GetShaderInfo(fragmentShaderID);
-        if (fragmentShaderInfo.Type != ShaderType::FRAGMENT)
-            throw Exception("Expecting Second shaderID to be of type ShaderType::FRAGMENT");
+        if (fragmentShaderInfo.Type != ShaderStage::FRAGMENT)
+            throw Exception("Expecting Second shaderID to be of type ShaderStage::FRAGMENT");
 
         // merge params from vertex and fragment shader
         info.Params.Add(vertexShaderInfo.Params);
@@ -31,7 +30,7 @@ namespace ASEngine
         info.VertexInputLayouts = std::unordered_map<VertexInputRate, VertexInputLayout>(vertexLayouts);
 
     // opengl specification
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         // create gl es program for shaders
         GLuint glProgram = glCreateProgram();
         
@@ -52,7 +51,7 @@ namespace ASEngine
             textureIndex++;
         }
 
-    #endif // opengl
+    #pragma endregion OPENGL_SPECIFICATION // opengl
 
         // create uniform buffers
         BufferManager* bufferManager = Renderer::GetBufferManager();
@@ -67,10 +66,8 @@ namespace ASEngine
 
     void ShaderProgramManager::Bind(ShaderProgramID shaderProgramID)
     {
-        if (m_CurrentShaderProgram == shaderProgramID)
-            return;
 
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         auto &shaderProgramInfo = GetShaderProgramInfo(shaderProgramID);
         glUseProgram(shaderProgramInfo.GLProgramID);
         
@@ -83,7 +80,7 @@ namespace ASEngine
             glBindBufferBase(GL_UNIFORM_BUFFER, uniformBufferInfo.Binding, bufferInfo.GLBufferID);
         }
 
-#endif // OPENGL
+    #pragma endregion OPENGL_SPECIFICATION // OPENGL
 
         m_CurrentShaderProgram = shaderProgramID;
     }
@@ -105,20 +102,19 @@ namespace ASEngine
         // get sampler info
         auto &shaderProgramInfo = GetShaderProgramInfo(shaderProgramID);
         auto &samplerInfo = shaderProgramInfo.Params.Samplers[samplerName];
-    #ifdef OPENGL
-
+    
+    #pragma region OPENGL_SPECIFICATION
         glActiveTexture(GL_TEXTURE0 + samplerInfo.TextureIndex);
         glBindTexture(GL_TEXTURE_2D, textureInfo.GLTexture);
-
-    #endif // OPENGL
+    #pragma endregion OPENGL_SPECIFICATION // OPENGL
     }
 
     void ShaderProgramManager::Destroy(ShaderProgramID shaderProgramID)
     {
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         auto& shaderProgramInfo = GetShaderProgramInfo(shaderProgramID);
         glDeleteProgram(shaderProgramInfo.GLProgramID);
-    #endif // OPENGL
+    #pragma endregion OPENGL_SPECIFICATION // OPENGL
         m_ShaderProgramInfos.Free(shaderProgramID);
     }
 

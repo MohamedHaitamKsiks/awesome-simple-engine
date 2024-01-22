@@ -20,7 +20,6 @@
 
 namespace ASEngine
 {
-
     // renderer 2D
     class Renderer2D: public Singleton<Renderer2D>
     {
@@ -29,9 +28,9 @@ namespace ASEngine
             ~Renderer2D();
 
             // get camera 2D
-            static inline Camera2D& GetCamera2D()
+            inline Camera2D& GetCamera2D()
             {
-                return GetSingleton()->m_Camera2D;
+                return m_Camera2D;
             };
 
             // draw quad

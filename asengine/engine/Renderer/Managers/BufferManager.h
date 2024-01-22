@@ -25,10 +25,10 @@ namespace ASEngine
     // contains general buffer informations + api specific informations
     struct BufferInfo
     {
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         GLuint GLBufferID;
         GLuint GLBufferType;
-    #endif //OPENGL
+    #pragma endregion OPENGL_SPECIFICATION
         BufferType Type;
         size_t Size = 0;
     };

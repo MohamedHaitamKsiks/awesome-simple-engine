@@ -2,6 +2,8 @@
 cmake_minimum_required(VERSION 3.22.1)
 set(CMAKE_CXX_STANDARD 23)
 
+add_compile_definitions(OPENGL)
+
 project(asengine)
 include_directories(engine)
 
@@ -72,11 +74,13 @@ add_library(
     engine/Renderer/Renderer.cpp
     engine/Renderer/Viewport.cpp
     #3d
+    engine/Renderer/3D/Vertex3D.cpp
     engine/Renderer/3D/Mesh3D.cpp
     engine/Renderer/3D/Renderer3D.cpp
     engine/Renderer/3D/VertexBufferObject3D.cpp
     engine/Renderer/3D/InstanceBufferObject3D.cpp
     #2ds
+    engine/Renderer/2D/Vertex2D.cpp
     engine/Renderer/2D/Quad2D.cpp
     engine/Renderer/2D/Renderer2D.cpp
     engine/Renderer/2D/VertexBufferObject2D.cpp

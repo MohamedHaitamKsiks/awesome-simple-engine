@@ -2,6 +2,8 @@
 #define ASENGINE_VERTEX_INPUT_H
 
 #include "Core/Memory/DynamicArray.h"
+#include <cstdint>
+
 
 namespace ASEngine
 {
@@ -21,7 +23,6 @@ namespace ASEngine
         VERTEX,
         INSTANCE
     };
-
 
     // descriptor for one vertex attribute to for a speficific shader
     struct VertexAttribute

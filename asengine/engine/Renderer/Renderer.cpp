@@ -1,5 +1,3 @@
-#define OPENGL
-
 #include "Renderer.h"
 #include "Viewport.h"
 #include "Core/Window/Window.h"
@@ -8,9 +6,7 @@ namespace ASEngine
 {
     Renderer::Renderer()
     {
-    // OpenGL Specification
-    #ifdef OPENGL
-
+    #pragma region OPENGL_SPECIFICATION
         // init renderer
         // init glew for desktop devices
         #ifndef __ANDROID__
@@ -32,7 +28,8 @@ namespace ASEngine
 
         glEnable(GL_DEPTH_TEST);
 
-    #endif // OPENGL
+    #pragma endregion OPENGL_SPECIFICATION
+        
         // init graphics managers
         InitManagers();
 
@@ -53,64 +50,74 @@ namespace ASEngine
         Window::ResizeSignal().Disconnect(m_ResizeSignalConnection);
     }
 
-    void Renderer::DrawElements(BufferID vertexBufferID, BufferID indexBufferID, size_t indexCount, size_t instanceCount)
+    void Renderer::DrawElements(uint32_t indexCount, size_t instanceCount)
     {
 
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         // OpenGL Specification
-        BufferManager* bufferManager = Renderer::GetBufferManager();
-
-        const auto &indexBufferInfo = bufferManager->GetBufferInfo(indexBufferID);
-        const auto &vertexBufferInfo = bufferManager->GetBufferInfo(vertexBufferID);
-
-        glBindBuffer(vertexBufferInfo.GLBufferType, vertexBufferInfo.GLBufferID);
-        glBindBuffer(indexBufferInfo.GLBufferType, indexBufferInfo.GLBufferID);
-
-        //get shader program
 
         // bind vertex attributes
-        auto &vertexAttributes = shaderProgramInfo.VertexAttributes[VertexAttributeInputRate::VERTEX];
-        for (auto &vertexAttribute : vertexAttributes)
+        ShaderProgramManager *shaderProgramManager = Renderer::GetShaderProgramManager();
+        auto &shaderProgramInfo = shaderProgramManager->GetShaderProgramInfo(shaderProgramManager->CurrentShaderProgramID());
+
+        auto &vertexInputLayout = shaderProgramInfo.VertexInputLayouts[VertexInputRate::VERTEX];
+
+        for (auto &vertexAttribute : vertexInputLayout.VertexAttributes)
         {
             switch (vertexAttribute.Type)
             {
             case VertexAttributeType::FLOAT:
-                glVertexAttribPointer(vertexAttribute.Location, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (const void *)offsetof(Vertex3D, Position));
+                glVertexAttribPointer(vertexAttribute.Location, 1, GL_FLOAT, GL_FALSE, vertexInputLayout.Stride, (void *)vertexAttribute.Offset);
                 break;
-
-            default:
+            case VertexAttributeType::VEC2:
+                glVertexAttribPointer(vertexAttribute.Location, 2, GL_FLOAT, GL_FALSE, vertexInputLayout.Stride, (void *)vertexAttribute.Offset);
+                break;
+            case VertexAttributeType::VEC3:
+                glVertexAttribPointer(vertexAttribute.Location, 3, GL_FLOAT, GL_FALSE, vertexInputLayout.Stride, (void *)vertexAttribute.Offset);
+                break;
+            case VertexAttributeType::VEC4:
+                glVertexAttribPointer(vertexAttribute.Location, 4, GL_FLOAT, GL_FALSE, vertexInputLayout.Stride, (void *)vertexAttribute.Offset);
+                break;
+            case VertexAttributeType::INT:
+                glVertexAttribPointer(vertexAttribute.Location, 1, GL_INT, GL_FALSE, vertexInputLayout.Stride, (void *)vertexAttribute.Offset);
                 break;
             }
-            glEnableVertexAttribArray(vPosition);
+            glEnableVertexAttribArray(vertexAttribute.Location);
         }
+
+        BufferManager* bufferManager = Renderer::GetBufferManager();
+
+        const auto &indexBufferInfo = bufferManager->GetBufferInfo(m_CurrentIndexBuffer);
+        const auto &vertexBufferInfo = bufferManager->GetBufferInfo(m_CurrentVertexBuffers[VertexInputRate::VERTEX]);
+
+        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferInfo.GLBufferID);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferInfo.GLBufferID);
 
         // instance drawing
         if (instanceCount > 1)
             glDrawElementsInstanced(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr, instanceCount);
         else
             glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
-    #endif // OPENGL
+    #pragma endregion OPENGL_SPECIFICATION // OPENGL
+
     }
 
     void Renderer::BindVertexBuffer(VertexInputRate inputRate, BufferID vertexBufferID)
     {
-        if (m_CurrentVertexBuffers[inputRate] == buffer)
+        m_CurrentVertexBuffers[inputRate] = vertexBufferID;
     }
 
     void Renderer::BindIndexBuffer(BufferID indexBufferID)
     {
-    }
-
-    void Renderer::DrawElements(size_t instanceCount)
-    {
+        m_CurrentIndexBuffer = indexBufferID;
     }
 
     void Renderer::Clear()
     {
     // OpenGL Specification
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    #endif // OPENGL
+    #pragma endregion OPENGL_SPECIFICATION // OPENGL
     }
 
     void Renderer::InitManagers()
@@ -120,9 +127,39 @@ namespace ASEngine
         m_ShaderProgramManager = std::make_unique<ShaderProgramManager>();
         m_TextureManager = std::make_unique<TextureManager>();
     }
-    
+
     void Renderer::OnWindowChangeSize(int width, int height)
     {
-        // ...
+        // get aspect ratio of viewport
+        float viewportAspectRatio = Viewport::GetSize().x / Viewport::GetSize().y;
+
+        // get aspect ratio of window
+        float windowAspectRatio = (float)width / (float)height;
+   
+    #pragma region OPENGL_SPECIFICATION
+        // same aspect ratio
+        float precision = 0.0001f;
+        if (abs(viewportAspectRatio - windowAspectRatio) < precision)
+        {
+            // recompute viewport
+            glViewport(0, 0, width, height);
+        }
+        // window larger than viewport
+        else if (windowAspectRatio > viewportAspectRatio)
+        {
+            // get new width
+            int newWidth = (int)(viewportAspectRatio * height);
+            int viewportPosition = (width - newWidth) / 2;
+            glViewport(viewportPosition, 0, newWidth, height);
+        }
+        // window longuer than viewport
+        else
+        {
+            // get new height
+            int newHeight = (int)(width / viewportAspectRatio);
+            int viewportPosition = (height - newHeight) / 2;
+            glViewport(0, viewportPosition, width, newHeight);
+        }
+    #pragma endregion OPENGL_SPECIFICATION
     }
 } // namespace ASEngine

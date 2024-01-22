@@ -28,9 +28,9 @@ namespace ASEngine
     // texture information
     struct TextureInfo
     {
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         GLuint GLTexture;
-    #endif
+#pragma endregion OPENGL_SPECIFICATION
         int Width;
         int Height;
         TextureFormat Format;

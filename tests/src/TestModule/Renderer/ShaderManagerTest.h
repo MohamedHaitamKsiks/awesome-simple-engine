@@ -31,7 +31,7 @@ UNIT_TEST(ShaderManagerTest,
 
     // start tests
     ShaderManager* shaderManager = Renderer::GetShaderManager();
-    ShaderID shaderID = shaderManager->Create(spirv, ShaderType::VERTEX);
+    ShaderID shaderID = shaderManager->Create(spirv, ShaderStage::VERTEX);
     UniqueString paramName = UniqueString("Params");
 
     UNIT_TEST_CASE("It should create shader", 
@@ -43,7 +43,7 @@ UNIT_TEST(ShaderManagerTest,
 
     UNIT_TEST_CASE("It should have one uniform buffer named 'Params'", 
     {
-        EXPECT(shaderInfo.Type == ShaderType::VERTEX);
+        EXPECT(shaderInfo.Type == ShaderStage::VERTEX);
         EXPECT(shaderInfo.Params.UniformBuffers.size() == 1);
         EXPECT(shaderInfo.Params.UniformBuffers.find(paramName) != shaderInfo.Params.UniformBuffers.end());
     });

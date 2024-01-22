@@ -5,7 +5,6 @@ layout(location = 0) in vec2 v_Position;
 layout(location = 1) in vec2 v_TextureCoord;
 layout(location = 2) in vec4 v_Modulate;
 
-
 // outs
 layout(location = 0) out vec2 UV;
 layout(location = 1) out vec4 MODULATE;

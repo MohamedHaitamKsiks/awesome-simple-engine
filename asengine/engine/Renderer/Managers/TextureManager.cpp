@@ -10,7 +10,7 @@ namespace ASEngine
         textureInfo.Height = image.GetHeight();
         textureInfo.Filter = filter;
 
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         // create GL texture
         GLuint texture;
         // load open gl texture
@@ -38,17 +38,17 @@ namespace ASEngine
         }
         textureInfo.GLTexture = texture;
     
-    #endif // OPENGL
+    #pragma endregion OPENGL_SPECIFICATION // OPENGL
         // create new texture info and return the texture id
         return m_TextureInfos.Push(textureInfo);
     }
 
     void TextureManager::Destroy(TextureID textureID)
     {
-    #ifdef OPENGL
+    #pragma region OPENGL_SPECIFICATION
         auto& textureInfo = GetTextureInfo(textureID);
         glDeleteTextures(1, &textureInfo.GLTexture);
-    #endif // OPENGL
+    #pragma endregion OPENGL_SPECIFICATION // OPENGL
 
         m_TextureInfos.Free(textureID);
     }
