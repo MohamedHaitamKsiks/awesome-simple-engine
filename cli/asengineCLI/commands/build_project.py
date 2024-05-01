@@ -25,7 +25,7 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
     assert(config != {})
 
     # check platform validity
-    assert (platform in ("windows", "linux", "android"))
+    assert (platform in ("windows", "linux", "android", "headless"))
 
     # get config directory
     configDir = dirPath(configPath)
@@ -35,6 +35,7 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
     asenginePath = relativeTo(configDir, config["asenginePath"])
     asengineSourcePath = relativeTo(configDir, config["asengineSourcePath"])
     cmakeWindowsToolChain = relativeTo(configDir, config["cmakeWindowsToolchain"])
+    platformOS = config["targets"][platform]["os"]
 
     #generated tmp folder name
     tmpFileName = f".tmp.{ platform }"
@@ -59,7 +60,7 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
                         relativeTo(tmpPath, "./app/src/main/cpp/project-src"), 
                         dirs_exist_ok=True)
 
-    #desktop build 
+    #desktop/headless build 
     else:
         #copy compiled engine to temp project
         shutil.copytree(relativeTo(asenginePath, "./include"), 
@@ -69,7 +70,7 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
         if not os.path.isdir(relativeTo(tmpPath, "./asengine/lib")):
             os.mkdir(relativeTo(tmpPath, "./asengine/lib"))
 
-        shutil.copy(relativeTo(asenginePath, f"./lib/{platform}/asengine.a"), 
+        shutil.copy(relativeTo(asenginePath, f"./lib/{platformOS}/asengine.a"), 
                     relativeTo(tmpPath, "./asengine/lib/libasengine.a"))
 
         #copy project code to by compiled
@@ -87,7 +88,7 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
     error |= scanAndCompileShaders(assetsPath, glslangPath)
 
     # compile and run
-    if platform == "linux":
+    if platform in ["linux", "headless"]:
         os.chdir(relativeTo(tmpPath, "./build"))
         #remove old build
         if os.path.exists("build"):

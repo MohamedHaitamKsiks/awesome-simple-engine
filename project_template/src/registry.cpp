@@ -1,6 +1,7 @@
-#include "registry.h"
+#include "ASEngine.h"
 
-void Registry()
+// module registry for the game
+void ASEngine::Registry()
 {
     
 }

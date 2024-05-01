@@ -202,7 +202,7 @@ static int translateKeySyms(const KeySym* keysyms, int width)
         case XK_comma:          return GLFW_KEY_COMMA;
         case XK_period:         return GLFW_KEY_PERIOD;
         case XK_slash:          return GLFW_KEY_SLASH;
-        case XK_less:           return GLFW_KEY_WORLD_1; // At least in some layouts...
+        case XK_less:           return GLFW_KEY_EntityManager_1; // At least in some layouts...
         default:                break;
     }
 
@@ -283,7 +283,7 @@ static void createKeyTables(void)
             { GLFW_KEY_PERIOD, "AB09" },
             { GLFW_KEY_SLASH, "AB10" },
             { GLFW_KEY_BACKSLASH, "BKSL" },
-            { GLFW_KEY_WORLD_1, "LSGT" },
+            { GLFW_KEY_EntityManager_1, "LSGT" },
             { GLFW_KEY_SPACE, "SPCE" },
             { GLFW_KEY_ESCAPE, "ESC" },
             { GLFW_KEY_ENTER, "RTRN" },

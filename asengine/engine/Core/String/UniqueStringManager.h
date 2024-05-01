@@ -2,48 +2,44 @@
 #define ASENGINE_UNIQUE_STRING_MANAGER_H
 
 #include <string>
-#include <sstream>
-#include <cstring>
+#include <vector>
+#include <unordered_map>
 
-#include "Core/Log/Log.h"
-#include "Core/Memory/DynamicArray.h"
-#include "Core/Memory/PoolAllocator.h"
+#include "Core/Error/Assertion.h"
 #include "Core/Singleton/Singleton.h"
 
 namespace ASEngine
 {
     //unique string id
     using UniqueStringID = uint32_t;
+    constexpr uint32_t UNIQUE_STRING_ID_NULL = UINT32_MAX;
 
-    // define unique string informations
-    struct UniqueStringInfo
-    {
-        // where the string starts
-        uint32_t StartIndex = CHUNK_NULL;
-        // length of the string
-        size_t Length = 0;
-    };
-
-    // unique string manager, singleton that manages unique strings. 
+    // unique string manager, use UniqueString type directly
     class UniqueStringManager: public Singleton<UniqueStringManager>
     {
         public:
             // create string if not found
-            UniqueStringID Create(const std::string &str);
+            UniqueStringID Create(const std::string &targetString);
+            
             // get length
-            inline size_t GetLength(UniqueStringID stringID)
-            {
-                return m_StringInfos[stringID].Length;
+            inline size_t GetLength(UniqueStringID stringID) const
+            {   
+                ASENGINE_ASSERT(stringID != UNIQUE_STRING_ID_NULL, "Cannot get length of null string");
+                return m_Strings[stringID].length();
             };
-            // get std::string 
-            std::string GetString(UniqueStringID stringId);
+
+            // get string
+            const std::string& GetString(UniqueStringID stringID) const
+            {
+                ASENGINE_ASSERT(stringID != UNIQUE_STRING_ID_NULL, "Cannot get std::string of null string");
+                return m_Strings[stringID];
+            }
 
         private:
-            // where strings data are stored
-            char m_StringData[UINT16_MAX];
-            size_t m_StringDataHead = 0;
-            // list of strings
-            TDynamicArray<UniqueStringInfo> m_StringInfos{UINT16_MAX};
+            // list of strings data
+            std::vector<std::string> m_Strings{};
+            std::unordered_map<std::string, UniqueStringID> m_StringIDs{};
+            
             // return the id of the string if found
             UniqueStringID Find(const std::string &str);
     };

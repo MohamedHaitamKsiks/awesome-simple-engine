@@ -379,7 +379,7 @@ extern "C" {
  *   - For non-alphanumeric characters, Unicode:ish names are used (e.g.
  *     "COMMA", "LEFT_SQUARE_BRACKET", etc.). Note that some names do not
  *     correspond to the Unicode standard (usually for brevity)
- *   - Keys that lack a clear US mapping are named "WORLD_x"
+ *   - Keys that lack a clear US mapping are named "EntityManager_x"
  *   - For non-printable keys, custom names are used (e.g. "F4",
  *     "BACKSPACE", etc.)
  *
@@ -439,8 +439,8 @@ extern "C" {
 #define GLFW_KEY_BACKSLASH          92  /* \ */
 #define GLFW_KEY_RIGHT_BRACKET      93  /* ] */
 #define GLFW_KEY_GRAVE_ACCENT       96  /* ` */
-#define GLFW_KEY_WORLD_1            161 /* non-US #1 */
-#define GLFW_KEY_WORLD_2            162 /* non-US #2 */
+#define GLFW_KEY_EntityManager_1            161 /* non-US #1 */
+#define GLFW_KEY_EntityManager_2            162 /* non-US #2 */
 
 /* Function keys */
 #define GLFW_KEY_ESCAPE             256
@@ -4210,8 +4210,8 @@ GLFWAPI int glfwRawMouseMotionSupported(void);
  *  - `GLFW_KEY_LEFT_BRACKET`
  *  - `GLFW_KEY_RIGHT_BRACKET`
  *  - `GLFW_KEY_BACKSLASH`
- *  - `GLFW_KEY_WORLD_1`
- *  - `GLFW_KEY_WORLD_2`
+ *  - `GLFW_KEY_EntityManager_1`
+ *  - `GLFW_KEY_EntityManager_2`
  *  - `GLFW_KEY_0` to `GLFW_KEY_9`
  *  - `GLFW_KEY_A` to `GLFW_KEY_Z`
  *  - `GLFW_KEY_KP_0` to `GLFW_KEY_KP_9`

@@ -618,7 +618,7 @@ GLFWAPI const char* glfwGetKeyName(int key, int scancode)
     {
         if (key != GLFW_KEY_KP_EQUAL &&
             (key < GLFW_KEY_KP_0 || key > GLFW_KEY_KP_ADD) &&
-            (key < GLFW_KEY_APOSTROPHE || key > GLFW_KEY_WORLD_2))
+            (key < GLFW_KEY_APOSTROPHE || key > GLFW_KEY_EntityManager_2))
         {
             return NULL;
         }

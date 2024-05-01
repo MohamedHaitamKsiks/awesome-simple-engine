@@ -2,7 +2,8 @@
 #include "DesktopApplication.h"
 
 
-int main() {
+int main()
+{
     DesktopApplication application{};
     application.Start();
     

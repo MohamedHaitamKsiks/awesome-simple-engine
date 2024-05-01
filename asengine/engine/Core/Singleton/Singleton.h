@@ -1,7 +1,8 @@
 #ifndef ASENGINE_SINGLETON_H
 #define ASENGINE_SINGLETON_H
 
-#include "Core/Log/Log.h"
+#include "Core/Error/Assertion.h"
+#include "Core/Debug/Debug.h"
 
 namespace ASEngine
 {
@@ -15,33 +16,32 @@ namespace ASEngine
     class Singleton
     {
         public:
-            // init singleton
-            static void Init();
-            // get singleton
-            static inline T *GetSingleton() { return s_Singleton; };
-            // terminate singleton
-            static void Terminate(); 
+            Singleton()
+            {
+                ASENGINE_ASSERT(s_Instance == nullptr, "Singleton Already Exists!");
+                s_Instance = (T*)(this);
+            };
 
+            // make it polymorphic
+            virtual ~Singleton() = default;
+
+            // don't allow copy
+            Singleton(const Singleton<T> &) = delete;
+            Singleton(const T&) = delete;
+            
+            // get singleton instance
+            static inline T& GetInstance() 
+            {
+                ASENGINE_ASSERT(s_Instance, std::string(typeid(T).name()) + "Singleton hasn't been created yet!");
+                return *s_Instance; 
+            };
+            
         protected:
-            static T* s_Singleton;
+            static T* s_Instance;
     };
 
     template <typename T>
-    T *Singleton<T>::s_Singleton = nullptr;
-
-    template <typename T>
-    void Singleton<T>::Init()
-    {
-            if (!s_Singleton)
-                s_Singleton = new T();
-    }
-
-    template <typename T>
-    void Singleton<T>::Terminate()
-    {
-            if (s_Singleton)
-                delete s_Singleton;
-    }
+    T* Singleton<T>::s_Instance = nullptr;
 
 } // namespace ASEngine
 

@@ -291,7 +291,7 @@ static void createKeyTables(void)
     _glfw.wl.keycodes[KEY_KPDOT]      = GLFW_KEY_KP_DECIMAL;
     _glfw.wl.keycodes[KEY_KPEQUAL]    = GLFW_KEY_KP_EQUAL;
     _glfw.wl.keycodes[KEY_KPENTER]    = GLFW_KEY_KP_ENTER;
-    _glfw.wl.keycodes[KEY_102ND]      = GLFW_KEY_WORLD_2;
+    _glfw.wl.keycodes[KEY_102ND]      = GLFW_KEY_EntityManager_2;
 
     for (scancode = 0;  scancode < 256;  scancode++)
     {

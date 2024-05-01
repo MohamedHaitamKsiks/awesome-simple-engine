@@ -674,10 +674,10 @@ typedef enum SpvBuiltIn_ {
     SpvBuiltInLaunchIdNV = 5319,
     SpvBuiltInLaunchSizeKHR = 5320,
     SpvBuiltInLaunchSizeNV = 5320,
-    SpvBuiltInWorldRayOriginKHR = 5321,
-    SpvBuiltInWorldRayOriginNV = 5321,
-    SpvBuiltInWorldRayDirectionKHR = 5322,
-    SpvBuiltInWorldRayDirectionNV = 5322,
+    SpvBuiltInEntityManagerRayOriginKHR = 5321,
+    SpvBuiltInEntityManagerRayOriginNV = 5321,
+    SpvBuiltInEntityManagerRayDirectionKHR = 5322,
+    SpvBuiltInEntityManagerRayDirectionNV = 5322,
     SpvBuiltInObjectRayOriginKHR = 5323,
     SpvBuiltInObjectRayOriginNV = 5323,
     SpvBuiltInObjectRayDirectionKHR = 5324,
@@ -688,10 +688,10 @@ typedef enum SpvBuiltIn_ {
     SpvBuiltInRayTmaxNV = 5326,
     SpvBuiltInInstanceCustomIndexKHR = 5327,
     SpvBuiltInInstanceCustomIndexNV = 5327,
-    SpvBuiltInObjectToWorldKHR = 5330,
-    SpvBuiltInObjectToWorldNV = 5330,
-    SpvBuiltInWorldToObjectKHR = 5331,
-    SpvBuiltInWorldToObjectNV = 5331,
+    SpvBuiltInObjectToEntityManagerKHR = 5330,
+    SpvBuiltInObjectToEntityManagerNV = 5330,
+    SpvBuiltInEntityManagerToObjectKHR = 5331,
+    SpvBuiltInEntityManagerToObjectNV = 5331,
     SpvBuiltInHitTNV = 5332,
     SpvBuiltInHitKindKHR = 5333,
     SpvBuiltInHitKindNV = 5333,
@@ -1880,10 +1880,10 @@ typedef enum SpvOp_ {
     SpvOpRayQueryGetIntersectionCandidateAABBOpaqueKHR = 6026,
     SpvOpRayQueryGetIntersectionObjectRayDirectionKHR = 6027,
     SpvOpRayQueryGetIntersectionObjectRayOriginKHR = 6028,
-    SpvOpRayQueryGetWorldRayDirectionKHR = 6029,
-    SpvOpRayQueryGetWorldRayOriginKHR = 6030,
-    SpvOpRayQueryGetIntersectionObjectToWorldKHR = 6031,
-    SpvOpRayQueryGetIntersectionWorldToObjectKHR = 6032,
+    SpvOpRayQueryGetEntityManagerRayDirectionKHR = 6029,
+    SpvOpRayQueryGetEntityManagerRayOriginKHR = 6030,
+    SpvOpRayQueryGetIntersectionObjectToEntityManagerKHR = 6031,
+    SpvOpRayQueryGetIntersectionEntityManagerToObjectKHR = 6032,
     SpvOpAtomicFAddEXT = 6035,
     SpvOpTypeBufferSurfaceINTEL = 6086,
     SpvOpTypeStructContinuedINTEL = 6090,
@@ -2554,10 +2554,10 @@ inline void SpvHasResultAndType(SpvOp opcode, bool *hasResult, bool *hasResultTy
     case SpvOpRayQueryGetIntersectionCandidateAABBOpaqueKHR: *hasResult = true; *hasResultType = true; break;
     case SpvOpRayQueryGetIntersectionObjectRayDirectionKHR: *hasResult = true; *hasResultType = true; break;
     case SpvOpRayQueryGetIntersectionObjectRayOriginKHR: *hasResult = true; *hasResultType = true; break;
-    case SpvOpRayQueryGetWorldRayDirectionKHR: *hasResult = true; *hasResultType = true; break;
-    case SpvOpRayQueryGetWorldRayOriginKHR: *hasResult = true; *hasResultType = true; break;
-    case SpvOpRayQueryGetIntersectionObjectToWorldKHR: *hasResult = true; *hasResultType = true; break;
-    case SpvOpRayQueryGetIntersectionWorldToObjectKHR: *hasResult = true; *hasResultType = true; break;
+    case SpvOpRayQueryGetEntityManagerRayDirectionKHR: *hasResult = true; *hasResultType = true; break;
+    case SpvOpRayQueryGetEntityManagerRayOriginKHR: *hasResult = true; *hasResultType = true; break;
+    case SpvOpRayQueryGetIntersectionObjectToEntityManagerKHR: *hasResult = true; *hasResultType = true; break;
+    case SpvOpRayQueryGetIntersectionEntityManagerToObjectKHR: *hasResult = true; *hasResultType = true; break;
     case SpvOpAtomicFAddEXT: *hasResult = true; *hasResultType = true; break;
     case SpvOpTypeBufferSurfaceINTEL: *hasResult = true; *hasResultType = false; break;
     case SpvOpTypeStructContinuedINTEL: *hasResult = false; *hasResultType = false; break;

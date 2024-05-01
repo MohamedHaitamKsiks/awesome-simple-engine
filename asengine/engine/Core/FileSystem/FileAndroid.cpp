@@ -1,5 +1,7 @@
 #include "File.h"
+#include <sstream>
 #include "android/asset_manager.h"
+#include "Core/Debug/Debug.h"
 
 /*
     Android implementation for files
@@ -15,7 +17,7 @@ namespace ASEngine
         s_AssetManager = assetManager;
     }
 
-    bool File::Open(const std::string &path, FileOpenMode mode)
+    bool File::Open(const std::string &path, FileOpenMode mode, FileType type)
     {
         m_Asset = AAssetManager_open(s_AssetManager, (path).c_str(), AASSET_MODE_BUFFER);
         m_Size = (size_t)AAsset_getLength(m_Asset);
@@ -27,12 +29,12 @@ namespace ASEngine
         AAsset_close(m_Asset);
     }
 
-    void File::Read(char *buffer)
+    void File::Read(void *buffer)
     {
         AAsset_read(m_Asset, buffer, m_Size);
     }
 
-    void File::Write(const char *buffer, const size_t length)
+    void File::Write(const void *buffer, size_t length)
     {
     }
 

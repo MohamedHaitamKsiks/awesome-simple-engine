@@ -1,66 +1,58 @@
 #include "Archetype.h"
+#include "Core/Error/Assertion.h"
 
 namespace ASEngine
 {
 
     void Archetype::AddComponent(UniqueString componentName)
     {
-        if (m_Signature.count(componentName) == 0)
-        {
-            m_Signature.emplace(componentName);
-            m_ComponentCollections[componentName] = ComponentManager::CreateComponentCollection(componentName);
-        }
+        ASENGINE_ASSERT(m_Signature.count(componentName) == 0, "Component Already Exists");
+        
+        m_Signature.emplace(componentName);
+        //create component collectio
+        std::unique_ptr<IComponentCollection> collection(ComponentManager::GetInstance().CreateComponentCollection(componentName));
+        m_ComponentCollections[componentName] = std::move(collection);
+    
     }
 
-    ComponentIndex Archetype::AddEntity(Entity entity)
+    IComponentCollection& Archetype::GetComponentCollection(UniqueString componentName)
+    {
+        ASENGINE_ASSERT(m_ComponentCollections.find(componentName) != m_ComponentCollections.end(), "ComponentType Not Found!");
+        return *m_ComponentCollections[componentName];
+    }
+
+    ComponentIndex Archetype::AddEntity(EntityID entityID)
     {
         ComponentIndex index;
-        for (auto pair: m_ComponentCollections)
-        {
-            std::shared_ptr<BaseComponentCollection> collection = pair.second;
+        for (auto& [componentName, collection]: m_ComponentCollections)
             index = collection->Add();
-        }
-        m_Entities.Push(entity);
+        
+        m_Entities.push_back(entityID);
         return index;
     }
     
-    void Archetype::RemoveEntity(Entity entity)
+    void Archetype::RemoveEntity(EntityID entityID)
     {
         // find component index
-        ComponentIndex index = GetComponentIndexOfEntity(entity);
-        if (index == UINT32_MAX)
-            return;
+        ComponentIndex index = GetComponentIndexOfEntity(entityID);
+        ASENGINE_ASSERT(index != COMPONENT_INDEX_NULL, "Can't remove inexisting Entity");
 
         // remove components
-        for (auto pair : m_ComponentCollections)
-        {
-            std::shared_ptr<BaseComponentCollection> collection = pair.second;
-            
-            Component* component = (Component*) collection->PtrAt(index);
-            component->OnDestroy();
-
+        for (auto& [componentName, collection] : m_ComponentCollections)
             collection->Remove(index);
-        }
-        m_Entities.Remove(index);
+        
+        m_Entities.erase(m_Entities.begin() + index);
     }
 
-    Component* Archetype::GetComponent(UniqueString componentName, ComponentIndex index)
-    {
-        std::shared_ptr<BaseComponentCollection> collection = m_ComponentCollections[componentName];
-        return (Component*) collection->PtrAt(index);
-    }
-
-    ComponentIndex Archetype::GetComponentIndexOfEntity(Entity entity)
+    ComponentIndex Archetype::GetComponentIndexOfEntity(EntityID entityID)
     {
         // find component index
-        for (ComponentIndex i = 0; i < m_Entities.GetSize(); i++)
+        for (ComponentIndex i = 0; i < m_Entities.size(); i++)
         {
-            if (m_Entities[i] == entity)
-            {
+            if (m_Entities[i] == entityID)
                 return i;
-            }
         }
-        return UINT32_MAX;
+        return COMPONENT_INDEX_NULL;
     }
 
 

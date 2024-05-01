@@ -1,40 +1,68 @@
 #ifndef ASENGINE_WINDOW_H
 #define ASENGINE_WINDOW_H
 
-#include "Core/Math/vec2.h"
-#include "Core/Signals/Signal.h"
+#include "Core/Math/Vector2.h"
+#include "Core/Signal/Signal.h"
 #include "Core/Singleton/Singleton.h"
+
+#include "ECS/System.h"
 
 namespace ASEngine
 {
     // game's window: singleton
-    class Window: public Singleton<Window>
+    class Window: public ISystem, public Singleton<Window>
     {
     public:
         // set window size to
-        static inline void SetSize(int width, int height) { GetSingleton()->ISetSize(width, height); };
+        void SetSize(int width, int height);
+
         //get window size
-        static inline vec2 GetSize() { return GetSingleton()->m_Size; };
+        inline const Vector2& GetSize() const
+        {
+            return m_Size;
+        }
 
         // set fullscreen 
-        static inline void SetFullscreen(bool fullscreen) { GetSingleton()->ISetFullscreen(fullscreen); };
+        void SetFullscreen(bool fullscreen);
+
         // get current fullscreen state
-        static inline bool IsFullscreen() { return GetSingleton()->m_Fullscreen; };
+        bool IsFullscreen() const
+        {
+            return m_Fullscreen;
+        }
 
         // set aspect ratio mode
-        static inline void SetKeepAspectRatio(bool keep) { GetSingleton()->m_KeepAspectRatio = keep; };
+        void SetKeepAspectRatio(bool keep);
+
         // get current fullscreen state
-        static inline bool IsKeepAspectRatio() { return GetSingleton()->m_KeepAspectRatio; };
+        inline bool IsKeepAspectRatio() const
+        {
+            return m_AspectRatio;
+        }
 
         // set window title
-        static inline void SetTitle(const std::string& title) { GetSingleton()->ISetTitle(title); };
-        // get window title
-        static inline std::string GetTitle() { return GetSingleton()->m_Title; };
+        void SetTitle(const std::string& title);
 
+        // get window title
+        inline const std::string& GetTitle() const
+        {
+            return m_Title;
+        }
         
-        static inline Signal<int, int>& ResizeSignal() { return GetSingleton()->m_ResizeSignal; };
-        static inline Signal<bool> &FullscreenSignal() { return GetSingleton()->m_SetFullscreenSignal; };
-        static inline Signal<std::string> &TitleSignal() { return GetSingleton()->m_SetTitleSignal; };
+        inline Signal<int, int>& GetResizeSignal()
+        {
+            return m_ResizeSignal;
+        }
+
+        inline Signal<bool> &GetFullscreenSignal()
+        {
+            return m_SetFullscreenSignal;
+        }
+
+        inline Signal<std::string> &GetTitleSignal()
+        {
+            return m_SetTitleSignal;
+        }
 
     private:
         // signals
@@ -44,17 +72,12 @@ namespace ASEngine
 
         int m_Width = -1;
         int m_Height = -1;
-        vec2 m_Size = vec2::ZERO();
+        Vector2 m_Size = Vector2::ZERO();
 
         bool m_Fullscreen = false;
         float m_AspectRatio = 1.77f; // 16:9
         bool m_KeepAspectRatio = true;
         std::string m_Title;
-
-        // internal functions
-        void ISetSize(int width, int height);
-        void ISetFullscreen(bool fullscreen);
-        void ISetTitle(const std::string &title);
     };
 } // namespace ASEngine
 

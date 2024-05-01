@@ -3,7 +3,7 @@
 
 #include "Macros/Foreach.h"
 #include "Core/Error/Exception.h"
-#include "Core/Log/Log.h"
+#include "Core/Debug/Debug.h"
 
 #include<cstdlib>
 
@@ -13,34 +13,35 @@
 #include<stdexcept>
 #include<chrono>
 
-#define RUN_TESTS(...) exit(FOREACH(RUN_TEST, __VA_ARGS__) 0)
+#define ASENGINE_RUN_TESTS(...) exit(FOREACH(ASENGINE_RUN_TEST, __VA_ARGS__) 0)
 
-#define RUN_TEST(test) test() + 
+#define ASENGINE_RUN_TEST(test) test() |
 
-#define UNIT_TEST(testName, body)   \
-    int testName() {                \
-        ASEngine::UnitTest test(#testName);  \
-        body                        \
-        return 1 - static_cast<int>(test.Run()); \
+/*
+    ASENGINE_UNIT_TEST(test name, test body)
+    create unit test in on cpp file
+    this is the main entry to the test
+*/ 
+#define ASENGINE_UNIT_TEST(testName, body) \
+    int testName() \
+    { \
+        ASEngine::UnitTest test(#testName); \
+        body \
+        return test.Run(); \
     } 
 
-#define UNIT_TEST_CASE(testCase, body) ( test.Test(testCase, [&] () { body }) )
+#define ASENGINE_UNIT_TEST_CASE(testCase, body) test.Test(testCase, [&] () { body })
 
-#define EXPECT(predicat) \
-    test.Expect(predicat, __FILE__, __LINE__, #predicat)
+#define ASENGINE_UNIT_TEST_EXPECT(predicat) test.Expect(predicat, __FILE__, __LINE__, #predicat)
 
 namespace ASEngine
 {
-
-    // test fail exception
-    DEFINE_EXCEPTION(TestFailException, "Test Failed!");
-
     // unit test container
     class UnitTest
     {
     public:
 
-        UnitTest(const std::string& testSuitName): m_TestSuitName(testSuitName) {};
+        UnitTest(const std::string& testSuitName);
 
         // start case
         void Test(const std::string& testCaseName, const std::function<void()>& testCallback);
@@ -48,8 +49,8 @@ namespace ASEngine
         // assertion
         void Expect(bool predicat, const std::string &file, uint32_t line, const std::string &errorMessage);
 
-        // run tests and returns if test passes are not
-        bool Run(); 
+        // run tests and returns 0 if it's OK
+        int Run(); 
 
         // get test suit name
         inline const std::string& GetTestSuitName() const

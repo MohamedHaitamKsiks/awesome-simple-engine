@@ -3,6 +3,4 @@
 namespace ASEngine
 {
 
-
-
 } // namespace ASEngine

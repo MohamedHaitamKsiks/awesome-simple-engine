@@ -1,12 +1,12 @@
 #ifndef ASENGINE_ENTITY_H
 #define ASENGINE_ENTITY_H
 
-#include <cstdint>
+#include "Core/Memory/PoolAllocator.h"
 
 namespace ASEngine
 {
-    // entity is a unique index
-    using Entity = uint32_t;
+    // entityID is a unique index
+    using EntityID = ChunkID;
 } // namespace ASEngine
 
 #endif // ASENGINE_ENTITY_H

@@ -3,8 +3,7 @@
 
 #include <functional>
 #include <algorithm>
-
-#include "Core/Memory/DynamicArray.h"
+#include <vector>
 
 #include "ComponentManager.h"
 #include "Component.h"
@@ -15,24 +14,22 @@
 namespace ASEngine
 {
     // ecs query to get list of archetypes
+    // all entities will be queried in construction
     template <typename T, typename... types>
-    class TEntityQuery
+    class EntityQuery
     {
     public:
-        TEntityQuery()
+        EntityQuery()
         {
             // get signature
             ComponentManager::GetSignature<T, types...>(m_Signature);
 
             // fetch all archetypes
-            const auto& archetypes = ArchetypeManager::GetArchetypes();
-            for (const auto& pair: archetypes)
+            const auto& archetypes = ArchetypeManager::GetInstance().GetArchetypes();
+            for (const auto& [signature, archetype]: archetypes)
             {
-                const auto& signature = pair.first; 
-                const auto& archetype = pair.second;
-
                 if (std::includes(signature.begin(), signature.end(), m_Signature.begin(), m_Signature.end()))
-                    m_Archetypes.Push(archetype);
+                    m_Archetypes.push_back(&archetype);
                 
             }
 
@@ -57,7 +54,7 @@ namespace ASEngine
         };
 
         // get archetypes
-        inline const TDynamicArray<Archetype *> &GetArchetypes() const
+        inline const std::vector<Archetype*> &GetArchetypes() const
         {
             return m_Archetypes;
         };
@@ -70,7 +67,7 @@ namespace ASEngine
 
     private:
         Signature m_Signature;
-        TDynamicArray<Archetype *> m_Archetypes;
+        std::vector<Archetype*> m_Archetypes;
     };
 
 } // namespace ASEngine

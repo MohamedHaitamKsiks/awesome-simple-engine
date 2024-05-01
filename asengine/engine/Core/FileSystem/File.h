@@ -11,23 +11,19 @@
 #endif
 
 #include<string>
-#include<sstream>
-
-#include "Core/Log/Log.h"
+#include "Core/Memory/ByteBuffer.h"
 
 namespace ASEngine {
 
     enum class FileOpenMode
     {
-        // do not open files with this mode, this is the default mode
-        NONE,
         // open file in read mode
         READ,
         // open file in write mode
-        WRITE,
+        WRITE
     };
 
-    enum FileType { 
+    enum class FileType { 
         //file is a resource, resource files are readonly files
         RESOURCE,
         //file is used to store game data like saves, settings ...
@@ -44,7 +40,7 @@ namespace ASEngine {
         #endif
 
         // open file: read | write
-        bool Open(const std::string &path, FileOpenMode mode);
+        bool Open(const std::string &path, FileOpenMode mode, FileType type = FileType::RESOURCE);
 
         //close file
         void Close();
@@ -53,17 +49,20 @@ namespace ASEngine {
         size_t GetSize();
 
         //read data into buffer
-        void Read(char* buffer);
+        void Read(void* buffer);
+
+        // read data and return byte buffer
+        void Read(ByteBuffer& buffer);
 
         //write data from buffer into file
-        void Write(const char* buffer, const size_t length);
+        void Write(const void* buffer, size_t length);
 
         //read text and return string
         std::string ReadText();
 
     private:
         size_t m_Size = 0;
-        FileOpenMode m_Mode = FileOpenMode::NONE;
+        FileOpenMode m_Mode = FileOpenMode::READ;
         
         #ifdef  __ANDROID__
         static AAssetManager* s_AssetManager;

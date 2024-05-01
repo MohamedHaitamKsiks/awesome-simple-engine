@@ -2,94 +2,95 @@
 cmake_minimum_required(VERSION 3.22.1)
 set(CMAKE_CXX_STANDARD 23)
 
-add_compile_definitions(OPENGL)
-
 project(asengine)
 include_directories(engine)
 
-#file system source system
-set(FILESYSTEM_SOURCES engine/Core/FileSystem/File.cpp)
+#platform specific sources
+set(PLATFORM_SPECIFIC_SOURCES)
 if (ANDROID)
-    set(FILESYSTEM_SOURCES ${FILESYSTEM_SOURCES} engine/Core/FileSystem/FileAndroid.cpp)
+    set(PLATFORM_SPECIFIC_SOURCES ${PLATFORM_SPECIFIC_SOURCES} 
+        engine/Core/FileSystem/FileAndroid.cpp
+        engine/Core/Debug/DebugAndroid.cpp
+    )
 else() 
-    set(FILESYSTEM_SOURCES ${FILESYSTEM_SOURCES} engine/Core/FileSystem/FileDesktop.cpp)
+    set(PLATFORM_SPECIFIC_SOURCES ${PLATFORM_SPECIFIC_SOURCES}
+        engine/Core/FileSystem/FileDesktop.cpp
+        engine/Core/Debug/DebugDesktop.cpp
+    )
 endif()
 
-# link SPIRV-Cross
+# add SPIRV-Cross
 add_subdirectory(dependencies/SPIRV-Cross)
 include_directories(dependencies/SPIRV-Cross)
 
+# add miniaudio
+add_subdirectory(dependencies/miniaudio)
+include_directories(dependencies/miniaudio)
+
+# add stb_image
+add_subdirectory(dependencies/stb_image)
+include_directories(dependencies/stb_image)
 
 add_library(
     asengine
     STATIC
-    #modules
-    engine/Module/ModuleManager.cpp
+    #Application
+    engine/Core/Application/Application.cpp
+    #Debug
+    engine/Core/Debug/Debug.cpp
+    #errors
+    engine/Core/Error/Assertion.cpp
+    engine/Core/Error/Exception.cpp
+    #strings
+    engine/Core/String/UniqueString.cpp
+    engine/Core/String/UniqueStringManager.cpp
     #serialization
     engine/Core/Serialization/Serializer.cpp
+    #file system
+    engine/Core/FileSystem/File.cpp
+    #modules
+    engine/Module/ModuleManager.cpp
     #time 
     engine/Core/Time/Time.cpp
     #memory
     engine/Core/Memory/PoolAllocator.cpp
     engine/Core/Memory/ByteBuffer.cpp
-    #strings
-    engine/Core/String/UniqueString.cpp
-    engine/Core/String/UniqueStringManager.cpp
     #math
     engine/Core/Math/Random.cpp
-    engine/Core/Math/mat3.cpp
-    engine/Core/Math/vec2.cpp
-    engine/Core/Math/mat4.cpp
-    engine/Core/Math/vec3.cpp
+    engine/Core/Math/Matrix3x3.cpp
+    engine/Core/Math/Vector2.cpp
+    engine/Core/Math/Matrix4x4.cpp
+    engine/Core/Math/Vector3.cpp
+    engine/Core/Math/Quaternion.cpp
     #window
     engine/Core/Window/Window.cpp
     #input
     engine/Core/InputSystem/InputEvent.cpp
     #app
-    engine/Core/Application/Application.cpp
+    #engine/Core/Application/Application.cpp
     #log
-    engine/Core/Log/Log.cpp
     #files
-    ${FILESYSTEM_SOURCES}
     #ecs
-    engine/ECS/World.cpp
+    engine/ECS/EntityManager.cpp
     engine/ECS/Archetype.cpp
     engine/ECS/ComponentManager.cpp
     engine/ECS/SystemManager.cpp
     engine/ECS/ArchetypeManager.cpp
     engine/ECS/EntityBuilder.cpp
-    #shapes
-    engine/Shape/Rectangle.cpp
     #resource
-    engine/Resource/Image.cpp
-    engine/Resource/Material.cpp
-    engine/Resource/Shader.cpp
-    engine/Resource/Scene.cpp
-    engine/Resource/Audio.cpp
+    #engine/Resource/Material.cpp
+    #engine/Resource/Shader.cpp
+    #engine/Resource/Scene.cpp
+    #engine/Resource/Audio.cpp
     #rendering
-    engine/Renderer/Managers/BufferManager.cpp
-    engine/Renderer/Managers/ShaderManager.cpp
-    engine/Renderer/Managers/ShaderProgramManager.cpp
-    engine/Renderer/Managers/TextureManager.cpp
-    engine/Renderer/Renderer.cpp
-    engine/Renderer/Viewport.cpp
-    #3d
-    engine/Renderer/3D/Vertex3D.cpp
-    engine/Renderer/3D/Mesh3D.cpp
-    engine/Renderer/3D/Renderer3D.cpp
-    engine/Renderer/3D/VertexBufferObject3D.cpp
-    engine/Renderer/3D/InstanceBufferObject3D.cpp
-    #2ds
-    engine/Renderer/2D/Vertex2D.cpp
-    engine/Renderer/2D/Quad2D.cpp
-    engine/Renderer/2D/Renderer2D.cpp
-    engine/Renderer/2D/VertexBufferObject2D.cpp
+    #engine/Renderer/Image.cpp
+    #engine/Renderer/Viewport.cpp
     #audio
-    engine/Audio/AudioEngine.cpp
+    #engine/Audio/AudioEngine.cpp
     #testing
     engine/UnitTest/UnitTest.cpp
-    #thirdparty
-    engine/Thirdparty/miniaudio.c
+    #platform src
+    ${PLATFORM_SPECIFIC_SOURCES}
 )
 
 if(NOT ANDROID)
@@ -107,6 +108,8 @@ if(NOT ANDROID)
 
     target_link_libraries(
         asengine
+        stb_Image
+        miniaudio
         glew
         spirv_cross_glsl
         OpenGL::GL

@@ -1,32 +1,53 @@
 #include "EntityBuilder.h"
 
+#include "ComponentManager.h"
+
+#include "Core/Serialization/Json.h"
+#include "Core/Serialization/Serializer.h"
+
 namespace ASEngine
 {
-    EntityBuilder::~EntityBuilder()
-    {
-        for (int i = 0; i < m_ComponentNames.GetSize(); i++)
-        {
-            ComponentManager::DeleteComponent(m_ComponentNames[i], m_Components[i]);
-        }
-    }
-
     EntityBuilder::EntityBuilder(const EntityBuilder &builder)
     {
-        for (int i = 0; i < builder.m_Components.GetSize(); i++)
+        for (auto& [componentName, component]: builder.m_Components)
         {
-            auto componentName = builder.m_ComponentNames[i];
-            auto* component = builder.m_Components[i];
-
-            AddComponent(componentName, component);
+            AddComponent(componentName, *component);
         }
     }
 
-    void EntityBuilder::AddComponent(UniqueString componentName, const Component *data)
+    void EntityBuilder::AddComponent(UniqueString componentName)
     {
-        m_ComponentNames.Push(componentName);
-        Component* newComponent = ComponentManager::MakeComponent(componentName, data);
-        m_Components.Push(newComponent);
+        std::unique_ptr<Component> newComponent(ComponentManager::GetInstance().MakeComponent(componentName));
 
+        // add component
+        m_Components[componentName] = std::move(newComponent);
+        m_Signature.emplace(componentName);
+    }
+
+    void EntityBuilder::AddComponent(UniqueString componentName, const Component &component)
+    {
+        AddComponent(componentName);
+        m_Components[componentName]->Copy(component);
+    }
+
+    // serialization of Entity Builder
+    template <>
+    Json Serializer<EntityBuilder>::Serialize(const EntityBuilder &value)
+    {
+        Json object = Json({});
+        // add later ...
+        return object;
+    }
+
+    template <>
+    void Serializer<EntityBuilder>::Deserialize(const Json &object, EntityBuilder &dest)
+    {
+        for (auto &component : object.items())
+        {
+            UniqueString componentName{ component.key() };
+            dest.AddComponent(componentName);
+            dest.GetComponent(componentName).Deserialize(component.value());
+        }
     }
 
 } // namespace ASEngine

@@ -3,15 +3,10 @@
 
 #include <memory>
 #include <unordered_map>
-#include <cstring>
 
-#include "Core/Memory/DynamicArray.h"
 #include "Core/String/UniqueString.h"
-
-#include "Entity.h"
 #include "Component.h"
 #include "Signature.h"
-#include "ComponentManager.h"
 
 namespace ASEngine
 {
@@ -20,15 +15,16 @@ namespace ASEngine
     {
         public:
             EntityBuilder() {};
-            EntityBuilder(const EntityBuilder& builder);
-    
-            ~EntityBuilder();
-            // is entity going to be kept when changing scene
-            bool Persistent = false;
 
-            // add component
-            void AddComponent(UniqueString componentName, const Component* data);
-            
+            // copy constructor
+            EntityBuilder(const EntityBuilder& builder);
+
+            // add component with no initial value
+            void AddComponent(UniqueString componentName);
+
+            // set component with inital value
+            void AddComponent(UniqueString componentName, const Component& component);
+
             // add component based on type
             template <typename T, typename... types>
             void AddComponents(const T& firstComponent, const types&... components)
@@ -42,12 +38,42 @@ namespace ASEngine
                 }
             }
 
-        private:
-            TDynamicArray<UniqueString> m_ComponentNames{};
-            TDynamicArray<Component*> m_Components{};
+            // get components
+            inline const std::unordered_map<UniqueString, std::unique_ptr<Component>>& GetComponents() const
+            {
+                return m_Components;
+            }
 
-            // make world friend class
-            friend class World;
+            // get component
+            inline Component& GetComponent(UniqueString componentName)
+            {
+                return *m_Components[componentName];
+            }
+
+            // get signature
+            const Signature& GetSignature() const
+            {
+                return m_Signature;
+            }
+
+            inline void SetPersistant(bool persistant)
+            {
+                m_Persistent = persistant;
+            }
+
+            inline bool GetPersistant() const
+            {
+                return m_Persistent;
+            }
+
+        private:
+            std::unordered_map<UniqueString, std::unique_ptr<Component>> m_Components{};
+            
+            // cache signatrue
+            Signature m_Signature{};
+
+            // is entity going to be kept when changing scene
+            bool m_Persistent = false;
     };
 
 } // namespace ASEngine

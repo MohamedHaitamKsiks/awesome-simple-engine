@@ -1,142 +1,118 @@
-
 #include "Application.h"
 
-namespace ASEngine {
+#include "Core/FileSystem/File.h"
+#include "Core/String/UniqueStringManager.h"
+#include "Core/Registry/Registry.h"
+#include "Core/Window/Window.h"
+#include "Core/Time/Time.h"
+#include "Core/Debug/Debug.h"
 
-	Application::Application(Platform platform) {
-		// set platform
-		m_Platform = platform;
+#include "Core/Serialization/Json.h"
 
-		// init unique string manager
-		UniqueStringManager::Init();
-		// init application window
-		Window::Init();
-		// init viewport
-		Viewport::Init();
-		// init graphics api
-		Renderer::Init();
-		// init renderer 2d
-		Renderer2D::Init();
-		// init renderer 33d
-		Renderer3D::Init();
-		// init audio engine
-		AudioEngine::Init();
-		// init ecs world
-		World::Init();
-		// init module manager
-		ModuleManager::Init();
+#include "ECS/EntityManager.h"
+#include "ECS/ArchetypeManager.h"
+#include "ECS/ComponentManager.h"
 
-		Debug::Log("Application init complete");
-	}
+//#include "Audio/AudioEngine.h"
+//#include "Renderer/Viewport.h"
 
-	Application::~Application()
-	{
-		ResourceManager<Scene>::Terminate();
-		World::Terminate();
-		TerminateResourceManagers();
-		ModuleManager::Terminate();
-		Renderer3D::Terminate();
-		Renderer2D::Terminate();
-		Renderer::Terminate();
-		Viewport::Terminate();
-		AudioEngine::Terminate();
-		Window::Terminate();
-		UniqueStringManager::Terminate();
-	}
+namespace ASEngine
+{
 
-	void Application::Create(Platform platform) {
-		if (s_Singleton)
-			return;
-		s_Singleton = new Application(platform);
-	}
+    void Application::Init()
+    {
+        Registry();
+        ModuleManager::GetInstance().Registry();
 
-	void Application::InitResourceManagers()
-	{
-		ResourceManager<Shader>::Init("Shaders");
-		ResourceManager<Material>::Init("Materials");
-		ResourceManager<Audio>::Init("Audios");
-		ResourceManager<Scene>::Init("Scenes");
-	}
+        // load project settings
+        LoadProjectSettings();
 
-	void Application::TerminateResourceManagers()
-	{
-		ResourceManager<Shader>::Terminate();
-		ResourceManager<Material>::Terminate();
-		ResourceManager<Audio>::Terminate();
-	}
+        SystemManager::GetInstance().Init();
+        Debug::Log("Application init complete");
+    }
 
+    void Application::Setup()
+    {
+        // register application systems and modules
+        RegisterBuiltInSystems();
+    }
 
-	void Application::Update(float delta) {
-		// process input
-		for (auto& event: GetSingleton()->m_InputEventQueue)
-		{
-			World::ProcessInputEvent(event);
-		}
-		GetSingleton()->m_InputEventQueue.Clear();
+    void Application::RegisterBuiltInSystems()
+    {
+        SystemManager& systemManager = SystemManager::GetInstance();
+        systemManager.RegisterSystem<Window>();
+        systemManager.RegisterSystem<ComponentManager>();
+        systemManager.RegisterSystem<ArchetypeManager>();
+        systemManager.RegisterSystem<EntityManager>();
+    }
 
-		// update here..
-		World::Update(delta);
+    void Application::Terminate()
+    {
+        SystemManager::GetInstance().Terminate();
+    }
 
-		// clear
-		Renderer::GetSingleton()->Clear();
+    void Application::Update(float delta)
+    {
+        // get system manager
+        auto& systemManager = SystemManager::GetInstance();
 
-		// draw 3d
-		Renderer3D::Draw();
+        // process input
+        for (auto& event: m_InputEventQueue)
+        {
+            systemManager.OnInputEvent(event);
+        }
+        m_InputEventQueue.clear();
 
-		// render world 2d
-		Renderer2D* renderer2D = Renderer2D::GetSingleton();
+        // call fixed steps
+        m_FixedTimer += delta;
+        while (m_FixedTimer >= Time::FixedTimeStep)
+        {
+            systemManager.FixedUpdate(Time::FixedTimeStep * Time::TimeScale);
+            m_FixedTimer -= Time::FixedTimeStep;
+        }
 
-		renderer2D->Begin();
-		World::Render2D();
-		renderer2D->End(); 
+        // call normal update
+        systemManager.Update(delta * Time::TimeScale);
 
-		// render ui
-		renderer2D->BeginUI();
-		World::UIRender2D();
-		renderer2D->End();
-
-	}
+        // destroy all enities in queue
+        EntityManager::GetInstance().CleanDestroyQueue();
+    }
 
 
-	void Application::LoadProjectSettings() {
-		//load json file
-		File projectSettingsFile;
-		projectSettingsFile.Open("project.settings.json", FileOpenMode::READ);
-		std::string projectSettingsString = projectSettingsFile.ReadText();
-		projectSettingsFile.Close();
+    void Application::LoadProjectSettings()
+    {
+        //load json file
+        File projectSettingsFile;
+        projectSettingsFile.Open("project.settings.json", FileOpenMode::READ);
+        std::string projectSettingsString = projectSettingsFile.ReadText();
+        projectSettingsFile.Close();
 
-		//parse to json
-		nlohmann::json projectSettings = nlohmann::json::parse(projectSettingsString);
-		
-		// set project name
-		std::string projectName = projectSettings["name"];
-		Window::SetTitle(projectName);
+        //parse to json
+        Json projectSettings = Json::parse(projectSettingsString);
 
-		// set view port
-		int viewportWidth = projectSettings["viewport"]["size"]["width"];
-		int viewportHeight = projectSettings["viewport"]["size"]["height"];
-		Viewport::SetSize(viewportWidth, viewportHeight);
+        // set project name
+        std::string projectName = projectSettings["name"].get<std::string>();
+        Window::GetInstance().SetTitle(projectName);
 
-		// set window size
-		int windowWidth = projectSettings["window"]["size"]["width"];
-		int windowHeight = projectSettings["window"]["size"]["height"];
-		if (GetSingleton()->m_Platform != Platform::ANDROID_DEVICES)
-			Window::SetSize(windowWidth, windowHeight);
+        // set view port
+        int viewportWidth = projectSettings["viewport"]["size"]["width"].get<int>();
+        int viewportHeight = projectSettings["viewport"]["size"]["height"].get<int>();
+        // Viewport::GetInstance().SetSize(viewportWidth, viewportHeight);
 
-		// set fullscreen mode
-		bool windowIsFullscreen = projectSettings["window"]["fullscreen"];
-		if (GetSingleton()->m_Platform != Platform::ANDROID_DEVICES)
-			Window::SetFullscreen(windowIsFullscreen);
+        // set window size
+        int windowWidth = projectSettings["window"]["size"]["width"].get<int>();
+        int windowHeight = projectSettings["window"]["size"]["height"].get<int>();
+        Window::GetInstance().SetSize(windowWidth, windowHeight);
 
-		// set fixed time step
-		Time::FixedTimeStep = projectSettings["fixedTimeStep"];
+        // set fullscreen mode
+        bool windowIsFullscreen = projectSettings["window"]["fullscreen"].get<bool>();
+        Window::GetInstance().SetFullscreen(windowIsFullscreen);
 
-		// load main scene
-		auto mainScenePath = std::string(projectSettings["mainScene"]);
-		ResourceID sceneID = ResourceManager<Scene>::GetResourceID(mainScenePath);
-		auto& mainScene = ResourceManager<Scene>::Get(sceneID);
-		mainScene.Instantiate();
-	}
+        // set fixed time 
+        Time::FixedTimeStep = projectSettings["fixedTimeStep"].get<float>();
+        Time::TimeScale = 1.0f;
+    }
 
 
 } // ASEngine
+

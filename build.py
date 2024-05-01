@@ -22,6 +22,20 @@ def generateIncludeFiles():
     for headerFile in headerFileList:
         destFile = headerFile.relative_to("engine")
         #add file to entry point
+
+        #ignore hidden files
+        if destFile.name.startswith("."):
+            continue
+        
+        isHidden = False
+        for i, p in enumerate(destFile.parents):
+            if i < len(destFile.parents) + 1 and p.name.startswith("."):
+                isHidden = True
+                break
+
+        if isHidden:
+            continue
+
         includeToEntryPoint = f'#include "{str(destFile)}"\n'
         entryPointList.append(includeToEntryPoint)
         #copy file

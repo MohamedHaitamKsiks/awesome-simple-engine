@@ -6,6 +6,10 @@
 
 namespace ASEngine
 {
+    /*
+    define signatuer as a set of UniqueStrings
+    each UniqueString is a name of a component
+    */
     using Signature = std::set<UniqueString>;
 }
 
@@ -22,7 +26,7 @@ namespace std
 
             for (auto e: x)
             {
-                hash<uint32_t>()((uint32_t) e.GetId());
+                hash<uint32_t>()((uint32_t) e.GetID());
             }
             return hash_combined;
         }

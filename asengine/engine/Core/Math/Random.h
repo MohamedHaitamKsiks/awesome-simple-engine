@@ -2,11 +2,11 @@
 #ifndef ASENGINE_RANDOM_H
 #define ASENGINE_RANDOM_H
 
-#include <random>
 
 namespace ASEngine {
 
-	class Random {
+	class Random 
+	{
 	public:
 		// generate random integer
 		static int Int();

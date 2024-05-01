@@ -115,8 +115,8 @@ static const char* get_key_name(int key)
         case GLFW_KEY_COMMA:        return "COMMA";
         case GLFW_KEY_PERIOD:       return "PERIOD";
         case GLFW_KEY_SLASH:        return "SLASH";
-        case GLFW_KEY_WORLD_1:      return "WORLD 1";
-        case GLFW_KEY_WORLD_2:      return "WORLD 2";
+        case GLFW_KEY_EntityManager_1:      return "EntityManager 1";
+        case GLFW_KEY_EntityManager_2:      return "EntityManager 2";
 
         // Function keys
         case GLFW_KEY_ESCAPE:       return "ESCAPE";

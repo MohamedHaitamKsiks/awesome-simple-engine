@@ -3,17 +3,17 @@
 namespace ASEngine
 {
 
-    void Window::ISetSize(int width, int height)
+    void Window::SetSize(int width, int height)
     {
         m_Width = width;
         m_Height = height;
 
-        m_Size = vec2{(float)width, (float)height};
+        m_Size = Vector2{(float)width, (float)height};
 
         m_ResizeSignal.Emit(width, height);
     }
 
-    void Window::ISetFullscreen(bool fullscreen)
+    void Window::SetFullscreen(bool fullscreen)
     {
         if (m_Fullscreen == fullscreen)
             return;
@@ -22,8 +22,13 @@ namespace ASEngine
         m_SetFullscreenSignal.Emit(fullscreen);
     }
 
+    void Window::SetKeepAspectRatio(bool keep)
+    {
+        m_KeepAspectRatio = keep;
+        m_ResizeSignal.Emit(m_Width, m_Height);
+    }
 
-    void Window::ISetTitle(const std::string& title)
+    void Window::SetTitle(const std::string& title)
     {
         m_Title = title;
         m_SetTitleSignal.Emit(title);

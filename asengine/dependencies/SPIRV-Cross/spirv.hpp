@@ -670,10 +670,10 @@ enum BuiltIn {
     BuiltInLaunchIdNV = 5319,
     BuiltInLaunchSizeKHR = 5320,
     BuiltInLaunchSizeNV = 5320,
-    BuiltInWorldRayOriginKHR = 5321,
-    BuiltInWorldRayOriginNV = 5321,
-    BuiltInWorldRayDirectionKHR = 5322,
-    BuiltInWorldRayDirectionNV = 5322,
+    BuiltInEntityManagerRayOriginKHR = 5321,
+    BuiltInEntityManagerRayOriginNV = 5321,
+    BuiltInEntityManagerRayDirectionKHR = 5322,
+    BuiltInEntityManagerRayDirectionNV = 5322,
     BuiltInObjectRayOriginKHR = 5323,
     BuiltInObjectRayOriginNV = 5323,
     BuiltInObjectRayDirectionKHR = 5324,
@@ -684,10 +684,10 @@ enum BuiltIn {
     BuiltInRayTmaxNV = 5326,
     BuiltInInstanceCustomIndexKHR = 5327,
     BuiltInInstanceCustomIndexNV = 5327,
-    BuiltInObjectToWorldKHR = 5330,
-    BuiltInObjectToWorldNV = 5330,
-    BuiltInWorldToObjectKHR = 5331,
-    BuiltInWorldToObjectNV = 5331,
+    BuiltInObjectToEntityManagerKHR = 5330,
+    BuiltInObjectToEntityManagerNV = 5330,
+    BuiltInEntityManagerToObjectKHR = 5331,
+    BuiltInEntityManagerToObjectNV = 5331,
     BuiltInHitTNV = 5332,
     BuiltInHitKindKHR = 5333,
     BuiltInHitKindNV = 5333,
@@ -1876,10 +1876,10 @@ enum Op {
     OpRayQueryGetIntersectionCandidateAABBOpaqueKHR = 6026,
     OpRayQueryGetIntersectionObjectRayDirectionKHR = 6027,
     OpRayQueryGetIntersectionObjectRayOriginKHR = 6028,
-    OpRayQueryGetWorldRayDirectionKHR = 6029,
-    OpRayQueryGetWorldRayOriginKHR = 6030,
-    OpRayQueryGetIntersectionObjectToWorldKHR = 6031,
-    OpRayQueryGetIntersectionWorldToObjectKHR = 6032,
+    OpRayQueryGetEntityManagerRayDirectionKHR = 6029,
+    OpRayQueryGetEntityManagerRayOriginKHR = 6030,
+    OpRayQueryGetIntersectionObjectToEntityManagerKHR = 6031,
+    OpRayQueryGetIntersectionEntityManagerToObjectKHR = 6032,
     OpAtomicFAddEXT = 6035,
     OpTypeBufferSurfaceINTEL = 6086,
     OpTypeStructContinuedINTEL = 6090,
@@ -2550,10 +2550,10 @@ inline void HasResultAndType(Op opcode, bool *hasResult, bool *hasResultType) {
     case OpRayQueryGetIntersectionCandidateAABBOpaqueKHR: *hasResult = true; *hasResultType = true; break;
     case OpRayQueryGetIntersectionObjectRayDirectionKHR: *hasResult = true; *hasResultType = true; break;
     case OpRayQueryGetIntersectionObjectRayOriginKHR: *hasResult = true; *hasResultType = true; break;
-    case OpRayQueryGetWorldRayDirectionKHR: *hasResult = true; *hasResultType = true; break;
-    case OpRayQueryGetWorldRayOriginKHR: *hasResult = true; *hasResultType = true; break;
-    case OpRayQueryGetIntersectionObjectToWorldKHR: *hasResult = true; *hasResultType = true; break;
-    case OpRayQueryGetIntersectionWorldToObjectKHR: *hasResult = true; *hasResultType = true; break;
+    case OpRayQueryGetEntityManagerRayDirectionKHR: *hasResult = true; *hasResultType = true; break;
+    case OpRayQueryGetEntityManagerRayOriginKHR: *hasResult = true; *hasResultType = true; break;
+    case OpRayQueryGetIntersectionObjectToEntityManagerKHR: *hasResult = true; *hasResultType = true; break;
+    case OpRayQueryGetIntersectionEntityManagerToObjectKHR: *hasResult = true; *hasResultType = true; break;
     case OpAtomicFAddEXT: *hasResult = true; *hasResultType = true; break;
     case OpTypeBufferSurfaceINTEL: *hasResult = true; *hasResultType = false; break;
     case OpTypeStructContinuedINTEL: *hasResult = false; *hasResultType = false; break;

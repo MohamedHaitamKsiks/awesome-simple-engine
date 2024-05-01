@@ -3,21 +3,11 @@
 
 namespace ASEngine
 {
-    // module interface
+    // module
     class IModule
     {
     public:
-        // register components
-        virtual void RegisterComponents() {};
-
-        // register systems
-        virtual void RegisterSystems() {};
-
-        // init resources managers
-        virtual void InitResourceManagers() {};
-
-        // terminate resource managers
-        virtual void TerminateResourceManagers(){};
+        virtual void Registry() = 0;
     };
     
 } // namespace ASEngine

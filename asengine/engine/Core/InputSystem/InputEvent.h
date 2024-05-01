@@ -3,12 +3,10 @@
 #define ASENGINE_INPUTEVENT_H
 
 #include <cstdint>
-#include <cassert>
 
-#include "Macros/Foreach.h"
-#include "Core/Math/vec2.h"
+#include "Core/Math/Vector2.h"
 
-#include "Thirdparty/glfw3_keycodes.h"
+#include "Keycodes.h"
 
 namespace ASEngine 
 {
@@ -31,18 +29,18 @@ namespace ASEngine
 	// screen input event
 	struct InputEventScreenTouch
 	{
-		InputEventType Type = InputEventType::SCREEN_TOUCH;
+		static constexpr InputEventType TYPE = InputEventType::SCREEN_TOUCH;
 		bool Pressed;
 		int PointerIndex;
-		vec2 Position;
+		Vector2 Position;
 	};
 
 	// screen drag pointer event
 	struct InputEventScreenDrag
 	{
-		InputEventType Type = InputEventType::SCREEN_DRAG;
-		int PointerIndex;
-		vec2 Position;
+		static constexpr InputEventType TYPE = InputEventType::SCREEN_DRAG;
+			int PointerIndex;
+		Vector2 Position;
 	};
 
 	// mouse input
@@ -55,27 +53,24 @@ namespace ASEngine
 	// mouse input button
 	struct InputEventMouseButton
 	{
-		InputEventType Type = InputEventType::MOUSE_BUTTON;
-		MouseButton Button;
+		static constexpr InputEventType TYPE = InputEventType::MOUSE_BUTTON;
+			MouseButton Button;
 		bool Pressed;
-		vec2 Position;
+		Vector2 Position;
 	};
 
 	// mouse input move
 	struct InputEventMouseMove
 	{
-		InputEventType Type = InputEventType::MOUSE_MOVE;
-		vec2 Position;
+		static constexpr InputEventType TYPE = InputEventType::MOUSE_MOVE;
+			Vector2 Position;
 	};
-
-	// keycode
-	using Keycode = int;
 
 	// keyboard
 	struct InputEventKeyboard
 	{
-		InputEventType Type = InputEventType::KEYBOARD;
-		Keycode Code;
+		static constexpr InputEventType TYPE = InputEventType::KEYBOARD;
+			Keycode Code;
 		bool Pressed;
 	};
 
@@ -89,24 +84,36 @@ namespace ASEngine
 			return m_Type;
 		};
 
+		// constructors
+		InputEvent() = default;
+
+		// construct from Event
+		template <typename T>
+		InputEvent(const T& event)
+		{
+			Set(event);
+		}
+
 		// set event
 		template <typename T>
 		void Set(const T& event);
 
 		// get event
 		template <typename T>
-		T Get() const;
+		const T& Get() const;
 
 	private:
-
 		// event type
 		InputEventType m_Type = InputEventType::NONE;
 		// different events
-		InputEventScreenTouch m_InputEventScreenTouch;
-		InputEventScreenDrag m_InputEventScreenDrag;
-		InputEventMouseButton m_InputEventMouseButton;
-		InputEventMouseMove m_InputEventMouseMove;
-		InputEventKeyboard m_InputEventKeyboard;
+		union
+		{
+			InputEventScreenTouch m_InputEventScreenTouch;
+			InputEventScreenDrag m_InputEventScreenDrag;
+			InputEventMouseButton m_InputEventMouseButton;
+			InputEventMouseMove m_InputEventMouseMove;
+			InputEventKeyboard m_InputEventKeyboard;
+		} m_Event;
 	};
 
 } // ASEngine

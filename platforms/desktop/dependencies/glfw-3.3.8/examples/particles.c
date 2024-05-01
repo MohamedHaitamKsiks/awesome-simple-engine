@@ -145,7 +145,7 @@ const unsigned char floor_texture[ F_TEX_WIDTH * F_TEX_HEIGHT ] = {
 
 //========================================================================
 // These are fixed constants that control the particle engine. In a
-// modular world, these values should be variables...
+// modular EntityManager, these values should be variables...
 //========================================================================
 
 // Maximum number of particles

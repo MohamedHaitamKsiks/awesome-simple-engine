@@ -4517,7 +4517,7 @@ void CompilerGLSL::emit_extension_workarounds(spv::ExecutionModel model)
 			// However the GL 4.6 spec also states that `barrier` implies a shared memory barrier,
 			// and a specific test of optimizing scans by leveraging lock-step invocation execution,
 			// has shown that a `memoryBarrierShared` is needed in place of a `subgroupBarrier`.
-			// https://github.com/buildaworldnet/IrrlichtBAW/commit/d8536857991b89a30a6b65d29441e51b64c2c7ad#diff-9f898d27be1ea6fc79b03d9b361e299334c1a347b6e4dc344ee66110c6aa596aR19
+			// https://github.com/buildaEntityManagernet/IrrlichtBAW/commit/d8536857991b89a30a6b65d29441e51b64c2c7ad#diff-9f898d27be1ea6fc79b03d9b361e299334c1a347b6e4dc344ee66110c6aa596aR19
 			statement("#ifndef GL_KHR_shader_subgroup_basic");
 			statement("void subgroupBarrier() { memoryBarrierShared(); }");
 			statement("#endif");
@@ -9777,10 +9777,10 @@ string CompilerGLSL::builtin_to_glsl(BuiltIn builtin, StorageClass storage)
 		return ray_tracing_is_khr ? "gl_LaunchIDEXT" : "gl_LaunchIDNV";
 	case BuiltInLaunchSizeKHR:
 		return ray_tracing_is_khr ? "gl_LaunchSizeEXT" : "gl_LaunchSizeNV";
-	case BuiltInWorldRayOriginKHR:
-		return ray_tracing_is_khr ? "gl_WorldRayOriginEXT" : "gl_WorldRayOriginNV";
-	case BuiltInWorldRayDirectionKHR:
-		return ray_tracing_is_khr ? "gl_WorldRayDirectionEXT" : "gl_WorldRayDirectionNV";
+	case BuiltInEntityManagerRayOriginKHR:
+		return ray_tracing_is_khr ? "gl_EntityManagerRayOriginEXT" : "gl_EntityManagerRayOriginNV";
+	case BuiltInEntityManagerRayDirectionKHR:
+		return ray_tracing_is_khr ? "gl_EntityManagerRayDirectionEXT" : "gl_EntityManagerRayDirectionNV";
 	case BuiltInObjectRayOriginKHR:
 		return ray_tracing_is_khr ? "gl_ObjectRayOriginEXT" : "gl_ObjectRayOriginNV";
 	case BuiltInObjectRayDirectionKHR:
@@ -9791,10 +9791,10 @@ string CompilerGLSL::builtin_to_glsl(BuiltIn builtin, StorageClass storage)
 		return ray_tracing_is_khr ? "gl_RayTmaxEXT" : "gl_RayTmaxNV";
 	case BuiltInInstanceCustomIndexKHR:
 		return ray_tracing_is_khr ? "gl_InstanceCustomIndexEXT" : "gl_InstanceCustomIndexNV";
-	case BuiltInObjectToWorldKHR:
-		return ray_tracing_is_khr ? "gl_ObjectToWorldEXT" : "gl_ObjectToWorldNV";
-	case BuiltInWorldToObjectKHR:
-		return ray_tracing_is_khr ? "gl_WorldToObjectEXT" : "gl_WorldToObjectNV";
+	case BuiltInObjectToEntityManagerKHR:
+		return ray_tracing_is_khr ? "gl_ObjectToEntityManagerEXT" : "gl_ObjectToEntityManagerNV";
+	case BuiltInEntityManagerToObjectKHR:
+		return ray_tracing_is_khr ? "gl_EntityManagerToObjectEXT" : "gl_EntityManagerToObjectNV";
 	case BuiltInHitTNV:
 		// gl_HitTEXT is an alias of RayTMax in KHR.
 		return "gl_HitTNV";
@@ -14785,8 +14785,8 @@ void CompilerGLSL::emit_instruction(const Instruction &instruction)
 		break
 	GLSL_RAY_QUERY_GET_OP(RayTMin);
 	GLSL_RAY_QUERY_GET_OP(RayFlags);
-	GLSL_RAY_QUERY_GET_OP(WorldRayOrigin);
-	GLSL_RAY_QUERY_GET_OP(WorldRayDirection);
+	GLSL_RAY_QUERY_GET_OP(EntityManagerRayOrigin);
+	GLSL_RAY_QUERY_GET_OP(EntityManagerRayDirection);
 	GLSL_RAY_QUERY_GET_OP(IntersectionCandidateAABBOpaque);
 	GLSL_RAY_QUERY_GET_OP2(IntersectionType);
 	GLSL_RAY_QUERY_GET_OP2(IntersectionT);
@@ -14799,8 +14799,8 @@ void CompilerGLSL::emit_instruction(const Instruction &instruction)
 	GLSL_RAY_QUERY_GET_OP2(IntersectionFrontFace);
 	GLSL_RAY_QUERY_GET_OP2(IntersectionObjectRayDirection);
 	GLSL_RAY_QUERY_GET_OP2(IntersectionObjectRayOrigin);
-	GLSL_RAY_QUERY_GET_OP2(IntersectionObjectToWorld);
-	GLSL_RAY_QUERY_GET_OP2(IntersectionWorldToObject);
+	GLSL_RAY_QUERY_GET_OP2(IntersectionObjectToEntityManager);
+	GLSL_RAY_QUERY_GET_OP2(IntersectionEntityManagerToObject);
 #undef GLSL_RAY_QUERY_GET_OP
 #undef GLSL_RAY_QUERY_GET_OP2
 

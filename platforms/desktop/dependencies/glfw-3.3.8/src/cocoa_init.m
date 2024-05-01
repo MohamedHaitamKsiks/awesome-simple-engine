@@ -230,7 +230,7 @@ static void createKeyTables(void)
     _glfw.ns.keycodes[0x1E] = GLFW_KEY_RIGHT_BRACKET;
     _glfw.ns.keycodes[0x29] = GLFW_KEY_SEMICOLON;
     _glfw.ns.keycodes[0x2C] = GLFW_KEY_SLASH;
-    _glfw.ns.keycodes[0x0A] = GLFW_KEY_WORLD_1;
+    _glfw.ns.keycodes[0x0A] = GLFW_KEY_EntityManager_1;
 
     _glfw.ns.keycodes[0x33] = GLFW_KEY_BACKSPACE;
     _glfw.ns.keycodes[0x39] = GLFW_KEY_CAPS_LOCK;

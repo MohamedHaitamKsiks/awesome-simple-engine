@@ -79,7 +79,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         case GLFW_KEY_C:
             if (mods == MODIFIER)
             {
-                const char* string = "Hello GLFW World!";
+                const char* string = "Hello GLFW EntityManager!";
                 glfwSetClipboardString(NULL, string);
                 printf("Setting clipboard to \"%s\"\n", string);
             }

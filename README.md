@@ -157,10 +157,10 @@ Example:
   builder.AddComponents(sprite, transform);
 
   // create entity
-  Entity entity = World::Create(builder);
+  Entity entity = EntityManager::Create(builder);
 
   // destroy entity
-  World::Destroy(entity);
+  EntityManager::Destroy(entity);
 ````
 
 We are not done yet, you need to register your components and systems to the module your working on.

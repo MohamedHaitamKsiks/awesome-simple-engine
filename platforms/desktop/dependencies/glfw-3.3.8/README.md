@@ -40,7 +40,7 @@ guide](https://www.glfw.org/docs/latest/moving.html) for moving to the GLFW
 3 API.
 
 GLFW exists because of the contributions of [many people](CONTRIBUTORS.md)
-around the world, whether by reporting bugs, providing community support, adding
+around the EntityManager, whether by reporting bugs, providing community support, adding
 features, reviewing or testing code, debugging, proofreading docs, suggesting
 features or fixing bugs.
 

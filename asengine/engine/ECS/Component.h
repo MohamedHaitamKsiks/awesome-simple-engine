@@ -7,17 +7,16 @@
 
 #include "Core/Serialization/Serializer.h"
 #include "Core/String/UniqueString.h"
+#include "Core/Error/Assertion.h"
 
 #include "Entity.h" 
 
 namespace ASEngine
 {
     // base component type
-    struct Component
+    class Component
     {
-        // entity owner
-        Entity Owner = CHUNK_NULL;
-
+    public:
         Component() = default;
         ~Component() = default;
 
@@ -26,22 +25,81 @@ namespace ASEngine
 
         // used to manage internal values at destruction. Avoid using it like unity's monobehaviour
         virtual void OnDestroy() {};
+
+        // get component name
+        virtual UniqueString GetName() const = 0;
+    
+        // copy component
+        virtual void Copy(const Component& component) = 0;
+
+        // deserialize component
+        virtual void Deserialize(const Json& object) = 0;
+
+        // serialize component
+        virtual Json Serialize() = 0;
+
+    private:
+        EntityID m_OwnerID;
     };
 
     // component
     template <typename T>
-    struct TComponent: Component
+    class TComponent: public Component
     {
+    public:
+        UniqueString GetName() const override
+        {
+            return s_Name;
+        }
+
+        static UniqueString GetComponentName()
+        {
+            return s_Name;
+        }
+
+        // usefull for copying components from EntityBuilder to Archetype
+        void Copy(const Component& component)
+        {
+            const T* castedSrc = dynamic_cast<const T*>(&component);
+            ASENGINE_ASSERT(castedSrc, "Component Source Invalid Type");
+
+            *this = *castedSrc;
+        }
+
+        Json Serialize() override
+        {
+            return Serializer<T>::Serialize(*this);
+        }
+
+        void Deserialize(const Json& object) override
+        {
+            Serializer<T>::Deserialize(object, *this);
+        }
+
+    private:
         // component name
         static UniqueString s_Name;
-
-    };
+        friend class ComponentManager;
+    };  
 
     // component name implementation
     template <typename T>
-    UniqueString TComponent<T>::s_Name = CHUNK_NULL;
-
+    UniqueString TComponent<T>::s_Name{""};
 }
+
+// export no field
+#define EXPORT_EMPTY(ComponentType) \
+    template <> \
+    Json Serializer<ComponentType>::Serialize(const ComponentType &value) \
+    { \
+        Json object = Json({}); \
+        return object; \
+    } \
+    template <> \
+    void Serializer<ComponentType>::Deserialize(const Json &object, ComponentType &dest) \
+    { \
+        ASENGINE_ASSERT(object.is_object(), ""); \
+    }
 
 // export component field to be serialiazed/deserialized
 #define EXPORT(ComponentType, ...) template <> \
@@ -52,7 +110,7 @@ namespace ASEngine
     template <> \
     void Serializer<ComponentType>::Deserialize(const Json &object, ComponentType &dest) \
     { \
-        assert(object.is_object()); \
+        ASENGINE_ASSERT(object.is_object(), ""); \
         FOREACH(DESERIALIZE_FIELD,  __VA_ARGS__) \
     } 
 

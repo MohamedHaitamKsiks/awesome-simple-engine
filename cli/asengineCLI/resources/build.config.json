@@ -5,15 +5,23 @@
             "emulatorPath": "emulator",
             "avdName": "Pixel_3a_API_34_extension_level_7_x86_64",
             "type": "mobile",
+            "os": "android",
             "platformPath": "./.platforms/android"
         },
         "linux": {
             "type": "desktop",
+            "os": "linux",
             "platformPath": "./.platforms/desktop" 
         },
         "windows": {
             "type": "desktop",
+            "os": "windows",
             "platformPath": "./.platforms/desktop"
+        },
+        "headless": {
+            "type": "headless",
+            "os": "linux",
+            "platformPath": "./.platforms/headless"
         }
     },
     "asenginePath": "./.asengine/build",

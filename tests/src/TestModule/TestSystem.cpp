@@ -1,10 +1,7 @@
 #include "TestSystem.h"
 #include "Core/UniqueStringTest.h"
-#include "Renderer/ShaderManagerTest.h"
 
-void TestSystem::OnCreate()
+void TestSystem::Init()
 {
-    RUN_TESTS(
-        UniqueStringTest,
-        ShaderManagerTest);
+    ASENGINE_RUN_TESTS(UniqueStringTest);
 }

@@ -1,9 +1,10 @@
 #ifndef ASENGINE_MODULE_MANAGER_H
 #define ASENGINE_MODULE_MANAGER_H
 
-#include "Core/Singleton/Singleton.h"
-#include "Core/Memory/DynamicArray.h"
+#include <memory>
+#include <vector>
 
+#include "Core/Singleton/Singleton.h"
 #include "Module.h"
 
 namespace ASEngine
@@ -12,33 +13,26 @@ namespace ASEngine
     class ModuleManager: public Singleton<ModuleManager>
     {
     public:
-        ~ModuleManager();
-
         // register new module
         template <typename T>
-        static void RegisterModule()
+        void RegisterModule()
         {
             static_assert(std::is_base_of_v<IModule, T>);
 
-            IModule* newModule = new T();
-            GetSingleton()->m_Modules.Push(newModule);
+            std::unique_ptr<IModule> newModule = std::make_unique<T>();
+            m_Modules.push_back(std::move(newModule));
         }
 
-        // call component registry for every module
-        static void RegisterComponents();
-
-        // call system registry for every module
-        static void RegisterSystems();
-
-        // init resource managers for every module
-        static void InitResourceManagers();
-
-        // terminate resource managers for every module
-        static void TerminateResourceManagers();
+    
+    protected:
+        // only allow Application class to call these functions
+        friend class Application;
+        // call registry of every module
+        void Registry();
 
     private:
         // registered modules
-        TDynamicArray<IModule*> m_Modules{};
+        std::vector<std::unique_ptr<IModule>> m_Modules{};
     };
 
 } // namespace ASEngine

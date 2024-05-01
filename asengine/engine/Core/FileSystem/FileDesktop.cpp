@@ -1,5 +1,7 @@
 
 #include "File.h"
+#include <sstream>
+#include "Core/Debug/Debug.h"
 
 /*
     Desktop implementation for files
@@ -8,12 +10,13 @@
 namespace ASEngine
 {
 
-    bool File::Open(const std::string &path, FileOpenMode mode)
+    bool File::Open(const std::string &path, FileOpenMode mode, FileType type)
     {
         m_File.open("assets/" + path, std::ios::binary | std::ios::in);
         //check if file is loaded
-        if(!m_File) {
-            Debug::Log("Error loading", path, "!");
+        if(!m_File) 
+        {
+            Debug::Error("Error loading", path, "!");
             return false;
         }
 
@@ -28,13 +31,13 @@ namespace ASEngine
         m_File.close();
     }
 
-    void File::Read(char *buffer)
+    void File::Read(void *buffer)
     {
         m_File.seekg(0, std::ios::beg);
-        m_File.read(buffer, m_Size);
+        m_File.read(reinterpret_cast<char*>(buffer), m_Size);
     }
 
-    void File::Write(const char *buffer, const size_t length)
+    void File::Write(const void *buffer, size_t length)
     {
         /*todo later*/
     }

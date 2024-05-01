@@ -1,21 +1,8 @@
 #include "TestModule.h"
+#include "TestSystem.h"
 
-void TestModule::RegisterComponents() 
+void TestModule::Registry() 
 {
-    // register components
+    SystemManager::GetInstance().RegisterSystem<TestSystem>();
 }
 
-void TestModule::RegisterSystems()
-{
-    SystemManager::RegisterSystem<TestSystem>();
-}
-
-void TestModule::InitResourceManagers()
-{
-    // init resource managers
-}
-
-void TestModule::TerminateResourceManagers()
-{
-    // terminate resource managers
-}

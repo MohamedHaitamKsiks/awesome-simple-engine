@@ -251,7 +251,7 @@ static void createKeyTables(void)
     _glfw.win32.keycodes[0x01B] = GLFW_KEY_RIGHT_BRACKET;
     _glfw.win32.keycodes[0x027] = GLFW_KEY_SEMICOLON;
     _glfw.win32.keycodes[0x035] = GLFW_KEY_SLASH;
-    _glfw.win32.keycodes[0x056] = GLFW_KEY_WORLD_2;
+    _glfw.win32.keycodes[0x056] = GLFW_KEY_EntityManager_2;
 
     _glfw.win32.keycodes[0x00E] = GLFW_KEY_BACKSPACE;
     _glfw.win32.keycodes[0x153] = GLFW_KEY_DELETE;

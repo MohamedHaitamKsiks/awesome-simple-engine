@@ -2,60 +2,63 @@
 
 namespace ASEngine
 {
-    SystemManager::~SystemManager()
+
+    void SystemManager::ForEach(std::function<void(ISystem&)> callback, bool reversed)
     {
-        for (auto system: m_Systems)
+        if (reversed)
         {
-            delete system;
+            for (int i = m_Systems.size() - 1; i >= 0; i--)
+            {
+                callback(*m_Systems[i]);
+            }
+        }
+        else
+        {
+            for (auto &system : m_Systems)
+            {
+                callback(*system);
+            }
         }
     }
 
-    void SystemManager::ICreate()
+    void SystemManager::Init()
     {
-        for (auto system : m_Systems)
-        {
-            system->OnCreate();
-        }
+        ForEach([](ISystem& system)
+        { 
+            system.Init(); 
+        });
     }
 
-    void SystemManager::IUpdate(float delta)
+    void SystemManager::Update(float delta)
     {
-        for (auto system : m_Systems)
+        ForEach([=](ISystem& system)
         {
-            system->OnUpdate(delta);
-        }
+            system.Update(delta);
+        });
     }
 
-    void SystemManager::IFixedUpdate(float delta)
+    void SystemManager::FixedUpdate(float delta)
     {
-        for (auto system : m_Systems)
-        {
-            system->OnFixedUpdate(delta);
-        }
+        ForEach([=](ISystem& system)
+        { 
+            system.FixedUpdate(delta); 
+        });
     }
 
-    void SystemManager::IRender2D()
+    void SystemManager::OnInputEvent(const InputEvent &event)
     {
-        for (auto system : m_Systems)
+        ForEach([=](ISystem& system)
         {
-            system->OnRender2D();
-        }
+            system.OnInputEvent(event); 
+        });
     }
 
-    void SystemManager::IUIRender2D()
+    void SystemManager::Terminate()
     {
-        for (auto system : m_Systems)
+        ForEach([](ISystem& system)
         {
-            system->OnUIRender2D();
-        }
-    }
-
-    void SystemManager::IProcessInputEvent(const InputEvent &event)
-    {
-        for (auto system : m_Systems)
-        {
-            system->OnInputEvent(event);
-        }
+            system.Terminate();
+        }, true);
     }
 
 } // namespace ASEngine

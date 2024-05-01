@@ -1,12 +1,14 @@
 #ifndef ASENGINE_AUDIO_ENGINE
 #define ASENGINE_AUDIO_ENGINE
 
+/*
 #include "Thirdparty/miniaudio.h"
 
 #include "Core/Memory/PoolAllocator.h"
 #include "Core/Singleton/Singleton.h"
 #include "Core/Signals/Signal.h"
-#include "Core/Log/Log.h"
+
+#include "ECS/System.h"
 
 #define ASENGINE_AUDIOENGINE_SAMPLE_RATE 48000
 #define ASENGINE_AUDIOENGINE_CHANNELS 2
@@ -24,17 +26,19 @@ namespace ASEngine
         size_t FrameIndex = 0;
         // playback volume
         float Volume = 1.0f;
+        // channel id
+        AudioChannelID ID = 0;
     };
     
-    class AudioEngine: public Singleton<AudioEngine>
+    class AudioEngine: public ISystem, public Singleton<AudioEngine>
     {
     
     public:
         // init audio engine
-        AudioEngine();
+        Init();
 
         // uninit audio engine
-        ~AudioEngine();
+        Terminate();
 
         // audio engine's sample rate
         static constexpr uint32_t GetSampleRate()
@@ -48,57 +52,53 @@ namespace ASEngine
         };
 
         // fired when a channel finished playing an audio
-        inline static Signal<AudioChannelID>& OnAudioFinishedPlaying()
+        inline Signal<AudioChannelID>& GetAudioFinishedPlayingSignal()
         {
-            return GetSingleton()->m_OnAudioFinishedPlaying;
+            return m_OnAudioFinishedPlaying;
         };  
 
         // play audio with buffer (volume optional)
-        inline static AudioChannelID Play(const float* buffer, size_t size, float volume = 1.0f)
-        {
-            return GetSingleton()->IPlay(buffer, size, volume);
-        };
+        AudioChannelID Play(const float* buffer, size_t size, float volume = 1.0f);
 
         // stop by channelID
-        inline static void Stop(AudioChannelID channelID)
-        {
-            GetSingleton()->IStop(channelID);
-        }
+        void Stop(AudioChannelID channelID);
 
         // is audio channel valid
-        inline static bool IsPlaying(AudioChannelID channelID)
+        bool IsPlaying(AudioChannelID channelID)
         {
-            return !GetSingleton()->m_AudioChannels.IsFree(channelID);
-        };
+            return !m_AudioChannels.IsFree(channelID);
+        }
 
         // set frame for channel
-        inline static void SetFrame(AudioChannelID channelID, size_t frame)
+        inline void SetFrame(AudioChannelID channelID, size_t frame)
         {
-            GetSingleton()->m_AudioChannels.Get(channelID).FrameIndex = frame;
-        };
+            m_AudioChannels.Get(channelID).FrameIndex = frame;
+        }
 
         // get current frame in a channel
-        inline static size_t GetFrame(AudioChannelID channelID)
+        inline size_t GetFrame(AudioChannelID channelID)
         {
-            return GetSingleton()->m_AudioChannels.Get(channelID).FrameIndex;
-        };
+            return Geinline tSingleton()->m_AudioChannels.Get(channelID).FrameIndex;
+        }
 
         // set volume for channel
-        inline static void SetVolume(AudioChannelID channelID, float volume)
+        inline void SetVolume(AudioChannelID channelID, float volume)
         {
-            if (AudioEngine::IsPlaying(channelID))
+            if (IsPlaying(channelID))
+            {
                 GetSingleton()->m_AudioChannels.Get(channelID).Volume = volume;
-        };
+            }
+        }
         
         // get current volume in a channel
-        inline static float GetVolume(AudioChannelID channelID)
+        inline float GetVolume(AudioChannelID channelID)
         {
-            return GetSingleton()->m_AudioChannels.Get(channelID).Volume;
-        };
+            return m_AudioChannels.Get(channelID).Volume;
+        }
 
     private:
         // audio channels
-        TPoolAllocator<AudioChannel> m_AudioChannels{UINT16_MAX};
+        PoolAllocator<AudioChannel> m_AudioChannels{UINT16_MAX};
 
         // audio device
         ma_device m_Device;
@@ -108,13 +108,10 @@ namespace ASEngine
 
         // internal functions
         static void MiniAudioDataCallback(ma_device *device, void *output, const void *input, ma_uint32 frameCount);
-
-        AudioChannelID IPlay(const float *buffer, size_t size, float volume);
-        void IStop(AudioChannelID channelID);
     };
 
 
 } // namespace ASEngine
-
+*/
 
 #endif // ASENGINE_AUDIO_ENGINE
