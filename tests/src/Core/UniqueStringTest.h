@@ -1,26 +1,17 @@
-#pragma once
+#ifndef ASENGINE_UNIQUE_STRING_TEST_H
+#define ASENGINE_UNIQUE_STRING_TEST_H
+
 #include "ASEngine.h"
 
 using namespace ASEngine;
 
-ASENGINE_UNIT_TEST(UniqueStringTest, 
+class UniqueStringTest: public UnitTest
 {
-    UniqueString someString{"Hello World!"};
+private:
+    // test data
+    UniqueString m_SomeString; 
+    
+    void Describe() override;
+};
 
-    ASENGINE_UNIT_TEST_CASE("It should verify equality between two same strings", 
-    {
-        UniqueString anotherString{"Hello World!"};
-        ASENGINE_UNIT_TEST_EXPECT(someString == anotherString);
-    });
-
-    ASENGINE_UNIT_TEST_CASE("It should verify inequality",
-    {
-        UniqueString anotherString{"ASEngine"};
-        ASENGINE_UNIT_TEST_EXPECT(someString != anotherString);
-    });
-
-    ASENGINE_UNIT_TEST_CASE("It should return valid length", 
-    {
-        ASENGINE_UNIT_TEST_EXPECT(someString.GetLength() == 12);
-    });
-});
+#endif // ASENGINE_UNIQUE_STRING_TEST_H

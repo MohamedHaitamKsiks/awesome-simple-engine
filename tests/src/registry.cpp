@@ -1,11 +1,11 @@
 #include "ASEngine.h"
-#include "TestSystem/TestSystem.h"
+#include "ASEngineTestSystem/ASEngineTestSystem.h"
 
 namespace ASEngine
 {
     void Registry()
     {
-        SystemManager::GetInstance().RegisterSystem<TestSystem>();
+        SystemManager::GetInstance().RegisterSystem<ASEngineTestSystem>();
     }
     
 } // namespace ASEngine

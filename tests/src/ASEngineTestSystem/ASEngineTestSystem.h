@@ -6,9 +6,9 @@
 using namespace ASEngine;
 
 // acts as entry point to run tests
-class TestSystem: public ISystem
+class ASEngineTestSystem: public UnitTestSystem
 {
-    void Init() override;
+    void Registry() override;
 };
 
 #endif // ASENGINE_SYSTEM_TESTSYSTEM_H

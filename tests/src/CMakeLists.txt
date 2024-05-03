@@ -3,12 +3,13 @@ set(CMAKE_CXX_STANDARD 23)
 
 project(asengine-project)
 
-add_subdirectory(TestSystem)
-
 add_library(
     asengine-project
     STATIC
     registry.cpp
+    ASEngineTestSystem/ASEngineTestSystem.cpp
+    Core/UniqueStringTest.cpp
+    Core/PoolAllocatorTest.cpp
 )
 
 target_link_libraries(
@@ -17,6 +18,5 @@ target_link_libraries(
 
 set(PROJECT_LIBRARIES 
     asengine-project
-    TestSystem
     PARENT_SCOPE
 )

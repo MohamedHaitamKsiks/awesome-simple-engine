@@ -89,6 +89,7 @@ add_library(
     #asengine/Audio/AudioEngine.cpp
     #testing
     asengine/UnitTest/UnitTest.cpp
+    asengine/UnitTest/UnitTestSystem.cpp
     #platform src
     ${PLATFORM_SPECIFIC_SOURCES}
 )

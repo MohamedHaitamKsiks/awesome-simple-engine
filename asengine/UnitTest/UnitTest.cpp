@@ -8,10 +8,6 @@ namespace ASEngine
     // test fail exception
     ASENGINE_DEFINE_EXCEPTION(TestFailException, "Test Failed!");
 
-    UnitTest::UnitTest(const std::string &testSuitName) : m_TestSuitName(testSuitName)
-    {
-    }
-
     void UnitTest::Test(const std::string &testCaseName, const std::function<void()> &testCallback)
     {
         m_TestCases[testCaseName] = testCallback;
@@ -29,6 +25,9 @@ namespace ASEngine
 
     int UnitTest::Run()
     {
+        // run describe
+        Describe();
+
         int error = 0;
 
         int successCount = 0;
