@@ -3,7 +3,7 @@
 
 using namespace ASEngine;
 
-UNIT_TEST(PoolAllocatorTest,
+ASENGINE_UNIT_TEST(PoolAllocatorTest,
 {
 
 });

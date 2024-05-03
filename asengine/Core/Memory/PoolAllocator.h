@@ -9,7 +9,8 @@
 #include "Core/Error/Assertion.h"
 
 
-namespace ASEngine {
+namespace ASEngine 
+{
 
     // chunk index in the pool allocator
     using ChunkID = uint32_t;
@@ -25,7 +26,6 @@ namespace ASEngine {
     class PoolAllocator
     {
     public:
-
         // chunk
         using Chunk = struct PoolAllocatorChunk
         {

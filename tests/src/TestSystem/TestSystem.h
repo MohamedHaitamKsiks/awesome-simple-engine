@@ -8,7 +8,7 @@ using namespace ASEngine;
 // acts as entry point to run tests
 class TestSystem: public ISystem
 {
-    void Init();
+    void Init() override;
 };
 
 #endif // ASENGINE_SYSTEM_TESTSYSTEM_H

@@ -45,7 +45,7 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
 
     #we are going to compile from source for android
     if platform == "android":
-        #copy engine source
+        #copy asengine source
         shutil.copytree(asengineSourcePath, 
                         relativeTo(tmpPath, "./app/src/main/cpp/asengine"), 
                         dirs_exist_ok=True, 
@@ -62,7 +62,7 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
 
     #desktop/headless build 
     else:
-        #copy compiled engine to temp project
+        #copy compiled asengine to temp project
         shutil.copytree(relativeTo(asenginePath, "./include"), 
                         relativeTo(tmpPath, "./asengine/include"), 
                         dirs_exist_ok=True)

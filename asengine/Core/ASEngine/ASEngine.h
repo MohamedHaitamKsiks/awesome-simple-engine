@@ -1,7 +1,8 @@
 
-#ifndef ASENGINE_APPLICATION_H
-#define ASENGINE_APPLICATION_H
+#ifndef ASENGINE_ASENGINE_H
+#define ASENGINE_ASENGINE_H
 
+#include <string>
 #include <vector>
 
 #include "Core/Singleton/Singleton.h"
@@ -12,15 +13,19 @@
 namespace ASEngine 
 {
 
-	//application 
-	class Application: Singleton<Application>
+	// asengine context 
+	// defines the core of the engine 
+	class ASEngine: Singleton<ASEngine>
 	{
 	public:
+		// setup application before init and user registry
+		void Setup();
+
+		// setup application with args 
+		void Setup(int argc, char* argv[]);
+
 		// init application systems ...
 		void Init();
-
-		// setup application before init and user registry
-		void Setup(); 
 
 		// application cleanup
 		void Terminate();
@@ -33,8 +38,17 @@ namespace ASEngine
 		{
 			m_InputEventQueue.push_back(event);
 		};
+
+		// get arguments
+		inline const std::vector<std::string>& GetArguments() const
+		{
+			return m_Arguments;
+		}
 	
 	private:
+		// console arguments
+		std::vector<std::string> m_Arguments{};
+
 		// event queue
 		std::vector<InputEvent> m_InputEventQueue{};
 
@@ -56,4 +70,4 @@ namespace ASEngine
 
 } // ASEngine
 
-#endif // ASENGINE_APPLICATION_H
+#endif // ASENGINE_ASEngine_H

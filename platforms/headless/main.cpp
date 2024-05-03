@@ -5,19 +5,19 @@
 
 // headless application
 // simple game loop with no screen nor any input system
-int main(void)
+int main(int argc, char* argv[])
 {
-    ASEngine::Application application{};
-    application.Setup();
+    ASEngine::ASEngine engine{};
+    engine.Setup(argc, argv);
     ASEngine::Registry();
-    application.Init();
+    engine.Init();
 
     float delta = 0.01f;
     while (true)
     {
         const auto pastTime = std::chrono::high_resolution_clock::now();
         
-        application.Update(delta);
+        engine.Update(delta);
         
         // compute delta
         const auto currentTime = std::chrono::high_resolution_clock::now();

@@ -22,7 +22,7 @@ endif()
 add_compile_definitions(GLEW_STATIC GLEW_BUILD)
 
 #include the engine 
-include_directories(asengine/include/engine)
+include_directories(asengine/include/asengine)
 include_directories(asengine/include/dependencies/glew)
 link_directories(asengine/lib)
 

@@ -12,15 +12,15 @@ def generateIncludeFiles():
         if pathlib.Path(f"{str(folder)}/include").is_dir():
             shutil.copytree(f"{str(folder)}/include", "build/include/dependencies/" + str(folder.name), dirs_exist_ok=True)
 
-    #entrypoint for include file (include it to include all the engine)
-    entryPointList = ["#ifndef ASENGINE_H\n#define ASENGINE_H\n"]
+    #entrypoint for include file (include it to include all the asengine)
+    entryPointList = ["#ifndef ASENGINE_INCLUDE_H\n#define ASENGINE_INLUDE_H\n"]
 
     #get all header files
-    enginePath = pathlib.Path("engine")
+    enginePath = pathlib.Path("asengine")
     headerFileList = list(enginePath.rglob("*.h")) + list(enginePath.rglob("*.hpp"))
 
     for headerFile in headerFileList:
-        destFile = headerFile.relative_to("engine")
+        destFile = headerFile.relative_to("asengine")
         #add file to entry point
 
         #ignore hidden files
@@ -39,9 +39,9 @@ def generateIncludeFiles():
         includeToEntryPoint = f'#include "{str(destFile)}"\n'
         entryPointList.append(includeToEntryPoint)
         #copy file
-        os.makedirs("build/include/engine/" + str(destFile.parent), exist_ok=True)
+        os.makedirs("build/include/asengine/" + str(destFile.parent), exist_ok=True)
         
-        destPath = "build/include/engine/" + str(destFile)
+        destPath = "build/include/asengine/" + str(destFile)
         
         shutil.copy(str(headerFile),destPath)
         shutil.copystat(str(headerFile),destPath)
@@ -53,22 +53,22 @@ def generateIncludeFiles():
     oldEntryPointList = ""
     newEntryPointList = ''.join(entryPointList)
 
-    if (pathlib.Path("build/include/engine/ASEngine.h").is_file()):
+    if (pathlib.Path("build/include/asengine/ASEngine.h").is_file()):
         #get old entry file value
-        entryPointFile = open("build/include/engine/ASEngine.h", "r")
+        entryPointFile = open("build/include/asengine/ASEngine.h", "r")
         oldEntryPointList = entryPointFile.read()
         entryPointFile.close()
         #skip if same
         if oldEntryPointList == newEntryPointList:
             return
     
-    entryPointFile = open("build/include/engine/ASEngine.h", "w")
+    entryPointFile = open("build/include/asengine/ASEngine.h", "w")
     entryPointFile.write(newEntryPointList)
     entryPointFile.close()
 
-# compile engine 
+# compile asengine 
 def compileEngineFor(plarform, graphicsAPI = "") -> int:
-    #engine path
+    #asengine path
     enginePath = os.getcwd()
     #cmake toolchains path
     cmakeToolChainsPath = str(pathlib.Path(enginePath).parent) + "/cli/asengineCLI/resources/cmake-toolchains"
@@ -76,7 +76,7 @@ def compileEngineFor(plarform, graphicsAPI = "") -> int:
     #create build folder
     buildFolderPath = "build/lib/" + plarform
     os.makedirs(buildFolderPath, exist_ok=True)
-    #compile the engine
+    #compile the asengine
     os.chdir(buildFolderPath)
 
     # keep track of compilation result
@@ -121,19 +121,15 @@ def compileEngineFor(plarform, graphicsAPI = "") -> int:
 
     return compilationResult
 
-#compile engine given arguments (os)
+#compile asengine given arguments (os)
 def compile(platforms: list[str]) -> int:
-    os.chdir("asengine")
-
     #generate include
     generateIncludeFiles()
 
-    #compile the engine
+    #compile the asengine
     compilationResult = 0
     for platform in platforms:
         compilationResult |= compileEngineFor(platform)
-
-    os.chdir("..")
 
     return compilationResult
 

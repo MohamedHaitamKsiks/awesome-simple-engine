@@ -1,9 +1,8 @@
-#include "Application.h"
+#include "ASEngine.h"
 
 #include "Core/FileSystem/File.h"
 #include "Core/String/UniqueStringManager.h"
 #include "Core/Registry/Registry.h"
-#include "Core/Window/Window.h"
 #include "Core/Time/Time.h"
 #include "Core/Debug/Debug.h"
 
@@ -19,42 +18,51 @@
 namespace ASEngine
 {
 
-    void Application::Init()
+    void ASEngine::Init()
     {
-        Registry();
         ModuleManager::GetInstance().Registry();
 
         // load project settings
         LoadProjectSettings();
 
         SystemManager::GetInstance().Init();
-        Debug::Log("Application init complete");
+        Debug::Log("ASEngine init complete");
     }
 
-    void Application::Setup()
+    void ASEngine::Setup()
     {
         // register application systems and modules
         RegisterBuiltInSystems();
     }
 
-    void Application::RegisterBuiltInSystems()
+    void ASEngine::Setup(int argc, char *argv[])
+    {
+        // add arguments to application
+        for (int i = 0; i < argc; i++)
+        {
+            std::string arg = std::string(argv[i]);
+            m_Arguments.push_back(arg);
+        }
+        Setup();
+    }
+
+    void ASEngine::RegisterBuiltInSystems()
     {
         SystemManager& systemManager = SystemManager::GetInstance();
-        systemManager.RegisterSystem<Window>();
         systemManager.RegisterSystem<ComponentManager>();
         systemManager.RegisterSystem<ArchetypeManager>();
         systemManager.RegisterSystem<EntityManager>();
     }
 
-    void Application::Terminate()
+    void ASEngine::Terminate()
     {
         SystemManager::GetInstance().Terminate();
     }
 
-    void Application::Update(float delta)
+    void ASEngine::Update(float delta)
     {
         // get system manager
-        auto& systemManager = SystemManager::GetInstance();
+        SystemManager& systemManager = SystemManager::GetInstance();
 
         // process input
         for (auto& event: m_InputEventQueue)
@@ -79,7 +87,7 @@ namespace ASEngine
     }
 
 
-    void Application::LoadProjectSettings()
+    void ASEngine::LoadProjectSettings()
     {
         //load json file
         File projectSettingsFile;
@@ -92,7 +100,7 @@ namespace ASEngine
 
         // set project name
         std::string projectName = projectSettings["name"].get<std::string>();
-        Window::GetInstance().SetTitle(projectName);
+        //Window::GetInstance().SetTitle(projectName);
 
         // set view port
         int viewportWidth = projectSettings["viewport"]["size"]["width"].get<int>();
@@ -102,11 +110,11 @@ namespace ASEngine
         // set window size
         int windowWidth = projectSettings["window"]["size"]["width"].get<int>();
         int windowHeight = projectSettings["window"]["size"]["height"].get<int>();
-        Window::GetInstance().SetSize(windowWidth, windowHeight);
+        // Window::GetInstance().SetSize(windowWidth, windowHeight);
 
         // set fullscreen mode
         bool windowIsFullscreen = projectSettings["window"]["fullscreen"].get<bool>();
-        Window::GetInstance().SetFullscreen(windowIsFullscreen);
+        // Window::GetInstance().SetFullscreen(windowIsFullscreen);
 
         // set fixed time 
         Time::FixedTimeStep = projectSettings["fixedTimeStep"].get<float>();

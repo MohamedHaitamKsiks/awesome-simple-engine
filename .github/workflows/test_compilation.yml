@@ -1,4 +1,4 @@
-name: Test if engine Compiles
+name: Test if the engine Compiles
 
 on:
     push:

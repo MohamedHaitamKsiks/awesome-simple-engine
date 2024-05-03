@@ -7,7 +7,7 @@ set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 project(headless)
 
 #include the engine 
-include_directories(asengine/include/engine)
+include_directories(asengine/include/asengine)
 link_directories(asengine/lib)
 
 #add project

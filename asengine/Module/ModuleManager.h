@@ -25,8 +25,8 @@ namespace ASEngine
 
     
     protected:
-        // only allow Application class to call these functions
-        friend class Application;
+        // only allow ASEngine class to call these functions
+        friend class ASEngine;
         // call registry of every module
         void Registry();
 

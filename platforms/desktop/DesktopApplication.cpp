@@ -72,7 +72,7 @@ namespace ASEngine
         glfwSetCursorPosCallback(m_Window, OnMouseMove);
         glfwSetMouseButtonCallback(m_Window, OnMouseButton);
 
-        // connect window signals
+        // connect window signals   
         Window &window = Window::GetInstance();
         window.GetResizeSignal().Connect(std::bind(&DesktopApplication::OnWindowChangeSize, this, std::placeholders::_1, std::placeholders::_2));
         window.GetTitleSignal().Connect(std::bind(&DesktopApplication::OnWindowSetTitle, this, std::placeholders::_1));
@@ -120,7 +120,7 @@ namespace ASEngine
             glfwSetWindowSize(m_Window, mode->width, mode->height);
 
             // set size
-            ASENGINE::Window::GetInstance().SetSize(mode->width, mode->height);
+            Window::GetInstance().SetSize(mode->width, mode->height);
             m_WindowInfo.Width = width;
             m_WindowInfo.Height = height;
         }
