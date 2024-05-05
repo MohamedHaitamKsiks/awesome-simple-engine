@@ -57,8 +57,40 @@ void Vector2Test::DescribeSpecializedTests()
         v = v.Rotate(Math::PI / 2.0);
         ASENGINE_EXPECT(TEST_VECTOR_EQL(v, result));
     });
+
+    // test serialization
+    Test("It can be serialized", []()
+    {
+        Vector2 v{1.0f, 3.0f};
+        // serialization
+        Json vSerialized = Serializer<Vector2>::Serialize(v);
+
+        ASENGINE_EXPECT(Math::Abs(vSerialized.at("x").get<float>() - v.x) < TEST_PRECISION);
+        ASENGINE_EXPECT(Math::Abs(vSerialized.at("y").get<float>() - v.y) < TEST_PRECISION);
+    
+        // serialization
+        Vector2 vDeserialized;
+        Serializer<Vector2>::Deserialize(vSerialized, vDeserialized);
+        ASENGINE_EXPECT(TEST_VECTOR_EQL(vDeserialized, v));
+    });
+
 }
 
 void Vector3Test::DescribeSpecializedTests()
 {
+    Test("It can be serialized", []()
+    {
+        Vector3 v{1.0f, 3.0f, 5.0f};
+        // serialization
+        Json vSerialized = Serializer<Vector3>::Serialize(v);
+
+        ASENGINE_EXPECT(Math::Abs(vSerialized.at("x").get<float>() - v.x) < TEST_PRECISION);
+        ASENGINE_EXPECT(Math::Abs(vSerialized.at("y").get<float>() - v.y) < TEST_PRECISION);
+        ASENGINE_EXPECT(Math::Abs(vSerialized.at("z").get<float>() - v.z) < TEST_PRECISION);
+
+        // serialization
+        Vector3 vDeserialized;
+        Serializer<Vector3>::Deserialize(vSerialized, vDeserialized);
+        ASENGINE_EXPECT(TEST_VECTOR_EQL(vDeserialized, v));
+    });
 }

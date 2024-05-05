@@ -1,4 +1,6 @@
 #include "Vector3.h"
+#include "Core/Serialization/Serializer.h"
+#include "Core/Serialization/Json.h"
 
 namespace ASEngine
 {
@@ -7,13 +9,14 @@ namespace ASEngine
     template <>
     Json Serializer<Vector3>::Serialize(const Vector3 &value)
     {
-        Json vector3Obj{{}};
+        Json vector3Obj = Json({});
         vector3Obj["x"] = value.x;
         vector3Obj["y"] = value.y;
         vector3Obj["z"] = value.z;
 
         return vector3Obj;
     }
+
     template <>
     void Serializer<Vector3>::Deserialize(const Json &object, Vector3 &dest)
     {

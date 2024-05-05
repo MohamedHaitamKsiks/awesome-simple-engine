@@ -11,6 +11,7 @@ namespace ASEngine
     void UnitTest::Test(const std::string &testCaseName, const std::function<void()> &testCallback)
     {
         m_TestCases[testCaseName] = testCallback;
+        m_TestCasesName.push_back(testCaseName);
     }
 
     void UnitTest::Expect(bool predicat, const std::string& file, uint32_t line, const std::string& errorMessage )
@@ -39,8 +40,10 @@ namespace ASEngine
         Debug::Log(m_TestSuitName, ":");
         Debug::Log("");
 
-        for (auto const &[testName, testCallback] : m_TestCases)
+        for (const auto& testName : m_TestCasesName)
         {
+            const auto& testCallback = m_TestCases[testName];
+
             try
             {
                 // get time now

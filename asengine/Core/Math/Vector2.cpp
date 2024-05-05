@@ -22,12 +22,13 @@ namespace ASEngine
     template <>
     Json Serializer<Vector2>::Serialize(const Vector2 &value)
     {
-        Json vector2Obj{{}};
+        Json vector2Obj = Json({});
         vector2Obj["x"] = value.x;
         vector2Obj["y"] = value.y;
 
         return vector2Obj;
     }
+
     template <>
     void Serializer<Vector2>::Deserialize(const Json &object, Vector2 &dest)
     {

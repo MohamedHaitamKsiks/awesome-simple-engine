@@ -47,6 +47,7 @@ namespace ASEngine
         friend class UnitTestSystem;
         // test suits
         std::unordered_map<std::string, std::function<void()>> m_TestCases{};
+        std::vector<std::string> m_TestCasesName{}; // to have them run by order of insertion
         std::string m_TestSuitName = "TestSuit";
     };
 } // namespace ASEngine
