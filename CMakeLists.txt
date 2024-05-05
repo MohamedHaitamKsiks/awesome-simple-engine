@@ -66,9 +66,6 @@ add_library(
     asengine/Core/Window/Window.cpp
     #input
     asengine/Core/InputSystem/InputEvent.cpp
-    #app
-    #asengine/Core/Application/Application.cpp
-    #log
     #files
     #ecs
     asengine/ECS/EntityManager.cpp
@@ -77,13 +74,13 @@ add_library(
     asengine/ECS/SystemManager.cpp
     asengine/ECS/ArchetypeManager.cpp
     asengine/ECS/EntityBuilder.cpp
+    #rendering
+    asengine/Renderer/Image.cpp
     #resource
     #asengine/Resource/Material.cpp
     #asengine/Resource/Shader.cpp
     #asengine/Resource/Scene.cpp
     #asengine/Resource/Audio.cpp
-    #rendering
-    #asengine/Renderer/Image.cpp
     #asengine/Renderer/Viewport.cpp
     #audio
     #asengine/Audio/AudioEngine.cpp

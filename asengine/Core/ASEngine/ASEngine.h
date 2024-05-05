@@ -15,7 +15,7 @@ namespace ASEngine
 
 	// asengine context 
 	// defines the core of the engine 
-	class ASEngine: Singleton<ASEngine>
+	class ASEngine: public Singleton<ASEngine>
 	{
 	public:
 		// setup application before init and user registry

@@ -20,6 +20,9 @@ namespace ASEngine
         constexpr Vector3(float _x, float _y, float _z): x(_x), y(_y), z(_z)
         {
         }
+        constexpr Vector3(float _x, float _y) : x(_x), y(_y), z(0.0f)
+        {
+        }
         constexpr Vector3(const Vector3 &v) = default;
 
         // consts

@@ -10,6 +10,7 @@ add_library(
     ASEngineTestSystem/ASEngineTestSystem.cpp
     Core/UniqueStringTest.cpp
     Core/PoolAllocatorTest.cpp
+    Core/VectorTest.cpp
 )
 
 target_link_libraries(

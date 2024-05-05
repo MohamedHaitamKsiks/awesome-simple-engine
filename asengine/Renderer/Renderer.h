@@ -16,7 +16,7 @@ namespace ASEngine
     {
     public:
         virtual void BindVertexBuffer() = 0;
-    }
+    };
 } // namespace ASEngine
 
 

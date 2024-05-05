@@ -11,8 +11,8 @@ namespace ASEngine
 
         return Vector2
         {
-            x * cosAngle - y * sinAngle,
-            x * sinAngle + y * cosAngle
+            x * cosAngle + y * sinAngle,
+            -x * sinAngle + y * cosAngle
         };
     }
 

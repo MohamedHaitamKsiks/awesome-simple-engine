@@ -1,6 +1,8 @@
 #include "Image.h"
-#include "Core/Error/Assert.h"
 #include "stb_image.h"
+#include "Core/Error/Assertion.h"
+#include "Core/FileSystem/File.h"
+#include "Core/Debug/Debug.h"
 
 #define ASENGINE_IMAGE_CHANNELS 4
 
@@ -19,7 +21,7 @@ namespace ASEngine
         if(!imageFile.Open(path, FileOpenMode::READ)) 
         {
             Debug::Error("Cannot open image:", path);
-            return false;
+            return;
         }
 
         size_t fileLength = imageFile.GetSize();
@@ -28,16 +30,16 @@ namespace ASEngine
         imageFile.Close();
 
         //decode
-        stbi_uc* pixels = stbi_load_from_memory(reinterpret_cast<stbi_uc*>(fileBuffer.GetData()), static_cast<int>(fileLength), &m_Width, &m_Height, &m_Channels, STBI_rgb_alpha);
+        stbi_uc* pixels = stbi_load_from_memory(reinterpret_cast<const stbi_uc*>(fileBuffer.GetData()), static_cast<int>(fileLength), &m_Width, &m_Height, &m_Channels, STBI_rgb_alpha);
         ASENGINE_ASSERT(pixels, "");
 
         m_Pixels.SetData(pixels, m_Width * m_Height * ASENGINE_IMAGE_CHANNELS);
     }
 
-    Color Image::GetPixelAt(int x, int y)
+    Color Image::GetPixelAt(int x, int y) const
     {
         size_t offset = (y * m_Height + x) * ASENGINE_IMAGE_CHANNELS;
-        auto *data = reinterpret_cast<uint8_t *>(m_Pixels.GetData());
+        const auto *data = reinterpret_cast<const uint8_t *>(m_Pixels.GetData());
 
         Color color{};
         color.r = static_cast<float>(data[offset]) / 255.0f;
@@ -56,7 +58,7 @@ namespace ASEngine
         byteColor[2] = static_cast<uint8_t>(color.b * 255.0f);
         byteColor[3] = static_cast<uint8_t>(color.a * 255.0f);
 
-        m_Pixels.SetDataAt(byteColor, sizeof(byteColor), (y * m_Height + x) * IMAGE_CHANNELS);
+        m_Pixels.SetDataAt(byteColor, sizeof(byteColor), (y * m_Height + x) * ASENGINE_IMAGE_CHANNELS);
     }
 
 } // ASEngine

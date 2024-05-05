@@ -6,9 +6,6 @@
 #include <string>
 
 #include "Core/Memory/ByteBuffer.h"
-#include "Core/FileSystem/File.h"
-#include "Core/Log/Log.h"
-
 #include "Color.h"
 
 namespace ASEngine 
@@ -25,14 +22,14 @@ namespace ASEngine
     {
     public:
         //constructor
-        Image() {};
+        Image() = default;
         Image(int width, int height);
 
         //create image from .png path
         Image(const std::string& path);
     
         // get image pixel
-        Color GetPixelAt(int x, int y);
+        Color GetPixelAt(int x, int y) const;
 
         // set image pixel 
         void SetPixelAt(int x, int y, const Color& color);

@@ -25,10 +25,10 @@ namespace ASEngine {
 
         inline Color operator+(Color c) {
             return Color{
-                    r + c.r,
-                    g + c.g,
-                    b + c.b,
-                    a + c.a
+                r + c.r,
+                g + c.g,
+                b + c.b,
+                a + c.a
             };
         }
 
