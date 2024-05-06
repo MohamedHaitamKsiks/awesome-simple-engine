@@ -37,7 +37,7 @@ namespace ASEngine
 
 
             // add first component
-            UniqueString componentName = TComponent<T>::s_Name;
+            UniqueString componentName = TComponent<T>::GetName();
             AddComponent(componentName);
 
             if constexpr (sizeof...(types) > 0)
@@ -55,7 +55,7 @@ namespace ASEngine
         {
             // check if component is of component type
             static_assert(std::is_base_of_v<TComponent<T>, T>);
-            UniqueString componentName = TComponent<T>::GetComponentName();
+            UniqueString componentName = TComponent<T>::GetName();
             
             ComponentCollection<T>& collection = dynamic_cast<ComponentCollection<T>&>(GetComponentCollection(componentName));
             return collection;

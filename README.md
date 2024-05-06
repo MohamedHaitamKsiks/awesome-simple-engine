@@ -112,7 +112,8 @@ Create a struct that inherits from Component.
 Example:
 
 ````cpp
-struct SpriteComponent: Component<SpriteComponent> {
+struct SpriteComponent: Component<SpriteComponent> 
+{
   ResourceID SpriteID;
   float Frame = 0.0f;
   float FrameRate = 8.0f;
@@ -130,8 +131,8 @@ class SpriteRenderingSystem: public ISystem
 {
 public:
 
-    // on update
-    void OnUpdate(float delta)
+    // update
+    void Update(float delta)
     {
         // query components
         TEntityQuery<SpriteComponent, TransformComponent>query{};
@@ -157,20 +158,20 @@ Example:
   builder.AddComponents(sprite, transform);
 
   // create entity
-  Entity entity = EntityManager::Create(builder);
+  EntityID entityID = EntityManager::Create(builder);
 
   // destroy entity
-  EntityManager::Destroy(entity);
+  EntityManager::Destroy(entityID);
 ````
 
 We are not done yet, you need to register your components and systems to the module your working on.
 
 ````cpp
     // component registry ...
-    ComponentManager::RegisterComponent<SpriteComponent>(UniqueString("Sprite"));
+    ComponentManager::GetInsatance().RegisterComponent<SpriteComponent>(UniqueString("Sprite"));
 
     // system registry ...
-    SystemManager::RegisterSystem<SpriteRenderingSystem>();
+    SystemManager::GetInsatance().RegisterSystem<SpriteRenderingSystem>();
 };
 
 ````

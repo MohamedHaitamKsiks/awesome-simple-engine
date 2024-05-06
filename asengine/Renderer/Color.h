@@ -3,7 +3,8 @@
 
 namespace ASEngine {
 
-    struct Color {
+    struct Color 
+    {
         //rgba
         float r = 0.0f;
         float g = 0.0f;

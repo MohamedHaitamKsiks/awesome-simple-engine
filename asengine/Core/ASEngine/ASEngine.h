@@ -9,6 +9,7 @@
 #include "Core/String/UniqueStringManager.h"
 #include "Module/ModuleManager.h"
 #include "ECS/SystemManager.h"
+#include "Object/ClassManager.h"
 
 namespace ASEngine 
 {
@@ -57,6 +58,7 @@ namespace ASEngine
 
 		// default managers
 		UniqueStringManager m_UniqueStringManager{};
+		ClassManager m_ClassManager{};
 		ModuleManager m_ModuleManager{};
 		SystemManager m_SystemManager{};
 

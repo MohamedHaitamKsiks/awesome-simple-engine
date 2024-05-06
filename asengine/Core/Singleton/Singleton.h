@@ -16,10 +16,10 @@ namespace ASEngine
     class Singleton
     {
         public:
+            // default constructor is by default initializing singleton
             Singleton()
             {
-                ASENGINE_ASSERT(s_Instance == nullptr, "Singleton Already Exists!");
-                s_Instance = (T*)(this);
+                InitSingleton();
             };
 
             // make it polymorphic
@@ -38,6 +38,13 @@ namespace ASEngine
             
         protected:
             static T* s_Instance;
+
+            // call init singelton if not done by default constructor
+            void InitSingleton()
+            {
+                ASENGINE_ASSERT(s_Instance == nullptr, "Singleton Already Exists!");
+                s_Instance = (T *)(this);
+            }
     };
 
     template <typename T>

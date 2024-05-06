@@ -1,9 +1,8 @@
 #ifndef ASENGINE_VERTEX_INPUT_H
 #define ASENGINE_VERTEX_INPUT_H
 
-#include "Core/Memory/DynamicArray.h"
+#include <vector>
 #include <cstdint>
-
 
 namespace ASEngine
 {
@@ -37,7 +36,7 @@ namespace ASEngine
     {
         size_t Stride;
         VertexInputRate InputRate;
-        TDynamicArray<VertexAttribute> VertexAttributes{2};
+        std::vector<VertexAttribute> VertexAttributes{};
     };
 
 } // namespace ASEngine

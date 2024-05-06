@@ -35,8 +35,7 @@ namespace ASEngine
             auto& component = collection.ComponentAt(index);
 
             component.Copy(*componentValue);
-            //component. = entityID;
-            component.OnCreate();
+            component.OnCreate(entityID);
         }
 
         return entityID;

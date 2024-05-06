@@ -55,6 +55,9 @@ add_library(
     #memory
     asengine/Core/Memory/PoolAllocator.cpp
     asengine/Core/Memory/ByteBuffer.cpp
+    #class management
+    asengine/Object/Class.cpp
+    asengine/Object/ClassManager.cpp
     #math
     asengine/Core/Math/Random.cpp
     asengine/Core/Math/Matrix3x3.cpp
@@ -66,7 +69,6 @@ add_library(
     asengine/Core/Window/Window.cpp
     #input
     asengine/Core/InputSystem/InputEvent.cpp
-    #files
     #ecs
     asengine/ECS/EntityManager.cpp
     asengine/ECS/Archetype.cpp

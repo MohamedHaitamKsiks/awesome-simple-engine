@@ -7,7 +7,7 @@
 namespace ASEngine
 {
     /*
-        Interface of the renderer
+        Abstract class of the renderer
         It is the main interface between the user and the gpu
         You can create multiple classes inheriting from this class with specifications 
         For example: OpenGLRenderer, VulkanRenderer...

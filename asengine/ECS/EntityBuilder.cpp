@@ -1,5 +1,4 @@
 #include "EntityBuilder.h"
-
 #include "ComponentManager.h"
 
 #include "Core/Serialization/Json.h"
@@ -17,14 +16,15 @@ namespace ASEngine
 
     void EntityBuilder::AddComponent(UniqueString componentName)
     {
-        std::unique_ptr<Component> newComponent(ComponentManager::GetInstance().MakeComponent(componentName));
+        ComponentClass& componentClass = ComponentManager::GetInstance().GetComponentClass(componentName);
+        std::unique_ptr<IComponent> newComponent((IComponent*) componentClass.GetClass().New());
 
         // add component
         m_Components[componentName] = std::move(newComponent);
         m_Signature.emplace(componentName);
     }
 
-    void EntityBuilder::AddComponent(UniqueString componentName, const Component &component)
+    void EntityBuilder::AddComponent(UniqueString componentName, const IComponent &component)
     {
         AddComponent(componentName);
         m_Components[componentName]->Copy(component);

@@ -23,7 +23,7 @@ namespace ASEngine
             void AddComponent(UniqueString componentName);
 
             // set component with inital value
-            void AddComponent(UniqueString componentName, const Component& component);
+            void AddComponent(UniqueString componentName, const IComponent& component);
 
             // add component based on type
             template <typename T, typename... types>
@@ -39,13 +39,13 @@ namespace ASEngine
             }
 
             // get components
-            inline const std::unordered_map<UniqueString, std::unique_ptr<Component>>& GetComponents() const
+            inline const std::unordered_map<UniqueString, std::unique_ptr<IComponent>>& GetComponents() const
             {
                 return m_Components;
             }
 
             // get component
-            inline Component& GetComponent(UniqueString componentName)
+            inline IComponent& GetComponent(UniqueString componentName)
             {
                 return *m_Components[componentName];
             }
@@ -67,7 +67,7 @@ namespace ASEngine
             }
 
         private:
-            std::unordered_map<UniqueString, std::unique_ptr<Component>> m_Components{};
+            std::unordered_map<UniqueString, std::unique_ptr<IComponent>> m_Components{};
             
             // cache signatrue
             Signature m_Signature{};

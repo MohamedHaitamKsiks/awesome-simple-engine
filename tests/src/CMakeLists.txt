@@ -11,6 +11,7 @@ add_library(
     Core/UniqueStringTest.cpp
     Core/PoolAllocatorTest.cpp
     Core/VectorTest.cpp
+    Object/ClassManagerTest.cpp
 )
 
 target_link_libraries(

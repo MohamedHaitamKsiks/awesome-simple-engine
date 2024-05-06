@@ -1,5 +1,7 @@
 #include "Archetype.h"
 #include "Core/Error/Assertion.h"
+#include "ComponentManager.h"
+#include "ComponentClass.h"
 
 namespace ASEngine
 {
@@ -10,7 +12,8 @@ namespace ASEngine
         
         m_Signature.emplace(componentName);
         //create component collectio
-        std::unique_ptr<IComponentCollection> collection(ComponentManager::GetInstance().CreateComponentCollection(componentName));
+        ComponentClass& componentClass = ComponentManager::GetInstance().GetComponentClass(componentName);
+        std::unique_ptr<IComponentCollection> collection(componentClass.CreateComponentCollection());
         m_ComponentCollections[componentName] = std::move(collection);
     
     }

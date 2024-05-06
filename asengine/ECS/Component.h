@@ -5,6 +5,8 @@
 
 #include "Macros/Foreach.h"
 
+#include "Object/TObject.h"
+
 #include "Core/Serialization/Serializer.h"
 #include "Core/String/UniqueString.h"
 #include "Core/Error/Assertion.h"
@@ -13,52 +15,37 @@
 
 namespace ASEngine
 {
-    // base component type
-    class Component
+    // interface for component 
+    class IComponent
     {
     public:
-        Component() = default;
-        ~Component() = default;
+        IComponent() = default;
+        ~IComponent() = default;
 
         // only to initialize some internal values. Avoid using it like unity's monobehaviour
-        virtual void OnCreate() {};
+        // entityID is passed as a parameter
+        virtual void OnCreate(EntityID entityID) = 0;
 
         // used to manage internal values at destruction. Avoid using it like unity's monobehaviour
-        virtual void OnDestroy() {};
-
-        // get component name
-        virtual UniqueString GetName() const = 0;
+        virtual void OnDestroy() = 0;
     
         // copy component
-        virtual void Copy(const Component& component) = 0;
+        virtual void Copy(const IComponent& component) = 0;
 
         // deserialize component
         virtual void Deserialize(const Json& object) = 0;
 
         // serialize component
         virtual Json Serialize() = 0;
-
-    private:
-        EntityID m_OwnerID;
     };
 
     // component
     template <typename T>
-    class TComponent: public Component
+    class TComponent: public IComponent, public TObject<T>
     {
     public:
-        UniqueString GetName() const override
-        {
-            return s_Name;
-        }
-
-        static UniqueString GetComponentName()
-        {
-            return s_Name;
-        }
-
         // usefull for copying components from EntityBuilder to Archetype
-        void Copy(const Component& component)
+        void Copy(const IComponent& component) override
         {
             const T* castedSrc = dynamic_cast<const T*>(&component);
             ASENGINE_ASSERT(castedSrc, "Component Source Invalid Type");
@@ -75,16 +62,7 @@ namespace ASEngine
         {
             Serializer<T>::Deserialize(object, *this);
         }
-
-    private:
-        // component name
-        static UniqueString s_Name;
-        friend class ComponentManager;
     };  
-
-    // component name implementation
-    template <typename T>
-    UniqueString TComponent<T>::s_Name{""};
 }
 
 // export no field

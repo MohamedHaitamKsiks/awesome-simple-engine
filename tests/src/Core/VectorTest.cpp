@@ -68,7 +68,7 @@ void Vector2Test::DescribeSpecializedTests()
         ASENGINE_EXPECT(Math::Abs(vSerialized.at("x").get<float>() - v.x) < TEST_PRECISION);
         ASENGINE_EXPECT(Math::Abs(vSerialized.at("y").get<float>() - v.y) < TEST_PRECISION);
     
-        // serialization
+        // deserialization
         Vector2 vDeserialized;
         Serializer<Vector2>::Deserialize(vSerialized, vDeserialized);
         ASENGINE_EXPECT(TEST_VECTOR_EQL(vDeserialized, v));
@@ -88,7 +88,7 @@ void Vector3Test::DescribeSpecializedTests()
         ASENGINE_EXPECT(Math::Abs(vSerialized.at("y").get<float>() - v.y) < TEST_PRECISION);
         ASENGINE_EXPECT(Math::Abs(vSerialized.at("z").get<float>() - v.z) < TEST_PRECISION);
 
-        // serialization
+        // deserialization
         Vector3 vDeserialized;
         Serializer<Vector3>::Deserialize(vSerialized, vDeserialized);
         ASENGINE_EXPECT(TEST_VECTOR_EQL(vDeserialized, v));

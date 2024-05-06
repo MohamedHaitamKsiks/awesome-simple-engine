@@ -9,7 +9,10 @@
 #include "Core/Serialization/Serializer.h"
 #include "Core/Singleton/Singleton.h"
 
+#include "Object/ClassManager.h"
+
 #include "Component.h"
+#include "ComponentClass.h"
 #include "ComponentCollection.h"
 #include "Signature.h"
 
@@ -19,39 +22,27 @@
 namespace ASEngine
 {
 
-    // component information used by component manager
-    struct ComponentInfo
-    {
-        UniqueString Name;
-        size_t Size = 0;
-        std::function<IComponentCollection*()> CreateComponentCollection;
-        std::function<Component*()> MakeComponent;
-    };
-
     // singleton that manages components
     class ComponentManager: public ISystem, public Singleton<ComponentManager>
     {
     public:
         // register component
         template <typename T>
-        void RegisterComponent(UniqueString componentName);
-
-        // create component collection
-        inline IComponentCollection* CreateComponentCollection(UniqueString componentName) 
+        void RegisterComponent(UniqueString componentName)
         {
-            return m_Components[componentName].CreateComponentCollection();
-        };
+            static_assert(std::is_base_of_v<TComponent<T>, T>);
+            // register component as class 
+            ClassManager::GetInstance().RegisterClass<T>(componentName);
 
-        // make component by name
-        inline Component* MakeComponent(UniqueString componentName)
-        {
-            return m_Components[componentName].MakeComponent();
+            // register component specific behavior
+            std::unique_ptr<ComponentClass> componentClass = std::make_unique<TComponentClass<T>>(componentName);
+            m_Components[componentName] = std::move(componentName);
         }
 
-        // get size of a component
-        inline size_t GetSize(UniqueString componentName) 
-        { 
-            return m_Components[componentName].Size; 
+        // get component class
+        inline ComponentClass& GetComponentClass(UniqueString componentName)
+        {
+            return *m_Components[componentName];
         }
 
         // get signature
@@ -69,42 +60,8 @@ namespace ASEngine
 
     private:
         // component infos
-        std::unordered_map<UniqueString, ComponentInfo> m_Components;
+        std::unordered_map<UniqueString, std::unique_ptr<ComponentClass>> m_Components;
     };
-
-    // implementations
-
-    // register component implementation
-    template <typename ComponentType>
-    void ComponentManager::RegisterComponent(UniqueString componentName)
-    {
-        // check if component is of component type
-        static_assert(std::is_base_of_v<TComponent<ComponentType>, ComponentType>);
-
-        // register component
-        TComponent<ComponentType>::s_Name = componentName;
-
-        // add component info
-        ComponentInfo info;
-        info.Name = componentName;
-        info.Size = sizeof(ComponentType);
-
-        // define functions
-        info.CreateComponentCollection = []()
-        {
-            IComponentCollection *collection = new ComponentCollection<ComponentType>();
-            return collection;
-        };
-
-        info.MakeComponent = []()
-        {
-            return new ComponentType();
-        };
-
-        // add component info
-        m_Components[componentName] = info;
-    };
-
 
 } // namespace ASEngine
 

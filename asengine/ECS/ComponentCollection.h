@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Component.h"
+#include "Object/TObject.h"
 #include "Core/Collection/Collection.h"
 
 namespace ASEngine
@@ -14,20 +15,21 @@ namespace ASEngine
     class IComponentCollection: public ICollection
     {
     public:
-        virtual Component& ComponentAt(ComponentIndex index) = 0;
+        virtual IComponent& ComponentAt(ComponentIndex index) = 0;
         
-        virtual const Component& ComponentAt(ComponentIndex index) const = 0 ;
+        virtual const IComponent& ComponentAt(ComponentIndex index) const = 0 ;
     };
 
 
     // template of component collection
     template<typename ComponentType>
-    class ComponentCollection: public IComponentCollection
+    class ComponentCollection: public IComponentCollection, public TObject<ComponentCollection<ComponentType>>
     {
     public:
         ComponentCollection()
         {
             static_assert(std::is_base_of_v<TComponent<ComponentType>, ComponentType>);
+            m_Components.reserve(UINT16_MAX);
         }
 
         ComponentIndex Add()
@@ -53,12 +55,12 @@ namespace ASEngine
             return m_Components.size();
         }
 
-        Component &ComponentAt(ComponentIndex index)
+        IComponent &ComponentAt(ComponentIndex index)
         {
             return m_Components[index];
         }
         
-        const Component &ComponentAt(ComponentIndex index) const
+        const IComponent &ComponentAt(ComponentIndex index) const
         {
             return m_Components[index];
         }
