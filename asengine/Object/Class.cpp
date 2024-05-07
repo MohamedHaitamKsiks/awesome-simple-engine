@@ -3,9 +3,8 @@
 
 namespace ASEngine
 {
-    Class::Class(UniqueString name): m_Name(name)
+    Class::Class(UniqueString name, size_t size): m_Name(name), m_Size(size)
     {
-        Debug::Log("Register", name.GetString());
+        // Debug::Log("Register", name.GetString());
     }
-
 } // namespace ASEngine

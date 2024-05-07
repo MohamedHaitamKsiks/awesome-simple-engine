@@ -2,7 +2,6 @@
 #define ASENGINE_CLASS_H
 
 #include "Core/String/UniqueString.h"
-#include "Object.h"
 
 namespace ASEngine
 {
@@ -10,14 +9,10 @@ namespace ASEngine
     class Class
     {
     public:
-        Class(UniqueString name);
+        // don't allow copy
+        Class(const Class&) = delete;
+        Class& operator=(const Class&) = delete;
 
-        // create new instance of class
-        virtual Object* New() = 0;
-
-        // destroy instance of class
-        virtual void Destroy(Object*) = 0;
-        
         // get class name
         inline UniqueString GetName() const 
         {
@@ -33,6 +28,10 @@ namespace ASEngine
     protected:
         UniqueString m_Name;
         size_t m_Size = 0;
+
+    private:
+        Class(UniqueString name, size_t size);
+        friend class ClassManager;
     };
 } // namespace ASEngine
 

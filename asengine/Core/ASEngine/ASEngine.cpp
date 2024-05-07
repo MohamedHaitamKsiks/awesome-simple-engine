@@ -49,6 +49,7 @@ namespace ASEngine
     void ASEngine::RegisterBuiltInSystems()
     {
         SystemManager& systemManager = SystemManager::GetInstance();
+
         systemManager.RegisterSystem<ComponentManager>();
         systemManager.RegisterSystem<ArchetypeManager>();
         systemManager.RegisterSystem<EntityManager>();

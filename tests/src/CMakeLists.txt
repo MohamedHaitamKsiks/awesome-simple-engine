@@ -12,6 +12,7 @@ add_library(
     Core/PoolAllocatorTest.cpp
     Core/VectorTest.cpp
     Object/ClassManagerTest.cpp
+    ECS/ECSTest.cpp
 )
 
 target_link_libraries(

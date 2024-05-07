@@ -29,8 +29,8 @@ namespace ASEngine
             template <typename T, typename... types>
             void AddComponents(const T& firstComponent, const types&... components)
             {
-                UniqueString componentName = TComponent<T>::s_Name;
-                AddComponent(componentName, &firstComponent);
+                UniqueString componentName = Component<T>::GetName();
+                AddComponent(componentName, firstComponent);
 
                 if constexpr(sizeof...(types) > 0)
                 {

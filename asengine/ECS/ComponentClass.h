@@ -20,6 +20,8 @@ namespace ASEngine
             return ClassManager::GetInstance().GetClass(m_ComponentName);
         }
 
+        virtual IComponent* New() = 0; 
+
         virtual IComponentCollection* CreateComponentCollection() = 0;
     private:
         UniqueString m_ComponentName;
@@ -27,12 +29,20 @@ namespace ASEngine
 
 
     template <typename T>
-    class TComponentClass: public ComponentClass, public Singleton<TComponentClass<T>> 
+    class TComponentClass: public ComponentClass
     {
     public:
+        TComponentClass(UniqueString componentName): ComponentClass(componentName)
+        {}
+
+        IComponent* New() override 
+        {
+            return new T();
+        }
+
         IComponentCollection* CreateComponentCollection() override
         {
-            return ComponentCollection<T>::GetClass().New();
+            return new ComponentCollection<T>();
         }
     };
 } // namespace ASEngine

@@ -8,8 +8,8 @@ namespace ASEngine
 {
     UniqueString::UniqueString()
     {
-        // base is null string
-        Create("");
+        // uninsitialized string
+        m_StringID = UNIQUE_STRING_ID_NULL;
     }
 
     UniqueString::UniqueString(const std::string &str)

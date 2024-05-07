@@ -6,8 +6,10 @@
 #include <set>
 #include <algorithm>
 #include <memory>
+#include <tuple>
 
 #include "Core/String/UniqueString.h"
+
 
 #include "ComponentCollection.h"
 #include "Component.h"
@@ -33,11 +35,11 @@ namespace ASEngine
         void AddComponents()
         {
             // check if component is of component type
-            static_assert(std::is_base_of_v<TComponent<T>, T>);
+            static_assert(std::is_base_of_v<Component<T>, T>);
 
 
             // add first component
-            UniqueString componentName = TComponent<T>::GetName();
+            UniqueString componentName = Component<T>::GetName();
             AddComponent(componentName);
 
             if constexpr (sizeof...(types) > 0)
@@ -54,8 +56,8 @@ namespace ASEngine
         ComponentCollection<T>& GetComponentCollection()
         {
             // check if component is of component type
-            static_assert(std::is_base_of_v<TComponent<T>, T>);
-            UniqueString componentName = TComponent<T>::GetName();
+            static_assert(std::is_base_of_v<Component<T>, T>);
+            UniqueString componentName = Component<T>::GetName();
             
             ComponentCollection<T>& collection = dynamic_cast<ComponentCollection<T>&>(GetComponentCollection(componentName));
             return collection;
@@ -73,6 +75,23 @@ namespace ASEngine
         // remove entity
         void RemoveEntity(EntityID entityID);
 
+        // get entity count
+        inline size_t GetSize() const
+        {
+            return m_Entities.size();
+        }
+
+        // get component index
+        ComponentIndex GetComponentIndexOfEntity(EntityID entityID);
+
+        // get component collections tuple
+        template<typename T, typename... types>
+        inline constexpr std::tuple<ComponentCollection<T> &, ComponentCollection<types> &...> GetComponentCollections()
+        {
+            std::tuple<ComponentCollection<T> &, ComponentCollection<types> &...> collections(this->template GetComponentCollection<T>(), this->template GetComponentCollection<types>()...);
+            return collections;
+        }
+
     private:
         // signature with all components that compose the archetype
         Signature m_Signature{};
@@ -82,9 +101,6 @@ namespace ASEngine
 
         // entity to component
         std::vector<EntityID> m_Entities{};
-
-        // get component index
-        ComponentIndex GetComponentIndexOfEntity(EntityID entityID);
     };
 
 } // namespace ASEngine

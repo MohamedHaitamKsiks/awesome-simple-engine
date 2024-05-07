@@ -76,6 +76,7 @@ add_library(
     asengine/ECS/SystemManager.cpp
     asengine/ECS/ArchetypeManager.cpp
     asengine/ECS/EntityBuilder.cpp
+    asengine/ECS/ComponentClass.cpp
     #rendering
     asengine/Renderer/Image.cpp
     #resource

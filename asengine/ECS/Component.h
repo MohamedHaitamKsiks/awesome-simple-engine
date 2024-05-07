@@ -5,7 +5,7 @@
 
 #include "Macros/Foreach.h"
 
-#include "Object/TObject.h"
+#include "Object/Object.h"
 
 #include "Core/Serialization/Serializer.h"
 #include "Core/String/UniqueString.h"
@@ -19,8 +19,7 @@ namespace ASEngine
     class IComponent
     {
     public:
-        IComponent() = default;
-        ~IComponent() = default;
+        virtual ~IComponent() {};
 
         // only to initialize some internal values. Avoid using it like unity's monobehaviour
         // entityID is passed as a parameter
@@ -41,48 +40,50 @@ namespace ASEngine
 
     // component
     template <typename T>
-    class TComponent: public IComponent, public TObject<T>
+    class Component : public Object<T>, public IComponent 
     {
     public:
+        ~Component() {};
+
         // usefull for copying components from EntityBuilder to Archetype
         void Copy(const IComponent& component) override
         {
             const T* castedSrc = dynamic_cast<const T*>(&component);
+            T* castedDest = dynamic_cast<T*>(this);
             ASENGINE_ASSERT(castedSrc, "Component Source Invalid Type");
 
-            *this = *castedSrc;
+            *castedDest = *castedSrc;
         }
 
         Json Serialize() override
         {
-            return Serializer<T>::Serialize(*this);
+            return Serializer<T>::Serialize(dynamic_cast<T&>(*this));
         }
 
         void Deserialize(const Json& object) override
         {
-            Serializer<T>::Deserialize(object, *this);
+            Serializer<T>::Deserialize(object, dynamic_cast<T&>(*this));
         }
     };  
 }
 
 // export no field
-#define EXPORT_EMPTY(ComponentType) \
+#define ASENGINE_EXPORT_EMPTY(ComponentType) \
     template <> \
     Json Serializer<ComponentType>::Serialize(const ComponentType &value) \
     { \
-        Json object = Json({}); \
-        return object; \
+        return Json({}); \
     } \
     template <> \
     void Serializer<ComponentType>::Deserialize(const Json &object, ComponentType &dest) \
     { \
-        ASENGINE_ASSERT(object.is_object(), ""); \
     }
 
 // export component field to be serialiazed/deserialized
-#define EXPORT(ComponentType, ...) template <> \
+#define ASENGINE_EXPORT(ComponentType, ...) template <> \
     Json Serializer<ComponentType>::Serialize(const ComponentType &value) { \
         Json object = Json({}); \
+        FOREACH(SERIALIZE_FIELD,  __VA_ARGS__) \
         return object; \
     } \
     template <> \

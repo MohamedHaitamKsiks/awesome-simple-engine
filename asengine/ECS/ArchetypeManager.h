@@ -30,7 +30,7 @@ namespace ASEngine
         Archetype& GetArchetype(const Signature& signature);
 
         // get all registered archetypes
-        inline const std::unordered_map<Signature, Archetype>& GetArchetypes() const
+        inline std::unordered_map<Signature, Archetype>& GetArchetypes()
         {
             return m_Archetypes;
         }

@@ -11,6 +11,23 @@
 #include "Archetype.h"
 #include "Signature.h"
 
+#include "Macros/Foreach.h"
+
+#define ASENGINE_ENTITY_QUERY_FOREACH_BEGIN(query, ...) \
+for (Archetype * archetype : query.GetArchetypes()) \
+{ \
+    FOREACH(GET_COMPONENT_COLLECTION, __VA_ARGS__) \
+    for (ComponentIndex index = 0; index < archetype->GetSize(); index++) \
+    { \
+        FOREACH(GET_COMPONENT_AT_INDEX, __VA_ARGS__)
+
+#define ASENGINE_ENTITY_QUERY_FOREACH_END() \
+    } \
+}
+
+#define GET_COMPONENT_COLLECTION(ComponentType) auto& collectionOf ## ComponentType = archetype->GetComponentCollection<ComponentType>();
+#define GET_COMPONENT_AT_INDEX(ComponentType) auto &current ## ComponentType = collectionOf ## ComponentType[index];
+
 namespace ASEngine
 {
     // ecs query to get list of archetypes
@@ -25,8 +42,8 @@ namespace ASEngine
             ComponentManager::GetSignature<T, types...>(m_Signature);
 
             // fetch all archetypes
-            const auto& archetypes = ArchetypeManager::GetInstance().GetArchetypes();
-            for (const auto& [signature, archetype]: archetypes)
+            auto& archetypes = ArchetypeManager::GetInstance().GetArchetypes();
+            for (auto& [signature, archetype]: archetypes)
             {
                 if (std::includes(signature.begin(), signature.end(), m_Signature.begin(), m_Signature.end()))
                     m_Archetypes.push_back(&archetype);
@@ -36,7 +53,8 @@ namespace ASEngine
         }
 
         // go throw every entity in the query
-        void ForEach(std::function<void(T &, types &...)> callback)
+        template<typename FunctionType>
+        void ForEach(FunctionType callback)
         {
             for (auto& archetype : m_Archetypes)
             {

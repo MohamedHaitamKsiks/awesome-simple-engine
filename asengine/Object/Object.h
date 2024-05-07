@@ -1,30 +1,37 @@
-#ifndef ASENGINE_IOBJECT_H
-#define ASENGINE_IOBJECT_H
+#ifndef ASENGINE_OBJECT_IMP_H
+#define ASENGINE_OBJECT_IMP_H
 
-#include "Core/Memory/PoolAllocator.h"
+#include "IObject.h"
 #include "Core/String/UniqueString.h"
 
 namespace ASEngine
 {
-    using ObjectID = ChunkID;
 
-    // template of generic object 
-    class Object
+    // implementation of generic object
+    template<typename T>
+    class Object: public IObject
     {
     public:
-        Object() = default;
-        virtual UniqueString GetClassName() const = 0;
-        
-        inline ObjectID GetID() const
+        UniqueString GetClassName() const override
         {
-            return m_ID;
-        } 
+            return GetName();
+        }
+
+        // get class name 
+        static UniqueString GetName()
+        {
+            return s_ClassName;
+        }
+
     private:
-        ObjectID m_ID;
-        template<typename T>
-        friend class TClass;
+        friend class ClassManager;
+        static UniqueString s_ClassName;
     };
+
+    template <typename T>
+    UniqueString Object<T>::s_ClassName;
+
 } // namespace ASEngine
 
 
-#endif // ASENGINE_IOBJECT_H
+#endif // ASENGINE_OBJECT_IMP_H

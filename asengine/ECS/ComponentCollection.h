@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "Component.h"
-#include "Object/TObject.h"
 #include "Core/Collection/Collection.h"
 
 namespace ASEngine
@@ -23,12 +22,12 @@ namespace ASEngine
 
     // template of component collection
     template<typename ComponentType>
-    class ComponentCollection: public IComponentCollection, public TObject<ComponentCollection<ComponentType>>
+    class ComponentCollection: public IComponentCollection
     {
     public:
         ComponentCollection()
         {
-            static_assert(std::is_base_of_v<TComponent<ComponentType>, ComponentType>);
+            static_assert(std::is_base_of_v<Component<ComponentType>, ComponentType>);
             m_Components.reserve(UINT16_MAX);
         }
 

@@ -13,7 +13,7 @@ namespace ASEngine
         m_Signature.emplace(componentName);
         //create component collectio
         ComponentClass& componentClass = ComponentManager::GetInstance().GetComponentClass(componentName);
-        std::unique_ptr<IComponentCollection> collection(componentClass.CreateComponentCollection());
+        std::unique_ptr<IComponentCollection> collection{componentClass.CreateComponentCollection()};
         m_ComponentCollections[componentName] = std::move(collection);
     
     }

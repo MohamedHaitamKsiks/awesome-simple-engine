@@ -18,7 +18,6 @@
 
 #include "System.h"
 
-
 namespace ASEngine
 {
 
@@ -30,13 +29,13 @@ namespace ASEngine
         template <typename T>
         void RegisterComponent(UniqueString componentName)
         {
-            static_assert(std::is_base_of_v<TComponent<T>, T>);
+            static_assert(std::is_base_of_v<Component<T>, T>);
             // register component as class 
             ClassManager::GetInstance().RegisterClass<T>(componentName);
 
             // register component specific behavior
             std::unique_ptr<ComponentClass> componentClass = std::make_unique<TComponentClass<T>>(componentName);
-            m_Components[componentName] = std::move(componentName);
+            m_Components[componentName] = std::move(componentClass);
         }
 
         // get component class
@@ -49,8 +48,8 @@ namespace ASEngine
         template<typename T, typename... types>
         static void GetSignature(Signature& signature)
         {
-            static_assert(std::is_base_of_v<TComponent<T>, T>);
-            signature.emplace(T::s_Name);
+            static_assert(std::is_base_of_v<Component<T>, T>);
+            signature.emplace(Component<T>::GetName());
 
             if constexpr (sizeof...(types) > 0)
             {
