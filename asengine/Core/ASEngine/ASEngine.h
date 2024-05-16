@@ -7,17 +7,22 @@
 
 #include "Core/Singleton/Singleton.h"
 #include "Core/String/UniqueStringManager.h"
+#include "Class/ClassManager.h"
+
 #include "Module/ModuleManager.h"
+
 #include "ECS/SystemManager.h"
-#include "Object/ClassManager.h"
+
+#include "Resource/ResourceManager.h"
 
 namespace ASEngine 
 {
 
 	// asengine context 
 	// defines the core of the engine 
-	class ASEngine: public Singleton<ASEngine>
+	class ASEngine
 	{
+	ASENGINE_DEFINE_SINGLETON(ASEngine);
 	public:
 		// setup application before init and user registry
 		void Setup();
@@ -57,6 +62,7 @@ namespace ASEngine
 		float m_FixedTimer = 0.0f;
 
 		// default managers
+		ResourceManager m_ResourceManager{};
 		UniqueStringManager m_UniqueStringManager{};
 		ClassManager m_ClassManager{};
 		ModuleManager m_ModuleManager{};

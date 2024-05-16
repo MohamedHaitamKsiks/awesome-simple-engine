@@ -5,7 +5,7 @@
 
 #include "Macros/Foreach.h"
 
-#include "Object/Object.h"
+#include "Class/Class.h"
 
 #include "Core/Serialization/Serializer.h"
 #include "Core/String/UniqueString.h"
@@ -40,8 +40,10 @@ namespace ASEngine
 
     // component
     template <typename T>
-    class Component : public Object<T>, public IComponent 
+    class Component : public IComponent 
     {
+    ASENGINE_DEFINE_CLASS(T);
+
     public:
         ~Component() {};
 

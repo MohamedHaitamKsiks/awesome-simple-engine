@@ -30,7 +30,7 @@ namespace ASEngine
         AudioChannelID ID = 0;
     };
     
-    class AudioEngine: public ISystem, public Singleton<AudioEngine>
+    class AudioEngine: public ISystem
     {
     
     public:

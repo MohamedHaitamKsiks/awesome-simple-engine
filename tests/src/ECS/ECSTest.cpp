@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include <future>
 
 // define OOP alternative to test performance
 class GameObject
@@ -117,13 +118,14 @@ public:
             currentTransform.Position += currentBody.Velocity;
         }
         ASENGINE_ENTITY_QUERY_FOREACH_END();
-
+    
         EntityQuery<Player> query3{};
         ASENGINE_ENTITY_QUERY_FOREACH_BEGIN(query3, Player)
         {
             currentPlayer.Counter++;
         }
         ASENGINE_ENTITY_QUERY_FOREACH_END();
+
     }
 
 };
@@ -280,5 +282,8 @@ void ECSTest::Describe()
         Debug::Log("ECS Delta Time", ecsDeltaTime / 1000.0f, "ms");
 
         ASENGINE_EXPECT(ecsDeltaTime < oopDeltaTime);
+
+        EntityManager::GetInstance().DestroyAll();
+
     });
 }

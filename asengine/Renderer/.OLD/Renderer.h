@@ -17,7 +17,7 @@
 namespace ASEngine
 {
     // api agnostic rendering API used as the main interface with different rendering managers
-    class Renderer : public ISystem, public Singleton<Renderer>
+    class Renderer : public ISystem
     {
     public:
         // bind vertex buffer to an input rate

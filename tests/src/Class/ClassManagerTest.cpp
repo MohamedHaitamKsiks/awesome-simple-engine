@@ -1,7 +1,8 @@
 #include "ClassManagerTest.h"
 
-class TestClass: public Object<TestClass>
+class TestClass
 {
+ASENGINE_DEFINE_CLASS(TestClass);
 public:
     TestClass() = default;
 };

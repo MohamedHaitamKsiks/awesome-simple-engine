@@ -262,10 +262,9 @@ namespace ASEngine
                 {
                     SetCapactity(m_Capacity * 3 / 2 + 1);
                 }
-
+                allocatedChunkID = m_Size;
             }
 
-            allocatedChunkID = m_Size;
             m_Size++;
             m_IsUsed[allocatedChunkID] = true;
 

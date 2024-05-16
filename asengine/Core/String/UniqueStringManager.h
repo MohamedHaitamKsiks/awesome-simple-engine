@@ -15,8 +15,9 @@ namespace ASEngine
     constexpr uint32_t UNIQUE_STRING_ID_NULL = UINT32_MAX;
 
     // unique string manager, use UniqueString type directly
-    class UniqueStringManager: public Singleton<UniqueStringManager>
+    class UniqueStringManager
     {
+        ASENGINE_DEFINE_SINGLETON(UniqueStringManager);
         public:
             // create string if not found
             UniqueStringID Create(const std::string &targetString);

@@ -4,52 +4,46 @@
 #include "Core/Error/Assertion.h"
 #include "Core/Debug/Debug.h"
 
+/*
+    definition for singleton template
+    just to avoid rewrite alot of code that is basically the same for
+    all singletons in the engine
+*/
+
+// create singleton macro
+// add it in your singleton classes
+#define ASENGINE_DEFINE_SINGLETON(Type) \
+public: \
+    \
+    Type() \
+    { \
+        ASENGINE_ASSERT(Singleton<Type>::s_Instance == nullptr, "Singleton Already Exists!"); \
+        Singleton<Type>::s_Instance = this; \
+    } \
+    \
+    Type(const Type &) = delete; \
+    Type& operator=(const Type&) = delete; \
+    \
+    static inline Type &GetInstance() \
+    { \
+        ASENGINE_ASSERT(Singleton<Type>::s_Instance, "Singleton hasn't been created yet!"); \
+        return *Singleton<Type>::s_Instance; \
+    }
+
+
 namespace ASEngine
 {
-
-    /*
-        definition for singleton template
-        just to avoid rewrite alot of code that is basically the same for
-        all singletons in the engine
-    */
-    template<typename T>
+    template <typename Type>
     class Singleton
     {
-        public:
-            // default constructor is by default initializing singleton
-            Singleton()
-            {
-                InitSingleton();
-            };
-
-            // make it polymorphic
-            virtual ~Singleton() = default;
-
-            // don't allow copy
-            Singleton(const Singleton<T> &) = delete;
-            Singleton(const T&) = delete;
-            
-            // get singleton instance
-            static inline T& GetInstance() 
-            {
-                ASENGINE_ASSERT(s_Instance, std::string(typeid(T).name()) + "Singleton hasn't been created yet!");
-                return *s_Instance; 
-            };
-            
-        protected:
-            static T* s_Instance;
-
-            // call init singelton if not done by default constructor
-            void InitSingleton()
-            {
-                ASENGINE_ASSERT(s_Instance == nullptr, "Singleton Already Exists!");
-                s_Instance = (T *)(this);
-            }
+    public:
+        static Type* s_Instance;
     };
 
-    template <typename T>
-    T* Singleton<T>::s_Instance = nullptr;
-
+    template <typename Type>
+    Type *Singleton<Type>::s_Instance = nullptr;
+    
 } // namespace ASEngine
+
 
 #endif

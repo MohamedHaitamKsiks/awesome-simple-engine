@@ -9,7 +9,7 @@
 #include "Core/Serialization/Serializer.h"
 #include "Core/Singleton/Singleton.h"
 
-#include "Object/ClassManager.h"
+#include "Class/ClassManager.h"
 
 #include "Component.h"
 #include "ComponentClass.h"
@@ -22,8 +22,9 @@ namespace ASEngine
 {
 
     // singleton that manages components
-    class ComponentManager: public ISystem, public Singleton<ComponentManager>
+    class ComponentManager: public ISystem
     {
+    ASENGINE_DEFINE_SINGLETON(ComponentManager);
     public:
         // register component
         template <typename T>
@@ -34,12 +35,12 @@ namespace ASEngine
             ClassManager::GetInstance().RegisterClass<T>(componentName);
 
             // register component specific behavior
-            std::unique_ptr<ComponentClass> componentClass = std::make_unique<TComponentClass<T>>(componentName);
+            std::unique_ptr<IComponentClass> componentClass = std::make_unique<ComponentClass<T>>();
             m_Components[componentName] = std::move(componentClass);
         }
 
         // get component class
-        inline ComponentClass& GetComponentClass(UniqueString componentName)
+        inline IComponentClass& GetComponentClass(UniqueString componentName)
         {
             return *m_Components[componentName];
         }
@@ -59,7 +60,7 @@ namespace ASEngine
 
     private:
         // component infos
-        std::unordered_map<UniqueString, std::unique_ptr<ComponentClass>> m_Components;
+        std::unordered_map<UniqueString, std::unique_ptr<IComponentClass>> m_Components;
     };
 
 } // namespace ASEngine

@@ -10,8 +10,9 @@
 namespace ASEngine
 {
     // module manager
-    class ModuleManager: public Singleton<ModuleManager>
+    class ModuleManager
     {
+    ASENGINE_DEFINE_SINGLETON(ModuleManager);
     public:
         // register new module
         template <typename T>

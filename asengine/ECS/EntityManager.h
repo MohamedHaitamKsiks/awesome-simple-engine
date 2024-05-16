@@ -18,8 +18,10 @@
 namespace ASEngine
 {
     // context of ecs: the EntityManager where all the entities exists
-    class EntityManager: public ISystem, public Singleton<EntityManager>
+    class EntityManager: public ISystem
     {
+    ASENGINE_DEFINE_SINGLETON(EntityManager);
+
     public:
         // clean up
         void Terminate();

@@ -15,8 +15,10 @@ namespace ASEngine
     // Make sure to register it after all the systems you want to test.
     // Also run in headless mode.
     // The application will exit with 0 if all tests are fine.
-    class UnitTestSystem: public ISystem, public Singleton<UnitTestSystem>
+    class UnitTestSystem: public ISystem
     {
+    ASENGINE_DEFINE_SINGLETON(UnitTestSystem);
+
     protected:
         // register tests 
         virtual void Registry() = 0;

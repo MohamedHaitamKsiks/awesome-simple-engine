@@ -13,7 +13,7 @@ def generateResourceCode(name: str) -> tuple[str, str]:
 
 using namespace ASEngine;
 
-class {name} : public Resource
+class {name} : public Resource<{name}>
 {'{'}
 public:
     {name}();
@@ -28,6 +28,8 @@ private:
 
     #generate source code
     sourceCode = f'''#include "{name}.h"
+
+ASENGINE_SERIALIZE_RESOURCE_REF({name});
 
 {name}::{name}()
 {'{'}

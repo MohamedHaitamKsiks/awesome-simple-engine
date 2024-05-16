@@ -5,36 +5,25 @@
 #include "Core/Singleton/Singleton.h"
 #include "Component.h"
 #include "ComponentCollection.h"
-#include "Object/Class.h"
-#include "Object/ClassManager.h"
+#include "Class/Class.h"
+#include "Class/ClassManager.h"
 
 namespace ASEngine
 {
-    class ComponentClass
+    class IComponentClass
     {
     public:
-        ComponentClass(UniqueString componentName);
-        
-        inline Class& GetClass()
-        {
-            return ClassManager::GetInstance().GetClass(m_ComponentName);
-        }
-
         virtual IComponent* New() = 0; 
 
         virtual IComponentCollection* CreateComponentCollection() = 0;
-    private:
-        UniqueString m_ComponentName;
     };
 
 
     template <typename T>
-    class TComponentClass: public ComponentClass
+    class ComponentClass: public IComponentClass
     {
+    ASENGINE_DEFINE_CLASS(T);
     public:
-        TComponentClass(UniqueString componentName): ComponentClass(componentName)
-        {}
-
         IComponent* New() override 
         {
             return new T();

@@ -16,7 +16,7 @@ namespace ASEngine
 
     void EntityBuilder::AddComponent(UniqueString componentName)
     {
-        ComponentClass& componentClass = ComponentManager::GetInstance().GetComponentClass(componentName);
+        IComponentClass& componentClass = ComponentManager::GetInstance().GetComponentClass(componentName);
         std::unique_ptr<IComponent> newComponent(componentClass.New());
 
         // add component

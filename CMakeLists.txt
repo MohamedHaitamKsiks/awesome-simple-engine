@@ -55,9 +55,6 @@ add_library(
     #memory
     asengine/Core/Memory/PoolAllocator.cpp
     asengine/Core/Memory/ByteBuffer.cpp
-    #class management
-    asengine/Object/Class.cpp
-    asengine/Object/ClassManager.cpp
     #math
     asengine/Core/Math/Random.cpp
     asengine/Core/Math/Matrix3x3.cpp
@@ -80,6 +77,8 @@ add_library(
     #rendering
     asengine/Renderer/Image.cpp
     #resource
+    asengine/Resource/ResourceClass.cpp
+    asengine/Resource/AbstractResource.cpp
     #asengine/Resource/Material.cpp
     #asengine/Resource/Shader.cpp
     #asengine/Resource/Scene.cpp

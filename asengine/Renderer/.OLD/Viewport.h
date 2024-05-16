@@ -7,8 +7,9 @@
 
 namespace ASEngine
 {
-    class Viewport: public Singleton<Viewport>
+    class Viewport
     {
+    ASENGINE_DEFINE_SINGLETON(Viewport);
     public:
         // set view port size
         void SetSize(int width, int height);
@@ -34,8 +35,7 @@ namespace ASEngine
 
         // projection matrix
         Matrix3x3 m_ProjectionMatrix = Matrix3x3::IDENTITY();
-        
-    };
+        };
 } // namespace ASEngine
 
 

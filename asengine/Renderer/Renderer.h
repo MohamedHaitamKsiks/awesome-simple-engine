@@ -12,7 +12,7 @@ namespace ASEngine
         You can create multiple classes inheriting from this class with specifications 
         For example: OpenGLRenderer, VulkanRenderer...
     */
-    class IRenderer: public ISystem, public Singleton<IRenderer>
+    class IRenderer: public ISystem
     {
     public:
         virtual void BindVertexBuffer() = 0;

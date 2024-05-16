@@ -13,8 +13,9 @@
 
 namespace ASEngine
 {
-    class SystemManager: public Singleton<SystemManager>
+    class SystemManager
     {
+    ASENGINE_DEFINE_SINGLETON(SystemManager);
     public:
         // register system to the system manager
         template <typename SystemType>

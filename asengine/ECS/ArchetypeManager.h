@@ -14,8 +14,10 @@
 
 namespace ASEngine
 {
-    class ArchetypeManager: public ISystem, public Singleton<ArchetypeManager>
+    class ArchetypeManager: public ISystem
     {
+    ASENGINE_DEFINE_SINGLETON(ArchetypeManager);
+
     public:
         // get archetype 
         template <typename T, typename... types>

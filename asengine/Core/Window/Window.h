@@ -10,8 +10,9 @@
 namespace ASEngine
 {
     // game's window: singleton
-    class Window: public ISystem, public Singleton<Window>
+    class Window: public ISystem
     {
+    ASENGINE_DEFINE_SINGLETON(Window);
     public:
         // set window size to
         void SetSize(int width, int height);
