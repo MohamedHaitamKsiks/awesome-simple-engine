@@ -3,7 +3,8 @@
 
 #include "ResourceID.h"
 #include "AbstractResource.h"
-#include "ResourceClass.h"
+#include "IResourceClass.h"
+#include "ResourceManager.h"
 
 #include "Core/Memory/PoolAllocator.h"
 #include "Core/String/UniqueString.h"
@@ -20,6 +21,15 @@ namespace ASEngine
     ASENGINE_DEFINE_CLASS(T);
 
     public:
+        // make type polymorphic
+        virtual ~Resource() {}
+
+        // get resource class of the type
+        static inline IResourceClass& GetResourceClass()
+        {
+            return ResourceManager::GetInstance().GetResouceClass(GetName());
+        }
+        
         void Deserialize(const Json &object) override
         {
             Serializer<T>::Deserialize(object, *(static_cast<T*>(this)));
@@ -28,13 +38,6 @@ namespace ASEngine
         Json Serialize() const override
         {
             return Serializer<T>::Serialize(*(static_cast<const T*>(this)));
-        }
-
-    private:
-        void Destroy() override
-        {
-            IResourceClass& resourceClass = ResourceClass<T>::GetInstance();
-            resourceClass.Destroy(*this);
         }
     };
 

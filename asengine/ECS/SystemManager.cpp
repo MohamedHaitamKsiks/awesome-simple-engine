@@ -3,62 +3,50 @@
 namespace ASEngine
 {
 
-    void SystemManager::ForEach(std::function<void(ISystem&)> callback, bool reversed)
+    void SystemManager::RegisterSystem(std::unique_ptr<ISystem> system)
     {
-        if (reversed)
-        {
-            for (int i = m_Systems.size() - 1; i >= 0; i--)
-            {
-                callback(*m_Systems[i]);
-            }
-        }
-        else
-        {
-            for (auto &system : m_Systems)
-            {
-                callback(*system);
-            }
-        }
+        m_Systems.push_back(std::move(system));
     }
 
     void SystemManager::Init()
     {
-        ForEach([](ISystem& system)
-        { 
-            system.Init(); 
-        });
+        for (auto& system: m_Systems)
+        {
+            system->Init(); 
+        }
     }
 
     void SystemManager::Update(float delta)
     {
-        ForEach([=](ISystem& system)
+        for (auto &system : m_Systems)
         {
-            system.Update(delta);
-        });
+            system->Update(delta);
+        }
     }
 
     void SystemManager::FixedUpdate(float delta)
     {
-        ForEach([=](ISystem& system)
-        { 
-            system.FixedUpdate(delta); 
-        });
+        for (auto &system : m_Systems)
+        {
+            system->FixedUpdate(delta);
+        }
     }
 
     void SystemManager::OnInputEvent(const InputEvent &event)
     {
-        ForEach([=](ISystem& system)
+        for (auto &system : m_Systems)
         {
-            system.OnInputEvent(event); 
-        });
+            system->OnInputEvent(event);
+        }
     }
 
     void SystemManager::Terminate()
     {
-        ForEach([](ISystem& system)
+        // terminate in the inverse orderer of init
+        for (int i = m_Systems.size() - 1; i >= 0; i--)
         {
-            system.Terminate();
-        }, true);
+            m_Systems[i]->Terminate();
+        }
     }
 
 } // namespace ASEngine

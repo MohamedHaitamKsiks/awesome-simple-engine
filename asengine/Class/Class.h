@@ -10,7 +10,7 @@ public: \
     { \
         return Class<Type>::GetName(); \
     } \
-    UniqueString GetClassName() const \
+    UniqueString GetClassName() const override \
     { \
         return GetName(); \
     }

@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <unordered_map>
 
-#include "Core/Singleton/Singleton.h"
 #include "Core/Error/Assertion.h"
 #include "Core/String/UniqueString.h"
 #include "Core/Memory/PoolAllocator.h"
@@ -14,42 +13,16 @@
 #include "ResourceID.h"
 #include "AbstractResource.h"
 #include "ResourceRef.h"
+#include "IResourceClass.h"
 
 #include "Class/Class.h"
 
 namespace ASEngine
 {
-    class IResourceClass: public ISystem
-    {
-    public:
-        // create named resource
-        virtual ResourceRef<AbstractResource> New(UniqueString resourceName = UniqueString("")) = 0;
-        
-        // get resource 
-        virtual ResourceRef<AbstractResource> GetResource(UniqueString referenceName) = 0;
-
-        // get class name
-        virtual UniqueString GetClassName() = 0;
-
-        // get resource count
-        virtual size_t GetResourcesCount() const = 0;
-
-    protected:
-        void Init() override;
-        virtual void Terminate() = 0;
-        
-        virtual void Destroy(AbstractResource& resource) = 0;
-    
-        template<typename U>
-        friend class Resource;
-    };
-
-    
+    // singleton
     template <typename T>
     class ResourceClass: public IResourceClass
     {
-    ASENGINE_DEFINE_SINGLETON(ResourceClass);
-    
     public:
         // get class name
         UniqueString GetClassName() override
@@ -97,9 +70,6 @@ namespace ASEngine
         }
 
     private:
-        template<typename U>
-        friend class Resource;
-
         PoolAllocator<T> m_Resources{UINT16_MAX};
         std::unordered_map<UniqueString, ResourceID> m_ResourceReferenceNames{};
 

@@ -8,7 +8,6 @@
 #include <cstdint>
 
 #include "ResourceClass.h"
-#include "Resource.h"
 
 #include "ECS/System.h"
 #include "ECS/SystemManager.h"
@@ -20,6 +19,9 @@
 
 namespace ASEngine
 {
+    template<typename T>
+    class Resource;
+
     // resource manager: 
     // Responsible for resource collections
     class ResourceManager
@@ -27,24 +29,30 @@ namespace ASEngine
     ASENGINE_DEFINE_SINGLETON(ResourceManager);
 
     public:
-        // register new resource type
-        template<typename T>
-        void RegisterResourceClass(UniqueString resourceName)
+        // register abstract resource type with it's implementation
+        template <typename Base, typename Derived>
+        void RegisterAbstractResourceClass(UniqueString resourceName)
         {
-            static_assert(std::is_base_of_v<Resource<T>, T>);
+            static_assert(std::is_base_of_v<Resource<Base>, Base>);
+            static_assert(std::is_base_of_v<Base, Derived>);
+        
+            // register base class 
+            ClassManager::GetInstance().RegisterClass<Base>(resourceName);
 
-            ASENGINE_ASSERT(m_ResourceClasses.find(resourceName) == m_ResourceClasses.end(), "Resource Name Already Registered");
-
-            // register class
-            ClassManager::GetInstance().RegisterClass<T>(resourceName);
-
-            // add resource class system
-            SystemManager::GetInstance().RegisterSystem<ResourceClass<T>>();
-
-            // add resource class name
-            IResourceClass& resourceClass = ResourceClass<T>::GetInstance();
-            m_ResourceClasses[resourceName] = &resourceClass;
+            // add resource class of the derived 
+            std::unique_ptr<IResourceClass> resourceClass = std::make_unique<ResourceClass<Derived>>();
+            RegisterResourceClass(resourceName, std::move(resourceClass));
         }
+
+        // register new resource type
+        template <typename T>
+        inline void RegisterResourceClass(UniqueString resourceName)
+        {
+            RegisterAbstractResourceClass<T, T>(resourceName);
+        }
+
+        // register resource class
+        void RegisterResourceClass(UniqueString resourceName, std::unique_ptr<IResourceClass> resourceClass);
 
         // get resource class by name
         inline IResourceClass& GetResouceClass(UniqueString resourceName)
@@ -53,11 +61,9 @@ namespace ASEngine
             return *m_ResourceClasses[resourceName];
         }
 
-
     private:
         std::unordered_map<UniqueString, IResourceClass* > m_ResourceClasses{};
     };
-
 
 } // namespace ASEngine
 

@@ -5,6 +5,7 @@
 
 #include "Macros/Foreach.h"
 
+#include "Class/Object.h"
 #include "Class/Class.h"
 
 #include "Core/Serialization/Serializer.h"
@@ -15,11 +16,11 @@
 
 namespace ASEngine
 {
-    // interface for component 
-    class IComponent
+    // abstract  component 
+    class AbstractComponent: public Object
     {
     public:
-        virtual ~IComponent() {};
+        virtual ~AbstractComponent() {};
 
         // only to initialize some internal values. Avoid using it like unity's monobehaviour
         // entityID is passed as a parameter
@@ -29,7 +30,7 @@ namespace ASEngine
         virtual void OnDestroy() = 0;
     
         // copy component
-        virtual void Copy(const IComponent& component) = 0;
+        virtual void Copy(const AbstractComponent& component) = 0;
 
         // deserialize component
         virtual void Deserialize(const Json& object) = 0;
@@ -40,7 +41,7 @@ namespace ASEngine
 
     // component
     template <typename T>
-    class Component : public IComponent 
+    class Component : public AbstractComponent 
     {
     ASENGINE_DEFINE_CLASS(T);
 
@@ -48,7 +49,7 @@ namespace ASEngine
         ~Component() {};
 
         // usefull for copying components from EntityBuilder to Archetype
-        void Copy(const IComponent& component) override
+        void Copy(const AbstractComponent& component) override
         {
             const T* castedSrc = dynamic_cast<const T*>(&component);
             T* castedDest = dynamic_cast<T*>(this);

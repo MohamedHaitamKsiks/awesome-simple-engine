@@ -1,6 +1,6 @@
 #include "ClassManagerTest.h"
 
-class TestClass
+class TestClass: public Object
 {
 ASENGINE_DEFINE_CLASS(TestClass);
 public:

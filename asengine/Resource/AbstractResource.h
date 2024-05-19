@@ -1,6 +1,8 @@
 #ifndef ASENGINE_ABSTARCT_RESOURCE_H
 #define ASENGINE_ABSTARCT_RESOURCE_H
 
+#include "Class/Object.h"
+
 #include "Core/String/UniqueString.h"
 #include "Core/Serialization/Json.h"
 #include "ResourceID.h"
@@ -9,7 +11,7 @@ namespace ASEngine
 {
 
     // Abstract Resource 
-    class AbstractResource
+    class AbstractResource: public Object
     {
     public:
         // load resource from file (return false if path was not found)
@@ -55,7 +57,7 @@ namespace ASEngine
         virtual Json Serialize() const = 0;
 
     protected:
-        virtual void Destroy() = 0;
+        void Destroy();
 
     private:
         ResourceID m_ResourceID = RESOURCE_ID_NULL;

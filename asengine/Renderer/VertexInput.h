@@ -9,6 +9,7 @@ namespace ASEngine
     // vertex attribute types
     enum class VertexAttributeType
     {
+        NONE = 0,
         INT,
         FLOAT,
         VEC2,
@@ -19,6 +20,7 @@ namespace ASEngine
     // input rate (vetex | instance)
     enum class VertexInputRate
     {
+        NONE = 0,
         VERTEX,
         INSTANCE
     };
@@ -26,16 +28,16 @@ namespace ASEngine
     // descriptor for one vertex attribute to for a speficific shader
     struct VertexAttribute
     {
-        uint32_t Location;
-        VertexAttributeType Type;
-        size_t Offset;
+        uint32_t Location = 0;
+        VertexAttributeType Type = VertexAttributeType::NONE;
+        size_t Offset = 0;
     };
 
     // vertex input layout
     struct VertexInputLayout
     {
-        size_t Stride;
-        VertexInputRate InputRate;
+        size_t Stride = 0;
+        VertexInputRate InputRate = VertexInputRate::NONE;
         std::vector<VertexAttribute> VertexAttributes{};
     };
 

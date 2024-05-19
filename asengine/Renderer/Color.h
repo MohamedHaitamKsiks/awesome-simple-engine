@@ -5,13 +5,24 @@ namespace ASEngine {
 
     struct Color 
     {
-        //rgba
+        //red
         float r = 0.0f;
+        
+        // green
         float g = 0.0f;
+        
+        // blue
         float b = 0.0f;
+        
+        // alpha
         float a = 0.0f;
 
-        inline bool operator==(Color c){
+        constexpr Color() = default;
+        constexpr Color(float _r, float _g, float _b, float _a = 1.0f): r(_r), g(_g), b(_b), a(_a)
+        {
+        }
+
+        inline bool operator==(const Color& c){
             return r == c.r && g == c.g && b == c.b && a == c.a;
         }
 
@@ -24,7 +35,7 @@ namespace ASEngine {
             };
         }
 
-        inline Color operator+(Color c) {
+        inline Color operator+(const Color& c) {
             return Color{
                 r + c.r,
                 g + c.g,
@@ -36,40 +47,40 @@ namespace ASEngine {
         //colors
 
         // white
-        static constexpr Color WHITE()
+        static inline constexpr Color WHITE()
         {
             return Color{1.0f, 1.0f, 1.0f, 1.0f};
-        };
+        }
 
         // red
-        static constexpr Color RED()
+        static inline constexpr Color RED()
         {
             return Color{1.0f, 0.0f, 0.0f, 1.0f};
-        };
+        }
 
         // blue
-        static constexpr Color BLUE()
+        static inline constexpr Color BLUE()
         {
             return Color{0.0f, 0.0f, 1.0f, 1.0f};
-        };
+        }
 
         // green
-        static constexpr Color GREEN()
+        static inline constexpr Color GREEN()
         {
             return Color{0.0f, 1.0f, 0.0f, 1.0f};
-        };
+        }
 
         // black
-        static constexpr Color BLACK()
+        static inline constexpr Color BLACK()
         {
             return Color{0.0f, 0.0f, 0.0f, 1.0f};
-        };
+        }
 
         // transparent
-        static constexpr Color TRANSPARENT()
+        static inline constexpr Color TRANSPARENT()
         {
             return Color{0.0f, 0.0f, 0.0f, 0.0f};
-        };
+        }
     };
 
 

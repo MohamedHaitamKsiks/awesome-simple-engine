@@ -62,7 +62,6 @@ Example:
 
 Most resources in the engine are referenced by a unique Id that can either be assigned by the user or generated.
 
-
 The default resources are:
 
 
@@ -71,19 +70,19 @@ The default resources are:
 Loading images from png files that can be used to generate textures to draw.
 
 ````cpp
-    Image img;
-    img.load(imagePath);
-    
-    //we can use it to create textures in the gpu
-    Texture texture = Texture::LoadFromImage(img);
+  Image img;
+  img.load(imagePath);
+  
+  // we can use it to create textures in the gpu
+  Texture texture = Texture::LoadFromImage(img);
 ````
 
 #### 2. Shaders
 
 ````cpp
-    Shader shader;
-    shader.Load("shaders/default.glsl");
-````
+  Shader shader;
+  shader.Load("shaders/default.glsl");
+```` 
 
 #### 3. Materials
 
@@ -93,7 +92,7 @@ Create material depending of shader.
   Material mat;
   mat.Create(shaderId);
   mat.SetShaderParam(UniqueString("u_Texture"), texture);
-````
+```` 
 
 ### Entity Component System
 
@@ -112,7 +111,7 @@ Create a struct that inherits from Component.
 Example:
 
 ````cpp
-struct SpriteComponent: Component<SpriteComponent> 
+struct SpriteComponent: public Component<SpriteComponent> 
 {
   ResourceID SpriteID;
   float Frame = 0.0f;
@@ -134,13 +133,13 @@ public:
     // update
     void Update(float delta)
     {
-        // query components
-        TEntityQuery<SpriteComponent, TransformComponent>query{};
-        
-        query.ForEach([&delta](SpriteComponent& sprite, TransformComponent& transform)
-        {
-            //behaviour...
-        });
+      // query components
+      TEntityQuery<SpriteComponent, TransformComponent>query{};
+      
+      query.ForEach([&delta](SpriteComponent& sprite, TransformComponent& transform)
+      {
+        //behaviour...
+      });
     }
 };
 ````

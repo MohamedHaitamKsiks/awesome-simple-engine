@@ -17,14 +17,14 @@ namespace ASEngine
     void EntityBuilder::AddComponent(UniqueString componentName)
     {
         IComponentClass& componentClass = ComponentManager::GetInstance().GetComponentClass(componentName);
-        std::unique_ptr<IComponent> newComponent(componentClass.New());
+        std::unique_ptr<AbstractComponent> newComponent(componentClass.New());
 
         // add component
         m_Components[componentName] = std::move(newComponent);
         m_Signature.emplace(componentName);
     }
 
-    void EntityBuilder::AddComponent(UniqueString componentName, const IComponent &component)
+    void EntityBuilder::AddComponent(UniqueString componentName, const AbstractComponent &component)
     {
         AddComponent(componentName);
         m_Components[componentName]->Copy(component);

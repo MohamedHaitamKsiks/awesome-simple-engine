@@ -75,10 +75,11 @@ add_library(
     asengine/ECS/EntityBuilder.cpp
     asengine/ECS/ComponentClass.cpp
     #rendering
-    asengine/Renderer/Image.cpp
+    asengine/Renderer/Texture/Image.cpp
     #resource
-    asengine/Resource/ResourceClass.cpp
+    asengine/Resource/IResourceClass.cpp
     asengine/Resource/AbstractResource.cpp
+    asengine/Resource/ResourceManager.cpp
     #asengine/Resource/Material.cpp
     #asengine/Resource/Shader.cpp
     #asengine/Resource/Scene.cpp

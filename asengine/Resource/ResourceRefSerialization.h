@@ -5,7 +5,7 @@
 
 #include "ResourceRef.h"
 #include "AbstractResource.h"
-#include "ResourceClass.h"
+#include "IResourceClass.h"
 
 #include "Core/Serialization/Json.h"
 #include "Core/Serialization/Serializer.h"
@@ -27,7 +27,8 @@ namespace ASEngine \
         std::string resourcePath; \
         Serializer<std::string>::Deserialize(object, resourcePath); \
         \
-        ResourceRef<AbstractResource> resource = ResourceClass<Type>::GetInstance().New(UniqueString(resourcePath)); \
+        ResourceRef<AbstractResource> resource = Type::GetResourceClass().New(UniqueString(resourcePath)); \
+        resource->Load(resourcePath); \
         dest = ResourceRef<Type>(resource); \
     } \
     \

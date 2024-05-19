@@ -26,8 +26,11 @@ namespace ASEngine
 
             // create new system
             std::unique_ptr<ISystem> system = std::make_unique<SystemType>();
-            m_Systems.push_back(std::move(system));
+            RegisterSystem(std::move(system));
         }
+
+        // register system
+        void RegisterSystem(std::unique_ptr<ISystem> system);
 
         // create all system
         void Init();
@@ -46,11 +49,7 @@ namespace ASEngine
 
     private:
         std::vector<std::unique_ptr<ISystem>> m_Systems = {};
-
-        // execute function for each system
-        void ForEach(std::function<void(ISystem&)> callback, bool reversed = false);
     };
-
 } // namespace ASEngine
 
 

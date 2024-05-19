@@ -11,6 +11,11 @@ namespace ASEngine
     class ResourceRef
     {
     public:
+        ResourceRef()
+        {
+            m_Instance = nullptr;
+        }
+
         template<typename U>
         ResourceRef(const ResourceRef<U>& other)
         {
@@ -18,24 +23,35 @@ namespace ASEngine
             static_assert(std::is_base_of_v<AbstractResource, T>);
 
             m_Instance = dynamic_cast<T*>(other.m_Instance);
-
-            static_cast<AbstractResource*>(m_Instance)->IncrementReferenceCounter();
+            if (m_Instance)
+            {
+                static_cast<AbstractResource*>(m_Instance)->IncrementReferenceCounter();
+            }
         }
 
         ResourceRef(const ResourceRef& other)
         {
             m_Instance = other.m_Instance;
-            static_cast<AbstractResource *>(m_Instance)->IncrementReferenceCounter();
+            if (m_Instance)
+            {
+                static_cast<AbstractResource *>(m_Instance)->IncrementReferenceCounter();
+            }
         }
 
         inline ResourceRef& operator=(const ResourceRef& other)
         {
             // decrement current instance
-            static_cast<AbstractResource *>(m_Instance)->DecrementReferenceCounter();
+            if (m_Instance)
+            {
+                static_cast<AbstractResource *>(m_Instance)->DecrementReferenceCounter();
+            }
 
             // copy new instance
             m_Instance = other.m_Instance;
-            static_cast<AbstractResource *>(m_Instance)->IncrementReferenceCounter();
+            if (other.m_Instance)
+            {
+                static_cast<AbstractResource *>(m_Instance)->IncrementReferenceCounter();
+            }
             
             return *this;
         }
@@ -56,7 +72,9 @@ namespace ASEngine
         ~ResourceRef()
         {
             if (m_Instance)
+            {
                 static_cast<AbstractResource*>(m_Instance)->DecrementReferenceCounter();
+            }
         }
 
         T* operator->()
@@ -77,6 +95,7 @@ namespace ASEngine
             static_assert(std::is_base_of_v<AbstractResource, T>);
         }
 
+
         template<typename U>
         friend class ResourceClass;
 
@@ -84,7 +103,7 @@ namespace ASEngine
         friend class ResourceRef;
     };
 
-
+    
 } // namespace ASEngine
 
 

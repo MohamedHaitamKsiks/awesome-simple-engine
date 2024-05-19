@@ -14,9 +14,9 @@ namespace ASEngine
     class IComponentCollection: public ICollection
     {
     public:
-        virtual IComponent& ComponentAt(ComponentIndex index) = 0;
+        virtual AbstractComponent& ComponentAt(ComponentIndex index) = 0;
         
-        virtual const IComponent& ComponentAt(ComponentIndex index) const = 0 ;
+        virtual const AbstractComponent& ComponentAt(ComponentIndex index) const = 0 ;
     };
 
 
@@ -54,12 +54,12 @@ namespace ASEngine
             return m_Components.size();
         }
 
-        IComponent &ComponentAt(ComponentIndex index)
+        AbstractComponent &ComponentAt(ComponentIndex index)
         {
             return m_Components[index];
         }
         
-        const IComponent &ComponentAt(ComponentIndex index) const
+        const AbstractComponent &ComponentAt(ComponentIndex index) const
         {
             return m_Components[index];
         }

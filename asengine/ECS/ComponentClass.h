@@ -13,7 +13,7 @@ namespace ASEngine
     class IComponentClass
     {
     public:
-        virtual IComponent* New() = 0; 
+        virtual AbstractComponent* New() = 0; 
 
         virtual IComponentCollection* CreateComponentCollection() = 0;
     };
@@ -22,9 +22,8 @@ namespace ASEngine
     template <typename T>
     class ComponentClass: public IComponentClass
     {
-    ASENGINE_DEFINE_CLASS(T);
     public:
-        IComponent* New() override 
+        AbstractComponent* New() override 
         {
             return new T();
         }
