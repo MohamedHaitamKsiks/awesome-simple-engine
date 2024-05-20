@@ -90,7 +90,7 @@ namespace ASEngine
 
     void ASEngine::LoadProjectSettings()
     {
-        //load json file
+        /*//load json file
         File projectSettingsFile;
         projectSettingsFile.Open("project.settings.json", FileOpenMode::READ);
         std::string projectSettingsString = projectSettingsFile.ReadText();
@@ -119,7 +119,7 @@ namespace ASEngine
 
         // set fixed time 
         Time::FixedTimeStep = projectSettings["fixedTimeStep"].get<float>();
-        Time::TimeScale = 1.0f;
+        Time::TimeScale = 1.0f;*/
     }
 
 

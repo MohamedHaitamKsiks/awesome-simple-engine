@@ -1,5 +1,6 @@
 #include "ResourceClass.h"
 #include "Core/FileSystem/File.h"
+#include "IResourceClass.h"
 
 namespace ASEngine
 {
@@ -35,5 +36,6 @@ namespace ASEngine
             resource->SetPersistent(true); // because all resources imported from import.json are persistent
         }
     }
-    
+
+
 } // namespace ASEngine

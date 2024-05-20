@@ -24,11 +24,10 @@ namespace ASEngine \
     template<> \
     void Serializer<ResourceRef<Type>>::Deserialize(const Json &object, ResourceRef<Type> &dest) \
     { \
-        std::string resourcePath; \
-        Serializer<std::string>::Deserialize(object, resourcePath); \
+        UniqueString resourcePath; \
+        Serializer<UniqueString>::Deserialize(object, resourcePath); \
         \
-        ResourceRef<AbstractResource> resource = Type::GetResourceClass().New(UniqueString(resourcePath)); \
-        resource->Load(resourcePath); \
+        ResourceRef<AbstractResource> resource = Type::GetResourceClass().GetResource(resourcePath); \
         dest = ResourceRef<Type>(resource); \
     } \
     \

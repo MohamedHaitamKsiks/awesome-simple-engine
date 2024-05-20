@@ -21,6 +21,8 @@ layout(binding = 0) uniform Render
     mat4 Projection;
 } render;
 
+layout(binding = 1) uniform sampler2D Texture;
+
 // main function is generated
 void main() {
     mat4 transform = i_Transform;

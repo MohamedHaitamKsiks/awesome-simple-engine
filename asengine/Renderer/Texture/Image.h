@@ -10,24 +10,18 @@
 
 namespace ASEngine 
 {
-
-    enum class ImageFormat 
-    {
-        RGBA,
-        GRAYSCALE,
-        GRAYSCALE_ALPHA
-    };
-
     class Image
     {
     public:
         //constructor
         Image() = default;
-        Image(int width, int height);
 
-        //create image from .png path
-        Image(const std::string& path);
-    
+        // create from with and height
+        void Create(uint32_t width, uint32_t height);
+        
+        // load png
+        void LoadPNG(const std::string& path);
+
         // get image pixel
         Color GetPixelAt(int x, int y) const;
 

@@ -12,6 +12,25 @@
 
 #include "Class/Class.h"
 
+// serialize resource type
+#define ASENGINE_SERIALIZE_RESOURCE(T) \
+public: \
+    void Deserialize(const Json &object) override; \
+    Json Serialize() const override
+
+// implemente resource 
+#define ASENGINE_SERIALIZE_RESOURCE_IMP(T) \
+void T::Deserialize(const Json &object) \
+{ \
+    Serializer<T>::Deserialize(object, *(static_cast<T *>(this))); \
+} \
+\
+Json T::Serialize() const \
+{ \
+    return Serializer<T>::Serialize(*(static_cast<const T *>(this))); \
+} 
+
+
 namespace ASEngine
 {
     // base class for resource
@@ -28,16 +47,6 @@ namespace ASEngine
         static inline IResourceClass& GetResourceClass()
         {
             return ResourceManager::GetInstance().GetResouceClass(GetName());
-        }
-        
-        void Deserialize(const Json &object) override
-        {
-            Serializer<T>::Deserialize(object, *(static_cast<T*>(this)));
-        }
-        
-        Json Serialize() const override
-        {
-            return Serializer<T>::Serialize(*(static_cast<const T*>(this)));
         }
     };
 

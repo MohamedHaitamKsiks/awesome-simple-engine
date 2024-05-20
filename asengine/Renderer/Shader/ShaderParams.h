@@ -5,7 +5,6 @@
 #include <cstdint>
 
 #include "Core/String/UniqueString.h"
-#include "Renderer/Buffer/Buffer.h"
 #include "Resource/ResourceRef.h"
 
 namespace ASEngine
@@ -36,13 +35,26 @@ namespace ASEngine
     {
         uint32_t Binding = 0;
         size_t Size = 0;
-        ResourceRef<Buffer> UniformBufferID{};
-
         // shader layout
         std::unordered_map<UniqueString, ShaderUniformBufferIdentifier> Identifiers{};
     };
 
-    // 
+    // shader sampler infos
+    struct ShaderSamplerInfo
+    {
+        UniqueString Name;
+        uint32_t Binding;
+    };
+
+    // shader params 
+    struct ShaderParams
+    {
+        std::unordered_map<UniqueString, ShaderUniformBufferInfo> UniformBuffers = {};
+        std::unordered_map<UniqueString, ShaderSamplerInfo> Samplers = {};
+
+        // combine two shader params and return the result
+        static ShaderParams Combine(const ShaderParams& a, const ShaderParams& b);
+    };
 
 } // namespace ASEngine
 

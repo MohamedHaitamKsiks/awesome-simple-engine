@@ -2,7 +2,9 @@
 
 class TestResourceType: public Resource<TestResourceType>
 {
+ASENGINE_SERIALIZE_RESOURCE(TestResourceType);
 public:
+
     TestResourceType()
     {
         // Debug::Log("Hello Test Resource!");
@@ -14,6 +16,7 @@ public:
     }
 
     virtual int GetValue() const = 0;
+
 private:
     virtual void SetValue(int value) = 0;
     
@@ -21,6 +24,22 @@ private:
 };
 
 ASENGINE_SERIALIZE_RESOURCE_REF(TestResourceType);
+
+template <>
+void Serializer<TestResourceType>::Deserialize(const Json &object, TestResourceType &dest)
+{
+    dest.SetValue(object.at("Value").get<int>());
+}
+
+template <>
+Json Serializer<TestResourceType>::Serialize(const TestResourceType &value)
+{
+    Json object = Json({});
+    object["Value"] = value.GetValue();
+    return object;
+}
+
+ASENGINE_SERIALIZE_RESOURCE_IMP(TestResourceType);
 
 // implementation of the resource type
 // to test the possiblity of api agnostic resource
@@ -44,20 +63,6 @@ private:
     
     int m_Value = 0;
 };
-
-template <>
-void Serializer<TestResourceType>::Deserialize(const Json& object, TestResourceType& dest)
-{
-    dest.SetValue(object.at("Value").get<int>());
-}
-
-template <>
-Json Serializer<TestResourceType>::Serialize(const TestResourceType& value)
-{
-    Json object = Json({});
-    object["Value"] = value.GetValue();
-    return object;
-}
 
 
 void ResourceTest::Describe()
@@ -108,6 +113,12 @@ void ResourceTest::Describe()
 
         tests.clear();
         ASENGINE_EXPECT(testClass.GetResourcesCount() == 0);
+    });
+
+    Test("it can get resource", []()
+    {
+        ResourceRef<TestResourceType> test = TestResourceType::GetResourceClass().GetResource(UniqueString("test_resource/test.resource.json"));
+        test->SetPersistent(true);
     });
 
     Test("it is serializable", []()

@@ -1,39 +1,30 @@
 #ifndef ASENGINE_SHADER_H
 #define ASENGINE_SHADER_H
 
+#include "ShaderSource.h"
+
+#include "Resource/ResourceRef.h"
 #include "Resource/Resource.h"
 
 namespace ASEngine
 {
-    // define spirvbinary as vector of uint32_t
-    using SpirvBinary = std::vector<uint32_t>;
-
-    // shader stage
-    enum class ShaderStage
-    {
-        NONE = 0,
-        VERTEX,
-        FRAGMENT
-    };
-
-    
-
-    // abstract shader class
-    // 
+    // abstarct class represention of a shader
+    // shader is created with a vertex shader code and a fragment shader code
     class Shader: public Resource<Shader>
     {
+    ASENGINE_SERIALIZE_RESOURCE(Shader);
+
     public:
         virtual ~Shader() {};
 
-        // create shader from spirv binary
-        void Create(const SpirvBinary& spirv, ShaderStage stage);
-        
-        // 
+        void Create();
+
     private:
-        ShaderStage m_Stage = ShaderStage::NONE;
-        // std::unordered_map<UniqueString, ShaderUniformBufferInfo> m_UniformBuffers = {};
-        // std::unordered_map<UniqueString, ShaderSamplerInfo> m_Samplers = {};
+        ResourceRef<ShaderSource> m_VertexSource;
+        ResourceRef<ShaderSource> m_FragmentSource;
+
     };
-} // namespace ASEngine
+} // namespace ASEngien
+
 
 #endif // ASENGINE_SHADER_H

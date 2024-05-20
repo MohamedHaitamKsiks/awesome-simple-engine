@@ -1,6 +1,7 @@
 # Sets the minimum version of CMake required to build the native library.
 cmake_minimum_required(VERSION 3.22.1)
 set(CMAKE_CXX_STANDARD 23)
+add_compile_options(-Wall)
 
 project(asengine)
 include_directories(asengine)
@@ -74,17 +75,18 @@ add_library(
     asengine/ECS/ArchetypeManager.cpp
     asengine/ECS/EntityBuilder.cpp
     asengine/ECS/ComponentClass.cpp
-    #rendering
-    asengine/Renderer/Texture/Image.cpp
     #resource
     asengine/Resource/IResourceClass.cpp
     asengine/Resource/AbstractResource.cpp
     asengine/Resource/ResourceManager.cpp
-    #asengine/Resource/Material.cpp
-    #asengine/Resource/Shader.cpp
-    #asengine/Resource/Scene.cpp
-    #asengine/Resource/Audio.cpp
-    #asengine/Renderer/Viewport.cpp
+    #rendering
+    # shaders
+    asengine/Renderer/Shader/ShaderSource.cpp
+    asengine/Renderer/Shader/ShaderParams.cpp
+    # gpu-buffers
+    asengine/Renderer/Buffer/Buffer.cpp
+    # textures
+    asengine/Renderer/Texture/Image.cpp
     #audio
     #asengine/Audio/AudioEngine.cpp
     #testing

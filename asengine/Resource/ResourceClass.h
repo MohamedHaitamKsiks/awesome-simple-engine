@@ -19,7 +19,7 @@
 
 namespace ASEngine
 {
-    // singleton
+    // implementation for each resource type
     template <typename T>
     class ResourceClass: public IResourceClass
     {
@@ -29,11 +29,20 @@ namespace ASEngine
         {
             return Class<T>::GetName();
         }
-
+        
+        // get resource if exists (referenceName)
+        // if the refernece name was not founded it's going to try to load the resource and using the reference name as the path of the resource
         ResourceRef<AbstractResource> GetResource(UniqueString referenceName) override
         {
-            ASENGINE_ASSERT(m_ResourceReferenceNames.find(referenceName) != m_ResourceReferenceNames.end(), "Reference Name Not Existing");
+            // load if not exists
+            if (m_ResourceReferenceNames.find(referenceName) == m_ResourceReferenceNames.end())
+            {
+                ResourceRef<AbstractResource> resource = New(referenceName);
+                ASENGINE_ASSERT(resource->Load(referenceName.GetString()), "Couldn't load resource");
+                return resource;
+            }
             
+            // get reference if exists
             ResourceID resourceID = m_ResourceReferenceNames[referenceName];
             AbstractResource& resource = m_Resources.Get(resourceID);
             return ResourceRef<AbstractResource>(&resource);

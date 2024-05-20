@@ -38,7 +38,7 @@ namespace ASEngine {
 			Debug::PushToStringStream(ss, firstValue, args...);
 
 			return Colorized(color, ss.str());
-		};
+		}
 
 		// return colorized text (to be printed by Debug::Log only)
 		static std::string Colorized(TextColor color, const std::string& str);
@@ -51,7 +51,7 @@ namespace ASEngine {
 			Debug::PushToStringStream(ss, firstValue, args...);
 
 			Debug::Log(ss.str());
-		};
+		}
 
 		// log message to console
 		static void Log(const std::string &message);
@@ -61,7 +61,7 @@ namespace ASEngine {
 		static void Error(T firstValue,types... args)
 		{
 			Log(Colorized(TextColor::RED_FG, firstValue, args...));
-		};
+		}
 
 	private:
 		// push args to string stream
@@ -72,7 +72,7 @@ namespace ASEngine {
 
 			if constexpr(sizeof...(args) > 0)
 				PushToStringStream(ss, args...);
-		};
+		}
 	};
 
 } // ASEngine

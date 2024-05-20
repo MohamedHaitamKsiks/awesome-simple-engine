@@ -64,7 +64,7 @@ namespace ASEngine
                 newData = m_Allocator.allocate(capacity);
                 // set free flag to false
                 m_IsUsed.resize(capacity);
-                for (int i = m_Capacity; i < capacity; i++)
+                for (int i = static_cast<int>(m_Capacity); i < static_cast<int>(capacity); i++)
                 {
                     m_IsUsed[i] = false;
                 }

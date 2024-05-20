@@ -32,4 +32,5 @@ namespace ASEngine
         return textureManager->GetTextureInfo(m_TextureID);
     }
 
+
 } // namespace ASEngine

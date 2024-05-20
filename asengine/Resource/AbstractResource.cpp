@@ -2,6 +2,7 @@
 #include "ResourceClass.h"
 #include "ResourceManager.h"
 
+#include "Core/Error/Assertion.h"
 #include "Core/FileSystem/File.h"
 #include "Core/Debug/Debug.h"
 #include "Core/Serialization/Serializer.h"
@@ -11,6 +12,8 @@ namespace ASEngine
     // load resource
     bool AbstractResource::Load(const std::string &path)
     {
+        ASENGINE_ASSERT(!m_IsLoaded, "Resource can't be loaded more than once");
+
         File resourceFile;
         if (!resourceFile.Open(path, FileOpenMode::READ))
         {
@@ -24,6 +27,7 @@ namespace ASEngine
 
         resourceFile.Close();
         
+        m_IsLoaded = true;
         Debug::Log(Debug::Colorized(Debug::TextColor::GREEN_BG, path, ": Loaded"));
 
         return true;
@@ -32,7 +36,18 @@ namespace ASEngine
     void AbstractResource::Save(const std::string &path)
     {
     }
-    
+
+    void AbstractResource::Deserialize(const Json &object)
+    {
+        ASENGINE_ASSERT(false, GetClassName().GetString() + " Is NOT serializable");
+    }
+
+    Json AbstractResource::Serialize() const
+    {
+        ASENGINE_ASSERT(false, GetClassName().GetString() + " Is NOT serializable");
+        return Json();
+    }
+
     void AbstractResource::Destroy()
     {
         UniqueString resourceName = GetClassName();

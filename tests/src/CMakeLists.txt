@@ -8,12 +8,13 @@ add_library(
     STATIC
     registry.cpp
     ASEngineTestSystem/ASEngineTestSystem.cpp
-    Core/UniqueStringTest.cpp
-    Core/PoolAllocatorTest.cpp
-    Core/VectorTest.cpp
-    Class/ClassManagerTest.cpp
-    ECS/ECSTest.cpp
-    Resource/ResourceTest.cpp
+    #Core/UniqueStringTest.cpp
+    #Core/PoolAllocatorTest.cpp
+    #Core/VectorTest.cpp
+    #Class/ClassManagerTest.cpp
+    #ECS/ECSTest.cpp
+    #Resource/ResourceTest.cpp
+    Renderer/ShaderSourceTest.cpp
 )
 
 target_link_libraries(

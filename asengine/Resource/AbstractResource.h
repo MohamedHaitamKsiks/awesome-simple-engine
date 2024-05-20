@@ -14,8 +14,12 @@ namespace ASEngine
     class AbstractResource: public Object
     {
     public:
+        virtual ~AbstractResource() {};
+
         // load resource from file (return false if path was not found)
-        bool Load(const std::string& path);
+        // by default it deserialize the json object on load 
+        // override if your resource is not serializable 
+        virtual bool Load(const std::string& path);
         
         // save resource to file 
         void Save(const std::string& path);
@@ -51,10 +55,10 @@ namespace ASEngine
         }
 
         // deserialize resource
-        virtual void Deserialize(const Json& object) = 0;
+        virtual void Deserialize(const Json& object);
         
         // serialized resource
-        virtual Json Serialize() const = 0;
+        virtual Json Serialize() const;
 
     protected:
         void Destroy();
@@ -64,6 +68,7 @@ namespace ASEngine
         uint32_t m_ReferenceCounter = 0;
         UniqueString m_ReferenceName{""};
         bool m_IsPersistent = false;
+        bool m_IsLoaded = false;
 
         inline void IncrementReferenceCounter()
         {

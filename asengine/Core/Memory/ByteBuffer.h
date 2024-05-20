@@ -1,9 +1,8 @@
 #ifndef ASENGINE_BYTE_BUFFER_H
 #define ASENGINE_BYTE_BUFFER_H
 
-#include <cstring>
-#include <cstdlib>
 #include <cstdint>
+#include <cstddef>
 
 namespace ASEngine
 {
@@ -23,6 +22,12 @@ namespace ASEngine
         ByteBuffer(const ByteBuffer& buffer);
 
         ByteBuffer& operator=(const ByteBuffer& buffer);
+
+        // move byte buffer
+        ByteBuffer(ByteBuffer&& buffer);
+
+        ByteBuffer& operator=(ByteBuffer&& buffer);
+
         // cleanup
         ~ByteBuffer();
 
@@ -53,6 +58,9 @@ namespace ASEngine
         size_t m_Size = 0;
         // copy byte buffer and erase current one
         void Copy(const ByteBuffer& buffer);
+    
+        // move byte buffer
+        void Move(ByteBuffer& buffer);
     };
 } // namespace ASEngine
 

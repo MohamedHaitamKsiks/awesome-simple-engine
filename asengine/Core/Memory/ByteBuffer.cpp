@@ -1,5 +1,9 @@
 #include "ByteBuffer.h"
 
+#include <cstring>
+#include <cstdlib>
+
+
 namespace ASEngine
 {
     ByteBuffer::ByteBuffer(size_t size)
@@ -20,6 +24,17 @@ namespace ASEngine
     ByteBuffer &ByteBuffer::operator=(const ByteBuffer &buffer)
     {
         Copy(buffer);
+        return *this;
+    }
+
+    ByteBuffer::ByteBuffer(ByteBuffer &&buffer)
+    {
+        Move(buffer);
+    }
+
+    ByteBuffer &ByteBuffer::operator=(ByteBuffer &&buffer)
+    {
+        Move(buffer);
         return *this;
     }
 
@@ -58,6 +73,15 @@ namespace ASEngine
         }
 
         SetData(buffer.GetData(), buffer.GetSize());
+    }
+
+    void ByteBuffer::Move(ByteBuffer &buffer)
+    {
+        m_Data = buffer.m_Data;
+        m_Size = buffer.m_Size;
+
+        buffer.m_Data = nullptr;
+        buffer.m_Size = 0;
     }
 
 } // namespace ASEngine

@@ -9,29 +9,25 @@
 namespace ASEngine 
 {
 
-    Image::Image(int width, int height)
+    void Image::Create(uint32_t width, uint32_t height)
     {
         m_Pixels = ByteBuffer(width * height * ASENGINE_IMAGE_CHANNELS);
     }
 
-    Image::Image(const std::string &path)
+    void Image::LoadPNG(const std::string &path)
     {
-        //read image file
+        // read image file
         File imageFile;
-        if(!imageFile.Open(path, FileOpenMode::READ)) 
-        {
-            Debug::Error("Cannot open image:", path);
-            return;
-        }
-
+        ASENGINE_ASSERT(imageFile.Open(path, FileOpenMode::READ), "Couldn't load image");
+        
         size_t fileLength = imageFile.GetSize();
         ByteBuffer fileBuffer{};
         imageFile.Read(fileBuffer);
         imageFile.Close();
 
-        //decode
-        stbi_uc* pixels = stbi_load_from_memory(reinterpret_cast<const stbi_uc*>(fileBuffer.GetData()), static_cast<int>(fileLength), &m_Width, &m_Height, &m_Channels, STBI_rgb_alpha);
-        ASENGINE_ASSERT(pixels, "");
+        // decode
+        stbi_uc *pixels = stbi_load_from_memory(reinterpret_cast<const stbi_uc *>(fileBuffer.GetData()), static_cast<int>(fileLength), &m_Width, &m_Height, &m_Channels, STBI_rgb_alpha);
+        ASENGINE_ASSERT(pixels, "Coudn't load image");
 
         m_Pixels.SetData(pixels, m_Width * m_Height * ASENGINE_IMAGE_CHANNELS);
     }

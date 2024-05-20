@@ -24,11 +24,11 @@ namespace ASEngine
     };
 
     // shader resource
-    class Shader: public Resource
+    class ShaderSource: public Resource
     {
     public:
-        Shader();
-        ~Shader();
+        ShaderSource();
+        ~ShaderSource();
 
         // create
         bool Create(const std::string& vertexPath, const std::string& fragmentPath, ShaderType type);

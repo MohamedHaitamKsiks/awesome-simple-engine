@@ -4,6 +4,7 @@
 #include "Class/ClassManagerTest.h"
 #include "ECS/ECSTest.h"
 #include "Resource/ResourceTest.h"
+#include "Renderer/ShaderSourceTest.h"
 
 #include "ASEngineTestSystem.h"
 
@@ -15,5 +16,6 @@ void ASEngineTestSystem::Registry()
     //RegisterUnitTest<Vector3Test>("Vector3Test");
     //RegisterUnitTest<ClassManagerTest>("ClassManagerTest");
     //RegisterUnitTest<ECSTest>("ECSTest");
-    RegisterUnitTest<ResourceTest>("ResourceTest");
+    //RegisterUnitTest<ResourceTest>("ResourceTest");
+    RegisterUnitTest<ShaderSourceTest>("ShaderSourceTest");
 }

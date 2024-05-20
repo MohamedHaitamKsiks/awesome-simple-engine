@@ -17,9 +17,9 @@ namespace ASEngine
     {
     public:
         // create named resource
-        virtual ResourceRef<AbstractResource> New(UniqueString resourceName = UniqueString("")) = 0;
-        
-        // get resource 
+        virtual ResourceRef<AbstractResource> New(UniqueString referenceName = UniqueString("")) = 0;
+
+        // lazy get resource (load if not exists) 
         virtual ResourceRef<AbstractResource> GetResource(UniqueString referenceName) = 0;
 
         // get class name
