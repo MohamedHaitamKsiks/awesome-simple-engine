@@ -16,6 +16,6 @@ void ASEngineTestSystem::Registry()
     //RegisterUnitTest<Vector3Test>("Vector3Test");
     //RegisterUnitTest<ClassManagerTest>("ClassManagerTest");
     //RegisterUnitTest<ECSTest>("ECSTest");
-    //RegisterUnitTest<ResourceTest>("ResourceTest");
+    RegisterUnitTest<ResourceTest>("ResourceTest");
     RegisterUnitTest<ShaderSourceTest>("ShaderSourceTest");
 }

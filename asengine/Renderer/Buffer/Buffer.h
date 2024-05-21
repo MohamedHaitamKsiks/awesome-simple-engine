@@ -2,6 +2,7 @@
 #define ASENGINE_BUFFER_H
 
 #include "Resource/Resource.h"
+#include "Resource/ResourceDefinition.h"
 
 namespace ASEngine
 {
@@ -15,8 +16,9 @@ namespace ASEngine
     };
 
     // abstract class for rendering buffer
-    class Buffer: public Resource<Buffer>
+    class Buffer: public Resource
     {
+    ASENGINE_DEFINE_RESOURCE(Buffer);
     public:
         virtual ~Buffer() {};
 

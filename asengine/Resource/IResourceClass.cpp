@@ -24,15 +24,7 @@ namespace ASEngine
         for (auto &path : pathList)
         {
             UniqueString resourceName{ std::string(path) };
-            ResourceRef<AbstractResource> resource = New(resourceName);
-            
-            // load resource
-            if (!resource->Load(path))
-            {
-                Debug::Error("Can't find resource: ", path);
-                continue;
-            }
-            
+            ResourceRef<Resource> resource = Load(resourceName);
             resource->SetPersistent(true); // because all resources imported from import.json are persistent
         }
     }

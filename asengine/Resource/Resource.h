@@ -1,56 +1,79 @@
-#ifndef ASENGINE_RESOURCE_H
-#define ASENGINE_RESOURCE_H
+#ifndef ASENGINE_ABSTARCT_RESOURCE_H
+#define ASENGINE_ABSTARCT_RESOURCE_H
 
-#include "ResourceID.h"
-#include "AbstractResource.h"
-#include "IResourceClass.h"
-#include "ResourceManager.h"
+#include "Class/Object.h"
 
-#include "Core/Memory/PoolAllocator.h"
 #include "Core/String/UniqueString.h"
-#include "Core/Serialization/Serializer.h"
-
-#include "Class/Class.h"
-
-// serialize resource type
-#define ASENGINE_SERIALIZE_RESOURCE(T) \
-public: \
-    void Deserialize(const Json &object) override; \
-    Json Serialize() const override
-
-// implemente resource 
-#define ASENGINE_SERIALIZE_RESOURCE_IMP(T) \
-void T::Deserialize(const Json &object) \
-{ \
-    Serializer<T>::Deserialize(object, *(static_cast<T *>(this))); \
-} \
-\
-Json T::Serialize() const \
-{ \
-    return Serializer<T>::Serialize(*(static_cast<const T *>(this))); \
-} 
-
+#include "Core/Serialization/Json.h"
+#include "ResourceID.h"
 
 namespace ASEngine
 {
-    // base class for resource
-    template<typename T>
-    class Resource: public AbstractResource
+    // Abstract Resource 
+    class Resource: public Object
     {
-    ASENGINE_DEFINE_CLASS(T);
-
     public:
-        // make type polymorphic
-        virtual ~Resource() {}
+        virtual ~Resource() {};
 
-        // get resource class of the type
-        static inline IResourceClass& GetResourceClass()
+        // load resource from file (return false if path was not found)
+        // by default it deserialize the json object on load 
+        // override if your resource is not serializable 
+        virtual bool Load(const std::string& path);
+        
+        // save resource to file 
+        void Save(const std::string& path);
+
+        // get reference count
+        inline uint32_t GetReferenceCount() const
         {
-            return ResourceManager::GetInstance().GetResouceClass(GetName());
+            return m_ReferenceCounter;
         }
+
+        // get resource id
+        inline ResourceID GetResourceID() const
+        {
+            return m_ResourceID;
+        }
+
+        // set persistent (means that the resource is not deleted after there are no more reference to it)
+        inline void SetPersistent(bool persistent)
+        {
+            m_IsPersistent = persistent;
+        }
+
+        // is resource persistent
+        inline bool IsPersistent() const
+        {
+            return m_IsPersistent;
+        }
+
+        // deserialize resource
+        virtual void Deserialize(const Json& object);
+        
+        // serialized resource
+        virtual Json Serialize() const;
+
+    private:
+        ResourceID m_ResourceID = RESOURCE_ID_NULL;
+        uint32_t m_ReferenceCounter = 0;
+        bool m_IsPersistent = false;
+        bool m_IsLoaded = false;
+        UniqueString m_Path;
+
+        inline void IncrementReferenceCounter()
+        {
+            m_ReferenceCounter++;
+        }
+        void DecrementReferenceCounter();
+        void Destroy();
+        
+        template<typename T>
+        friend class ResourceRef;
+
+        template <typename T>
+        friend class ResourceClass;
     };
 
 } // namespace ASEngine
 
-
-#endif
+#endif // ASENGINE_ABSTARCT_RESOURCE_H

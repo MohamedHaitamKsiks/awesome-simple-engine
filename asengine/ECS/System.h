@@ -9,14 +9,17 @@ namespace ASEngine
     class ISystem
     {
     public:
-        // on create
+        // init system
         virtual void Init() {};
 
-        // on update
+        // on update (game logic)
         virtual void Update(float delta) {};
 
-        // on fixed update
+        // on fixed update (physics related logic)
         virtual void FixedUpdate(float delta) {};
+
+        // rendering logic
+        virtual void Render() {};
 
         // on input event
         virtual void OnInputEvent(const InputEvent& event) {};

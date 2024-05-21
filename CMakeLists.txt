@@ -77,7 +77,7 @@ add_library(
     asengine/ECS/ComponentClass.cpp
     #resource
     asengine/Resource/IResourceClass.cpp
-    asengine/Resource/AbstractResource.cpp
+    asengine/Resource/Resource.cpp
     asengine/Resource/ResourceManager.cpp
     #rendering
     # shaders

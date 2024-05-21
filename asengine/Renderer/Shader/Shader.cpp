@@ -11,6 +11,15 @@ namespace ASEngine
     template<>
     void Serializer<Shader>::Deserialize(const Json& object, Shader& dest)
     {
+        // load vertex source
+        ResourceRef<ShaderSource> vertexSource;
+        Serializer<ResourceRef<ShaderSource>>::Deserialize(object.at("Vertex"), vertexSource);
+        
+        // load fragment source
+        ResourceRef<ShaderSource> fragmentSource;
+        Serializer<ResourceRef<ShaderSource>>::Deserialize(object.at("Fragment"), fragmentSource);
+    
+        // create shader
         
     }
 
@@ -21,4 +30,9 @@ namespace ASEngine
     }
 
     ASENGINE_SERIALIZE_RESOURCE_IMP(Shader);
+
+    void Shader::Create(ResourceRef<ShaderSource> vertexSource, ResourceRef<ShaderSource> fragmentSource)
+    {
+
+    }
 } // namespace ASEngine

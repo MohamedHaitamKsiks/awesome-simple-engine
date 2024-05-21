@@ -1,0 +1,10 @@
+#ifndef ASENGINE_VERTEX_INPUT_DESCRIPTOR_H
+#define ASENGINE_VERTEX_INPUT_DESCRIPTOR_H
+
+namespace ASEngine
+{
+    
+} // namespace ASEngine
+
+
+#endif // ASENGINE_VERTEX_INPUT_DESCRIPTOR_H

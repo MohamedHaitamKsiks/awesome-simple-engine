@@ -5,6 +5,7 @@
 
 #include "Resource/ResourceRef.h"
 #include "Resource/Resource.h"
+#include "Resource/ResourceDefinition.h"
 
 namespace ASEngine
 {
@@ -34,8 +35,9 @@ namespace ASEngine
     };
 
     // abstract texture (needs to be implemented depending on api)
-    class Texture: public Resource<Texture>
+    class Texture: public Resource
     {
+    ASENGINE_DEFINE_RESOURCE(Texture);
     public:
         // create texture from image
         void Create(const Image& image, TextureFormat format, TextureFilter filter, TextureRepeatMode repeat);

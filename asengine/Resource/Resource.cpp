@@ -1,4 +1,4 @@
-#include "AbstractResource.h"
+#include "Resource.h"
 #include "ResourceClass.h"
 #include "ResourceManager.h"
 
@@ -10,7 +10,7 @@
 namespace ASEngine
 {
     // load resource
-    bool AbstractResource::Load(const std::string &path)
+    bool Resource::Load(const std::string &path)
     {
         ASENGINE_ASSERT(!m_IsLoaded, "Resource can't be loaded more than once");
 
@@ -33,29 +33,29 @@ namespace ASEngine
         return true;
     }
 
-    void AbstractResource::Save(const std::string &path)
+    void Resource::Save(const std::string &path)
     {
     }
 
-    void AbstractResource::Deserialize(const Json &object)
+    void Resource::Deserialize(const Json &object)
     {
         ASENGINE_ASSERT(false, GetClassName().GetString() + " Is NOT serializable");
     }
 
-    Json AbstractResource::Serialize() const
+    Json Resource::Serialize() const
     {
         ASENGINE_ASSERT(false, GetClassName().GetString() + " Is NOT serializable");
         return Json();
     }
 
-    void AbstractResource::Destroy()
+    void Resource::Destroy()
     {
         UniqueString resourceName = GetClassName();
         IResourceClass& resourceClass = ResourceManager::GetInstance().GetResouceClass(resourceName);
         resourceClass.Destroy(*this);
     }
     
-    void AbstractResource::DecrementReferenceCounter()
+    void Resource::DecrementReferenceCounter()
     {
         m_ReferenceCounter--;
 

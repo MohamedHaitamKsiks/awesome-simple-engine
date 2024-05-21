@@ -1,7 +1,8 @@
 #include "ResourceTest.h"
 
-class TestResourceType: public Resource<TestResourceType>
+class TestResourceType: public Resource
 {
+ASENGINE_DEFINE_RESOURCE(TestResourceType);
 ASENGINE_SERIALIZE_RESOURCE(TestResourceType);
 public:
 
@@ -80,15 +81,13 @@ void ResourceTest::Describe()
 
     Test("it casts to parent type", []()
     {
-        UniqueString referenceName("Test");
-
-        ResourceRef<TestResourceType> test = TestResourceType::GetResourceClass().New(referenceName);
-        ResourceRef<AbstractResource> test2 = test;
+        ResourceRef<TestResourceType> test = TestResourceType::GetResourceClass().New();
+        ResourceRef<Resource> test2 = test;
         
-        ASENGINE_EXPECT(test2->GetReferenceName() == referenceName);
+        ASENGINE_EXPECT(test2->GetResourceID() == test->GetResourceID());
     });
 
-    Test("it collect garbage ", []()
+    Test("it collects garbage", []()
     {
         std::vector<ResourceRef<TestResourceType>> tests{};
         IResourceClass& testClass = TestResourceType::GetResourceClass();
@@ -117,7 +116,7 @@ void ResourceTest::Describe()
 
     Test("it can get resource", []()
     {
-        ResourceRef<TestResourceType> test = TestResourceType::GetResourceClass().GetResource(UniqueString("test_resource/test.resource.json"));
+        ResourceRef<TestResourceType> test = TestResourceType::GetResourceClass().Load(UniqueString("test_resource/test.resource.json"));
         test->SetPersistent(true);
     });
 
@@ -129,5 +128,16 @@ void ResourceTest::Describe()
         Serializer<ResourceRef<TestResourceType>>::Deserialize(testRefObject, test);
 
         ASENGINE_EXPECT(test->GetValue() == 27052001); 
+    });
+
+    Test("it is inline-serializable", []()
+    {
+        Json testRefObject = Json({});
+        testRefObject["Value"] = 123;
+
+        ResourceRef<TestResourceType> test;
+        Serializer<ResourceRef<TestResourceType>>::Deserialize(testRefObject, test);
+
+        ASENGINE_EXPECT(test->GetValue() == 123); 
     });
 }

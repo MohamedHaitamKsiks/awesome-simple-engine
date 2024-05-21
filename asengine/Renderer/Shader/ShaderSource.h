@@ -2,9 +2,10 @@
 #define ASENGINE_SHADER_SOURCE_H
 
 #include <string>
+#include "ShaderParams.h"
 
 #include "Resource/Resource.h"
-#include "ShaderParams.h"
+#include "Resource/ResourceDefinition.h"
 
 namespace ASEngine
 {
@@ -12,8 +13,9 @@ namespace ASEngine
     using SpirvBinary = std::vector<uint32_t>;
 
     // shader source resource (parsed from spirv binary)
-    class ShaderSource: public Resource<ShaderSource>
+    class ShaderSource: public Resource
     {
+    ASENGINE_DEFINE_RESOURCE(ShaderSource);
     public:
         ~ShaderSource() {};
 

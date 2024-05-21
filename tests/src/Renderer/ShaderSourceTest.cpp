@@ -8,10 +8,7 @@ void ShaderSourceTest::Describe()
     // load resource
     Test("it loads shader source", [this]()
     {
-        UniqueString shaderPath{"shaders/default3D.vert"};
-        m_Source = ShaderSource::GetResourceClass().GetResource(shaderPath);
-        
-        ASENGINE_EXPECT(m_Source->GetReferenceName() == shaderPath); 
+        m_Source = ShaderSource::GetResourceClass().Load("shaders/default3D.vert"); 
     });
 
     // check fro uniform buffer

@@ -8,7 +8,7 @@
 
 #include "ECS/System.h"
 
-#include "AbstractResource.h"
+#include "Resource.h"
 #include "ResourceRef.h"
 
 namespace ASEngine
@@ -17,10 +17,10 @@ namespace ASEngine
     {
     public:
         // create named resource
-        virtual ResourceRef<AbstractResource> New(UniqueString referenceName = UniqueString("")) = 0;
+        virtual ResourceRef<Resource> New() = 0;
 
         // lazy get resource (load if not exists) 
-        virtual ResourceRef<AbstractResource> GetResource(UniqueString referenceName) = 0;
+        virtual ResourceRef<Resource> Load(UniqueString path) = 0;
 
         // get class name
         virtual UniqueString GetClassName() = 0;
@@ -32,9 +32,9 @@ namespace ASEngine
         void Init() override;
         virtual void Terminate() = 0;
     
-        virtual void Destroy(AbstractResource& resource) = 0;
+        virtual void Destroy(Resource& resource) = 0;
 
-        friend class AbstractResource;
+        friend class Resource;
     };
 
 

@@ -41,6 +41,9 @@ namespace ASEngine
         // fixed update systems
         void FixedUpdate(float delta);
 
+        // renderer systems
+        void Render();
+
         // process input for all system
         void OnInputEvent(const InputEvent &event);
 

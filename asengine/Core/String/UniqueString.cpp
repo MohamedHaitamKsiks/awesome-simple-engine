@@ -16,7 +16,12 @@ namespace ASEngine
     {
         Create(str);
     }
-    
+
+    UniqueString::UniqueString(const char *cStr)
+    {
+        Create(cStr);
+    }
+
     //Serialization
     template <>
     Json Serializer<UniqueString>::Serialize(const UniqueString &value)

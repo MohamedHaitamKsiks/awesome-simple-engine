@@ -102,6 +102,7 @@ namespace ASEngine
         m_CurrentIndexBuffer = indexBufferID;
     }
 
+
     void Renderer::Clear()
     {
     // OpenGL Specification
@@ -109,6 +110,7 @@ namespace ASEngine
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     #pragma endregion OPENGL_SPECIFICATION // OPENGL
     }
+
 
     void Renderer::InitManagers()
     {

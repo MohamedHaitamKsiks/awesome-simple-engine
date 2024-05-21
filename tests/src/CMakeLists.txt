@@ -13,7 +13,7 @@ add_library(
     #Core/VectorTest.cpp
     #Class/ClassManagerTest.cpp
     #ECS/ECSTest.cpp
-    #Resource/ResourceTest.cpp
+    Resource/ResourceTest.cpp
     Renderer/ShaderSourceTest.cpp
 )
 

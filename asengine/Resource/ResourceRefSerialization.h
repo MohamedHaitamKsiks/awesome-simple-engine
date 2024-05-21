@@ -4,7 +4,7 @@
 #include <string>
 
 #include "ResourceRef.h"
-#include "AbstractResource.h"
+#include "Resource.h"
 #include "IResourceClass.h"
 
 #include "Core/Serialization/Json.h"
@@ -13,9 +13,17 @@
 
 // define serialization
 /*
-Example:
+Example of loading resource path:
     ...
     resource: "materials/default.mat.json",
+    ...
+
+Example of inline definition
+    ...
+    resource: {
+        "Shader": "shaders/default.shader.json",
+        "VertexInput ....
+    }
     ...
 */
 #define ASENGINE_SERIALIZE_RESOURCE_REF(Type) \
@@ -24,17 +32,26 @@ namespace ASEngine \
     template<> \
     void Serializer<ResourceRef<Type>>::Deserialize(const Json &object, ResourceRef<Type> &dest) \
     { \
-        UniqueString resourcePath; \
-        Serializer<UniqueString>::Deserialize(object, resourcePath); \
+        if (object.is_string()) \
+        { \
+            UniqueString resourcePath; \
+            Serializer<UniqueString>::Deserialize(object, resourcePath); \
+            ResourceRef<Resource> resource = Type::GetResourceClass().Load(resourcePath); \
+            dest = ResourceRef<Type>(resource); \
+        } \
+        else \
+        { \
+            ResourceRef<Resource> resource = Type::GetResourceClass().New(); \
+            resource->Deserialize(object); \
+            dest = ResourceRef<Type>(resource); \
+        } \
         \
-        ResourceRef<AbstractResource> resource = Type::GetResourceClass().GetResource(resourcePath); \
-        dest = ResourceRef<Type>(resource); \
     } \
     \
     template <> \
     Json Serializer<ResourceRef<Type>>::Serialize(const ResourceRef<Type> &dest) \
     { \
-        return Json(dest->GetReferenceName().GetString()); \
+        return Json(); \
     } \
 }
 

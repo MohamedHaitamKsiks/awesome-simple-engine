@@ -19,7 +19,6 @@
 
 namespace ASEngine
 {
-    template<typename T>
     class Resource;
 
     // resource manager: 
@@ -33,7 +32,7 @@ namespace ASEngine
         template <typename Base, typename Derived>
         void RegisterAbstractResourceClass(UniqueString resourceName)
         {
-            static_assert(std::is_base_of_v<Resource<Base>, Base>);
+            static_assert(std::is_base_of_v<Resource, Base>);
             static_assert(std::is_base_of_v<Base, Derived>);
         
             // register base class 

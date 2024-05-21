@@ -32,6 +32,14 @@ namespace ASEngine
         }
     }
 
+    void SystemManager::Render()
+    {
+        for (auto& system: m_Systems)
+        {
+            system->Render();
+        }
+    }
+
     void SystemManager::OnInputEvent(const InputEvent &event)
     {
         for (auto &system : m_Systems)

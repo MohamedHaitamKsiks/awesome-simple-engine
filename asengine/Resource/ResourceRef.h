@@ -1,7 +1,7 @@
 #ifndef ASENGINE_RESOURCE_REF_H
 #define ASENGINE_RESOURCE_REF_H
 
-#include "AbstractResource.h"
+#include "Resource.h"
 
 namespace ASEngine
 {
@@ -19,13 +19,13 @@ namespace ASEngine
         template<typename U>
         ResourceRef(const ResourceRef<U>& other)
         {
-            static_assert(std::is_base_of_v<AbstractResource, U>);
-            static_assert(std::is_base_of_v<AbstractResource, T>);
+            static_assert(std::is_base_of_v<Resource, U>);
+            static_assert(std::is_base_of_v<Resource, T>);
 
             m_Instance = dynamic_cast<T*>(other.m_Instance);
             if (m_Instance)
             {
-                static_cast<AbstractResource*>(m_Instance)->IncrementReferenceCounter();
+                static_cast<Resource*>(m_Instance)->IncrementReferenceCounter();
             }
         }
 
@@ -34,7 +34,7 @@ namespace ASEngine
             m_Instance = other.m_Instance;
             if (m_Instance)
             {
-                static_cast<AbstractResource *>(m_Instance)->IncrementReferenceCounter();
+                static_cast<Resource *>(m_Instance)->IncrementReferenceCounter();
             }
         }
 
@@ -43,14 +43,14 @@ namespace ASEngine
             // decrement current instance
             if (m_Instance)
             {
-                static_cast<AbstractResource *>(m_Instance)->DecrementReferenceCounter();
+                static_cast<Resource *>(m_Instance)->DecrementReferenceCounter();
             }
 
             // copy new instance
             m_Instance = other.m_Instance;
             if (other.m_Instance)
             {
-                static_cast<AbstractResource *>(m_Instance)->IncrementReferenceCounter();
+                static_cast<Resource *>(m_Instance)->IncrementReferenceCounter();
             }
             
             return *this;
@@ -73,7 +73,7 @@ namespace ASEngine
         {
             if (m_Instance)
             {
-                static_cast<AbstractResource*>(m_Instance)->DecrementReferenceCounter();
+                static_cast<Resource*>(m_Instance)->DecrementReferenceCounter();
             }
         }
 
@@ -89,10 +89,10 @@ namespace ASEngine
         
     private:
         T* m_Instance = nullptr;
-        
+
         ResourceRef(T* instance): m_Instance(instance)
         {
-            static_assert(std::is_base_of_v<AbstractResource, T>);
+            static_assert(std::is_base_of_v<Resource, T>);
         }
 
 

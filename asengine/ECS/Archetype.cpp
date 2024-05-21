@@ -11,7 +11,8 @@ namespace ASEngine
         ASENGINE_ASSERT(m_Signature.count(componentName) == 0, "Component Already Exists");
         
         m_Signature.emplace(componentName);
-        //create component collectio
+        
+        // create component collection
         IComponentClass& componentClass = ComponentManager::GetInstance().GetComponentClass(componentName);
         std::unique_ptr<IComponentCollection> collection{componentClass.CreateComponentCollection()};
         m_ComponentCollections[componentName] = std::move(collection);

@@ -83,6 +83,9 @@ namespace ASEngine
         // call normal update
         systemManager.Update(delta * Time::TimeScale);
 
+        // call render
+        systemManager.Render();
+
         // destroy all enities in queue
         EntityManager::GetInstance().CleanDestroyQueue();
     }

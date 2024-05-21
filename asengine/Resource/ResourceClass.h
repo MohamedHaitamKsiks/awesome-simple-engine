@@ -11,7 +11,7 @@
 #include "ECS/System.h"
 
 #include "ResourceID.h"
-#include "AbstractResource.h"
+#include "Resource.h"
 #include "ResourceRef.h"
 #include "IResourceClass.h"
 
@@ -29,47 +29,41 @@ namespace ASEngine
         {
             return Class<T>::GetName();
         }
-        
-        // get resource if exists (referenceName)
-        // if the refernece name was not founded it's going to try to load the resource and using the reference name as the path of the resource
-        ResourceRef<AbstractResource> GetResource(UniqueString referenceName) override
+
+        // load resource 
+        ResourceRef<Resource> Load(UniqueString path) override
         {
             // load if not exists
-            if (m_ResourceReferenceNames.find(referenceName) == m_ResourceReferenceNames.end())
+            if (m_ResourcePaths.find(path) == m_ResourcePaths.end())
             {
-                ResourceRef<AbstractResource> resource = New(referenceName);
-                ASENGINE_ASSERT(resource->Load(referenceName.GetString()), "Couldn't load resource");
+                ResourceRef<Resource> resource = New();
+                
+                ASENGINE_ASSERT(resource->Load(path.GetString()), "Couldn't load resource");
+                resource->m_Path = path;
+
+                m_ResourcePaths[path] = resource->GetResourceID();
+
                 return resource;
             }
             
             // get reference if exists
-            ResourceID resourceID = m_ResourceReferenceNames[referenceName];
-            AbstractResource& resource = m_Resources.Get(resourceID);
-            return ResourceRef<AbstractResource>(&resource);
+            ResourceID resourceID = m_ResourcePaths[path];
+            Resource& resource = m_Resources.Get(resourceID);
+            return ResourceRef<Resource>(&resource);
         }
 
-        // add with name, if name exists return the created resource name
-        ResourceRef<AbstractResource> New(UniqueString referenceName = UniqueString("")) override
+        // create resource
+        ResourceRef<Resource> New() override
         {
-            // check if resource name already exists
-            if (m_ResourceReferenceNames.find(referenceName) != m_ResourceReferenceNames.end())
-                return GetResource(referenceName);
-
             // create resource
             ResourceID resourceID = m_Resources.Allocate();
-            AbstractResource& resource = m_Resources.Get(resourceID);
+            Resource& resource = m_Resources.Get(resourceID);
             resource.m_ReferenceCounter = 1;
             resource.m_ResourceID = resourceID;
             resource.m_IsPersistent = false;
-            
-            // add reference name
-            if (referenceName.GetLength() != 0)
-            {
-                resource.m_ReferenceName = referenceName;
-                m_ResourceReferenceNames[referenceName] = resourceID;
-            }
+            resource.m_Path = m_EmptyPath;
 
-            ResourceRef<AbstractResource> resourceReference(&resource);
+            ResourceRef<Resource> resourceReference(&resource);
             return resourceReference;
         }
 
@@ -80,15 +74,16 @@ namespace ASEngine
 
     private:
         PoolAllocator<T> m_Resources{UINT16_MAX};
-        std::unordered_map<UniqueString, ResourceID> m_ResourceReferenceNames{};
+        // use paths as reference names
+        std::unordered_map<UniqueString, ResourceID> m_ResourcePaths{};
+        UniqueString m_EmptyPath{""};
 
         // remove
-        void Destroy(AbstractResource &resource)
+        void Destroy(Resource &resource)
         {
-            UniqueString referenceName = resource.GetReferenceName();
-            if (referenceName != UniqueString(""))
+            if (resource.m_Path != m_EmptyPath)
             {
-                m_ResourceReferenceNames.erase(referenceName);
+                m_ResourcePaths.erase(resource.m_Path);
             }
 
             m_Resources.Free(resource.GetResourceID());
@@ -98,7 +93,7 @@ namespace ASEngine
         void Terminate() override
         {
             m_Resources.Clear();
-            m_ResourceReferenceNames.clear();
+            m_ResourcePaths.clear();
         }   
     };
 

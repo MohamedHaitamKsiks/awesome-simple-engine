@@ -23,6 +23,9 @@ namespace ASEngine
         // create unique string from given str, if str exists it will have the same id. 
         UniqueString(const std::string& str);
 
+        // create using c string
+        UniqueString(const char* cStr);
+
         // compare strings
         friend inline bool operator<(const UniqueString &uStrLeft, const UniqueString &uStrRight)
         {
