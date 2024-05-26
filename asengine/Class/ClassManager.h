@@ -1,5 +1,5 @@
-#ifndef ASENGINE_CLASS_MANAGER_H
-#define ASENGINE_CLASS_MANAGER_H
+#ifndef __ASENGINE_CLASS_MANAGER_H
+#define __ASENGINE_CLASS_MANAGER_H
 
 #include <unordered_set>
 #include <memory>
@@ -36,4 +36,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_CLASS_MANAGER_H
+#endif // __ASENGINE_CLASS_MANAGER_H

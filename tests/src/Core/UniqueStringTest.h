@@ -1,5 +1,5 @@
-#ifndef ASENGINE_UNIQUE_STRING_TEST_H
-#define ASENGINE_UNIQUE_STRING_TEST_H
+#ifndef __ASENGINE_UNIQUE_STRING_TEST_H
+#define __ASENGINE_UNIQUE_STRING_TEST_H
 
 #include "ASEngine.h"
 
@@ -14,4 +14,4 @@ private:
     void Describe() override;
 };
 
-#endif // ASENGINE_UNIQUE_STRING_TEST_H
+#endif // __ASENGINE_UNIQUE_STRING_TEST_H

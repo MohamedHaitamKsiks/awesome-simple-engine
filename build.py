@@ -13,7 +13,7 @@ def generateIncludeFiles():
             shutil.copytree(f"{str(folder)}/include", "build/include/dependencies/" + str(folder.name), dirs_exist_ok=True)
 
     #entrypoint for include file (include it to include all the asengine)
-    entryPointList = ["#ifndef ASENGINE_INCLUDE_H\n#define ASENGINE_INLUDE_H\n"]
+    entryPointList = ["#ifndef __ASENGINE_INCLUDE_H\n#define __ASENGINE_INLUDE_H\n"]
 
     #get all header files
     enginePath = pathlib.Path("asengine")

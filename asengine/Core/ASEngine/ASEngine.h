@@ -1,6 +1,6 @@
 
-#ifndef ASENGINE_ASENGINE_H
-#define ASENGINE_ASENGINE_H
+#ifndef __ASENGINE_ASENGINE_H
+#define __ASENGINE_ASENGINE_H
 
 #include <string>
 #include <vector>
@@ -78,4 +78,4 @@ namespace ASEngine
 
 } // ASEngine
 
-#endif // ASENGINE_ASEngine_H
+#endif // __ASENGINE_ASEngine_H

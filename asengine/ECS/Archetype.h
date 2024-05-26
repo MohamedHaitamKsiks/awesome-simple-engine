@@ -1,5 +1,5 @@
-#ifndef ASENGINE_ARCHETYPE_H
-#define ASENGINE_ARCHETYPE_H
+#ifndef __ASENGINE_ARCHETYPE_H
+#define __ASENGINE_ARCHETYPE_H
 
 #include <vector>
 #include <unordered_map>

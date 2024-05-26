@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SHADER_H
-#define ASENGINE_SHADER_H
+#ifndef __ASENGINE_SHADER_H
+#define __ASENGINE_SHADER_H
 
 #include <unordered_map>
 
@@ -63,4 +63,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_SHADER_H
+#endif // __ASENGINE_SHADER_H

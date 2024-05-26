@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SYSTEM_MANAGER_H
-#define ASENGINE_SYSTEM_MANAGER_H
+#ifndef __ASENGINE_SYSTEM_MANAGER_H
+#define __ASENGINE_SYSTEM_MANAGER_H
 
 #include <memory>
 #include <vector>

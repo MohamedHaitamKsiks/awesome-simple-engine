@@ -1,5 +1,5 @@
-#ifndef ASENGINE_WINDOW_H
-#define ASENGINE_WINDOW_H
+#ifndef __ASENGINE_WINDOW_H
+#define __ASENGINE_WINDOW_H
 
 #include "Core/Math/Vector2.h"
 #include "Core/Signal/Signal.h"
@@ -84,4 +84,4 @@ namespace ASEngine
 
 
 
-#endif // ASENGINE_WINDOW_H
+#endif // __ASENGINE_WINDOW_H

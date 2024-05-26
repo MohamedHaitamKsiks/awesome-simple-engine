@@ -1,5 +1,5 @@
-#ifndef ASENGINE_OBJECT_H
-#define ASENGINE_OBJECT_H
+#ifndef __ASENGINE_OBJECT_H
+#define __ASENGINE_OBJECT_H
 
 #include "Core/String/UniqueString.h"
 
@@ -14,4 +14,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_OBJECT_H
+#endif // __ASENGINE_OBJECT_H

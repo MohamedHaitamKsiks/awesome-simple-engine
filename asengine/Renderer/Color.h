@@ -1,5 +1,5 @@
-#ifndef ASENGINE_COLOR_H
-#define ASENGINE_COLOR_H
+#ifndef __ASENGINE_COLOR_H
+#define __ASENGINE_COLOR_H
 
 namespace ASEngine {
 

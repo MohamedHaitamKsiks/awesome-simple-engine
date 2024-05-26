@@ -1,5 +1,5 @@
-#ifndef ASENGINE_COLLECTION_H
-#define ASENGINE_COLLECTION_H
+#ifndef __ASENGINE_COLLECTION_H
+#define __ASENGINE_COLLECTION_H
 
 #include <cstdint>
 
@@ -18,4 +18,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE
+#endif // __ASENGINE

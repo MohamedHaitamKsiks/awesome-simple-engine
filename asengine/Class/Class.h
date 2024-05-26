@@ -1,5 +1,5 @@
-#ifndef ASENGINE_CLASS_H
-#define ASENGINE_CLASS_H
+#ifndef __ASENGINE_CLASS_H
+#define __ASENGINE_CLASS_H
 
 #include "Core/String/UniqueString.h"
 
@@ -40,4 +40,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_CLASS_H
+#endif // __ASENGINE_CLASS_H

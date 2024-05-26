@@ -1,6 +1,6 @@
 
-#ifndef ASENGINE_DEBUG_H
-#define ASENGINE_DEBUG_H
+#ifndef __ASENGINE_DEBUG_H
+#define __ASENGINE_DEBUG_H
 
 #include<sstream>
 #include<string>

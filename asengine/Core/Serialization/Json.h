@@ -1,5 +1,5 @@
-#ifndef ASENGINE_JSON_H
-#define ASENGINE_JSON_H
+#ifndef __ASENGINE_JSON_H
+#define __ASENGINE_JSON_H
 
 #include "Thirdparty/nlohmann_json.h"
 
@@ -10,4 +10,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_JSON_H
+#endif // __ASENGINE_JSON_H

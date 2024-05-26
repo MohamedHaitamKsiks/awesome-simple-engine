@@ -1,4 +1,4 @@
-#ifndef ASENGINE_AUDIO_ENGINE
+#ifndef __ASENGINE_AUDIO_ENGINE
 #define ASENGINE_AUDIO_ENGINE
 
 /*
@@ -114,4 +114,4 @@ namespace ASEngine
 } // namespace ASEngine
 */
 
-#endif // ASENGINE_AUDIO_ENGINE
+#endif // __ASENGINE_AUDIO_ENGINE

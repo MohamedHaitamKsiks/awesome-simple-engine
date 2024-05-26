@@ -1,5 +1,5 @@
-#ifndef ASENGINE_REGISTRY_H
-#define ASENGINE_REGISTRY_H
+#ifndef __ASENGINE_REGISTRY_H
+#define __ASENGINE_REGISTRY_H
 
 namespace ASEngine
 {
@@ -10,4 +10,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_REGISTRY_H
+#endif // __ASENGINE_REGISTRY_H

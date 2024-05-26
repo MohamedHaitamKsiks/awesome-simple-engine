@@ -1,5 +1,5 @@
-#ifndef ASENGINE_MATH_H
-#define ASENGINE_MATH_H
+#ifndef __ASENGINE_MATH_H
+#define __ASENGINE_MATH_H
 
 #include <cmath>
 
@@ -100,4 +100,4 @@ namespace ASEngine
     };
 } // namespace ASEngine
 
-#endif // ASENGINE_MATH_H
+#endif // __ASENGINE_MATH_H

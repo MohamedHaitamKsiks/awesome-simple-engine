@@ -1,5 +1,5 @@
-#ifndef ASENGINE_MATERIAL_H
-#define ASENGINE_MATERIAL_H
+#ifndef __ASENGINE_MATERIAL_H
+#define __ASENGINE_MATERIAL_H
 
 #include "Resource/Resource.h"
 #include "Resource/ResourceDefinition.h"

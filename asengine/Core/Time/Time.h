@@ -1,5 +1,5 @@
-#ifndef ASENGINE_TIME_H
-#define ASENGINE_TIME_H
+#ifndef __ASENGINE_TIME_H
+#define __ASENGINE_TIME_H
 
 namespace ASEngine
 {
@@ -15,4 +15,4 @@ namespace ASEngine
     
 }; // namespace ASEngine
 
-#endif // ASENGINE_TIME_H
+#endif // __ASENGINE_TIME_H

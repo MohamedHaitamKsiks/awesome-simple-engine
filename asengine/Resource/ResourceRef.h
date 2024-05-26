@@ -1,5 +1,5 @@
-#ifndef ASENGINE_RESOURCE_REF_H
-#define ASENGINE_RESOURCE_REF_H
+#ifndef __ASENGINE_RESOURCE_REF_H
+#define __ASENGINE_RESOURCE_REF_H
 
 #include "Resource.h"
 
@@ -124,4 +124,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_RESOURCE_REG_H
+#endif // __ASENGINE_RESOURCE_REG_H

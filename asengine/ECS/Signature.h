@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SIGNATURE_H
-#define ASENGINE_SIGNATURE_H
+#ifndef __ASENGINE_SIGNATURE_H
+#define __ASENGINE_SIGNATURE_H
 
 #include "Core/String/UniqueString.h"
 #include <set>
@@ -33,4 +33,4 @@ namespace std
     };
 }
 
-#endif // ASENGINE_SIGNATURE_H
+#endif // __ASENGINE_SIGNATURE_H

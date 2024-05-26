@@ -1,5 +1,5 @@
-#ifndef ASENGINE_RESOURCE_ID
-#define ASENGINE_RESOURCE_ID
+#ifndef __ASENGINE_RESOURCE_ID_H
+#define __ASENGINE_RESOURCE_ID_H
 
 #include "Core/Memory/PoolAllocator.h"
 
@@ -10,4 +10,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_RESOURCE_ID
+#endif // __ASENGINE_RESOURCE_ID_H

@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SIGNAL_H
-#define ASENGINE_SIGNAL_H
+#ifndef __ASENGINE_SIGNAL_H
+#define __ASENGINE_SIGNAL_H
 
 #include "Core/Memory/PoolAllocator.h"
 
@@ -44,4 +44,4 @@ namespace ASEngine
 
 } // namespace ASEngine
 
-#endif // ASENGINE_SIGNAL_H
+#endif // __ASENGINE_SIGNAL_H

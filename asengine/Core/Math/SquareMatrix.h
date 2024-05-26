@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SQUARE_MATRIX_H
-#define ASENGINE_SQUARE_MATRIX_H
+#ifndef __ASENGINE_SQUARE_MATRIX_H
+#define __ASENGINE_SQUARE_MATRIX_H
 
 #include <cstdint>
 #include "Matrix.h"
@@ -68,4 +68,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_SQUARE_MATRIX_H
+#endif // __ASENGINE_SQUARE_MATRIX_H

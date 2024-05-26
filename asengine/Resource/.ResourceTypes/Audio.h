@@ -1,5 +1,5 @@
-#ifndef ASENGINE_AUDIO_H
-#define ASENGINE_AUDIO_H
+#ifndef __ASENGINE_AUDIO_H
+#define __ASENGINE_AUDIO_H
 
 #include "Thirdparty/miniaudio.h"
 #include "Core/FileSystem/File.h"
@@ -39,4 +39,4 @@ namespace ASEngine
 } // namespace ASEngine1
 
 
-#endif // ASENGINE_AUDIO_H
+#endif // __ASENGINE_AUDIO_H

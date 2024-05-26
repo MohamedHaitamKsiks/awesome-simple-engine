@@ -1,6 +1,6 @@
 
-#ifndef ASENGINE_VECTOR3_H
-#define ASENGINE_VECTOR3_H
+#ifndef __ASENGINE_VECTOR3_H
+#define __ASENGINE_VECTOR3_H
 
 #include "Core/Error/Assertion.h"
 #include "Math.h"

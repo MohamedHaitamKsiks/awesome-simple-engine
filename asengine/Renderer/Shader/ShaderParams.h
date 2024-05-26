@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SHADER_PARAMS_H
-#define ASENGINE_SHADER_PARAMS_H
+#ifndef __ASENGINE_SHADER_PARAMS_H
+#define __ASENGINE_SHADER_PARAMS_H
 
 #include <vector>
 #include <cstdint>
@@ -59,4 +59,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_SHADER_IDENTIFIER_H
+#endif // __ASENGINE_SHADER_IDENTIFIER_H

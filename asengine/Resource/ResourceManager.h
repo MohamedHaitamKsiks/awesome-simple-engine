@@ -1,5 +1,5 @@
-#ifndef ASENGINE_RESOURCE_MANAGER_H
-#define ASENGINE_RESOURCE_MANAGER_H
+#ifndef __ASENGINE_RESOURCE_MANAGER_H
+#define __ASENGINE_RESOURCE_MANAGER_H
 
 #include <unordered_map>
 #include <memory>
@@ -67,4 +67,4 @@ namespace ASEngine
 
 } // namespace ASEngine
 
-#endif // ASENGINE_RESOURCE_MANAGER_H
+#endif // __ASENGINE_RESOURCE_MANAGER_H

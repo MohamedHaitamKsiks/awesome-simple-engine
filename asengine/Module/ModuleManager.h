@@ -1,5 +1,5 @@
-#ifndef ASENGINE_MODULE_MANAGER_H
-#define ASENGINE_MODULE_MANAGER_H
+#ifndef __ASENGINE_MODULE_MANAGER_H
+#define __ASENGINE_MODULE_MANAGER_H
 
 #include <memory>
 #include <vector>
@@ -38,4 +38,4 @@ namespace ASEngine
 
 } // namespace ASEngine
 
-#endif // ASENGINE_MODULE_MANAGER_H
+#endif // __ASENGINE_MODULE_MANAGER_H

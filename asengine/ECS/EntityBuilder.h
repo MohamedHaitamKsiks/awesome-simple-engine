@@ -1,5 +1,5 @@
-#ifndef ASENGINE_ENTITY_BUILDER_H
-#define ASENGINE_ENTITY_BUILDER_H
+#ifndef __ASENGINE_ENTITY_BUILDER_H
+#define __ASENGINE_ENTITY_BUILDER_H
 
 #include <memory>
 #include <unordered_map>
@@ -79,4 +79,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_ENTITY_BUILDER_H
+#endif // __ASENGINE_ENTITY_BUILDER_H

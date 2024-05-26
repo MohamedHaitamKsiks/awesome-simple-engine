@@ -1,5 +1,5 @@
-#ifndef ASENGINE_ASSERT_H
-#define ASENGINE_ASSERT_H
+#ifndef __ASENGINE_ASSERT_H
+#define __ASENGINE_ASSERT_H
 
 #include <string>
 
@@ -23,4 +23,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_ASSERT_H
+#endif // __ASENGINE_ASSERT_H

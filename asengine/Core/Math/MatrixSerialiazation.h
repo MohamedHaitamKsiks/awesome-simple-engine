@@ -1,5 +1,5 @@
-#ifndef ASENGINE_MATRIX_SERIALIAZATION_H
-#define ASENGINE_MATRIX_SERIALIAZATION_H
+#ifndef __ASENGINE_MATRIX_SERIALIAZATION_H
+#define __ASENGINE_MATRIX_SERIALIAZATION_H
 
 #include "Matrix.h"
 #include "Core/Error/Assertion.h"
@@ -44,4 +44,4 @@ Json Serializer<MatrixType>::Serialize(const MatrixType& src) \
     return matrixObject; \
 }
 
-#endif // ASENGINE_MATRIX_SERIALIAZATION_H
+#endif // __ASENGINE_MATRIX_SERIALIAZATION_H

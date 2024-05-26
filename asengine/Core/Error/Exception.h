@@ -1,5 +1,5 @@
-#ifndef ASENGINE_EXCEPTION_H
-#define ASENGINE_EXCEPTION_H
+#ifndef __ASENGINE_EXCEPTION_H
+#define __ASENGINE_EXCEPTION_H
 
 #include <string>
 #include <exception>
@@ -38,4 +38,4 @@ namespace ASEngine
 
 
 
-#endif // ASENGINE_EXCEPTION_H
+#endif // __ASENGINE_EXCEPTION_H

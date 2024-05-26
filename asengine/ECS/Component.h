@@ -1,5 +1,5 @@
-#ifndef ASENGINE_COMPONENT_H
-#define ASENGINE_COMPONENT_H
+#ifndef __ASENGINE_COMPONENT_H
+#define __ASENGINE_COMPONENT_H
 
 #include <cstdint>
 

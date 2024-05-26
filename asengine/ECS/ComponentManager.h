@@ -1,5 +1,5 @@
-#ifndef ASENGINE_COMPONENT_MANAGER_H
-#define ASENGINE_COMPONENT_MANAGER_H
+#ifndef __ASENGINE_COMPONENT_MANAGER_H
+#define __ASENGINE_COMPONENT_MANAGER_H
 
 #include <memory>
 #include <cstdint>

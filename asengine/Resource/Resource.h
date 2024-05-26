@@ -1,5 +1,5 @@
-#ifndef ASENGINE_ABSTARCT_RESOURCE_H
-#define ASENGINE_ABSTARCT_RESOURCE_H
+#ifndef __ASENGINE_ABSTARCT_RESOURCE_H
+#define __ASENGINE_ABSTARCT_RESOURCE_H
 
 #include "Class/Object.h"
 
@@ -76,4 +76,4 @@ namespace ASEngine
 
 } // namespace ASEngine
 
-#endif // ASENGINE_ABSTARCT_RESOURCE_H
+#endif // __ASENGINE_ABSTARCT_RESOURCE_H

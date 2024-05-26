@@ -1,5 +1,5 @@
-#ifndef ASENGINE_RESOURCE_DEFINITION_H
-#define ASENGINE_RESOURCE_DEFINITION_H
+#ifndef __ASENGINE_RESOURCE_DEFINITION_H
+#define __ASENGINE_RESOURCE_DEFINITION_H
 
 #include "Resource.h"
 #include "ResourceClass.h"
@@ -17,4 +17,4 @@ public: \
         return ResourceManager::GetInstance().GetResouceClass(GetName()); \
     }
 
-#endif // ASENGINE_RESOURCE_DEFINITION_H
+#endif // __ASENGINE_RESOURCE_DEFINITION_H

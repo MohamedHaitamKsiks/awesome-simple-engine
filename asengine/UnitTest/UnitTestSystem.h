@@ -1,5 +1,5 @@
-#ifndef ASENGINE_UNIT_TEST_SYSTEM_H
-#define ASENGINE_UNIT_TEST_SYSTEM_H
+#ifndef __ASENGINE_UNIT_TEST_SYSTEM_H
+#define __ASENGINE_UNIT_TEST_SYSTEM_H
 
 #include <memory>
 #include <string>
@@ -40,4 +40,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_UNIT_TEST_SYSTEM_H
+#endif // __ASENGINE_UNIT_TEST_SYSTEM_H

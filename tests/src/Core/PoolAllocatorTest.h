@@ -1,5 +1,5 @@
-#ifndef ASENGINE_POOLALLOCATOR_TEST_H
-#define ASENGINE_POOLALLOCATOR_TEST_H
+#ifndef __ASENGINE_POOLALLOCATOR_TEST_H
+#define __ASENGINE_POOLALLOCATOR_TEST_H
 
 #include "ASEngine.h"
 using namespace ASEngine;
@@ -26,4 +26,4 @@ private:
     void Describe() override;
 };
 
-#endif // ASENGINE_POOLALLOCATOR_TEST_H
+#endif // __ASENGINE_POOLALLOCATOR_TEST_H

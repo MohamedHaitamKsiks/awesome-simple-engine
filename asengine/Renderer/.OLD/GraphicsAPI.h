@@ -1,5 +1,5 @@
-#ifndef ASENGINE_GRAPHICS_API_H
-#define ASENGINE_GRAPHICS_API_H
+#ifndef __ASENGINE_GRAPHICS_API_H
+#define __ASENGINE_GRAPHICS_API_H
 
 // include opengl
 /*#pragma region OPENGL_SPECIFICATION
@@ -12,4 +12,4 @@
     #endif
 #pragma endregion OPENGL_SPECIFICATION*/
 
-#endif // ASENGINE_GRAPHICS_API_H
+#endif // __ASENGINE_GRAPHICS_API_H

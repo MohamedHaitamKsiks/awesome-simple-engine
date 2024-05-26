@@ -1,6 +1,6 @@
 
-    #ifndef ASENGINE_MACRO_FOREACH_H
-    #define ASENGINE_MACRO_FOREACH_H
+    #ifndef __ASENGINE_MACRO_FOREACH_H
+    #define __ASENGINE_MACRO_FOREACH_H
 
     #define FOREACH(macro, arg, ...) \
     macro(arg)                  \
@@ -1028,4 +1028,4 @@
 
 #define FOREACH_1(macro, arg) (macro(arg))
 
-#endif // ASENGINE_MACRO_FOREACH_H
+#endif // __ASENGINE_MACRO_FOREACH_H

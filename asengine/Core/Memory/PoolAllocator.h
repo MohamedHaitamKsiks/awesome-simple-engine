@@ -1,5 +1,5 @@
-#ifndef ASENGINE_POOL_ALLOCATOR_H
-#define ASENGINE_POOL_ALLOCATOR_H
+#ifndef __ASENGINE_POOL_ALLOCATOR_H
+#define __ASENGINE_POOL_ALLOCATOR_H
 
 #include <memory>
 #include <vector>
@@ -276,4 +276,4 @@ namespace ASEngine
 
 
 
-#endif // ASENGINE_POOL_ALLOCATOR_H
+#endif // __ASENGINE_POOL_ALLOCATOR_H

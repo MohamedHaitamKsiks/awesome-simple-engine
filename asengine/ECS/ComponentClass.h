@@ -1,5 +1,5 @@
-#ifndef ASENGINE_COMPONENT_CLASS_H
-#define ASENGINE_COMPONENT_CLASS_H
+#ifndef __ASENGINE_COMPONENT_CLASS_H
+#define __ASENGINE_COMPONENT_CLASS_H
 
 #include "Core/String/UniqueString.h"
 #include "Core/Singleton/Singleton.h"
@@ -36,4 +36,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_COMPONENT_CLASS_H
+#endif // __ASENGINE_COMPONENT_CLASS_H

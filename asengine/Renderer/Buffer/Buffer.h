@@ -1,5 +1,5 @@
-#ifndef ASENGINE_BUFFER_H
-#define ASENGINE_BUFFER_H
+#ifndef __ASENGINE_BUFFER_H
+#define __ASENGINE_BUFFER_H
 
 #include "Resource/Resource.h"
 #include "Resource/ResourceDefinition.h"
@@ -49,4 +49,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_BUFFER_H
+#endif // __ASENGINE_BUFFER_H

@@ -1,5 +1,5 @@
-#ifndef ASENGINE_EntityManager_H
-#define ASENGINE_EntityManager_H
+#ifndef __ASENGINE_EntityManager_H
+#define __ASENGINE_EntityManager_H
 
 #include <memory>
 #include <vector>

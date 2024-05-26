@@ -1,5 +1,5 @@
-#ifndef ASENGINE_QUATERNION_H
-#define ASENGINE_QUATERNION_H
+#ifndef __ASENGINE_QUATERNION_H
+#define __ASENGINE_QUATERNION_H
 
 namespace ASEngine
 {
@@ -21,4 +21,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_QUATERNION_H
+#endif // __ASENGINE_QUATERNION_H

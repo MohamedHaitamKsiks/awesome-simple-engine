@@ -1,5 +1,5 @@
-#ifndef ASENGINE_ENTITY_H
-#define ASENGINE_ENTITY_H
+#ifndef __ASENGINE_ENTITY_H
+#define __ASENGINE_ENTITY_H
 
 #include "Core/Memory/PoolAllocator.h"
 
@@ -9,4 +9,4 @@ namespace ASEngine
     using EntityID = ChunkID;
 } // namespace ASEngine
 
-#endif // ASENGINE_ENTITY_H
+#endif // __ASENGINE_ENTITY_H

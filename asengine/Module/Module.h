@@ -1,5 +1,5 @@
-#ifndef ASENGINE_MODULE_H
-#define ASENGINE_MODULE_H
+#ifndef __ASENGINE_MODULE_H
+#define __ASENGINE_MODULE_H
 
 namespace ASEngine
 {
@@ -12,4 +12,4 @@ namespace ASEngine
     
 } // namespace ASEngine
 
-#endif // ASENGINE_MODULE_H
+#endif // __ASENGINE_MODULE_H

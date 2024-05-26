@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SHADER_MANAGER_H
-#define ASENGINE_SHADER_MANAGER_H
+#ifndef __ASENGINE_SHADER_MANAGER_H
+#define __ASENGINE_SHADER_MANAGER_H
 
 #include "Core/String/UniqueString.h"
 #include "Core/Error/Exception.h"
@@ -122,4 +122,4 @@ namespace ASEngine
 
 } // namespace ASEngine
 
-#endif // ASENGINE_SHADER_PROGRAM_MANAGER_H
+#endif // __ASENGINE_SHADER_PROGRAM_MANAGER_H

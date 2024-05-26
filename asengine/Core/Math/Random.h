@@ -1,6 +1,6 @@
 
-#ifndef ASENGINE_RANDOM_H
-#define ASENGINE_RANDOM_H
+#ifndef __ASENGINE_RANDOM_H
+#define __ASENGINE_RANDOM_H
 
 
 namespace ASEngine {

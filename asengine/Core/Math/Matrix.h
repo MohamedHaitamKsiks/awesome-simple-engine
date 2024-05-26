@@ -1,5 +1,5 @@
-#ifndef ASENGINE_MATRIX_H
-#define ASENGINE_MATRIX_H
+#ifndef __ASENGINE_MATRIX_H
+#define __ASENGINE_MATRIX_H
 
 #include <cstdint>
 #include "Column.h"
@@ -114,4 +114,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_MATRIX_H
+#endif // __ASENGINE_MATRIX_H

@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SERIALIZER_H
-#define ASENGINE_SERIALIZER_H
+#ifndef __ASENGINE_SERIALIZER_H
+#define __ASENGINE_SERIALIZER_H
 
 #include<string>
 #include "Core/Error/Assertion.h"
@@ -47,4 +47,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_SERIALIZER_H
+#endif // __ASENGINE_SERIALIZER_H

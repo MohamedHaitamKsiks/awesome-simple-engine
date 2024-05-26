@@ -1,6 +1,6 @@
 
-#ifndef ASENGINE_VEC2_H
-#define ASENGINE_VEC2_H
+#ifndef __ASENGINE_VEC2_H
+#define __ASENGINE_VEC2_H
 
 #include "Math.h"
 #include "Core/Error/Assertion.h"

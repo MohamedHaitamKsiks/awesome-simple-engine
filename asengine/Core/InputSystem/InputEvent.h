@@ -1,6 +1,6 @@
 
-#ifndef ASENGINE_INPUTEVENT_H
-#define ASENGINE_INPUTEVENT_H
+#ifndef __ASENGINE_INPUTEVENT_H
+#define __ASENGINE_INPUTEVENT_H
 
 #include <cstdint>
 

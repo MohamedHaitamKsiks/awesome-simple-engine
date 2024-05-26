@@ -1,5 +1,5 @@
-#ifndef ASENGINE_UNIQUE_STRING_H
-#define ASENGINE_UNIQUE_STRING_H
+#ifndef __ASENGINE_UNIQUE_STRING_H
+#define __ASENGINE_UNIQUE_STRING_H
 
 #include <functional>
 #include <string>

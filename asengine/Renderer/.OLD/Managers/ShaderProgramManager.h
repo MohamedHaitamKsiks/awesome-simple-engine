@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SHADER_PROGRAM_MANAGER_H
-#define ASENGINE_SHADER_PROGRAM_MANAGER_H
+#ifndef __ASENGINE_SHADER_PROGRAM_MANAGER_H
+#define __ASENGINE_SHADER_PROGRAM_MANAGER_H
 
 #include "Core/Math/Vector2.h"
 #include "Core/Math/Vector3.h"
@@ -85,4 +85,4 @@ namespace ASEngine
 
 } // namespace ASEngine
 
-#endif // ASENGINE_SHADER_PROGRAM_MANAGER_H
+#endif // __ASENGINE_SHADER_PROGRAM_MANAGER_H

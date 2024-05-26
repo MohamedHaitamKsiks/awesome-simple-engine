@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SHADER_SOURCE_H
-#define ASENGINE_SHADER_SOURCE_H
+#ifndef __ASENGINE_SHADER_SOURCE_H
+#define __ASENGINE_SHADER_SOURCE_H
 
 #include <string>
 #include "ShaderParams.h"
@@ -42,4 +42,4 @@ namespace ASEngine
     };
 } // namespace ASEngine
 
-#endif // ASENGINE_SHADER_SOURCE_H
+#endif // __ASENGINE_SHADER_SOURCE_H

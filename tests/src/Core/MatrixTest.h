@@ -1,5 +1,5 @@
-#ifndef ASENGINE_MATRIX_TEST_H
-#define ASENGINE_MATRIX_TEST_H
+#ifndef __ASENGINE_MATRIX_TEST_H
+#define __ASENGINE_MATRIX_TEST_H
 
 #include "ASEngine.h"
 using namespace ASEngine;
@@ -26,5 +26,5 @@ class Matrix4x4Test : public MatrixTest<Matrix4x4>
     void DescribeSpecializedTests() override;
 };
 
-#endif // ASENGINE_MATRIX_TEST_H
+#endif // __ASENGINE_MATRIX_TEST_H
 

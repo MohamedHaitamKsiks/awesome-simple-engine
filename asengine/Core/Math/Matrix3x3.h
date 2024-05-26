@@ -1,6 +1,6 @@
 
-#ifndef ASENGINE_MAT3_H
-#define ASENGINE_MAT3_H
+#ifndef __ASENGINE_MAT3_H
+#define __ASENGINE_MAT3_H
 
 #include "Core/Error/Assertion.h"
 #include "SquareMatrix.h"

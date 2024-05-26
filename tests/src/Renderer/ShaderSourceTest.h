@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SHADER_SOURCE_TEST_H
-#define ASENGINE_SHADER_SOURCE_TEST_H
+#ifndef __ASENGINE_SHADER_SOURCE_TEST_H
+#define __ASENGINE_SHADER_SOURCE_TEST_H
 
 #include "ASEngine.h"
 
@@ -14,4 +14,4 @@ private:
     ResourceRef<ShaderSource> m_Source;
 };
 
-#endif // ASENGINE_SHADER_SOURCE_TEST_H
+#endif // __ASENGINE_SHADER_SOURCE_TEST_H

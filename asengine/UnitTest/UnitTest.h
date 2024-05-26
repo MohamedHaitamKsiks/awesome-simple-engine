@@ -1,5 +1,5 @@
-#ifndef ASENGINE_UNIT_TEST_H
-#define ASENGINE_UNIT_TEST_H
+#ifndef __ASENGINE_UNIT_TEST_H
+#define __ASENGINE_UNIT_TEST_H
 
 #include "Macros/Foreach.h"
 #include "Core/Error/Exception.h"
@@ -53,4 +53,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_UNIT_TEST_H
+#endif // __ASENGINE_UNIT_TEST_H

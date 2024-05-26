@@ -1,5 +1,5 @@
-#ifndef ASENGINE_IRESOURCE_CLASS_H
-#define ASENGINE_IRESOURCE_CLASS_H
+#ifndef __ASENGINE_IRESOURCE_CLASS_H
+#define __ASENGINE_IRESOURCE_CLASS_H
 
 #include <cstdint>
 #include <unordered_map>
@@ -40,4 +40,4 @@ namespace ASEngine
 
 } // namespace ASEngine
 
-#endif // ASENGINE_IRESOURCE_CLASS_H
+#endif // __ASENGINE_IRESOURCE_CLASS_H

@@ -1,6 +1,6 @@
 
-#ifndef ASENGINE_IMAGE_H
-#define ASENGINE_IMAGE_H
+#ifndef __ASENGINE_IMAGE_H
+#define __ASENGINE_IMAGE_H
 
 #include <cstdint>
 #include <string>

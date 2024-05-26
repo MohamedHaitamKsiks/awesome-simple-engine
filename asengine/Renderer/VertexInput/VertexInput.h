@@ -1,5 +1,5 @@
-#ifndef ASENGINE_VERTEX_INPUT_H
-#define ASENGINE_VERTEX_INPUT_H
+#ifndef __ASENGINE_VERTEX_INPUT_H
+#define __ASENGINE_VERTEX_INPUT_H
 
 #include <vector>
 #include <cstdint>

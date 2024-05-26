@@ -1,5 +1,5 @@
-#ifndef ASENGINE_TEXTURE_H
-#define ASENGINE_TEXTURE_H
+#ifndef __ASENGINE_TEXTURE_H
+#define __ASENGINE_TEXTURE_H
 
 #include "Renderer/Managers/TextureManager.h"
 #include "Image.h"
@@ -32,4 +32,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_TEXTURE_H
+#endif // __ASENGINE_TEXTURE_H

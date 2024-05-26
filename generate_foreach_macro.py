@@ -5,10 +5,10 @@ file_path = "engine/Macros/Foreach.h"
 
 # include guards
 file_head = '''
-    #ifndef ASENGINE_MACRO_FOREACH_H
-    #define ASENGINE_MACRO_FOREACH_H
+    #ifndef __ASENGINE_MACRO_FOREACH_H
+    #define __ASENGINE_MACRO_FOREACH_H
 '''
-file_end = "#endif // ASENGINE_MACRO_FOREACH_H"
+file_end = "#endif // __ASENGINE_MACRO_FOREACH_H"
 
 #get max agrugment 
 assert (len(sys.argv) == 2)

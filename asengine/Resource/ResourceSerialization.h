@@ -1,5 +1,5 @@
-#ifndef ASENGINE_RESOURCE_SERIALIAZATION_H
-#define ASENGINE_RESOURCE_SERIALIAZATION_H
+#ifndef __ASENGINE_RESOURCE_SERIALIAZATION_H
+#define __ASENGINE_RESOURCE_SERIALIAZATION_H
 
 
 
@@ -24,4 +24,4 @@ Json T::Serialize() const \
     return Serializer<T>::Serialize(static_cast<const T&>(*this)); \
 }
 
-#endif // ASENGINE_RESOURCE_SERIALIAZATION_H
+#endif // __ASENGINE_RESOURCE_SERIALIAZATION_H

@@ -1,5 +1,5 @@
-#ifndef ASENGINE_ENTITY_QUERY_H
-#define ASENGINE_ENTITY_QUERY_H
+#ifndef __ASENGINE_ENTITY_QUERY_H
+#define __ASENGINE_ENTITY_QUERY_H
 
 #include <functional>
 #include <algorithm>
@@ -90,4 +90,4 @@ namespace ASEngine
 
 } // namespace ASEngine
 
-#endif // ASENGINE_ENTITY_QUERY_H
+#endif // __ASENGINE_ENTITY_QUERY_H

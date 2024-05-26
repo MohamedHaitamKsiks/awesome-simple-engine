@@ -1,6 +1,6 @@
 
-#ifndef ASENGINE_SCENE_H
-#define ASENGINE_SCENE_H
+#ifndef __ASENGINE_SCENE_H
+#define __ASENGINE_SCENE_H
 
 #include <memory>
 
@@ -41,4 +41,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif // ASENGINE_SCENE_H
+#endif // __ASENGINE_SCENE_H

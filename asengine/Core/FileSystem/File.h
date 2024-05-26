@@ -1,5 +1,5 @@
-#ifndef ASENGINE_FILESYSTEM_H
-#define ASENGINE_FILESYSTEM_H
+#ifndef __ASENGINE_FILESYSTEM_H
+#define __ASENGINE_FILESYSTEM_H
 
 
 #ifdef __ANDROID__
@@ -76,4 +76,4 @@ namespace ASEngine {
 
 } // ASEngine
 
-#endif // ASENGINE_FILESYSTEM_H
+#endif // __ASENGINE_FILESYSTEM_H

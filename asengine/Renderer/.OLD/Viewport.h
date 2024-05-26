@@ -1,5 +1,5 @@
-#ifndef ASENGINE_VIEWPORT_H
-#define ASENGINE_VIEWPORT_H
+#ifndef __ASENGINE_VIEWPORT_H
+#define __ASENGINE_VIEWPORT_H
 
 #include "Core/Singleton/Singleton.h"
 #include "Core/Math/Vector2.h"

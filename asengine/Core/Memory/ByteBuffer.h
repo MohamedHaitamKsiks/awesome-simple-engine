@@ -1,5 +1,5 @@
-#ifndef ASENGINE_BYTE_BUFFER_H
-#define ASENGINE_BYTE_BUFFER_H
+#ifndef __ASENGINE_BYTE_BUFFER_H
+#define __ASENGINE_BYTE_BUFFER_H
 
 #include <cstdint>
 #include <cstddef>
@@ -65,4 +65,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_BYTE_BUFFER_H
+#endif // __ASENGINE_BYTE_BUFFER_H

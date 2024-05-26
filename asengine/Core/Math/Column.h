@@ -1,5 +1,5 @@
-#ifndef ASENGINE_COLUMN_H
-#define ASENGINE_COLUMN_H
+#ifndef __ASENGINE_COLUMN_H
+#define __ASENGINE_COLUMN_H
 
 #include "Core/Error/Assertion.h"
 
@@ -44,4 +44,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_COLUMN_H
+#endif // __ASENGINE_COLUMN_H

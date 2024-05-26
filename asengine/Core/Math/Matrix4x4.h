@@ -1,6 +1,6 @@
 
-#ifndef ASENGINE_MAT4_H
-#define ASENGINE_MAT4_H
+#ifndef __ASENGINE_MAT4_H
+#define __ASENGINE_MAT4_H
 
 #include "SquareMatrix.h"
 #include "Vector3.h"

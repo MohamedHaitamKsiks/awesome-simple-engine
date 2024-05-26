@@ -1,5 +1,5 @@
-#ifndef ASENGINE_ENTITY_DATA_H
-#define ASENGINE_ENTITY_DATA_H
+#ifndef __ASENGINE_ENTITY_DATA_H
+#define __ASENGINE_ENTITY_DATA_H
 
 #include <memory>
 #include <vector>

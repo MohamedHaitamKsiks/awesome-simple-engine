@@ -1,5 +1,5 @@
-#ifndef ASENGINE_ARCHETYPE_MANAGER_H
-#define ASENGINE_ARCHETYPE_MANAGER_H
+#ifndef __ASENGINE_ARCHETYPE_MANAGER_H
+#define __ASENGINE_ARCHETYPE_MANAGER_H
 
 #include <unordered_map>
 #include <memory>

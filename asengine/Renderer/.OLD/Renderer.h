@@ -1,5 +1,5 @@
-#ifndef ASENGINE_RENDERER_H
-#define ASENGINE_RENDERER_H
+#ifndef __ASENGINE_RENDERER_H
+#define __ASENGINE_RENDERER_H
 
 #include "Core/Signals/Signal.h"
 #include "ECS/System.h"
@@ -47,4 +47,4 @@ namespace ASEngine
     
 } // namespace ASEngine
 
-#endif // ASENGINE_RENDERER_H
+#endif // __ASENGINE_RENDERER_H

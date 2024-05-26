@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SINGLETON_H
-#define ASENGINE_SINGLETON_H
+#ifndef __ASENGINE_SINGLETON_H
+#define __ASENGINE_SINGLETON_H
 
 #include "Core/Error/Assertion.h"
 #include "Core/Debug/Debug.h"

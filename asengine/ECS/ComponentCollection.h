@@ -1,5 +1,5 @@
-#ifndef ASENGINE_COMPONENT_COLLECTION_H
-#define ASENGINE_COMPONENT_COLLECTION_H
+#ifndef __ASENGINE_COMPONENT_COLLECTION_H
+#define __ASENGINE_COMPONENT_COLLECTION_H
 
 #include <vector>
 #include "Component.h"
@@ -95,4 +95,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_COMPONENT_COLLECTION_H
+#endif // __ASENGINE_COMPONENT_COLLECTION_H

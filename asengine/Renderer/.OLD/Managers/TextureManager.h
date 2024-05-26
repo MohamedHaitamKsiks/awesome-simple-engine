@@ -1,5 +1,5 @@
-#ifndef ASENGINE_TEXTURE_MANAGER_H
-#define ASENGINE_TEXTURE_MANAGER_H
+#ifndef __ASENGINE_TEXTURE_MANAGER_H
+#define __ASENGINE_TEXTURE_MANAGER_H
 
 #include "Core/Memory/PoolAllocator.h"
 #include "Core/Singleton/Singleton.h"
@@ -67,4 +67,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // ASENGINE_TEXTURE_MANAGER_H
+#endif // __ASENGINE_TEXTURE_MANAGER_H

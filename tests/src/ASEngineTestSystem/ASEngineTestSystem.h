@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SYSTEM_TESTSYSTEM_H
-#define ASENGINE_SYSTEM_TESTSYSTEM_H
+#ifndef __ASENGINE_SYSTEM_TESTSYSTEM_H
+#define __ASENGINE_SYSTEM_TESTSYSTEM_H
 
 #include "ASEngine.h"
 
@@ -11,4 +11,4 @@ class ASEngineTestSystem: public UnitTestSystem
     void Registry() override;
 };
 
-#endif // ASENGINE_SYSTEM_TESTSYSTEM_H
+#endif // __ASENGINE_SYSTEM_TESTSYSTEM_H

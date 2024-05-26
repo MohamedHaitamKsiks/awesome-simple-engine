@@ -1,5 +1,5 @@
-#ifndef ASENGINE_SYSTEM_H
-#define ASENGINE_SYSTEM_H
+#ifndef __ASENGINE_SYSTEM_H
+#define __ASENGINE_SYSTEM_H
 
 #include "Core/InputSystem/InputEvent.h"
 
