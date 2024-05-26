@@ -17,6 +17,7 @@
 
 #include "Class/ClassManager.h"
 
+
 namespace ASEngine
 {
     class Resource;

@@ -116,6 +116,7 @@ namespace ASEngine
         spirvFile.Close();
         Create(spirv);
 
+        m_Spirv = spirv;
         return true;
     }
 

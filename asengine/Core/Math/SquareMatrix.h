@@ -37,9 +37,9 @@ namespace ASEngine
         static constexpr SquareMatrix Diagonal(float d)
         {
             SquareMatrix result;
-            for (int j = 0; j < N; j++)
+            for (int j = 0; j < static_cast<int>(N); j++)
             {
-                for (int i = 0; i < N; i++)
+                for (int i = 0; i < static_cast<int>(N); i++)
                 {
                     if (i == j)
                         result[i][j] = d;

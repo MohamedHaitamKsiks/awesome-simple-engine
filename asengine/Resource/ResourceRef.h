@@ -11,7 +11,7 @@ namespace ASEngine
     class ResourceRef
     {
     public:
-        ResourceRef()
+        constexpr ResourceRef()
         {
             m_Instance = nullptr;
         }
@@ -86,11 +86,28 @@ namespace ASEngine
         {
             return m_Instance;
         }
-        
-    private:
-        T* m_Instance = nullptr;
 
-        ResourceRef(T* instance): m_Instance(instance)
+        // test equality of two reference (are they referencing to the same thing)
+        inline constexpr bool operator==(const ResourceRef& ref)
+        {
+            return m_Instance == ref.m_Instance;
+        }
+
+        inline constexpr bool operator!=(const ResourceRef &ref)
+        {
+            return !(*this == ref);
+        }
+
+        // null constant
+        static inline constexpr ResourceRef NONE()
+        {
+            return ResourceRef(nullptr);
+        }
+
+    private : 
+        T *m_Instance = nullptr;
+
+        constexpr ResourceRef(T* instance): m_Instance(instance)
         {
             static_assert(std::is_base_of_v<Resource, T>);
         }

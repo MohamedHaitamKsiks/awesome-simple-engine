@@ -4,6 +4,8 @@
 #include "Resource/Resource.h"
 #include "Resource/ResourceDefinition.h"
 
+#include "Core/Memory/ByteBuffer.h"
+
 namespace ASEngine
 {
     // buffer type
@@ -26,8 +28,8 @@ namespace ASEngine
         void Create(BufferType type);
 
         // set data of buffer
-        void SetData(const void* data, size_t size);
-    
+        void SetData(const ByteBuffer &data);
+
         // get data size
         inline size_t GetSize() const
         {
@@ -39,7 +41,7 @@ namespace ASEngine
         virtual void CreateImp(BufferType type) = 0;
 
         // implementation of buffer set data
-        virtual void SetDataImp(const void* data, size_t size) = 0;
+        virtual void SetDataImp(const ByteBuffer& data) = 0;
     private:
         BufferType m_Type = BufferType::NONE;
         size_t m_Size = 0;

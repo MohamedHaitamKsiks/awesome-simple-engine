@@ -45,9 +45,9 @@ void ShaderSourceTest::Describe()
             const auto& identifierInfo = identifiers.at(fieldNames[i]);
             
             ASENGINE_EXPECT(identifierInfo.Type == ShaderIdentifierType::FLOAT);
-            ASENGINE_EXPECT(identifierInfo.VectorSize == 4);
-            ASENGINE_EXPECT(identifierInfo.Columns == 4);
-            ASENGINE_EXPECT(identifierInfo.Offset == i * sizeof(Matrix4x4));
+            ASENGINE_EXPECT(identifierInfo.VectorSize == 3);
+            ASENGINE_EXPECT(identifierInfo.Columns == 3);
+            ASENGINE_EXPECT(identifierInfo.Offset == i * sizeof(Matrix3x3));
         }
     });
 

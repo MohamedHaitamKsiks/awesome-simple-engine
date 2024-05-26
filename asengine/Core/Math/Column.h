@@ -28,15 +28,13 @@ namespace ASEngine
         }
         */
 
-        constexpr inline float& operator[](int i)
+        constexpr inline float& operator[](uint32_t i)
         {
-            ASENGINE_ASSERT(i < N && i >= 0, "Invalid index");
             return m_Data[i];
         }
 
-        constexpr inline float operator[](int i) const
+        constexpr inline float operator[](uint32_t i) const
         {
-            ASENGINE_ASSERT(i < N && i >= 0, "Invalid index");
             return m_Data[i];
         }
 

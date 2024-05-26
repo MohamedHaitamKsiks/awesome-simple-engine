@@ -30,8 +30,15 @@ namespace ASEngine
         {
             return m_Params;
         }
+
+        // get spirv 
+        inline const SpirvBinary& GetSpirv() const
+        {
+            return m_Spirv;
+        }
     private:
         ShaderParams m_Params{};
+        SpirvBinary m_Spirv{};
     };
 } // namespace ASEngine
 

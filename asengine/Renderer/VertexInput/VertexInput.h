@@ -36,6 +36,7 @@ namespace ASEngine
     // vertex input layout
     struct VertexInputLayout
     {
+        uint32_t Binding = 0;
         size_t Stride = 0;
         VertexInputRate InputRate = VertexInputRate::NONE;
         std::vector<VertexAttribute> VertexAttributes{};

@@ -17,6 +17,16 @@ namespace ASEngine
         m_CurrentVertexBuffer[inputRate] = vertexBuffer;
     }
 
+    void Renderer::BindVertexBuffer(ResourceRef<Buffer> vertexBuffer, uint32_t binding)
+    {
+        // don't bind if already bound
+        if (m_CurrentVertexBuffer.find(binding) != m_CurrentVertexBuffer.end() && m_CurrentVertexBuffer[inputRate] == vertexBuffer)
+            return;
+
+        BindVertexBufferImp(binding, vertexBuffer);
+        m_CurrentVertexBuffer[binding] = vertexBuffer;
+    }
+
     void Renderer::BindIndexBuffer(ResourceRef<Buffer> indexBuffer)
     {
         if (m_CurrentIndexBuffer == indexBuffer)
@@ -39,5 +49,16 @@ namespace ASEngine
 
         BindShaderImp(shader);
         m_CurrentShader = shader;
+    }
+
+    void Renderer::BindMaterial(ResourceRef<Material> material)
+    {
+        if (m_CurrentMaterial == material)
+            return;
+
+        // bind shader of the material
+        BindShader(material->GetShader());
+
+        
     }
 } // namespace ASEngine

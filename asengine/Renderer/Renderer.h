@@ -5,6 +5,7 @@
 
 #include "Buffer/Buffer.h"
 #include "Shader/Shader.h"
+#include "Material/Material.h"
 
 #include "ECS/System.h"
 #include "Core/Singleton/Singleton.h"
@@ -25,7 +26,7 @@ namespace ASEngine
         virtual ~Renderer(){}
 
         // bind vertex buffer to an input rate
-        void BindVertexBuffer(VertexInputRate inputRate, ResourceRef<Buffer> vertexBuffer);
+        void BindVertexBuffer(ResourceRef<Buffer> vertexBuffer, uint32_t binding = 0);
 
         // bind index buffer
         void BindIndexBuffer(ResourceRef<Buffer> indexBuffer);
@@ -35,6 +36,9 @@ namespace ASEngine
 
         // bind shader
         void BindShader(ResourceRef<Shader> shader);
+
+        // bind material
+        void BindMaterial(ResourceRef<Material> material);
 
         // clear screen
         virtual void Clear() = 0;
@@ -53,18 +57,19 @@ namespace ASEngine
 
     private:
         // current buffers
-        std::unordered_map<VertexInputRate, ResourceRef<Buffer>> m_CurrentVertexBuffer{};
+        std::unordered_map<uint32_t, ResourceRef<Buffer>> m_CurrentVertexBuffer{};
         ResourceRef<Buffer> m_CurrentIndexBuffer{};
 
         // current shader
-        ResourceRef<Shader> m_CurrentShader{};
+        ResourceRef<Shader> m_CurrentShader = ResourceRef<Shader>::NONE();
+        // current material
+        ResourceRef<Material> m_CurrentMaterial = ResourceRef<Material>::NONE();
 
         // count draw calls
         uint32_t m_DrawCallsCount = 0;
 
         // on render
         void Render() override;
-        
     };
 } // namespace ASEngine
 

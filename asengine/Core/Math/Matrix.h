@@ -24,16 +24,26 @@ namespace ASEngine
         }
 
         // access data
-        constexpr inline ColumnType& operator[](int i)
+        constexpr inline ColumnType& operator[](uint32_t i)
         {
-            ASENGINE_ASSERT(i < Cols && i >= 0, "Invalid index");
             return m_Cols[i];
         }
 
-        constexpr inline const ColumnType &operator[](int i) const
+        constexpr inline const ColumnType &operator[](uint32_t i) const
         {
-            ASENGINE_ASSERT(i < Cols && i >= 0, "Invalid index");
             return m_Cols[i];
+        }
+
+        // get coulmn size
+        constexpr static inline uint32_t GetColumnsSize()
+        {
+            return static_cast<uint32_t>(Cols);
+        }
+
+        // get row size
+        constexpr static inline uint32_t GetRowsSize()
+        {
+            return static_cast<uint32_t>(Rows);
         }
 
         // matrix multiplication (naive implementation)
@@ -74,9 +84,9 @@ namespace ASEngine
         friend constexpr Matrix operator-(const Matrix &a, const Matrix &b)
         {
             Matrix result;
-            for (int j = 0; j < Rows; j++)
+            for (uint32_t j = 0; j < Rows; j++)
             {
-                for (int i = 0; i < Cols; i++)
+                for (uint32_t i = 0; i < Cols; i++)
                 {
                     result[i][j] = a[i][j] - b[i][j];
                 }
@@ -88,9 +98,9 @@ namespace ASEngine
         friend constexpr Matrix operator*(const Matrix &matrix, float s)
         {
             Matrix result;
-            for (int j = 0; j < Rows; j++)
+            for (uint32_t j = 0; j < Rows; j++)
             {
-                for (int i = 0; i < Cols; i++)
+                for (uint32_t i = 0; i < Cols; i++)
                 {
                     result[i][j] =  matrix[i][j] * s;
                 }

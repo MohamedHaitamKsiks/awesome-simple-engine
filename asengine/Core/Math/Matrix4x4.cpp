@@ -1,5 +1,10 @@
 #include "Matrix4x4.h"
 #include "Math.h"
+#include "MatrixSerialiazation.h"
+
+#include "Core/Error/Assertion.h"
+#include "Core/Serialization/Json.h"
+#include "Core/Serialization/Serializer.h"
 
 namespace ASEngine
 {
@@ -58,5 +63,7 @@ namespace ASEngine
             }
         };
     }
+
+    ASENGINE_SERIALIAZE_MATRIX(Matrix4x4);
 
 } // namespace ASEngine

@@ -15,6 +15,8 @@ namespace ASEngine
     class Matrix3x3: public SquareMatrix<3, 1>
     {
     public:
+        constexpr Matrix3x3() = default;
+
         constexpr Matrix3x3(const DataType &data) : SquareMatrix<3, 1>(data)
         {
         }

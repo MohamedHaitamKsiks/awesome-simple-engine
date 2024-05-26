@@ -12,16 +12,16 @@ namespace ASEngine
 {
     void Buffer::Create(BufferType type)
     {
-        ASENGINE_ASSERT(type != BufferType::NONE, "Buffer Type shouldn't be NONE!");
+        ASENGINE_ASSERT(type != BufferType::NONE, "BufferType shouldn't be NONE!");
         CreateImp(type);
         m_Type = type;
     }
 
-    void Buffer::SetData(const void *data, size_t size)
+    void Buffer::SetData(const ByteBuffer &data)
     {
-        ASENGINE_ASSERT(data, "Data is NULL");
-        SetDataImp(data, size);
-        m_Size = size;
+        ASENGINE_ASSERT(data.GetData(), "Data is NULL");
+        SetDataImp(data);
+        m_Size = data.GetSize();
     }
 
 } // namespace ASEngine

@@ -1,5 +1,5 @@
-#ifndef ASENGINE_MATH_TEST_H
-#define ASENGINE_MATH_TEST_H
+#ifndef ASENGINE_VECTOR_TEST_H
+#define ASENGINE_VECTOR_TEST_H
 
 #include "ASEngine.h"
 using namespace ASEngine;
@@ -28,4 +28,4 @@ class Vector3Test : public VectorTest<Vector3>
 };
 
 
-#endif // ASENGINE_MATH_TEST_H
+#endif // ASENGINE_VECTOR_TEST_H

@@ -12,6 +12,7 @@ namespace ASEngine
     class Matrix4x4: public SquareMatrix<4, 0>
     {
     public:
+        constexpr Matrix4x4() = default;
 
         constexpr Matrix4x4(const DataType& data): SquareMatrix<4, 0>(data)
         {

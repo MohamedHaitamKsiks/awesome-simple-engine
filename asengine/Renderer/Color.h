@@ -22,11 +22,12 @@ namespace ASEngine {
         {
         }
 
-        inline bool operator==(const Color& c){
+        inline constexpr bool operator==(const Color& c){
             return r == c.r && g == c.g && b == c.b && a == c.a;
         }
 
-        inline Color operator*(float s) {
+        inline constexpr Color operator*(float s)
+        {
             return Color{
                 r * s,
                 g * s,
@@ -35,7 +36,8 @@ namespace ASEngine {
             };
         }
 
-        inline Color operator+(const Color& c) {
+        inline constexpr Color operator+(const Color &c)
+        {
             return Color{
                 r + c.r,
                 g + c.g,

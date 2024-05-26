@@ -74,7 +74,7 @@ namespace ASEngine
         }
 
         // abs x and y
-        inline Vector2 Abs() const
+        inline constexpr Vector2 Abs() const
         {
             return Vector2
             {

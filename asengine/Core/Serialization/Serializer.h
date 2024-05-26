@@ -24,7 +24,7 @@ namespace ASEngine
             Json array;
             for(auto& item: value)
             {
-                array.push_back(Serialize(item));
+                array.push_back(Serialize<T>(item));
             }
 
             return array;
@@ -37,7 +37,7 @@ namespace ASEngine
             for (auto& item: object)
             {
                 T deserializedItem;
-                Deserialize(item, deserializedItem);
+                Deserialize<T>(item, deserializedItem);
                 dest.push_back(deserializedItem);
             }
         }

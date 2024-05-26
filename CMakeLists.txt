@@ -1,6 +1,6 @@
 # Sets the minimum version of CMake required to build the native library.
 cmake_minimum_required(VERSION 3.22.1)
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 add_compile_options(-Wall)
 
 project(asengine)
@@ -80,15 +80,22 @@ add_library(
     asengine/Resource/Resource.cpp
     asengine/Resource/ResourceManager.cpp
     #rendering
+    #color
+    asengine/Renderer/Color.cpp
     # shaders
     asengine/Renderer/Shader/ShaderSource.cpp
     asengine/Renderer/Shader/ShaderParams.cpp
+    asengine/Renderer/Shader/Shader.cpp
+    #materials
+    asengine/Renderer/Material/Material.cpp
+    #vertex input 
+    asengine/Renderer/VertexInput/VertexInput.cpp
+    asengine/Renderer/VertexInput/VertexInputDescriptor.cpp
     # gpu-buffers
     asengine/Renderer/Buffer/Buffer.cpp
     # textures
     asengine/Renderer/Texture/Image.cpp
-    #audio
-    #asengine/Audio/AudioEngine.cpp
+    asengine/Renderer/Texture/Texture.cpp
     #testing
     asengine/UnitTest/UnitTest.cpp
     asengine/UnitTest/UnitTestSystem.cpp

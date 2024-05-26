@@ -5,11 +5,13 @@
 #include <cstdint>
 #include <string>
 
+// #include "Resource/Resource.h"
 #include "Core/Memory/ByteBuffer.h"
 #include "Renderer/Color.h"
 
 namespace ASEngine 
 {
+    // image resource
     class Image
     {
     public:

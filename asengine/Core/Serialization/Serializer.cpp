@@ -17,6 +17,19 @@ namespace ASEngine
         dest = object.get<int>();
     }
 
+    // uint32_t
+    template <>
+    Json Serializer<uint32_t>::Serialize(const uint32_t &value)
+    {
+        return Json(value);
+    }
+    template <>
+    void Serializer<uint32_t>::Deserialize(const Json &object, uint32_t &dest)
+    {
+        ASENGINE_ASSERT(object.is_number_integer(), "Can't deserialize int if Json object is not an integer number");
+        dest = object.get<uint32_t>();
+    }
+
     // float
     template <>
     Json Serializer<float>::Serialize(const float &value)

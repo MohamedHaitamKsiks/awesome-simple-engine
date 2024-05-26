@@ -71,13 +71,18 @@ void ResourceTest::Describe()
     Test("it registers resource type", []()
     {
         ResourceManager::GetInstance().RegisterAbstractResourceClass<TestResourceType, TestResourceTypeImp>(UniqueString("TestResourceType"));
+        
+        ResourceRef<TestResourceType> test{};
+        ASENGINE_EXPECT(test == ResourceRef<TestResourceType>::NONE());
     });
 
     Test("it can instanciate resource", []()
     {
         ResourceRef<TestResourceType> test = TestResourceType::GetResourceClass().New();
         ASENGINE_EXPECT(test->GetValue() == 5);
+        ASENGINE_EXPECT(test != ResourceRef<TestResourceType>::NONE());
     });
+
 
     Test("it casts to parent type", []()
     {
