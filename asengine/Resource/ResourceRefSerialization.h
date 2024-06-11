@@ -30,12 +30,12 @@ Example of inline definition
 namespace ASEngine \
 { \
     template<> \
-    void Serializer<ResourceRef<Type>>::Deserialize(const Json &object, ResourceRef<Type> &dest) \
+    void Serializer::Deserialize(const Json &object, ResourceRef<Type> &dest) \
     { \
         if (object.is_string()) \
         { \
             UniqueString resourcePath; \
-            Serializer<UniqueString>::Deserialize(object, resourcePath); \
+            Serializer::Deserialize(object, resourcePath); \
             ResourceRef<Resource> resource = Type::GetResourceClass().Load(resourcePath); \
             dest = ResourceRef<Type>(resource); \
         } \
@@ -49,7 +49,7 @@ namespace ASEngine \
     } \
     \
     template <> \
-    Json Serializer<ResourceRef<Type>>::Serialize(const ResourceRef<Type> &dest) \
+    Json Serializer::Serialize(const ResourceRef<Type> &dest) \
     { \
         return Json(); \
     } \

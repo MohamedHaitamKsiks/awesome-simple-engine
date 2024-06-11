@@ -12,7 +12,7 @@
 
 namespace ASEngine
 {
-
+    
     class DesktopApplication 
     {
     public:
@@ -24,7 +24,7 @@ namespace ASEngine
         GLFWwindow *m_Window = nullptr;
 
         // asengine application
-        Application m_Application{};
+        ASEngine m_ASEngine{};
 
         // window information
         struct
@@ -37,7 +37,7 @@ namespace ASEngine
 
 
         // mouse current position
-        static vec2 s_MousePosition;
+        static Vector2 s_MousePosition;
 
         // create window for desktop application
         bool Init();
@@ -65,8 +65,9 @@ namespace ASEngine
 
         // on mouse move
         static void OnMouseMove(GLFWwindow *window, double xpos, double ypos);
+
     };
-    
+
 } // namespace ASEngine
 
 #endif

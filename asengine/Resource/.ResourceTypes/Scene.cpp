@@ -34,20 +34,20 @@ namespace ASEngine
 
     // seriliazation
     template <>
-    Json Serializer<Scene>::Serialize(const Scene &value)
+    Json Serializer::Serialize(const Scene &value)
     {
         Json object = Json({});
         return object;
     }
     template <>
-    void Serializer<Scene>::Deserialize(const Json &object, Scene &dest)
+    void Serializer::Deserialize(const Json &object, Scene &dest)
     {
         assert(object.is_array());
         
         for(auto& entity: object)
         {
             EntityBuilder builder;
-            Serializer<EntityBuilder>::Deserialize(entity, builder);
+            Serializer::Deserialize(entity, builder);
             dest.AddEntityBuilder(builder);
         }
     }
@@ -63,7 +63,7 @@ namespace ASEngine
 
         // deserialize scene
         Json sceneObject = Json::parse(sceneText);
-        Serializer<Scene>::Deserialize(sceneObject, *this);
+        Serializer::Deserialize(sceneObject, *this);
 
         return true;
     }

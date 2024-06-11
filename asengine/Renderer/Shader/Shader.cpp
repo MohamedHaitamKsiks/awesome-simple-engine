@@ -11,26 +11,26 @@ ASENGINE_SERIALIZE_RESOURCE_REF(Shader);
 namespace ASEngine
 {
     template<>
-    void Serializer<Shader>::Deserialize(const Json& object, Shader& dest)
+    void Serializer::Deserialize(const Json& object, Shader& dest)
     {
         // load vertex source
         ResourceRef<ShaderSource> vertexSource;
-        Serializer<ResourceRef<ShaderSource>>::Deserialize(object.at("Vertex"), vertexSource);
+        Serializer::Deserialize(object.at("Vertex"), vertexSource);
         
         // load fragment source
         ResourceRef<ShaderSource> fragmentSource;
-        Serializer<ResourceRef<ShaderSource>>::Deserialize(object.at("Fragment"), fragmentSource);
+        Serializer::Deserialize(object.at("Fragment"), fragmentSource);
         
         // load vertex input descriptor
         ResourceRef<VertexInputDescriptor> vertexInputDescriptor;
-        Serializer<ResourceRef<VertexInputDescriptor>>::Deserialize(object.at("VertexInputDescritor"), vertexInputDescriptor);
+        Serializer::Deserialize(object.at("VertexInputDescritor"), vertexInputDescriptor);
         
         // create shader
         dest.Create(vertexSource, fragmentSource, vertexInputDescriptor);
     }
 
     template<>
-    Json Serializer<Shader>::Serialize(const Shader& value)
+    Json Serializer::Serialize(const Shader& value)
     {
         return Json({});
     }

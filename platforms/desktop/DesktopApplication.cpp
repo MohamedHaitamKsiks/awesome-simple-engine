@@ -40,7 +40,7 @@ namespace ASEngine
             return false;
 
         // setup application modules and systems
-        Application::GetInstance().Setup();
+        m_ASEngine.Setup();
 
         /* Create a windowed mode window and with no context */
         //
@@ -63,7 +63,7 @@ namespace ASEngine
         glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, GLFW_FALSE);
 
         // init asengine systems
-        Application::GetInstance().Init();
+        m_ASEngine.Init();
 
         /* listen to keyboard events */
         glfwSetKeyCallback(m_Window, DesktopApplication::OnKeyboard);
@@ -73,10 +73,10 @@ namespace ASEngine
         glfwSetMouseButtonCallback(m_Window, OnMouseButton);
 
         // connect window signals   
-        Window &window = Window::GetInstance();
-        window.GetResizeSignal().Connect(std::bind(&DesktopApplication::OnWindowChangeSize, this, std::placeholders::_1, std::placeholders::_2));
-        window.GetTitleSignal().Connect(std::bind(&DesktopApplication::OnWindowSetTitle, this, std::placeholders::_1));
-        window.GetFullscreenSignal().Connect(std::bind(&DesktopApplication::OnWindowSetFullscreen, this, std::placeholders::_1));
+        // Window &window = Window::GetInstance();
+        // window.GetResizeSignal().Connect(std::bind(&DesktopApplication::OnWindowChangeSize, this, std::placeholders::_1, std::placeholders::_2));
+        // window.GetTitleSignal().Connect(std::bind(&DesktopApplication::OnWindowSetTitle, this, std::placeholders::_1));
+        // window.GetFullscreenSignal().Connect(std::bind(&DesktopApplication::OnWindowSetFullscreen, this, std::placeholders::_1));
 
         return true;
     }
@@ -85,7 +85,7 @@ namespace ASEngine
     void DesktopApplication::Update(float delta)
     {
         // update app
-        m_Application.Update(delta);
+        m_ASEngine.Update(delta);
 
         /* Poll for and process events */
         glfwPollEvents();
@@ -93,7 +93,7 @@ namespace ASEngine
 
     void DesktopApplication::Terminate()
     {
-        Application::GetInstance().Terminate();
+        m_ASEngine.Terminate();
         glfwTerminate();
     }
 
@@ -120,7 +120,7 @@ namespace ASEngine
             glfwSetWindowSize(m_Window, mode->width, mode->height);
 
             // set size
-            Window::GetInstance().SetSize(mode->width, mode->height);
+            // Window::GetInstance().SetSize(mode->width, mode->height);
             m_WindowInfo.Width = width;
             m_WindowInfo.Height = height;
         }
@@ -128,7 +128,7 @@ namespace ASEngine
         {
             // set windowed
             glfwSetWindowMonitor(m_Window, NULL, m_WindowInfo.XPos, m_WindowInfo.YPos, m_WindowInfo.Width, m_WindowInfo.Height, 0);
-            Window::SetSize(m_WindowInfo.Width, m_WindowInfo.Height);
+            // Window::SetSize(m_WindowInfo.Width, m_WindowInfo.Height);
         }
     }
 
@@ -143,17 +143,17 @@ namespace ASEngine
             return;
 
         // bake keyboard event
-        InputEventKeyboard keyboardEvent;
-        keyboardEvent.Code = key;
-        keyboardEvent.Pressed = action == GLFW_PRESS;
+        // InputEventKeyboard keyboardEvent;
+        // keyboardEvent.Code = key;
+        // keyboardEvent.Pressed = action == GLFW_PRESS;
 
-        InputEvent event{keyboardEvent};
+        // InputEvent event{keyboardEvent};
 
         // push event to application event queue
-        Application::GetInstance().QueueInputEvent(event);
+        // Application::GetInstance().QueueInputEvent(event);
     }
 
-    vec2 DesktopApplication::s_MousePosition = vec2::ZERO();
+    Vector2 DesktopApplication::s_MousePosition = Vector2::ZERO();
 
     void DesktopApplication::OnMouseButton(GLFWwindow *window, int button, int action, int mods)
     {
@@ -166,25 +166,25 @@ namespace ASEngine
         InputEvent event{mouseButtonEvent};
 
         // push event to application event queue
-        Application::GetInstance().QueueInputEvent(event);
+        // Application::GetInstance().QueueInputEvent(event);
     }
 
     void DesktopApplication::OnMouseMove(GLFWwindow *window, double xpos, double ypos)
     {
         // update mouse position
-        s_MousePosition = vec2{
+        s_MousePosition = Vector2{
             (float)xpos, 
             (float)ypos
         };
 
         // bake mouse mouve event
-        InputEventMouseMove mouseMoveEvent;
-        mouseMoveEvent.Position = s_MousePosition;
+        // InputEventMouseMove mouseMoveEvent;
+        // mouseMoveEvent.Position = s_MousePosition;
 
-        InputEvent event{mouseMoveEvent};
+        // InputEvent event{mouseMoveEvent};
 
         // push event to application event queue
-        Application::GetInstance().QueueInputEvent(event);
+        // Application::GetInstance().QueueInputEvent(event);
     }
     
 } // namespace ASEngine

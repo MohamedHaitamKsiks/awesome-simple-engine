@@ -7,12 +7,19 @@ set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 project(headless)
 
 #include the engine 
-include_directories(asengine/include/asengine)
-link_directories(asengine/lib)
+include_directories(${ASENGINE_INCLUDE_PATH})
+link_directories(${ASENGINE_LIB_PATH})
+message("--lib:" ${ASENGINE_LIB_PATH})
 
 #add project
-include_directories(project-src)
-add_subdirectory(project-src)
+#include(ExternalProject)
+#ExternalProject_Add(
+#    asengine-project
+#    PREFIX ${CMAKE_BINARY_DIR}/external_projects
+#    SOURCE_DIR ${ASENGINE_PROJECT_PATH}
+#)
+include_directories(${ASENGINE_PROJECT_PATH})
+add_subdirectory(${ASENGINE_PROJECT_PATH} ${CMAKE_BINARY_DIR}/project_build)
 
 add_executable(build  main.cpp)
 
@@ -21,9 +28,5 @@ target_link_libraries(
     ${PROJECT_LIBRARIES}
     asengine
 )
-
-message(">> " ${PROJECT_LIBRARIES})
-
-
 
 

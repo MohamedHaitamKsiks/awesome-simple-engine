@@ -16,12 +16,12 @@ public: \
 #define ASENGINE_SERIALIZE_RESOURCE_IMP(T) \
 void T::Deserialize(const Json &object) \
 { \
-    Serializer<T>::Deserialize(object, static_cast<T&>(*this)); \
+    Serializer::Deserialize(object, static_cast<T&>(*this)); \
 } \
 \
 Json T::Serialize() const \
 { \
-    return Serializer<T>::Serialize(static_cast<const T&>(*this)); \
+    return Serializer::Serialize(static_cast<const T&>(*this)); \
 }
 
 #endif // __ASENGINE_RESOURCE_SERIALIAZATION_H

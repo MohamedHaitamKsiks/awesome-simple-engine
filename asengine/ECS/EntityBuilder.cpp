@@ -32,7 +32,7 @@ namespace ASEngine
 
     // serialization of Entity Builder
     template <>
-    Json Serializer<EntityBuilder>::Serialize(const EntityBuilder &value)
+    Json Serializer::Serialize(const EntityBuilder &value)
     {
         Json object = Json({});
         // add later ...
@@ -40,7 +40,7 @@ namespace ASEngine
     }
 
     template <>
-    void Serializer<EntityBuilder>::Deserialize(const Json &object, EntityBuilder &dest)
+    void Serializer::Deserialize(const Json &object, EntityBuilder &dest)
     {
         for (auto &component : object.items())
         {

@@ -22,6 +22,19 @@ namespace ASEngine
     {
     ASENGINE_DEFINE_SINGLETON(Renderer);
     public:
+        // supported rendering backends
+        enum class Backend
+        {
+            NONE = 0,
+            // WIP
+            OPENGL,
+            // TODO
+            VULKAN
+        };
+
+        // create renderer using backend
+        static void Create(Backend backend);
+
         // make renderer polymorphic
         virtual ~Renderer(){}
 
@@ -41,7 +54,10 @@ namespace ASEngine
         void BindMaterial(ResourceRef<Material> material);
 
         // clear screen
-        virtual void Clear() = 0;
+        inline void Clear()
+        {
+            ClearImp();
+        }
 
         // get current draw calls count 
         inline uint32_t GetDrawCallsCount() const
@@ -50,15 +66,16 @@ namespace ASEngine
         }
     protected:
         // implementations
-        virtual void BindVertexBufferImp(VertexInputRate inputRate, ResourceRef<Buffer> vertexBuffer) = 0;
+        virtual void BindVertexBufferImp(ResourceRef<Buffer> vertexBuffer, uint32_t binding = 0) = 0;
         virtual void BindIndexBufferImp(ResourceRef<Buffer> indexBuffer) = 0;
         virtual void DrawElementsImp(uint32_t indexCount, uint32_t instanceCount = 1) = 0;
         virtual void BindShaderImp(ResourceRef<Shader> shader) = 0;
+        virtual void ClearImp() = 0;
 
     private:
         // current buffers
         std::unordered_map<uint32_t, ResourceRef<Buffer>> m_CurrentVertexBuffer{};
-        ResourceRef<Buffer> m_CurrentIndexBuffer{};
+        ResourceRef<Buffer> m_CurrentIndexBuffer = ResourceRef<Shader>::NONE();
 
         // current shader
         ResourceRef<Shader> m_CurrentShader = ResourceRef<Shader>::NONE();
@@ -70,6 +87,9 @@ namespace ASEngine
 
         // on render
         void Render() override;
+
+        // exit for unsupported renderer
+        static void ExitUnsupportedRenderer(Backend backend);
     };
 } // namespace ASEngine
 

@@ -19,21 +19,21 @@ public:
     virtual int GetValue() const = 0;
 
 private:
+    friend Serializer;
     virtual void SetValue(int value) = 0;
     
-    friend class Serializer<TestResourceType>;
 };
 
 ASENGINE_SERIALIZE_RESOURCE_REF(TestResourceType);
 
 template <>
-void Serializer<TestResourceType>::Deserialize(const Json &object, TestResourceType &dest)
+void Serializer::Deserialize(const Json &object, TestResourceType &dest)
 {
     dest.SetValue(object.at("Value").get<int>());
 }
 
 template <>
-Json Serializer<TestResourceType>::Serialize(const TestResourceType &value)
+Json Serializer::Serialize(const TestResourceType &value)
 {
     Json object = Json({});
     object["Value"] = value.GetValue();
@@ -130,7 +130,7 @@ void ResourceTest::Describe()
         Json testRefObject = Json("test_resource/test.resource.json");
 
         ResourceRef<TestResourceType> test;
-        Serializer<ResourceRef<TestResourceType>>::Deserialize(testRefObject, test);
+        Serializer::Deserialize(testRefObject, test);
 
         ASENGINE_EXPECT(test->GetValue() == 27052001); 
     });
@@ -141,7 +141,7 @@ void ResourceTest::Describe()
         testRefObject["Value"] = 123;
 
         ResourceRef<TestResourceType> test;
-        Serializer<ResourceRef<TestResourceType>>::Deserialize(testRefObject, test);
+        Serializer::Deserialize(testRefObject, test);
 
         ASENGINE_EXPECT(test->GetValue() == 123); 
     });

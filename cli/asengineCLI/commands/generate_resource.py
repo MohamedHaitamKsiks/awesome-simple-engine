@@ -3,24 +3,22 @@ import sys
 
 def generateResourceCode(name: str) -> tuple[str, str]:
     #guard
-    guardFlag = f"ASENGINE_RESOURCE_{name.upper()}_H"
+    guardFlag = f"__ASENGINE_RESOURCE_{name.upper()}_H"
 
     # generate header code
     headerCode = f'''#ifndef {guardFlag}
 #define {guardFlag}
 
 #include "ASEngine.h"
-
 using namespace ASEngine;
 
-class {name} : public Resource<{name}>
+class {name}: public Resource
 {'{'}
+ASENGINE_DEFINE_RESOURCE({name});
+ASENGINE_SERIALIZE_RESOURCE({name});
 public:
     {name}();
     ~{name}();
-
-private:
-    // ...
 {'}'};
 
 #endif // {guardFlag}
@@ -30,6 +28,24 @@ private:
     sourceCode = f'''#include "{name}.h"
 
 ASENGINE_SERIALIZE_RESOURCE_REF({name});
+
+/* ----------------- Serialiazation ------------------ */
+
+template<>
+void Serializer<{name}>::Deserialize(const Json& object, {name}& dest)
+{'{'}
+    // TODO ...
+{'}'}
+
+template<>
+Json Serializer<{name}>::Serialize(const {name}& value)
+{'{'}
+    return Json({'{'}{'}'});
+{'}'}
+
+ASENGINE_SERIALIZE_RESOURCE_IMP({name});
+
+/* --------------------------------------------------- */
 
 {name}::{name}()
 {'{'}
@@ -41,18 +57,6 @@ ASENGINE_SERIALIZE_RESOURCE_REF({name});
     // write code ...
 {'}'}
 
-// serialization
-template <>
-Json Serializer<{name}>::Serialize(const {name} &value)
-{'{'}
-    return Json({'{}'});
-{'}'}
-
-template <>
-void Serializer<{name}>::Deserialize(const Json &object, {name} &dest)
-{'{'}
-    // write code ...
-{'}'}
 '''
 
     return headerCode, sourceCode

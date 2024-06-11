@@ -94,7 +94,7 @@ namespace ASEngine
         template<typename T>
         void DeserializeAndSet(const Json& object, UniqueString uniformName, UniqueString fieldName);
     
-        friend class Serializer<Material>;
+        friend class Serializer;
     };
 } // namespace ASEngine
 

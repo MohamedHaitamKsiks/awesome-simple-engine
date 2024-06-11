@@ -36,6 +36,12 @@ namespace ASEngine
             return m_Size;
         }
 
+        // get buffer type
+        inline BufferType GetType() const
+        {
+            return m_Type;
+        }
+
     protected:
         // implementation of buffer creation
         virtual void CreateImp(BufferType type) = 0;

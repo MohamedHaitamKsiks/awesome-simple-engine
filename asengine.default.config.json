@@ -1,0 +1,44 @@
+{
+    "targets":
+    {
+        "android":
+        {
+            "sdkPath": "",
+            "emulatorPath": "",
+            "avdName": "",
+            "type": "mobile",
+            "os": "android"
+        },
+        "linux":
+        {
+            "type": "desktop",
+            "os": "linux"
+        },
+        "windows":
+        {
+            "type": "desktop",
+            "os": "windows"
+        },
+        "headless":
+        {
+            "type": "headless",
+            "os": "linux"
+        }
+    },
+
+    "projectTemplatePath": "./project_template",
+    "platformsPath": "./platforms",
+
+    "cmakeToolchains": 
+    {
+        "windows": "./cmake_toolchains/mingw-w64-x86_64.cmake"
+    },
+
+    "asengine":
+    {
+        "buildPath": "./build",
+        "sourcePath": "./asengine"
+    },
+
+    "glslang": "./glslang"
+}

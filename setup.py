@@ -2,63 +2,55 @@ import sys
 import shutil
 import subprocess
 import os
-from build import compile
+import json
 
+from build import compileASEngine
+
+#create directory if not exist
 def createDirectory(dirPath: str):
     if not os.path.isdir(dirPath):
         os.mkdir(dirPath)
 
 
-# setup result
-setupResult = 0
+#setup
+def setup(configPath: str):
+    #compile engine
+    compileASEngine(["linux"])
 
-# define paths
-CLI_ASENGINE_PATH = "cli/asengineCLI/resources/.asengine"
-CLI_ASENGINE_BUILD_PATH = CLI_ASENGINE_PATH + "/build"
-CLI_ASENGINE_INCLUDE_PATH = CLI_ASENGINE_BUILD_PATH + "/include"
-CLI_ASENGINE_LIB_PATH = CLI_ASENGINE_BUILD_PATH + "/lib"
-CLI_ASENGINE_LIB_LINUX_PATH = CLI_ASENGINE_LIB_PATH + "/linux"
-CLI_ASENGINE_LIB_WINDOWS_PATH = CLI_ASENGINE_LIB_PATH + "/windows"
-CLI_ASENGINE_SOURCE_PATH = CLI_ASENGINE_PATH + "/src"
+    #read config path
+    config = {}
+    with open(configPath, "r") as configFile:
+        config = json.load(configFile)
+    
+    #set paths to absolute
+    config["targets"]["android"]["sdkPath"]  = os.path.realpath(config["targets"]["android"]["sdkPath"])
+    config["projectTemplatePath"] = os.path.realpath(config["projectTemplatePath"])
+    config["platformsPath"] = os.path.realpath(config["platformsPath"])
+    config["cmakeToolchains"]["windows"] = os.path.realpath(config["cmakeToolchains"]["windows"])
+    config["asengine"]["buildPath"] = os.path.realpath(config["asengine"]["buildPath"])
+    config["asengine"]["sourcePath"] = os.path.realpath(config["asengine"]["sourcePath"])
 
-CLI_PLATFORMS_PATH = "cli/asengineCLI/resources/.platforms"
-CLI_TEMPLATE_PATH = "cli/asengineCLI/resources/.project_template"
+    # create config
+    CLI_ASENIGNE_CONFIG_PATH = "cli/asengineCLI/resources/.asengine.config.json"
+    with open(CLI_ASENIGNE_CONFIG_PATH, "w") as configFile:
+        json.dump(config, configFile);
 
-# compile the engine
-setupResult |= compile(["linux"])
 
-# copy platform & template
-shutil.copytree("platforms", CLI_PLATFORMS_PATH, dirs_exist_ok=True)
-shutil.copytree("project_template", CLI_TEMPLATE_PATH, dirs_exist_ok=True)
+    #install/reinstall cli
+    os.chdir("cli")
+    if subprocess.call([sys.executable, "-m", "pip", "install", "-e", "."]):
+        return 1
+    
+    os.chdir("..")
 
-# create asengine dir in cli
-createDirectory(CLI_ASENGINE_PATH)
+    #run asengine's unit tests
+    os.chdir("tests")
+    if subprocess.call(["asengine-cli", "build", "headless"]):
+        return 1
+    
+    os.chdir("..")
+    return 0
 
-# create build
-createDirectory(CLI_ASENGINE_BUILD_PATH)
 
-# copy include
-shutil.copytree("build/include", CLI_ASENGINE_INCLUDE_PATH, dirs_exist_ok=True)
-
-# copy libs
-createDirectory(CLI_ASENGINE_LIB_PATH)
-createDirectory(CLI_ASENGINE_LIB_LINUX_PATH)
-createDirectory(CLI_ASENGINE_LIB_WINDOWS_PATH)
-
-shutil.copy("build/lib/linux/asengine.a", CLI_ASENGINE_LIB_LINUX_PATH + "/asengine.a")
-#shutil.copy("build/lib/windows/asengine.a", CLI_ASENGINE_LIB_WINDOWS_PATH + "/asengine.a")
-
-#copy source
-shutil.copytree("asengine", CLI_ASENGINE_SOURCE_PATH, dirs_exist_ok=True)
-
-#install/reinstall cli
-os.chdir("cli")
-setupResult |= subprocess.call([sys.executable, "-m", "pip", "install", "-e", "."])
-os.chdir("..")
-
-#run asengine's unit tests
-os.chdir("tests")
-setupResult |= subprocess.call(["asengine-cli", "build", "headless"])
-os.chdir("..")
-
-sys.exit(setupResult)
+if __name__ == "__main__":
+    sys.exit(setup("asengine.default.config.json"))

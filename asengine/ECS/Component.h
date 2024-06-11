@@ -60,12 +60,12 @@ namespace ASEngine
 
         Json Serialize() override
         {
-            return Serializer<T>::Serialize(dynamic_cast<T&>(*this));
+            return Serializer::Serialize(dynamic_cast<T&>(*this));
         }
 
         void Deserialize(const Json& object) override
         {
-            Serializer<T>::Deserialize(object, dynamic_cast<T&>(*this));
+            Serializer::Deserialize(object, dynamic_cast<T&>(*this));
         }
     };  
 }
@@ -73,34 +73,34 @@ namespace ASEngine
 // export no field
 #define ASENGINE_EXPORT_EMPTY(ComponentType) \
     template <> \
-    Json Serializer<ComponentType>::Serialize(const ComponentType &value) \
+    Json Serializer::Serialize(const ComponentType &value) \
     { \
         return Json({}); \
     } \
     template <> \
-    void Serializer<ComponentType>::Deserialize(const Json &object, ComponentType &dest) \
+    void Serializer::Deserialize(const Json &object, ComponentType &dest) \
     { \
     }
 
 // export component field to be serialiazed/deserialized
 #define ASENGINE_EXPORT(ComponentType, ...) template <> \
-    Json Serializer<ComponentType>::Serialize(const ComponentType &value) { \
+    Json Serializer::Serialize(const ComponentType &value) { \
         Json object = Json({}); \
         FOREACH(SERIALIZE_FIELD,  __VA_ARGS__) \
         return object; \
     } \
     template <> \
-    void Serializer<ComponentType>::Deserialize(const Json &object, ComponentType &dest) \
+    void Serializer::Deserialize(const Json &object, ComponentType &dest) \
     { \
         ASENGINE_ASSERT(object.is_object(), ""); \
         FOREACH(DESERIALIZE_FIELD,  __VA_ARGS__) \
     } 
 
 #define SERIALIZE_FIELD(field) \
-    object[#field] = Serializer<decltype(value.field)>::Serialize(value.field); 
+    object[#field] = Serializer::Serialize(value.field); 
 
 #define DESERIALIZE_FIELD(field) \
-    Serializer<decltype(dest.field)>::Deserialize(object.at(#field), dest.field);
+    Serializer::Deserialize(object.at(#field), dest.field);
 
 
 #endif

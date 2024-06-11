@@ -22,7 +22,7 @@ inline void MatrixTest<MatrixType>::Describe()
         
         // deserialize
         MatrixType matrix;
-        Serializer<MatrixType>::Deserialize(matrixObject, matrix);
+        Serializer::Deserialize(matrixObject, matrix);
     
         // compare result
         for (uint32_t j = 0; j < MatrixType::GetColumnsSize(); j++)
@@ -34,7 +34,7 @@ inline void MatrixTest<MatrixType>::Describe()
         }
 
         // it serializes
-        Json serializedMatrix = Serializer<MatrixType>::Serialize(matrix);
+        Json serializedMatrix = Serializer::Serialize(matrix);
         // compare result
         for (uint32_t j = 0; j < MatrixType::GetColumnsSize(); j++)
         {

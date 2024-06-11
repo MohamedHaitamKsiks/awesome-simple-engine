@@ -28,6 +28,7 @@ namespace ASEngine
     public:
         Exception();
         Exception(const std::string& message);
+        
 
         char* what();
     protected:

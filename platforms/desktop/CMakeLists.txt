@@ -19,19 +19,16 @@ else()
     message("FOUND:" ${OPENGL_INCLUDE_DIR})
 endif()
 
-add_compile_definitions(GLEW_STATIC GLEW_BUILD)
 
 #include the engine 
-include_directories(asengine/include/asengine)
-include_directories(asengine/include/dependencies/glew)
-link_directories(asengine/lib)
+include_directories(${ASENGINE_INCLUDE_PATH})
+link_directories(${ASENGINE_LIB_PATH})
 
 #add project
-include_directories(project-src)
-add_subdirectory(project-src)
+include_directories(${ASENGINE_PROJECT_PATH})
+add_subdirectory(${ASENGINE_PROJECT_PATH})
 
-
-add_executable(build  main.cpp DesktopApplication.cpp )
+add_executable(build  main.cpp DesktopApplication.cpp)
 
 target_link_libraries(
     build
@@ -40,9 +37,5 @@ target_link_libraries(
     OpenGL::GL
     glfw
 )
-
-message(">> " ${PROJECT_LIBRARIES})
-
-
 
 

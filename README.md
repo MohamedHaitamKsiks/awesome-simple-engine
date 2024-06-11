@@ -60,39 +60,59 @@ Example:
 
 ### Resource Manager
 
-Most resources in the engine are referenced by a unique Id that can either be assigned by the user or generated.
+Resource are garbage collected objects that can be loaded from a file o created by the programmer.
 
-The default resources are:
+Resources are always accessed using a ResourceReference.
 
+```cpp
+// getting resource class
+auto& textureClass = Texture::GetResourceClass();
 
-#### 1. Images
+// creating reference
+ResourceRef<Texture> createdTexture = textureClass.New();
 
-Loading images from png files that can be used to generate textures to draw.
+// loading resource
+ResourceRef<Texture> loadedTexture = textureClass.Load("assets/example.texture.json");
 
-````cpp
-  Image img;
-  img.load(imagePath);
-  
-  // we can use it to create textures in the gpu
-  Texture texture = Texture::LoadFromImage(img);
-````
+// automatically destroyed if not needed 
+```
 
-#### 2. Shaders
+### Create a resource class
 
-````cpp
-  Shader shader;
-  shader.Load("shaders/default.glsl");
-```` 
+Example of resource resource class:
 
-#### 3. Materials
+Header file:
+```cpp
+class Buffer: public Resource
+{
+ASENGINE_DEFINE_RESOURCE(Buffer);
+public:
+  virtual ~Buffer() {};
 
-Create material depending of shader.
+  // create buffer
+  void Create(BufferType type);
 
-````cpp
-  Material mat;
-  mat.Create(shaderId);
-  mat.SetShaderParam(UniqueString("u_Texture"), texture);
-```` 
+private:
+  BufferType m_Type = BufferType::NONE;
+};
+```
+
+Source file:
+```cpp
+ASENGINE_SERIALIZE_RESOURCE_REF(Buffer);
+
+// ...
+```
+
+Your register your resource class like this:
+```cpp
+ResourceManager::GetInstance().RegisterResourceClass<Buffer>("Buffer");
+```
+
+If you want a resource class with different implementations (useful for API agnostic architectures), you can register your resource class like this:
+```cpp
+ResourceManager::GetInstance().RegisterAbstractResourceClass<Buffer, OpenGLBuffer>("Buffer"); 
+```
 
 ### Entity Component System
 
@@ -116,6 +136,9 @@ struct SpriteComponent: public Component<SpriteComponent>
   ResourceID SpriteID;
   float Frame = 0.0f;
   float FrameRate = 8.0f;
+
+  void OnCreate() override;
+  void OnDestroy() override;
 };
 ````
 
@@ -129,18 +152,17 @@ Example:
 class SpriteRenderingSystem: public ISystem
 {
 public:
-
-    // update
-    void Update(float delta)
+  // update
+  void Update(float delta)
+  {
+    // query components
+    TEntityQuery<SpriteComponent, TransformComponent>query{};
+    
+    query.ForEach([&delta](SpriteComponent& sprite, TransformComponent& transform)
     {
-      // query components
-      TEntityQuery<SpriteComponent, TransformComponent>query{};
-      
-      query.ForEach([&delta](SpriteComponent& sprite, TransformComponent& transform)
-      {
-        //behaviour...
-      });
-    }
+      //behaviour...
+    });
+  }
 };
 ````
 
@@ -157,17 +179,18 @@ Example:
   builder.AddComponents(sprite, transform);
 
   // create entity
-  EntityID entityID = EntityManager::Create(builder);
+  auto& entityManager = EntityManager::GetInstance();
+  EntityID entityID = entityManager.Create(builder);
 
   // destroy entity
-  EntityManager::Destroy(entityID);
+  entityManager.Destroy(entityID);
 ````
 
 We are not done yet, you need to register your components and systems to the module your working on.
 
 ````cpp
     // component registry ...
-    ComponentManager::GetInsatance().RegisterComponent<SpriteComponent>(UniqueString("Sprite"));
+    ComponentManager::GetInsatance().RegisterComponent<SpriteComponent>("Sprite");
 
     // system registry ...
     SystemManager::GetInsatance().RegisterSystem<SpriteRenderingSystem>();
@@ -178,15 +201,12 @@ We are not done yet, you need to register your components and systems to the mod
 
 ### Other Features
 
-1. Interpolation
+1. Math
 
-2. Math
+2. Log
 
-3. Log
+3. UniqueStrings
 
-4. UniqueStrings
-
-5. Modules
 
 ## Future of the engine.
 

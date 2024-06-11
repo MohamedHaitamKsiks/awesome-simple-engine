@@ -27,6 +27,7 @@ namespace ASEngine
         }
 
     private:
+        friend class Serializer;
         std::vector<VertexInputLayout> m_VertexInputLayouts{};
     };
 } // namespace ASEngine

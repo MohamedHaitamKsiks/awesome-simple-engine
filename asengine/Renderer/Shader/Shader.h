@@ -43,6 +43,24 @@ namespace ASEngine
         {
             return m_Params;
         }
+
+        // get shader vertex input descriptor
+        inline ResourceRef<VertexInputDescriptor> GetVertexInputDescritor() const
+        {
+            return m_VertexInputDescriptor;
+        }
+
+        // get fragment source
+        inline ResourceRef<ShaderSource> GetFragmentSource() const
+        {
+            return m_FragmentSource;
+        }
+
+        // get vertex source
+        inline ResourceRef<ShaderSource> GetVertexSource() const
+        {
+            return m_VertexSource;
+        }
     protected:
         // api specific implementations
         virtual void CreateImp(ResourceRef<ShaderSource> vertexSource, ResourceRef<ShaderSource> fragmentSource, ResourceRef<VertexInputDescriptor> vertexInputDescriptor) = 0;
@@ -58,7 +76,7 @@ namespace ASEngine
         std::unordered_map<UniqueString, ResourceRef<Texture>> m_Samplers{};
 
         // vertex input layouts
-        std::unordered_map<VertexInputRate, VertexInputLayout> m_VertexInputLayouts{};
+        ResourceRef<VertexInputDescriptor> m_VertexInputDescriptor;
     };
 } // namespace ASEngine
 

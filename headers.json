@@ -1,0 +1,10 @@
+{
+    "include": 
+    [
+        "asengine"
+    ],
+    "exclude":
+    [
+        "asengine/Renderer/Backend"
+    ]
+}

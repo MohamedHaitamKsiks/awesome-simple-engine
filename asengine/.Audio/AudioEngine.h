@@ -1,5 +1,5 @@
 #ifndef __ASENGINE_AUDIO_ENGINE
-#define ASENGINE_AUDIO_ENGINE
+#define __ASENGINE_AUDIO_ENGINE
 
 /*
 #include "Thirdparty/miniaudio.h"

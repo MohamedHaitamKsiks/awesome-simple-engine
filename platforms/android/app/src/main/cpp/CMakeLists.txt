@@ -50,7 +50,6 @@ find_package(game-activity REQUIRED CONFIG)
 # build script, prebuilt third-party libraries, or system libraries.
 
 include_directories(asengine/include/engine)
-include_directories(asengine/include/dependencies/freetype)
 add_subdirectory(asengine)
 
 include_directories(project-src)

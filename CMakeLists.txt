@@ -25,8 +25,8 @@ add_subdirectory(dependencies/SPIRV-Cross)
 include_directories(dependencies/SPIRV-Cross)
 
 # add miniaudio
-#add_subdirectory(dependencies/miniaudio)
-#include_directories(dependencies/miniaudio)
+add_subdirectory(dependencies/miniaudio)
+include_directories(dependencies/miniaudio)
 
 # add stb_image
 add_subdirectory(dependencies/stb_image)
@@ -80,6 +80,7 @@ add_library(
     asengine/Resource/Resource.cpp
     asengine/Resource/ResourceManager.cpp
     #rendering
+    asengine/Renderer/Backend/RendererBackend.cpp
     #color
     asengine/Renderer/Color.cpp
     # shaders
@@ -88,7 +89,7 @@ add_library(
     asengine/Renderer/Shader/Shader.cpp
     #materials
     asengine/Renderer/Material/Material.cpp
-    #vertex input 
+    #vertex input
     asengine/Renderer/VertexInput/VertexInput.cpp
     asengine/Renderer/VertexInput/VertexInputDescriptor.cpp
     # gpu-buffers
@@ -105,32 +106,33 @@ add_library(
 
 if(NOT ANDROID)
     # add opengl
-    #find_package(OpenGL REQUIRED)
-    #include_directories(${OPENGL_INCLUDE_DIRS})
-
-    #include_directories(dependencies/glew/include)
-    #add_library(
-    #    glew
-    #    STATIC
-    #    dependencies/glew/src/glew.c
-    #)
-    #add_compile_definitions(GLEW_STATIC GLEW_BUILD)
-
+    find_package(OpenGL REQUIRED)
+    include_directories(${OPENGL_INCLUDE_DIRS})
+    
+    include_directories(dependencies/glew/include)
+    add_library(
+        glew
+        STATIC
+        dependencies/glew/src/glew.c
+    )
+    add_compile_definitions(GLEW_STATIC GLEW_BUILD)
+    
     target_link_libraries(
         asengine
-        stb_Image
-        #miniaudio
-        #glew
+        stb_image
+        miniaudio
+        glew
         spirv_cross_glsl
-        #OpenGL::GL
+        OpenGL::GL
     )
 
 else()
     target_link_libraries(
         asengine
         spirv_cross_glsl
+        miniaudio
+        stb_image
     )
-
 endif()
 
 

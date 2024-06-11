@@ -22,7 +22,8 @@ jobs:
                 run: |
                     sudo apt update &&
                     sudo apt-get -y install cmake &&
-                    sudo apt-get -y install g++-mingw-w64
+                    sudo apt-get -y install g++-mingw-w64 &&
+                    sudo apt-get -y install freeglut3-dev
                 
             -   name: Compile and run tests
                 run: python3 setup.py

@@ -61,7 +61,7 @@ namespace ASEngine
                 successCount++;
                 Debug::Log(Debug::Colorized(Debug::GREEN_FG,"  ✓", testName, "(", delta, "ms )"));
             }
-            catch (TestFailException failException)
+            catch (TestFailException& failException)
             {
                 error = 1;
                 Debug::Error("  x", testName);

@@ -20,7 +20,7 @@ namespace ASEngine
 
     // serialization of vector2
     template <>
-    Json Serializer<Vector2>::Serialize(const Vector2 &value)
+    Json Serializer::Serialize(const Vector2 &value)
     {
         Json vector2Obj = Json({});
         vector2Obj["x"] = value.x;
@@ -30,11 +30,11 @@ namespace ASEngine
     }
 
     template <>
-    void Serializer<Vector2>::Deserialize(const Json &object, Vector2 &dest)
+    void Serializer::Deserialize(const Json &object, Vector2 &dest)
     {
         ASENGINE_ASSERT(object.is_object(), "Can't deserialize Vecto2 if it's not an object");
-        Serializer<float>::Deserialize(object.at("x"), dest.x);
-        Serializer<float>::Deserialize(object.at("y"), dest.y);
+        Serializer::Deserialize(object.at("x"), dest.x);
+        Serializer::Deserialize(object.at("y"), dest.y);
     }
 
 } // namespace ASEngine

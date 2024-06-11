@@ -8,7 +8,7 @@
 
 #define ASENGINE_SERIALIAZE_MATRIX(MatrixType) \
 template<> \
-void Serializer<MatrixType>::Deserialize(const Json& object, MatrixType& dest) \
+void Serializer::Deserialize(const Json& object, MatrixType& dest) \
 { \
     ASENGINE_ASSERT(object.is_array(), "Matrix should be an array"); \
     ASENGINE_ASSERT(object.size() == MatrixType::GetColumnsSize(), "Invalid Columns size"); \
@@ -29,7 +29,7 @@ void Serializer<MatrixType>::Deserialize(const Json& object, MatrixType& dest) \
     } \
 } \
 template<> \
-Json Serializer<MatrixType>::Serialize(const MatrixType& src) \
+Json Serializer::Serialize(const MatrixType& src) \
 { \
     Json matrixObject = Json::array(); \
     for (uint32_t j = 0; j < MatrixType::GetColumnsSize(); j++) \

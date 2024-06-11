@@ -9,15 +9,15 @@ ASENGINE_SERIALIZE_RESOURCE_REF(VertexInputDescriptor);
 namespace ASEngine
 {
     template<>
-    void Serializer<VertexInputDescriptor>::Deserialize(const Json& object, VertexInputDescriptor& dest)
+    void Serializer::Deserialize(const Json& object, VertexInputDescriptor& dest)
     {
-        // 
+        Serializer::Deserialize(object.at("VertexInputLayouts"), dest.m_VertexInputLayouts);
     }
 
     template<>
-    Json Serializer<VertexInputDescriptor>::Serialize(const VertexInputDescriptor& src)
+    Json Serializer::Serialize(const VertexInputDescriptor& src)
     {
-        return Json{};
+        return Serializer::Serialize(src.m_VertexInputLayouts);
     }
 
     ASENGINE_SERIALIZE_RESOURCE_IMP(VertexInputDescriptor);

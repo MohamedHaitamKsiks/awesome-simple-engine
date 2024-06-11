@@ -10,6 +10,7 @@ from asengineCLI.commands.compile_shaders import scanAndCompileShaders
 def buildProject(configPath: str, projectPath: str, platform: str) -> int:
     # error return
     error = 0 
+    projectPath = relativeTo(projectPath, "")
 
     # check project validity
     isValid, missingRequirements = getProjectIsValid(projectPath)
@@ -31,11 +32,11 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
     configDir = dirPath(configPath)
 
     #get asengine path
-    platformPath = relativeTo(configDir, config["targets"][platform]["platformPath"])
-    asenginePath = relativeTo(configDir, config["asenginePath"])
-    asengineSourcePath = relativeTo(configDir, config["asengineSourcePath"])
-    cmakeWindowsToolChain = relativeTo(configDir, config["cmakeWindowsToolchain"])
+    asenginePath = config["asengine"]["buildPath"]
+    asengineSourcePath = config["asengine"]["sourcePath"]
+    cmakeWindowsToolChain = config["cmakeToolchains"]["windows"]
     platformOS = config["targets"][platform]["os"]
+    platformPath = relativeTo(config["platformsPath"], config["targets"][platform]["type"])
 
     #generated tmp folder name
     tmpFileName = f".tmp.{ platform }"
@@ -60,24 +61,6 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
                         relativeTo(tmpPath, "./app/src/main/cpp/project-src"), 
                         dirs_exist_ok=True)
 
-    #desktop/headless build 
-    else:
-        #copy compiled asengine to temp project
-        shutil.copytree(relativeTo(asenginePath, "./include"), 
-                        relativeTo(tmpPath, "./asengine/include"), 
-                        dirs_exist_ok=True)
-
-        if not os.path.isdir(relativeTo(tmpPath, "./asengine/lib")):
-            os.mkdir(relativeTo(tmpPath, "./asengine/lib"))
-
-        shutil.copy(relativeTo(asenginePath, f"./lib/{platformOS}/asengine.a"), 
-                    relativeTo(tmpPath, "./asengine/lib/libasengine.a"))
-
-        #copy project code to by compiled
-        shutil.copytree(relativeTo(projectPath, "./src"), 
-                        relativeTo(tmpPath, "./project-src"), 
-                        dirs_exist_ok=True)
-
     #copy project assets
     assetsPath = relativeTo(tmpPath, "./app/src/main/assets") if platform == "android" else relativeTo(tmpPath, "./build/assets")
     shutil.copytree(relativeTo(projectPath, "./assets"), assetsPath, dirs_exist_ok=True)
@@ -94,7 +77,15 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
         if os.path.exists("build"):
             os.remove("build")
 
-        error |= os.system("cmake .. ")
+        #engine paths
+        includePath = relativeTo(asenginePath, "./include")
+        libPath = relativeTo(asenginePath, f"./lib/{platformOS}") 
+
+        #project source path 
+        projectSourcePath = relativeTo(projectPath, "./src");
+        print(includePath, libPath, projectSourcePath, sep="\n")
+        
+        error |= os.system(f"cmake -DASENGINE_INCLUDE_PATH={includePath} -DASENGINE_LIB_PATH={libPath} -DASENGINE_PROJECT_PATH={projectSourcePath} .. ")
         error |= os.system("make")
         
         # run app
@@ -114,7 +105,7 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
 
     elif platform == "android":
         # find sdk tools
-        sdkPath = relativeTo(configDir, config["targets"]["android"]["sdkPath"])
+        sdkPath = config["targets"]["android"]["sdkPath"]
         emulatorPath = relativeTo(sdkPath, "./tools")
         adbPath = relativeTo(sdkPath, "./platform-tools")
         avdName = config["targets"]["android"]["avdName"]

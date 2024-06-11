@@ -32,17 +32,17 @@ namespace ASEngine
     void Material::DeserializeAndSet(const Json &object, UniqueString uniformName, UniqueString fieldName)
     {
         T value{};
-        Serializer<T>::Deserialize(object, value);
+        Serializer::Deserialize(object, value);
         SetShaderParam(uniformName, fieldName, value);
     }
 
     // serialiazation start
     template<>
-    void Serializer<Material>::Deserialize(const Json& object, Material& dest)
+    void Serializer::Deserialize(const Json& object, Material& dest)
     {
         // create the material
         ResourceRef<Shader> shader = ResourceRef<Shader>::NONE();
-        Serializer<ResourceRef<Shader>>::Deserialize(object.at("Shader"), shader);
+        Serializer::Deserialize(object.at("Shader"), shader);
         dest.Create(shader);
 
         // set material data
@@ -124,7 +124,7 @@ namespace ASEngine
     }
 
     template <>
-    Json Serializer<Material>::Serialize(const Material &material)
+    Json Serializer::Serialize(const Material &material)
     {
         return Json({});
     }
