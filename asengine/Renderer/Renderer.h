@@ -72,11 +72,26 @@ namespace ASEngine
         virtual void BindShaderImp(ResourceRef<Shader> shader) = 0;
         virtual void ClearImp() = 0;
 
+        // get current ver
+        inline const std::unordered_map<uint32_t, ResourceRef<Buffer>>& GetCurrentVertexBuffers() const
+        {
+            return m_CurrentVertexBuffers;
+        }
+
+        inline ResourceRef<Buffer> GetCurrentIndexBuffer() const
+        {
+            return m_CurrentIndexBuffer;
+        }
+
+        inline ResourceRef<Shader> GetCurrentShader() const
+        {
+            return m_CurrentShader;
+        }
+
     private:
         // current buffers
-        std::unordered_map<uint32_t, ResourceRef<Buffer>> m_CurrentVertexBuffer{};
+        std::unordered_map<uint32_t, ResourceRef<Buffer>> m_CurrentVertexBuffers{};
         ResourceRef<Buffer> m_CurrentIndexBuffer = ResourceRef<Shader>::NONE();
-
         // current shader
         ResourceRef<Shader> m_CurrentShader = ResourceRef<Shader>::NONE();
         // current material
@@ -91,6 +106,7 @@ namespace ASEngine
         // exit for unsupported renderer
         static void ExitUnsupportedRenderer(Backend backend);
     };
+    
 } // namespace ASEngine
 
 

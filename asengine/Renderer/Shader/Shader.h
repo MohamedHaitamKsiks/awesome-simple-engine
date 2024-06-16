@@ -61,10 +61,19 @@ namespace ASEngine
         {
             return m_VertexSource;
         }
+
+        inline const std::unordered_map<UniqueString, ResourceRef<Buffer>>& GetUniformBuffers() const
+        {
+            return m_UniformBuffers;
+        }
+
+        inline const std::unordered_map<UniqueString, ResourceRef<Texture>>& GetSamplers() const
+        {
+            return m_Samplers;
+        }
     protected:
         // api specific implementations
-        virtual void CreateImp(ResourceRef<ShaderSource> vertexSource, ResourceRef<ShaderSource> fragmentSource, ResourceRef<VertexInputDescriptor> vertexInputDescriptor) = 0;
-
+        virtual void CreateImp(ResourceRef<ShaderSource> vertexSource, ResourceRef<ShaderSource> fragmentSource, ResourceRef<VertexInputDescriptor> vertexInputDescriptor) = 0;        
     private:
         // vertex source and fragment
         ResourceRef<ShaderSource> m_VertexSource = ResourceRef<ShaderSource>::NONE();
@@ -76,7 +85,7 @@ namespace ASEngine
         std::unordered_map<UniqueString, ResourceRef<Texture>> m_Samplers{};
 
         // vertex input layouts
-        ResourceRef<VertexInputDescriptor> m_VertexInputDescriptor;
+        ResourceRef<VertexInputDescriptor> m_VertexInputDescriptor = ResourceRef<VertexInputDescriptor>::NONE();
     };
 } // namespace ASEngine
 

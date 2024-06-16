@@ -11,6 +11,9 @@
 
 #include "System.h"
 
+// register system class
+#define ASENGINE_REGISTER_SYSTEM(systemClass) SystemManager::GetInstance().RegisterSystem<systemClass>()
+
 namespace ASEngine
 {
     class SystemManager

@@ -26,7 +26,7 @@ link_directories(${ASENGINE_LIB_PATH})
 
 #add project
 include_directories(${ASENGINE_PROJECT_PATH})
-add_subdirectory(${ASENGINE_PROJECT_PATH})
+add_subdirectory(${ASENGINE_PROJECT_PATH} ${CMAKE_BINARY_DIR}/project_build)
 
 add_executable(build  main.cpp DesktopApplication.cpp)
 

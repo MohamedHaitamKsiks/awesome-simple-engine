@@ -9,15 +9,7 @@ project(headless)
 #include the engine 
 include_directories(${ASENGINE_INCLUDE_PATH})
 link_directories(${ASENGINE_LIB_PATH})
-message("--lib:" ${ASENGINE_LIB_PATH})
-
 #add project
-#include(ExternalProject)
-#ExternalProject_Add(
-#    asengine-project
-#    PREFIX ${CMAKE_BINARY_DIR}/external_projects
-#    SOURCE_DIR ${ASENGINE_PROJECT_PATH}
-#)
 include_directories(${ASENGINE_PROJECT_PATH})
 add_subdirectory(${ASENGINE_PROJECT_PATH} ${CMAKE_BINARY_DIR}/project_build)
 

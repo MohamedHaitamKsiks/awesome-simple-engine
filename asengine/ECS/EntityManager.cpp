@@ -2,7 +2,6 @@
 #include "Archetype.h"
 #include "ArchetypeManager.h"
 
-#include "Core/Time/Time.h"
 #include "Core/Debug/Debug.h"
 
 namespace ASEngine

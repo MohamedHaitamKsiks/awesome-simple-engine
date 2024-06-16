@@ -39,14 +39,11 @@ namespace ASEngine
 
     void Shader::Create(ResourceRef<ShaderSource> vertexSource, ResourceRef<ShaderSource> fragmentSource, ResourceRef<VertexInputDescriptor> vertexInputDescriptor)
     {
-        CreateImp(vertexSource, fragmentSource, vertexInputDescriptor);
-
         // save sources
         m_VertexSource = vertexSource;
         m_FragmentSource = fragmentSource;
 
         m_Params = ShaderParams::Combine(vertexSource->GetShaderParams(), fragmentSource->GetShaderParams());
-
         // create uniform buffers
         for (const auto& [uniformName, uniformBufferInfo]: m_Params.UniformBuffers)
         {
@@ -61,6 +58,10 @@ namespace ASEngine
         {
             m_Samplers[samplerName] = ResourceRef<Texture>::NONE();
         }
+
+        // call implementation
+        CreateImp(vertexSource, fragmentSource, vertexInputDescriptor);
+        
     }
     
     void Shader::SetUniformBuffer(UniqueString uniformBufferName, const ByteBuffer &data)

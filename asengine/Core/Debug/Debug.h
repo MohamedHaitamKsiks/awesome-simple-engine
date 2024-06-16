@@ -19,6 +19,9 @@ namespace ASEngine {
 			GREEN_FG = 32,
 			GREEN_BG = 42,
 
+			YELLOW_FG = 33,
+			YELLOW_BG = 43,
+
 			BLUE_FG = 34,
 			BLUE_BG = 44,
 
@@ -58,9 +61,16 @@ namespace ASEngine {
 
 		// log error message
 		template<typename T, typename... types>
-		static void Error(T firstValue,types... args)
+		static inline void Error(T firstValue,types... args)
 		{
 			Log(Colorized(TextColor::RED_FG, firstValue, args...));
+		}
+
+		// log warning messages
+		template <typename T, typename... types>
+		static inline void Warning(T firstValue, types... args)
+		{
+			Log(Colorized(TextColor::YELLOW_FG, firstValue, args...));
 		}
 
 	private:

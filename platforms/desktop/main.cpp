@@ -3,8 +3,8 @@
 
 int main(int argc, char *argv[])
 {
-    // DesktopApplication application{};
-    // application.Start();
+    ASEngine::DesktopApplication application{};
+    application.Run();
     
     return 0;
 }

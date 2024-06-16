@@ -21,4 +21,10 @@ namespace ASEngine
     }
 
     ASENGINE_SERIALIZE_RESOURCE_IMP(VertexInputDescriptor);
+    
+    void VertexInputDescriptor::Create(const std::vector<VertexInputLayout> &layouts)
+    {
+        m_VertexInputLayouts = layouts;
+        CreateImp(layouts);
+    }
 } // namespace ASEngine

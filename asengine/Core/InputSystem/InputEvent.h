@@ -29,7 +29,10 @@ namespace ASEngine
 	// screen input event
 	struct InputEventScreenTouch
 	{
-		static constexpr InputEventType TYPE = InputEventType::SCREEN_TOUCH;
+		static constexpr InputEventType TYPE() 
+		{
+			return InputEventType::SCREEN_TOUCH;
+		}
 		bool Pressed;
 		int PointerIndex;
 		Vector2 Position;
@@ -38,8 +41,11 @@ namespace ASEngine
 	// screen drag pointer event
 	struct InputEventScreenDrag
 	{
-		static constexpr InputEventType TYPE = InputEventType::SCREEN_DRAG;
-			int PointerIndex;
+		static constexpr InputEventType TYPE()
+		{ 
+			return InputEventType::SCREEN_DRAG;
+		}
+		int PointerIndex;
 		Vector2 Position;
 	};
 
@@ -53,8 +59,11 @@ namespace ASEngine
 	// mouse input button
 	struct InputEventMouseButton
 	{
-		static constexpr InputEventType TYPE = InputEventType::MOUSE_BUTTON;
-			MouseButton Button;
+		static constexpr InputEventType TYPE() 
+		{
+			return InputEventType::MOUSE_BUTTON;
+		}
+		MouseButton Button;
 		bool Pressed;
 		Vector2 Position;
 	};
@@ -62,15 +71,21 @@ namespace ASEngine
 	// mouse input move
 	struct InputEventMouseMove
 	{
-		static constexpr InputEventType TYPE = InputEventType::MOUSE_MOVE;
-			Vector2 Position;
+		static constexpr InputEventType TYPE() 
+		{
+			return InputEventType::MOUSE_MOVE;
+		}
+		Vector2 Position;
 	};
 
 	// keyboard
 	struct InputEventKeyboard
 	{
-		static constexpr InputEventType TYPE = InputEventType::KEYBOARD;
-			Keycode Code;
+		static constexpr InputEventType TYPE()
+		{
+			return InputEventType::KEYBOARD;
+		}
+		Keycode Code;
 		bool Pressed;
 	};
 
@@ -82,7 +97,7 @@ namespace ASEngine
 		inline InputEventType GetType() const
 		{
 			return m_Type;
-		};
+		}
 
 		// constructors
 		InputEvent() = default;
@@ -106,14 +121,11 @@ namespace ASEngine
 		// event type
 		InputEventType m_Type = InputEventType::NONE;
 		// different events
-		union
-		{
-			InputEventScreenTouch m_InputEventScreenTouch;
-			InputEventScreenDrag m_InputEventScreenDrag;
-			InputEventMouseButton m_InputEventMouseButton;
-			InputEventMouseMove m_InputEventMouseMove;
-			InputEventKeyboard m_InputEventKeyboard;
-		} m_Event;
+		InputEventScreenTouch m_InputEventScreenTouch;
+		InputEventScreenDrag m_InputEventScreenDrag;
+		InputEventMouseButton m_InputEventMouseButton;
+		InputEventMouseMove m_InputEventMouseMove;
+		InputEventKeyboard m_InputEventKeyboard;
 	};
 
 } // ASEngine

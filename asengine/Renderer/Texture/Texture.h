@@ -9,15 +9,6 @@
 
 namespace ASEngine
 {
-    // texture format
-    enum class TextureFormat
-    {
-        NONE = 0,
-        RGBA,
-        LUMINANCE,
-        LUMINANCE_ALPHA
-    };
-
     // filter
     enum class TextureFilter
     {
@@ -40,18 +31,12 @@ namespace ASEngine
     ASENGINE_DEFINE_RESOURCE(Texture);
     public:
         // create texture from image
-        void Create(const Image& image, TextureFormat format, TextureFilter filter, TextureRepeatMode repeat);
+        void Create(const Image& image, TextureFilter filter, TextureRepeatMode repeat);
 
         // get texture filter
         inline TextureFilter GetFilter() const
         {
             return m_Filter;
-        }
-
-        // get texture format
-        inline TextureFormat GetFormat() const
-        {
-            return m_Format;
         }
 
         // get texture repeat mode
@@ -73,14 +58,13 @@ namespace ASEngine
         }
     protected:
         // api implemetation for create from imagev
-        virtual void CreateImp(const Image &image, TextureFormat format, TextureFilter filter, TextureRepeatMode repeat) = 0;
+        virtual void CreateImp(const Image &image, TextureFilter filter, TextureRepeatMode repeat) = 0;
 
     private:
         uint32_t m_Width = 0;
         uint32_t m_Height = 0;
         
         TextureFilter m_Filter = TextureFilter::NONE;
-        TextureFormat m_Format = TextureFormat::NONE;
         TextureRepeatMode m_RepeatMode = TextureRepeatMode::NONE;
     }; 
 } // namespace ASEngine

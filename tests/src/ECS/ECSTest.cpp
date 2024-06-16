@@ -129,18 +129,14 @@ public:
     }
 
 };
-
-// macro to register component easily
-#define REGISTER_COMPONENT(componentType) ComponentManager::GetInstance().RegisterComponent<componentType>(UniqueString(#componentType))
-
 // test body
 void ECSTest::Describe()
 {
     Test("It can register component", []()
     {
-        REGISTER_COMPONENT(Transform);
-        REGISTER_COMPONENT(Body);
-        REGISTER_COMPONENT(Player);
+        ASENGINE_REGISTER_COMPONENT(Transform);
+        ASENGINE_REGISTER_COMPONENT(Body);
+        ASENGINE_REGISTER_COMPONENT(Player);
 
         ASENGINE_EXPECT(Transform::GetName() == UniqueString("Transform"));
     });

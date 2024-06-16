@@ -19,12 +19,18 @@ namespace ASEngine
     ASENGINE_SERIALIZE_RESOURCE(VertexInputDescriptor);
     public:
         VertexInputDescriptor() = default;
-        ~VertexInputDescriptor() {}
+        virtual ~VertexInputDescriptor() {} // make it polymorphic
+
+        // create input descriptor from list of layouts
+        void Create(const std::vector<VertexInputLayout>& layouts);
 
         inline const std::vector<VertexInputLayout>& GetVertexInputLayouts() const
         {
             return m_VertexInputLayouts;
         }
+
+    protected:
+        virtual void CreateImp(const std::vector<VertexInputLayout>& layouts) = 0;
 
     private:
         friend class Serializer;

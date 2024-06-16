@@ -37,6 +37,8 @@ add_library(
     STATIC
     #Application
     asengine/Core/ASEngine/ASEngine.cpp
+    #Settings
+    asengine/Core/Settings/Settings.cpp
     #Debug
     asengine/Core/Debug/Debug.cpp
     #errors
@@ -51,8 +53,6 @@ add_library(
     asengine/Core/FileSystem/File.cpp
     #modules
     asengine/Module/ModuleManager.cpp
-    #time 
-    asengine/Core/Time/Time.cpp
     #memory
     asengine/Core/Memory/PoolAllocator.cpp
     asengine/Core/Memory/ByteBuffer.cpp
@@ -64,7 +64,7 @@ add_library(
     asengine/Core/Math/Vector3.cpp
     asengine/Core/Math/Quaternion.cpp
     #window
-    asengine/Core/Window/Window.cpp
+    # asengine/Core/Window/Window.cpp
     #input
     asengine/Core/InputSystem/InputEvent.cpp
     #ecs
@@ -97,6 +97,14 @@ add_library(
     # textures
     asengine/Renderer/Texture/Image.cpp
     asengine/Renderer/Texture/Texture.cpp
+    #renderer backends
+    asengine/Renderer/Backend/RendererBackend.cpp
+    #opengl renderer
+    asengine/Renderer/Backend/OpenGL/OpenGLRenderer.cpp
+    asengine/Renderer/Backend/OpenGL/Buffer/OpenGLBuffer.cpp
+    asengine/Renderer/Backend/OpenGL/Texture/OpenGLTexture.cpp
+    asengine/Renderer/Backend/OpenGL/Shader/OpenGLShader.cpp
+    asengine/Renderer/Backend/OpenGL/VertexInput/OpenGLVertexInputDescriptor.cpp
     #testing
     asengine/UnitTest/UnitTest.cpp
     asengine/UnitTest/UnitTestSystem.cpp

@@ -9,7 +9,7 @@
 
 namespace ASEngine
 {
-    // game's window: singleton
+    // game's window: singleton = only one window 
     class Window: public ISystem
     {
     ASENGINE_DEFINE_SINGLETON(Window);
@@ -43,34 +43,7 @@ namespace ASEngine
 
         // set window title
         void SetTitle(const std::string& title);
-
-        // get window title
-        inline const std::string& GetTitle() const
-        {
-            return m_Title;
-        }
-        
-        inline Signal<int, int>& GetResizeSignal()
-        {
-            return m_ResizeSignal;
-        }
-
-        inline Signal<bool> &GetFullscreenSignal()
-        {
-            return m_SetFullscreenSignal;
-        }
-
-        inline Signal<std::string> &GetTitleSignal()
-        {
-            return m_SetTitleSignal;
-        }
-
     private:
-        // signals
-        Signal<int, int> m_ResizeSignal{};
-        Signal<bool> m_SetFullscreenSignal{};
-        Signal<std::string> m_SetTitleSignal{};
-
         int m_Width = -1;
         int m_Height = -1;
         Vector2 m_Size = Vector2::ZERO();

@@ -3,7 +3,7 @@
 namespace ASEngine
 {
 
-    void DesktopApplication::Run()
+    int DesktopApplication::Run()
     {
         // init window
         if (!Init())
@@ -47,7 +47,7 @@ namespace ASEngine
         m_Window = glfwCreateWindow(640, 480, "ASEngine Desktop Application", NULL, NULL);
         if (!m_Window)
         {
-            Terminate()
+            Terminate();
             return false;
         }
 

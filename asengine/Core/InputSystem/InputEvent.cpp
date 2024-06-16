@@ -7,14 +7,14 @@
     template <> \
     void InputEvent::Set<INPUT_TYPE>(const INPUT_TYPE &event) \
     { \
-        m_Event.m_##INPUT_TYPE = event; \
-        m_Type = INPUT_TYPE::TYPE; \
+        m_##INPUT_TYPE = event; \
+        m_Type = INPUT_TYPE::TYPE(); \
     } \
     template <> \
     const INPUT_TYPE& InputEvent::Get<INPUT_TYPE>() const \
     { \
-        ASENGINE_ASSERT(INPUT_TYPE::TYPE == m_Type, "Invalid InputEvent Type"); \
-        return m_Event.m_##INPUT_TYPE; \
+        ASENGINE_ASSERT(INPUT_TYPE::TYPE() == m_Type, "Invalid InputEvent Type"); \
+        return m_##INPUT_TYPE; \
     }
 
 

@@ -1,18 +1,23 @@
 #ifndef __ASENGINE_OPENGL_RENDERER_H
 #define __ASENGINE_OPENGL_RENDERER_H
 
+#include "OpenGL.h"
+#include "Shader/OpenGLShader.h"
 #include "Renderer/Renderer.h"
+
 
 namespace ASEngine
 {
     // opengl renderer
-    class OpenGLRenderer: public Rendere
+    class OpenGLRenderer: public Renderer
     {
     public:
         // destrcutor
         ~OpenGLRenderer();
 
     private:
+        
+
         // init opengl
         void Init() override;
 
@@ -22,6 +27,9 @@ namespace ASEngine
         void DrawElementsImp(uint32_t indexCount, uint32_t instanceCount = 1) override;
         void BindShaderImp(ResourceRef<Shader> shader) override;
         void ClearImp();
+
+        // gl bind vertex layout
+        void GLBindVertexInputLayout(const VertexInputLayout& layout);
     };
 } // namespace ASEngine
 

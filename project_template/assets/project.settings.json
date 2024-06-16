@@ -1,19 +1,34 @@
 {
-	"Name": "ASEgnine-Projet",
-	"Viewport": {
-		"Size":{
-			"width": 320,
-			"height": 180
+	"Application":
+	{
+		"Name": "ASEgnine-Projet",
+		"MainScene": "scenes/main.scene.json" 
+	},
+
+	"Display":
+	{
+		"Viewport": 
+		{
+			"Width": 320,
+			"Height": 180
+		},
+
+		"Window": 
+		{
+			"Width": 640,
+			"Height": 360,
+			"KeepAspectRatio": true,
+			"Fullscreen": false
+		},
+
+		"Rendering":
+		{
+			"Backend": "OpenGL"
 		}
 	},
-	"Window": {
-		"Size": {
-			"Width": 640,
-			"Height": 360
-		},
-		"KeepAspectRatio": true,
-		"Fullscreen": false
-	},
-	"FixedTimeStep": 0.02,
-	"MainScene": "scenes/main.scene.json" 
+
+	"Time":
+	{
+		"FixedTimeStep": 0.02
+	}
 }

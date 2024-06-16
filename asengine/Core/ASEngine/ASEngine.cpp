@@ -3,7 +3,6 @@
 #include "Core/FileSystem/File.h"
 #include "Core/String/UniqueStringManager.h"
 #include "Core/Registry/Registry.h"
-#include "Core/Time/Time.h"
 #include "Core/Debug/Debug.h"
 
 #include "Core/Serialization/Json.h"
@@ -48,11 +47,8 @@ namespace ASEngine
 
     void ASEngine::RegisterBuiltInSystems()
     {
-        SystemManager& systemManager = SystemManager::GetInstance();
-
-        systemManager.RegisterSystem<ComponentManager>();
-        systemManager.RegisterSystem<ArchetypeManager>();
-        systemManager.RegisterSystem<EntityManager>();
+        ASENGINE_REGISTER_SYSTEM(ArchetypeManager);
+        ASENGINE_REGISTER_SYSTEM(EntityManager);
     }
 
     void ASEngine::Terminate()
@@ -74,14 +70,16 @@ namespace ASEngine
 
         // call fixed steps
         m_FixedTimer += delta;
-        while (m_FixedTimer >= Time::FixedTimeStep)
+        float fixedTimeStep = m_Settings.Time.FixedTimeStep;
+
+        while (m_FixedTimer >= fixedTimeStep)
         {
-            systemManager.FixedUpdate(Time::FixedTimeStep * Time::TimeScale);
-            m_FixedTimer -= Time::FixedTimeStep;
+            systemManager.FixedUpdate(fixedTimeStep * m_TimeScale);
+            m_FixedTimer -= fixedTimeStep;
         }
 
         // call normal update
-        systemManager.Update(delta * Time::TimeScale);
+        systemManager.Update(delta * m_TimeScale);
 
         // call render
         systemManager.Render();

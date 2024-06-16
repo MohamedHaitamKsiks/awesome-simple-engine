@@ -17,6 +17,11 @@
 
 #include "Class/ClassManager.h"
 
+// register abstract resource class
+#define ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(base, imp) ResourceManager::GetInstance().RegisterAbstractResourceClass<base, imp>(#base)
+
+// register resource class
+#define ASENGINE_REGISTER_RESOURCE_CLASS(base) ResourceManager::GetInstance().RegisterResourceClass<base>(#base)
 
 namespace ASEngine
 {

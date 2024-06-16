@@ -16,13 +16,13 @@
 #include "ComponentCollection.h"
 #include "Signature.h"
 
-#include "System.h"
+// register component type
+#define ASENGINE_REGISTER_COMPONENT(component) ComponentManager::GetInstance().RegisterComponent<component>(#component)
 
 namespace ASEngine
 {
-
     // singleton that manages components
-    class ComponentManager: public ISystem
+    class ComponentManager
     {
     ASENGINE_DEFINE_SINGLETON(ComponentManager);
     public:

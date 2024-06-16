@@ -5,6 +5,7 @@
 #include <vector>
 #include <cstdint>
 #include <cstring>
+#include <algorithm>
 
 #include "Core/Error/Assertion.h"
 #include "Core/Debug/Debug.h"
@@ -77,7 +78,7 @@ namespace ASEngine
                 // copy old data to new allocated space
                 if (newData)
                 {
-                    memcpy(newData, m_Data, minCapacity * sizeof(T));
+                    std::memcpy(reinterpret_cast<void *>(newData), reinterpret_cast<void *>(m_Data), minCapacity);
                 }
 
                 // free 
