@@ -5,6 +5,7 @@
     ],
     "exclude":
     [
-        "asengine/Renderer/Backend"
+        "asengine/Renderer/Backend",
+        "asengine/Display/Backend"
     ]
 }

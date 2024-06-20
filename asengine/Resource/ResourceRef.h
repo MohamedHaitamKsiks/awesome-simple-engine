@@ -59,13 +59,27 @@ namespace ASEngine
         ResourceRef(ResourceRef &&other) noexcept
         {
             m_Instance = other.m_Instance;
-            other.m_Instance = nullptr;
+            if (other.m_Instance)
+            {
+                static_cast<Resource *>(m_Instance)->IncrementReferenceCounter();
+            }
         }
 
         ResourceRef& operator=(ResourceRef&& other) noexcept
         {
+            // decrement current instance
+            if (m_Instance)
+            {
+                static_cast<Resource *>(m_Instance)->DecrementReferenceCounter();
+            }
+
+            // copy new instance
             m_Instance = other.m_Instance;
-            other.m_Instance = nullptr;
+            if (other.m_Instance)
+            {
+                static_cast<Resource *>(m_Instance)->IncrementReferenceCounter();
+            }
+
             return *this;
         }
 

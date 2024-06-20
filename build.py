@@ -122,6 +122,7 @@ def compileEngineFor(plarform) -> int:
         if (libFile.name == "asegnine.a"):
             continue
         mriCode.append(f"addlib {str(libFile)}")
+        print("adding lib: ", str(libFile))
     
     mriCode.append("save")
     mriCode.append("end")

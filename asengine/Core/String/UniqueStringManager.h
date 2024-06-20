@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <memory>
 
 #include "Core/Error/Assertion.h"
 #include "Core/Singleton/Singleton.h"
@@ -26,19 +27,19 @@ namespace ASEngine
             inline size_t GetLength(UniqueStringID stringID) const
             {   
                 ASENGINE_ASSERT(stringID != UNIQUE_STRING_ID_NULL, "Cannot get length of null string");
-                return m_Strings[stringID].length();
+                return m_Strings[stringID]->length();
             };
 
             // get string
-            const std::string& GetString(UniqueStringID stringID) const
+            inline const std::string& GetString(UniqueStringID stringID) const
             {
                 ASENGINE_ASSERT(stringID != UNIQUE_STRING_ID_NULL, "Cannot get std::string of null string");
-                return m_Strings[stringID];
+                return *m_Strings.at(stringID);
             }
 
         private:
             // list of strings data
-            std::vector<std::string> m_Strings{};
+            std::vector<std::unique_ptr<std::string>> m_Strings{};
             std::unordered_map<std::string, UniqueStringID> m_StringIDs{};
             
             // return the id of the string if found

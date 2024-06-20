@@ -1,0 +1,29 @@
+#ifndef __ASENGINE_MALLOC_ALLOCATOR_H
+#define __ASENGINE_MALLOC_ALLOCATOR_H
+
+#include <cstdlib>
+#include <memory>
+
+namespace ASEngine
+{
+    template <typename T>
+    struct MallocAllocator
+    {
+        typedef T value_type;
+        inline T* allocate(const size_t n) const
+        {
+            if (n == 0)
+                return nullptr;
+
+            return reinterpret_cast<T *>(malloc(n * sizeof(T)));
+        }
+
+        inline void deallocate(T* p, size_t n) const
+        {
+            free(p);
+        }
+    };
+} // namespace ASEngine
+
+
+#endif // __ASENGINE_MALLOC_ALLOCATOR_H

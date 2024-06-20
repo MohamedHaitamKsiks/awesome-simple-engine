@@ -12,7 +12,9 @@ namespace ASEngine
     }
 
     UniqueStringID UniqueStringManager::Create(const std::string &str)
-    {        
+    {   
+        std::unique_ptr<std::string> pStr = std::make_unique<std::string>(str);
+
         // return index if string exists
         UniqueStringID index = Find(str);
 
@@ -21,7 +23,8 @@ namespace ASEngine
         
         // create new string
         UniqueStringID newIndex = static_cast<UniqueStringID>(m_Strings.size());
-        m_Strings.push_back(str);
+        
+        m_Strings.push_back(std::move(pStr));
         m_StringIDs[str] = newIndex;
         
         return newIndex;

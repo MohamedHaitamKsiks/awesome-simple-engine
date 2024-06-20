@@ -47,7 +47,9 @@ namespace ASEngine
             return m_Shader;
         }
     private:
-        ResourceRef<Shader> m_Shader;
+        friend class Renderer;
+
+        ResourceRef<Shader> m_Shader = ResourceRef<Shader>::NONE();
         std::unordered_map<UniqueString, ByteBuffer> m_UniformBuffers{};
         std::unordered_map<UniqueString, ResourceRef<Texture>> m_Samplers{};
 

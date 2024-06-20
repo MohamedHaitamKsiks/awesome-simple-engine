@@ -35,7 +35,7 @@ namespace ASEngine
     };
 
     template <typename T>
-    UniqueString Class<T>::s_ClassName;
+    UniqueString Class<T>::s_ClassName = UniqueString();
 
 } // namespace ASEngine
 

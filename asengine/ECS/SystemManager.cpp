@@ -2,6 +2,9 @@
 
 namespace ASEngine
 {
+    SystemManager::~SystemManager()
+    {
+    }
 
     void SystemManager::RegisterSystem(std::unique_ptr<ISystem> system)
     {
@@ -32,14 +35,6 @@ namespace ASEngine
         }
     }
 
-    void SystemManager::Render()
-    {
-        for (auto& system: m_Systems)
-        {
-            system->Render();
-        }
-    }
-
     void SystemManager::OnInputEvent(const InputEvent &event)
     {
         for (auto &system : m_Systems)
@@ -51,9 +46,12 @@ namespace ASEngine
     void SystemManager::Terminate()
     {
         // terminate in the inverse orderer of init
-        for (int i = m_Systems.size() - 1; i >= 0; i--)
+        while (m_Systems.size() > 0)
         {
-            m_Systems[i]->Terminate();
+            auto& system = m_Systems.back();
+            system->Terminate();
+            
+            m_Systems.pop_back();
         }
     }
 

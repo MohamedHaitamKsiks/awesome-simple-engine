@@ -21,43 +21,6 @@ Cross-platform game engine written with c++.
 
 ## Features
 
-### 3D Renderer
-
-The renderer uses a mix of batching and gpu instancing to optimise draw calls. 
-
-Let's draw some cubes as a example:
-```cpp
-  // ...
-  // register mesh
-  Mesh3D mesh = Renderer3D::RegisterMesh(cubeMeshInfo);
-  //...
-
-  // init mesh instance info
-  MeshInstanceInfo3D meshInstaneInfo;
-  meshInstaneInfo.Mesh = mesh;
-  meshInstaneInfo.MaterialID = ResourceManager<Material>::GetResourceId(UniqueString("materials/material3D.json"));
-  // init list of transforms each one is going to result in a new instance of the mesh.
-  meshInstaneInfo.Transforms = TDynamicArray<mat4>();
-
-  // add transforms ...
-
-  // register mesh isntance 
-  MeshInstance3D instance = Renderer3D::RegisterMeshInstance(meshInstanceInfo);
-
-
-```
-
-
-### 2D Renderer
-
-The renderer uses batch rendering with 16000 quads per draw call.
-
-Example:
-````cpp
-  Quad2D quad = Quad2D(size, transform, color);
-  Renderer2D::DrawQuad(quad, materialID);
-````
-
 ### Resource Manager
 
 Resource are garbage collected objects that can be loaded from a file o created by the programmer.
@@ -106,12 +69,12 @@ ASENGINE_SERIALIZE_RESOURCE_REF(Buffer);
 
 Your register your resource class like this:
 ```cpp
-ResourceManager::GetInstance().RegisterResourceClass<Buffer>("Buffer");
+ASENGINE_REGISTER_RESOURCE_CLASS(Buffer);
 ```
 
 If you want a resource class with different implementations (useful for API agnostic architectures), you can register your resource class like this:
 ```cpp
-ResourceManager::GetInstance().RegisterAbstractResourceClass<Buffer, OpenGLBuffer>("Buffer"); 
+ASENGINE_REGISTER_ABSTRACT_RESOURCE(Buffer, OpenGLBuffer); 
 ```
 
 ### Entity Component System
@@ -190,10 +153,10 @@ We are not done yet, you need to register your components and systems to the mod
 
 ````cpp
     // component registry ...
-    ComponentManager::GetInsatance().RegisterComponent<SpriteComponent>("Sprite");
+    ASENGINE_REGISTER_COMPONENT(SpriteComponent);
 
     // system registry ...
-    SystemManager::GetInsatance().RegisterSystem<SpriteRenderingSystem>();
+    ASENGINE_REGISTER_SYSTEM(SpriteRenderingSystem);
 };
 
 ````

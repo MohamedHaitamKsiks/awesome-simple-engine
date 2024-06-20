@@ -32,9 +32,6 @@ namespace ASEngine
             VULKAN
         };
 
-        // create renderer using backend
-        static void Create(Backend backend);
-
         // make renderer polymorphic
         virtual ~Renderer(){}
 
@@ -64,6 +61,13 @@ namespace ASEngine
         {
             return m_DrawCallsCount;
         }
+
+        // begin
+        void BeginRendering();
+
+        // end rendering
+        void EndRendering();
+
     protected:
         // implementations
         virtual void BindVertexBufferImp(ResourceRef<Buffer> vertexBuffer, uint32_t binding = 0) = 0;
@@ -71,6 +75,8 @@ namespace ASEngine
         virtual void DrawElementsImp(uint32_t indexCount, uint32_t instanceCount = 1) = 0;
         virtual void BindShaderImp(ResourceRef<Shader> shader) = 0;
         virtual void ClearImp() = 0;
+        virtual void InitImp() = 0;
+        virtual void TerminateImp() = 0;
 
         // get current ver
         inline const std::unordered_map<uint32_t, ResourceRef<Buffer>>& GetCurrentVertexBuffers() const
@@ -88,10 +94,11 @@ namespace ASEngine
             return m_CurrentShader;
         }
 
+
     private:
         // current buffers
         std::unordered_map<uint32_t, ResourceRef<Buffer>> m_CurrentVertexBuffers{};
-        ResourceRef<Buffer> m_CurrentIndexBuffer = ResourceRef<Shader>::NONE();
+        ResourceRef<Buffer> m_CurrentIndexBuffer = ResourceRef<Buffer>::NONE();
         // current shader
         ResourceRef<Shader> m_CurrentShader = ResourceRef<Shader>::NONE();
         // current material
@@ -100,11 +107,11 @@ namespace ASEngine
         // count draw calls
         uint32_t m_DrawCallsCount = 0;
 
-        // on render
-        void Render() override;
-
         // exit for unsupported renderer
         static void ExitUnsupportedRenderer(Backend backend);
+
+        void Init() override;
+        void Terminate() override;
     };
     
 } // namespace ASEngine

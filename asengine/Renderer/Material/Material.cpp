@@ -135,7 +135,7 @@ namespace ASEngine
     void Material::Create(ResourceRef<Shader> shader)
     {
         // get shader uniform buffer info
-        const ShaderParams &shaderParams = m_Shader->GetShaderParams();
+        const ShaderParams &shaderParams = shader->GetShaderParams();
 
         // create byte buffers for each uniform buffer
         for (const auto& [uniformBufferName, uniformBufferInfo]: shaderParams.UniformBuffers)

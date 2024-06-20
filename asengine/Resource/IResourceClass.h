@@ -16,6 +16,8 @@ namespace ASEngine
     class IResourceClass: public ISystem
     {
     public:
+        virtual ~IResourceClass() {};
+
         // create named resource
         virtual ResourceRef<Resource> New() = 0;
 
@@ -30,7 +32,6 @@ namespace ASEngine
 
     protected:
         void Init() override;
-        virtual void Terminate() = 0;
     
         virtual void Destroy(Resource& resource) = 0;
 

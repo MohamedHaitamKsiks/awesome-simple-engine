@@ -32,6 +32,7 @@ namespace ASEngine
     {
         // register application systems and modules
         RegisterBuiltInSystems();
+        Debug::Log("ASEngine setup complete");
     }
 
     void ASEngine::Setup(int argc, char *argv[])
@@ -80,9 +81,6 @@ namespace ASEngine
 
         // call normal update
         systemManager.Update(delta * m_TimeScale);
-
-        // call render
-        systemManager.Render();
 
         // destroy all enities in queue
         EntityManager::GetInstance().CleanDestroyQueue();

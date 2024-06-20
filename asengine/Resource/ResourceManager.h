@@ -18,10 +18,10 @@
 #include "Class/ClassManager.h"
 
 // register abstract resource class
-#define ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(base, imp) ResourceManager::GetInstance().RegisterAbstractResourceClass<base, imp>(#base)
+#define ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(base, imp) ResourceManager::GetInstance().RegisterAbstractResourceClass<base, imp>(UniqueString(#base))
 
 // register resource class
-#define ASENGINE_REGISTER_RESOURCE_CLASS(base) ResourceManager::GetInstance().RegisterResourceClass<base>(#base)
+#define ASENGINE_REGISTER_RESOURCE_CLASS(base) ResourceManager::GetInstance().RegisterResourceClass<base>(UniqueString(#base))
 
 namespace ASEngine
 {
@@ -45,7 +45,7 @@ namespace ASEngine
             ClassManager::GetInstance().RegisterClass<Base>(resourceName);
 
             // add resource class of the derived 
-            std::unique_ptr<IResourceClass> resourceClass = std::make_unique<ResourceClass<Derived>>();
+            std::unique_ptr<IResourceClass> resourceClass = std::make_unique<ResourceClass<Derived>>(resourceName);
             RegisterResourceClass(resourceName, std::move(resourceClass));
         }
 

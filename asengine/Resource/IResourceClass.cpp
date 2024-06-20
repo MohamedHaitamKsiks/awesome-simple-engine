@@ -14,7 +14,8 @@ namespace ASEngine
         importFile.Close();
 
         // get resource name
-        const std::string &name = GetClassName().GetString();
+        UniqueString className = GetClassName();
+        const std::string &name = className.GetString();
 
         // get imports
         if (!importObject.contains(name))

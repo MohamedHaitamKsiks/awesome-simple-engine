@@ -38,7 +38,7 @@ namespace ASEngine
     {
         ASENGINE_DESERIALIZE_STRUCT_FIELD(dest, Binding);
         ASENGINE_DESERIALIZE_STRUCT_FIELD(dest, InputRate);
-
+        
         std::vector<VertexAttribute> vertexAttributes;
         Serializer::Deserialize(object.at("VertexAttributes"), vertexAttributes);
 

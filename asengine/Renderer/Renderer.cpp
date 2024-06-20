@@ -16,20 +16,30 @@ namespace ASEngine
         VULKAN
     );
 
-    void Renderer::Create(Backend backend)
+    void Renderer::Init()
     {
-        switch (backend)
-        {
-        // opengl
-        case Backend::OPENGL:
-            RendererBackend::CreateOpenGLRenderer();
-            break;
-        
-        // unsupported backends
-        default:
-            ExitUnsupportedRenderer(backend);
-            break;
-        }
+        InitImp();
+    }
+
+    void Renderer::Terminate()
+    {
+        TerminateImp();
+
+        m_CurrentVertexBuffers.clear();
+
+        m_CurrentIndexBuffer = ResourceRef<Buffer>::NONE();
+        m_CurrentShader = ResourceRef<Shader>::NONE();
+        m_CurrentMaterial = ResourceRef<Material>::NONE();
+    }
+
+    void Renderer::BeginRendering()
+    {
+        m_DrawCallsCount = 0;
+    }
+
+    // end rendering
+    void Renderer::EndRendering()
+    {
     }
 
     void Renderer::ExitUnsupportedRenderer(Backend backend)
@@ -40,19 +50,14 @@ namespace ASEngine
         Debug::Error(std::string(backendObject), ": Unsupported backend!");
     }
 
-    void Renderer::Render()
-    {
-        m_DrawCallsCount = 0;
-    }
-
     void Renderer::BindVertexBuffer(ResourceRef<Buffer> vertexBuffer, uint32_t binding)
     {
         // don't bind if already bound
-        if (m_CurrentVertexBuffer.find(binding) != m_CurrentVertexBuffer.end() && m_CurrentVertexBuffer[inputRate] == vertexBuffer)
+        if (m_CurrentVertexBuffers.find(binding) != m_CurrentVertexBuffers.end() && m_CurrentVertexBuffers.at(binding) == vertexBuffer)
             return;
 
         BindVertexBufferImp(vertexBuffer, binding);
-        m_CurrentVertexBuffer[binding] = vertexBuffer;
+        m_CurrentVertexBuffers[binding] = vertexBuffer;
     }
 
     void Renderer::BindIndexBuffer(ResourceRef<Buffer> indexBuffer)
@@ -87,6 +92,17 @@ namespace ASEngine
         // bind shader of the material
         BindShader(material->GetShader());
 
+        // bind uniform values to shader
+        for (auto& [uniformBufferName, byteBuffer]: material->m_UniformBuffers)
+        {
+            m_CurrentShader->SetUniformBuffer(uniformBufferName, byteBuffer);
+        }
+
+        // bind samplers
+        for (auto &[samplerName, sampler] : material->m_Samplers)
+        {
+            m_CurrentShader->SetSamplerTexture(samplerName, sampler);
+        }
     }
 
     

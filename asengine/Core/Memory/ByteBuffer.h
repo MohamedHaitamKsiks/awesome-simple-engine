@@ -47,11 +47,19 @@ namespace ASEngine
             return m_Data;
         }
 
+        inline void *GetData()
+        {
+            return m_Data;
+        }
+
         // get buffer size
         inline size_t GetSize() const
         {
             return m_Size;
         }
+
+        //  move data ownershipt to this
+        void Move(void* data, size_t size);
 
     private:
         void* m_Data = nullptr;

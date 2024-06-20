@@ -13,8 +13,8 @@ namespace ASEngine {
 
     void File::Read(ByteBuffer &buffer)
     {
-        std::unique_ptr<uint8_t[]> data = std::make_unique<uint8_t[]>(m_Size);
-        buffer.SetData(data.get(), m_Size);
+        buffer.SetData(nullptr, m_Size);
+        Read(buffer.GetData());
     }
 
 } // ASEngine

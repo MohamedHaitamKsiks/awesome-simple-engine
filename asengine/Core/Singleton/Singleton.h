@@ -28,7 +28,11 @@ public: \
     { \
         ASENGINE_ASSERT(Singleton<Type>::s_Instance, "Singleton hasn't been created yet!"); \
         return *Singleton<Type>::s_Instance; \
-    }
+    } \
+    static inline bool IsInstantiated() \
+    { \
+        return Singleton<Type>::s_Instance != nullptr; \
+    } 
 
 
 namespace ASEngine

@@ -9,6 +9,8 @@ namespace ASEngine
     class ISystem
     {
     public:
+        virtual ~ISystem() = default;
+
         // init system
         virtual void Init() {};
 
@@ -17,9 +19,6 @@ namespace ASEngine
 
         // on fixed update (physics related logic)
         virtual void FixedUpdate(float delta) {};
-
-        // rendering logic
-        virtual void Render() {};
 
         // on input event
         virtual void OnInputEvent(const InputEvent& event) {};

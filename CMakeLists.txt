@@ -17,6 +17,8 @@ else()
     set(PLATFORM_SPECIFIC_SOURCES ${PLATFORM_SPECIFIC_SOURCES}
         asengine/Core/FileSystem/FileDesktop.cpp
         asengine/Core/Debug/DebugDesktop.cpp
+        asengine/Display/Backend/Desktop/DesktopDisplay.cpp
+        asengine/Display/Backend/Desktop/DesktopDisplayCreate.cpp
     )
 endif()
 
@@ -63,8 +65,6 @@ add_library(
     asengine/Core/Math/Matrix4x4.cpp
     asengine/Core/Math/Vector3.cpp
     asengine/Core/Math/Quaternion.cpp
-    #window
-    # asengine/Core/Window/Window.cpp
     #input
     asengine/Core/InputSystem/InputEvent.cpp
     #ecs
@@ -75,12 +75,14 @@ add_library(
     asengine/ECS/ArchetypeManager.cpp
     asengine/ECS/EntityBuilder.cpp
     asengine/ECS/ComponentClass.cpp
-    #resource
+    #resourcem_PositionY
     asengine/Resource/IResourceClass.cpp
     asengine/Resource/Resource.cpp
     asengine/Resource/ResourceManager.cpp
+    # display
+    asengine/Display/Display.cpp
     #rendering
-    asengine/Renderer/Backend/RendererBackend.cpp
+    asengine/Renderer/Renderer.cpp
     #color
     asengine/Renderer/Color.cpp
     # shaders
@@ -113,6 +115,10 @@ add_library(
 )
 
 if(NOT ANDROID)
+    # add glfw
+    add_subdirectory(dependencies/glfw-3.3.8)
+    include_directories(dependencies/glfw-3.3.8/include)
+    
     # add opengl
     find_package(OpenGL REQUIRED)
     include_directories(${OPENGL_INCLUDE_DIRS})
@@ -129,9 +135,10 @@ if(NOT ANDROID)
         asengine
         stb_image
         miniaudio
-        glew
         spirv_cross_glsl
         OpenGL::GL
+        glew
+        glfw
     )
 
 else()

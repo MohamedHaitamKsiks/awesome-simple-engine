@@ -7,9 +7,10 @@
 #include <cstring>
 #include <algorithm>
 
+#include "MallocAllocator.h"
+
 #include "Core/Error/Assertion.h"
 #include "Core/Debug/Debug.h"
-
 
 namespace ASEngine 
 {
@@ -29,9 +30,6 @@ namespace ASEngine
     {
     public:
     // allocator traits to interact with allocator
-    private:
-        using Traits = std::allocator_traits<std::allocator<T>>;
-
     public:
         PoolAllocator()
         {
@@ -43,9 +41,11 @@ namespace ASEngine
             SetCapactity(capacity);
         }
 
+        PoolAllocator(const PoolAllocator&) = delete;
+        PoolAllocator(PoolAllocator&&) = delete;
+
         ~PoolAllocator()
         {
-            // free all
             Clear();
         }
 
@@ -58,27 +58,20 @@ namespace ASEngine
         // change capacity
         void SetCapactity(size_t capacity)
         {
+            if (capacity == m_Capacity)
+                return;
+
             // allocate new space
-            T* newData = nullptr;
-            if (capacity > 0)
-            {
-                newData = m_Allocator.allocate(capacity);
-                // set free flag to false
-                m_IsUsed.resize(capacity);
-                for (int i = static_cast<int>(m_Capacity); i < static_cast<int>(capacity); i++)
-                {
-                    m_IsUsed[i] = false;
-                }
-            }
+            T *newData = m_Allocator.allocate(capacity);
 
             if (m_Data)
             {
-                size_t minCapacity = (m_Capacity < capacity) ? m_Capacity: capacity;
+                size_t minCapacity = std::min(m_Capacity, capacity);
 
                 // copy old data to new allocated space
-                if (newData)
+                if (newData && minCapacity > 0)
                 {
-                    std::memcpy(reinterpret_cast<void *>(newData), reinterpret_cast<void *>(m_Data), minCapacity);
+                    std::memcpy(reinterpret_cast<void *>(newData), reinterpret_cast<void *>(m_Data), minCapacity * sizeof(T));
                 }
 
                 // free 
@@ -93,14 +86,25 @@ namespace ASEngine
             }
 
             // update free chunk stack
-            std::vector<ChunkID> newFreeChunkStack{};
-            newFreeChunkStack.reserve(capacity); 
-            for (auto chunkID: m_FreeChunkStack)
+            if (capacity > 0)
             {
-                if (chunkID < m_Capacity)
-                    newFreeChunkStack.push_back(chunkID);
+                std::vector<ChunkID> newFreeChunkStack{};
+                
+                newFreeChunkStack.reserve(capacity); 
+                for (auto chunkID: m_FreeChunkStack)
+                {
+                    if (chunkID < capacity)
+                        newFreeChunkStack.push_back(chunkID);
+                }
+                m_FreeChunkStack = std::move(newFreeChunkStack);
+                
+                m_IsUsed.resize(capacity, false);
             }
-            m_FreeChunkStack = std::move(newFreeChunkStack);
+            else
+            {
+                m_FreeChunkStack.clear();
+                m_IsUsed.clear();
+            }
 
             // save
             m_Data = newData;
@@ -110,15 +114,15 @@ namespace ASEngine
         // check if chunkid is free
         inline bool IsFree(ChunkID chunkID) const
         {
-            return chunkID >= m_Capacity || !m_IsUsed[chunkID];
-        };
+            return !m_Data || chunkID >= m_Capacity || !m_IsUsed[chunkID];
+        }
 
 
         // allocate chunk and return the address
         inline ChunkID Allocate()
         {
             ChunkID allocatedChunkID = AllocateChunk();
-            Traits::construct(m_Allocator, &m_Data[allocatedChunkID]);
+            std::construct_at(&m_Data[allocatedChunkID]);
             return allocatedChunkID;
         }
 
@@ -126,7 +130,7 @@ namespace ASEngine
         inline ChunkID Push(const T& value)
         {
             ChunkID allocatedChunkID = AllocateChunk();
-            Traits::construct(m_Allocator, &m_Data[allocatedChunkID], value);
+            std::construct_at(&m_Data[allocatedChunkID], value);
             return allocatedChunkID;
         }
 
@@ -137,7 +141,8 @@ namespace ASEngine
             ASENGINE_ASSERT(!IsFree(chunkID), "Cannot free unused chunk!");
                
             // call destructor to logically destroy
-            Traits::destroy(m_Allocator, &m_Data[chunkID]);
+            std::destroy_at(&m_Data[chunkID]);
+            m_IsUsed[chunkID] = false;
 
             // free chunk
             m_Size--;
@@ -236,7 +241,7 @@ namespace ASEngine
 
     private:
         // data
-        std::allocator<T> m_Allocator;
+        MallocAllocator<T> m_Allocator;
         T* m_Data = nullptr;
 
         size_t m_Size = 0;

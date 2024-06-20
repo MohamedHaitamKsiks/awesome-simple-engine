@@ -11,7 +11,10 @@ namespace ASEngine
     template<>
     void Serializer::Deserialize(const Json& object, VertexInputDescriptor& dest)
     {
-        Serializer::Deserialize(object.at("VertexInputLayouts"), dest.m_VertexInputLayouts);
+        std::vector<VertexInputLayout> layouts;
+        Serializer::Deserialize(object.at("VertexInputLayouts"), layouts);
+
+        dest.Create(layouts);
     }
 
     template<>
@@ -25,6 +28,7 @@ namespace ASEngine
     void VertexInputDescriptor::Create(const std::vector<VertexInputLayout> &layouts)
     {
         m_VertexInputLayouts = layouts;
+
         CreateImp(layouts);
     }
 } // namespace ASEngine

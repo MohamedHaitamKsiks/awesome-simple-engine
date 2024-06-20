@@ -26,6 +26,12 @@ namespace ASEngine
         // create using c string
         UniqueString(const char* cStr);
 
+        // copy constructor
+        UniqueString(const UniqueString& uniqueString);
+
+        // asign operator
+        UniqueString& operator=(const UniqueString& uniqueString);
+
         // compare strings
         friend inline bool operator<(const UniqueString &uStrLeft, const UniqueString &uStrRight)
         {

@@ -8,12 +8,12 @@ public:
 
     TestResourceType()
     {
-        // Debug::Log("Hello Test Resource!");
+        Debug::Log("Hello Test Resource!");
     }
 
     ~TestResourceType()
     {
-        // Debug::Log("Goodbye Test Resource!");
+        Debug::Log("Goodbye Test Resource!");
     }
 
     virtual int GetValue() const = 0;

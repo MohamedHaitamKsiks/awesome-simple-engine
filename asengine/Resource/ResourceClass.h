@@ -15,8 +15,6 @@
 #include "ResourceRef.h"
 #include "IResourceClass.h"
 
-#include "Class/Class.h"
-
 namespace ASEngine
 {
     // implementation for each resource type
@@ -24,10 +22,18 @@ namespace ASEngine
     class ResourceClass: public IResourceClass
     {
     public:
+        ResourceClass(UniqueString className): m_ClassName(className)
+        {
+        }
+
+        ~ResourceClass()
+        {
+        }
+
         // get class name
         UniqueString GetClassName() override
         {
-            return Class<T>::GetName();
+            return m_ClassName;
         }
 
         // load resource 
@@ -38,7 +44,11 @@ namespace ASEngine
             {
                 ResourceRef<Resource> resource = New();
                 
-                ASENGINE_ASSERT(resource->Load(path.GetString()), "Couldn't load resource");
+                if (!resource->Load(path.GetString()))
+                {
+                    Debug::Error("Couldn't load", path.GetString());
+                    return ResourceRef<Resource>(nullptr);
+                }
                 resource->m_Path = path;
 
                 m_ResourcePaths[path] = resource->GetResourceID();
@@ -73,27 +83,35 @@ namespace ASEngine
         }
 
     private:
-        PoolAllocator<T> m_Resources{UINT16_MAX};
+        PoolAllocator<T> m_Resources{};
         // use paths as reference names
         std::unordered_map<UniqueString, ResourceID> m_ResourcePaths{};
         UniqueString m_EmptyPath{""};
+        UniqueString m_ClassName;
 
         // remove
         void Destroy(Resource &resource)
         {
-            if (resource.m_Path != m_EmptyPath)
+            if (resource.m_Path != m_EmptyPath && m_ResourcePaths.find(resource.m_Path) != m_ResourcePaths.end())
             {
                 m_ResourcePaths.erase(resource.m_Path);
             }
 
-            m_Resources.Free(resource.GetResourceID());
+            // delete already deleted
+            if (!m_Resources.IsFree(resource.GetResourceID()))
+                m_Resources.Free(resource.GetResourceID());
         }
 
         // clean up class
+        void Init() override
+        {
+            m_Resources.SetCapactity(UINT16_MAX);
+        }
+
         void Terminate() override
         {
-            m_Resources.Clear();
             m_ResourcePaths.clear();
+            m_Resources.Clear();
         }   
     };
 

@@ -15,7 +15,7 @@ namespace ASEngine
     }
 
     void Image::LoadPNG(const std::string &path)
-    {
+    {   
         // read image file
         File imageFile;
         ASENGINE_ASSERT(imageFile.Open(path, FileOpenMode::READ), "Couldn't load image");
@@ -24,12 +24,12 @@ namespace ASEngine
         ByteBuffer fileBuffer{};
         imageFile.Read(fileBuffer);
         imageFile.Close();
-
+ 
         // decode
         stbi_uc *pixels = stbi_load_from_memory(reinterpret_cast<const stbi_uc *>(fileBuffer.GetData()), static_cast<int>(fileLength), &m_Width, &m_Height, &m_Channels, STBI_rgb_alpha);
         ASENGINE_ASSERT(pixels, "Coudn't load image");
 
-        m_Pixels.SetData(pixels, m_Width * m_Height * ASENGINE_IMAGE_CHANNELS);
+        m_Pixels.Move(pixels, m_Width * m_Height * ASENGINE_IMAGE_CHANNELS);
     }
 
     Color Image::GetPixelAt(int x, int y) const

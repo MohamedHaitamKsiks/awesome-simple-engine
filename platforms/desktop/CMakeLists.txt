@@ -6,19 +6,11 @@ set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
 project(desktop)
 
-#include glfw
-add_subdirectory(dependencies/glfw-3.3.8)
-
 # add opengl
 find_package(OpenGL REQUIRED)
-include_directories(${OPENGL_INCLUDE_DIRS})
 
-if(NOT OPENGL_FOUND)
-    message(ERROR "OPENGL not found!")
-else()
-    message("FOUND:" ${OPENGL_INCLUDE_DIR})
-endif()
-
+# Find the X11 package
+find_package(X11 REQUIRED)
 
 #include the engine 
 include_directories(${ASENGINE_INCLUDE_PATH})
@@ -34,8 +26,8 @@ target_link_libraries(
     build
     ${PROJECT_LIBRARIES}
     asengine
+    ${X11_LIBRARIES}
     OpenGL::GL
-    glfw
 )
 
 

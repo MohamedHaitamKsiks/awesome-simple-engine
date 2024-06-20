@@ -23,12 +23,14 @@ namespace ASEngine
 
         // deserialize element
         Json resourceObject = Json::parse(resourceFile.ReadText());
+        Debug::Log(path);
         Deserialize(resourceObject);
-
+        Debug::Log(path);
         resourceFile.Close();
-        
+
         m_IsLoaded = true;
         Debug::Log(Debug::Colorized(Debug::TextColor::GREEN_BG, path, ": Loaded"));
+
 
         return true;
     }
@@ -58,7 +60,6 @@ namespace ASEngine
     void Resource::DecrementReferenceCounter()
     {
         m_ReferenceCounter--;
-
         // destroy if no more reference to it exists
         if (m_ReferenceCounter == 0 && !m_IsPersistent)
         {

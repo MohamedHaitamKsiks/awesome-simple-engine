@@ -20,6 +20,8 @@ namespace ASEngine
     {
     ASENGINE_DEFINE_SINGLETON(SystemManager);
     public:
+        ~SystemManager();
+
         // register system to the system manager
         template <typename SystemType>
         void RegisterSystem()
@@ -43,9 +45,6 @@ namespace ASEngine
 
         // fixed update systems
         void FixedUpdate(float delta);
-
-        // renderer systems
-        void Render();
 
         // process input for all system
         void OnInputEvent(const InputEvent &event);

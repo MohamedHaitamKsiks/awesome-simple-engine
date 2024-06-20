@@ -61,7 +61,21 @@ namespace ASEngine
         }
 
         if (data)
+        {
             memcpy(reinterpret_cast<char*>(m_Data) + offset, data, size);
+        }
+    }
+
+    void ByteBuffer::Move(void *data, size_t size)
+    {
+        if (m_Data)
+        {
+            free(m_Data);
+            m_Size = 0;
+        }
+
+        m_Data = data;
+        m_Size = size;
     }
 
     void ByteBuffer::Copy(const ByteBuffer &buffer)
@@ -77,6 +91,12 @@ namespace ASEngine
 
     void ByteBuffer::Move(ByteBuffer &buffer)
     {
+        if (m_Data)
+        {
+            free(m_Data);
+            m_Size = 0;
+        }
+
         m_Data = buffer.m_Data;
         m_Size = buffer.m_Size;
 

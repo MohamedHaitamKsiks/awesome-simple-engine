@@ -6,6 +6,7 @@
 #include "Resource/ResourceRef.h"
 #include "Resource/Resource.h"
 #include "Resource/ResourceDefinition.h"
+#include "Resource/ResourceSerialization.h"
 
 namespace ASEngine
 {
@@ -29,6 +30,7 @@ namespace ASEngine
     class Texture: public Resource
     {
     ASENGINE_DEFINE_RESOURCE(Texture);
+    ASENGINE_SERIALIZE_RESOURCE(Texture);
     public:
         // create texture from image
         void Create(const Image& image, TextureFilter filter, TextureRepeatMode repeat);

@@ -4,6 +4,8 @@
 #include "Core/Serialization/Json.h"
 #include "Core/Serialization/Serializer.h"
 
+#include "Core/Debug/Debug.h"
+
 namespace ASEngine
 {
     UniqueString::UniqueString()
@@ -20,6 +22,17 @@ namespace ASEngine
     UniqueString::UniqueString(const char *cStr)
     {
         Create(cStr);
+    }
+
+    UniqueString::UniqueString(const UniqueString &uniqueString)
+    {
+        m_StringID = uniqueString.GetID();
+    }
+
+    UniqueString &UniqueString::operator=(const UniqueString &uniqueString)
+    {
+        m_StringID = uniqueString.GetID();
+        return *this;
     }
 
     //Serialization

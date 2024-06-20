@@ -10,11 +10,12 @@ namespace ASEngine
 
     }
 
-    void OpenGLRenderer::Init()
+    void OpenGLRenderer::InitImp()
     {
         // init glew 
     #ifdef ASENGINE_USING_GLEW
         glewInit();
+        Debug::Log("Glew Initialized");
     #endif
 
         // 
@@ -27,6 +28,11 @@ namespace ASEngine
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         glEnable(GL_DEPTH_TEST);
+    }
+
+    void OpenGLRenderer::TerminateImp()
+    {
+        
     }
 
     void OpenGLRenderer::BindVertexBufferImp(ResourceRef<Buffer> vertexBuffer, uint32_t binding)
@@ -59,7 +65,7 @@ namespace ASEngine
         const auto& vertexBuffers = GetCurrentVertexBuffers();
         
         ResourceRef<VertexInputDescriptor> vertexInputDescriptor = glShader->GetVertexInputDescritor();
-        const auto& layouts =vertexInputDescriptor->GetVertexInputLayouts();
+        const auto& layouts = vertexInputDescriptor->GetVertexInputLayouts();
 
         for (const auto& layout: layouts)
         {
@@ -143,7 +149,7 @@ namespace ASEngine
         }
 
         // set input rate
-        ASENGINE_ASSERT(layout.InputRate == VertexInputRate::NONE, "Vertex Input Rate is NONE!");
+        ASENGINE_ASSERT(layout.InputRate != VertexInputRate::NONE, "Vertex Input Rate is NONE!");
         GLuint divisor = (layout.InputRate == VertexInputRate::INSTANCE) ? 1 : 0;
 
         for (const auto& attribute: layout.VertexAttributes)

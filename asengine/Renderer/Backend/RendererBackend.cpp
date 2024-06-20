@@ -23,8 +23,8 @@ namespace ASEngine
     {
         ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(Buffer, OpenGLBuffer);
         ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(Texture, OpenGLTexture);
-        ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(VertexInputDescriptor, OpenGLVertexInputDescriptor);
         ASENGINE_REGISTER_RESOURCE_CLASS(ShaderSource);
+        ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(VertexInputDescriptor, OpenGLVertexInputDescriptor);
         ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(Shader, OpenGLShader);
         ASENGINE_REGISTER_RESOURCE_CLASS(Material);
 

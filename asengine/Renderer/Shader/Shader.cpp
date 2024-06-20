@@ -23,7 +23,7 @@ namespace ASEngine
         
         // load vertex input descriptor
         ResourceRef<VertexInputDescriptor> vertexInputDescriptor;
-        Serializer::Deserialize(object.at("VertexInputDescritor"), vertexInputDescriptor);
+        Serializer::Deserialize(object.at("VertexInputDescriptor"), vertexInputDescriptor);
         
         // create shader
         dest.Create(vertexSource, fragmentSource, vertexInputDescriptor);
@@ -42,6 +42,7 @@ namespace ASEngine
         // save sources
         m_VertexSource = vertexSource;
         m_FragmentSource = fragmentSource;
+        m_VertexInputDescriptor = vertexInputDescriptor;
 
         m_Params = ShaderParams::Combine(vertexSource->GetShaderParams(), fragmentSource->GetShaderParams());
         // create uniform buffers

@@ -16,10 +16,8 @@ namespace ASEngine
         ~OpenGLRenderer();
 
     private:
-        
-
-        // init opengl
-        void Init() override;
+        void InitImp() override;
+        void TerminateImp() override;
 
         // opengl implementations 
         void BindVertexBufferImp(ResourceRef<Buffer> vertexBuffer, uint32_t binding = 0) override;

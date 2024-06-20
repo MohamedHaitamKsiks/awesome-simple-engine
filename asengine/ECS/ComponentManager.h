@@ -17,7 +17,7 @@
 #include "Signature.h"
 
 // register component type
-#define ASENGINE_REGISTER_COMPONENT(component) ComponentManager::GetInstance().RegisterComponent<component>(#component)
+#define ASENGINE_REGISTER_COMPONENT(component) ComponentManager::GetInstance().RegisterComponent<component>(UniqueString(#component))
 
 namespace ASEngine
 {

@@ -11,6 +11,7 @@ namespace ASEngine
     {
         DestroyAll();
         CleanDestroyQueue();
+        m_Entities.Clear();
     }
 
     EntityID EntityManager::Create(const EntityBuilder &builder)
