@@ -21,11 +21,10 @@ PoolAllocatorTest::TestClass::~TestClass()
 
 void PoolAllocatorTest::Describe()
 {
-    m_Pool.SetCapactity(1000001);
 
     Test("it should have a capacity", [&]()
     {
-        ASENGINE_EXPECT(m_Pool.GetCapacity() == 1000001);
+        ASENGINE_EXPECT(m_Pool.GetCapacity() == POOL_ALLOCATOR_DEFAULT_PAGE_SIZE * 2);
     });
 
     Test("it should call constructor/destructor", [&]()

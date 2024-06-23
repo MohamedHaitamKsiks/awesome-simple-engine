@@ -7,17 +7,16 @@
 #include <cstring>
 #include <algorithm>
 
-#include "MallocAllocator.h"
+#include "ChunkID.h"
+#include "PoolAllocatorPage.h"
 
 #include "Core/Error/Assertion.h"
 #include "Core/Debug/Debug.h"
+#include "API/API.h"
 
 namespace ASEngine 
 {
-
-    // chunk index in the pool allocator
-    using ChunkID = uint32_t;
-    constexpr const ChunkID CHUNK_NULL = UINT32_MAX;
+    constexpr const size_t POOL_ALLOCATOR_DEFAULT_PAGE_SIZE = UINT16_MAX;
 
     /*
     dynanmic poolallocator implemetation
@@ -26,19 +25,20 @@ namespace ASEngine
     freeing is the same
     */
     template <typename T>
-    class PoolAllocator
+    class ASENGINE_API PoolAllocator
     {
     public:
     // allocator traits to interact with allocator
     public:
         PoolAllocator()
         {
-            SetCapactity(2);
+            PushPage();
         };
 
-        PoolAllocator(size_t capacity)
+        PoolAllocator(size_t pageCount)
         {
-            SetCapactity(capacity);
+            for (size_t i = 0; i < pageCount; i++)
+                PushPage();
         }
 
         PoolAllocator(const PoolAllocator&) = delete;
@@ -52,115 +52,51 @@ namespace ASEngine
         // clear allocator
         inline void Clear()
         {
-            SetCapactity(0);
-        }
+            while (m_Pages.size() > 0)
+                m_Pages.pop_back();
 
-        // change capacity
-        void SetCapactity(size_t capacity)
-        {
-            if (capacity == m_Capacity)
-                return;
-
-            // allocate new space
-            T *newData = m_Allocator.allocate(capacity);
-
-            if (m_Data)
-            {
-                size_t minCapacity = std::min(m_Capacity, capacity);
-
-                // copy old data to new allocated space
-                if (newData && minCapacity > 0)
-                {
-                    std::memcpy(reinterpret_cast<void *>(newData), reinterpret_cast<void *>(m_Data), minCapacity * sizeof(T));
-                }
-
-                // free 
-                for (ChunkID chunkID = capacity; chunkID < m_Capacity; chunkID++)
-                {
-                    if (!IsFree(chunkID))
-                        Free(chunkID);
-                }
-
-                // deallocate old memory
-                m_Allocator.deallocate(m_Data, m_Capacity);
-            }
-
-            // update free chunk stack
-            if (capacity > 0)
-            {
-                std::vector<ChunkID> newFreeChunkStack{};
-                
-                newFreeChunkStack.reserve(capacity); 
-                for (auto chunkID: m_FreeChunkStack)
-                {
-                    if (chunkID < capacity)
-                        newFreeChunkStack.push_back(chunkID);
-                }
-                m_FreeChunkStack = std::move(newFreeChunkStack);
-                
-                m_IsUsed.resize(capacity, false);
-            }
-            else
-            {
-                m_FreeChunkStack.clear();
-                m_IsUsed.clear();
-            }
-
-            // save
-            m_Data = newData;
-            m_Capacity = capacity;
+            m_FreeChunkStack.clear();
         }
 
         // check if chunkid is free
         inline bool IsFree(ChunkID chunkID) const
         {
-            return !m_Data || chunkID >= m_Capacity || !m_IsUsed[chunkID];
-        }
-
-
-        // allocate chunk and return the address
-        inline ChunkID Allocate()
-        {
-            ChunkID allocatedChunkID = AllocateChunk();
-            std::construct_at(&m_Data[allocatedChunkID]);
-            return allocatedChunkID;
-        }
-
-        // allocate push value to the allocator
-        inline ChunkID Push(const T& value)
-        {
-            ChunkID allocatedChunkID = AllocateChunk();
-            std::construct_at(&m_Data[allocatedChunkID], value);
-            return allocatedChunkID;
+            return m_Pages.size() == 0 ||
+                chunkID >= GetCapacity() || 
+                !m_Pages[chunkID / m_PageSize]->IsUsed(chunkID % m_PageSize);
         }
 
         // free memory
-        void Free(ChunkID chunkID)
+        inline void Free(ChunkID chunkID)
         {
-            // check if chunk is used 
-            ASENGINE_ASSERT(!IsFree(chunkID), "Cannot free unused chunk!");
-               
-            // call destructor to logically destroy
-            std::destroy_at(&m_Data[chunkID]);
-            m_IsUsed[chunkID] = false;
-
-            // free chunk
-            m_Size--;
+            ASENGINE_ASSERT(!IsFree(chunkID), "Can't free unused");
+            m_Pages[chunkID / m_PageSize]->Destroy(chunkID % m_PageSize);
+            
             m_FreeChunkStack.push_back(chunkID);
+            m_Size--;
         }
 
-        // get data at 
+        // allocate memory
+        inline ChunkID Allocate()
+        {
+            ChunkID allocatedChunkID = AllocateChunk();
+            m_Pages[allocatedChunkID / m_PageSize]->Construct(allocatedChunkID % m_PageSize);
+
+            return allocatedChunkID;
+        }
+
+        // get data at
         inline T& Get(ChunkID chunkID)
         {
-            ASENGINE_ASSERT(!IsFree(chunkID), std::string(typeid(T).name()) + " : Can't get id of unused");
-            return m_Data[chunkID];
+            ASENGINE_ASSERT(!IsFree(chunkID), "Can't get id of unused");
+            return m_Pages[chunkID / m_PageSize]->Get(chunkID % m_PageSize);
         };
 
         // get data at
         inline const T &Get(ChunkID chunkID) const
         {
-            ASENGINE_ASSERT(!IsFree(chunkID), std::string(typeid(T).name()) + " : Can't get id of unused");
-            return m_Data[chunkID];
+            ASENGINE_ASSERT(!IsFree(chunkID), "Can't get id of unused");
+            return m_Pages[chunkID / m_PageSize]->Get(chunkID % m_PageSize);
         };
 
         // get pool usage
@@ -172,86 +108,28 @@ namespace ASEngine
         // get pool capacity
         inline size_t GetCapacity() const
         {
-            return m_Capacity;
+            return m_Pages.size() * m_PageSize;
         }
 
-        // iterator
-        class Iterator
+        // get page size
+        inline size_t GetPageSize() const
         {
-        public:
-            Iterator(PoolAllocator<T>* poolAllocator, ChunkID chunkdID): m_PoolAllocator(poolAllocator), m_ChunkID(chunkdID) {}
-
-            Iterator& operator++()
-            {
-                do {
-                    m_ChunkID++;
-                } 
-                while (m_ChunkID < m_PoolAllocator->GetCapacity() && m_PoolAllocator->IsFree(m_ChunkID));
-
-                return *this;
-            }
-
-            Iterator operator++(int)
-            {
-                Iterator itr = *this;
-                ++(*this);
-                return itr;
-            }
-
-            bool operator==(const Iterator& other) const
-            {
-                return m_PoolAllocator == other.m_PoolAllocator && m_ChunkID == other.m_ChunkID;
-            }
-
-            bool operator!=(const Iterator& other) const
-            {
-                return !(*this == other);
-            }
-
-            T& operator*()
-            {
-                return m_PoolAllocator->Get(m_ChunkID);
-            }
-
-            const T& operator*() const
-            {
-                return m_PoolAllocator->Get(m_ChunkID);
-            }
-
-        private:
-            PoolAllocator<T>* m_PoolAllocator = nullptr;
-            ChunkID m_ChunkID;
-        };
-
-        Iterator begin()
-        {
-            ChunkID chunkID = 0;
-            while (chunkID < m_Capacity && IsFree(chunkID))
-            {
-                chunkID++;
-            }
-
-            return Iterator(this, chunkID);
-        }
-
-        Iterator end()
-        {
-            return Iterator(this, m_Capacity);
+            return m_PageSize;
         }
 
     private:
-        // data
-        MallocAllocator<T> m_Allocator;
-        T* m_Data = nullptr;
+        // page type
+        using Page = PoolAllocatorPage<T>;
 
+        // data
+        std::vector<std::unique_ptr<Page>> m_Pages{};
+        size_t m_PageSize = POOL_ALLOCATOR_DEFAULT_PAGE_SIZE;
         size_t m_Size = 0;
-        size_t m_Capacity = 0;
 
         // pool list of free chunks
         std::vector<ChunkID> m_FreeChunkStack{};
-        std::vector<bool> m_IsUsed{};
 
-        // allocate space   
+        // allocate one chunk and return it's id (doesn't construct) 
         ChunkID AllocateChunk()
         {
             ChunkID allocatedChunkID;
@@ -264,17 +142,45 @@ namespace ASEngine
             else
             {
                 // grow capacity
-                if (m_Size >= m_Capacity)
+                if (m_Size >= GetCapacity())
                 {
-                    SetCapactity(m_Capacity * 3 / 2 + 1);
+                    PushPage();
                 }
                 allocatedChunkID = m_Size;
             }
 
             m_Size++;
-            m_IsUsed[allocatedChunkID] = true;
-
             return allocatedChunkID;
+        }
+
+        // add new page of chunks
+        void PushPage()
+        {
+            // allocate and add page data
+            std::unique_ptr<Page> page = std::make_unique<Page>(m_PageSize);
+            m_Pages.push_back(std::move(page));
+        }
+
+        // pop page of chunks
+        void PopPage()
+        {
+            // remove page
+            m_Pages.pop_back();
+
+            // recompute free chunks stack
+            size_t capacity = GetCapacity();
+
+            std::vector<ChunkID> newFreeChunkStack{};
+            newFreeChunkStack.reserve(capacity);
+
+            for (auto chunkID : m_FreeChunkStack)
+            {
+                if (chunkID < capacity)
+                    newFreeChunkStack.push_back(chunkID);
+            }
+            m_FreeChunkStack = std::move(newFreeChunkStack);
+
+
         }
     };
 

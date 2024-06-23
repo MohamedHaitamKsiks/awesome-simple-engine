@@ -6,6 +6,7 @@
 
 namespace ASEngine
 {
+    ;
 
     void EntityManager::Terminate()
     {
@@ -21,12 +22,12 @@ namespace ASEngine
         
         Archetype& archetype = ArchetypeManager::GetInstance().GetArchetype(signature);
         
-        EntityData data;
+        EntityID entityID = m_Entities.Allocate();
+        EntityData& data = m_Entities.Get(entityID);
         data.ArchetypeOwner = &archetype;
         data.IsDestroyed = false;
         data.Persistent = builder.GetPersistant();
 
-        EntityID entityID = m_Entities.Push(data);
         ComponentIndex index = archetype.AddEntity(entityID);
 
         for (const auto& [componentName, componentValue]: builder.GetComponents())

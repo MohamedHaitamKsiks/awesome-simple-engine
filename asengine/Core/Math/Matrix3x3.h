@@ -5,6 +5,8 @@
 #include "Core/Error/Assertion.h"
 #include "SquareMatrix.h"
 #include "Vector2.h"
+#include "API/API.h"
+
 #include <array>
 
 namespace ASEngine 
@@ -12,7 +14,7 @@ namespace ASEngine
 
     //Matrix3x3 column-major and with stride be compatible with std140
     // Used for 2D transformation on Vector2
-    class Matrix3x3: public SquareMatrix<3, 1>
+    class ASENGINE_API Matrix3x3 : public SquareMatrix<3, 1>
     {
     public:
         constexpr Matrix3x3() = default;

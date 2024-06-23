@@ -3,11 +3,13 @@
 
 #include <cstdint>
 #include "Matrix.h"
+#include "API/API.h"
+
 
 namespace ASEngine
 {
-    template<size_t N, size_t Stride>
-    class SquareMatrix: public Matrix<N, N, Stride>
+    template <size_t N, size_t Stride>
+    class ASENGINE_API SquareMatrix : public Matrix<N, N, Stride>
     {
     public:
         constexpr SquareMatrix(): Matrix<N, N, Stride>()

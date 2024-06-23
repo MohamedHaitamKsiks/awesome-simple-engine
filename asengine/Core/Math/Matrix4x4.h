@@ -4,12 +4,13 @@
 
 #include "SquareMatrix.h"
 #include "Vector3.h"
+#include "API/API.h"
 
 namespace ASEngine 
 {
 
     //Matrix4x4
-    class Matrix4x4: public SquareMatrix<4, 0>
+    class ASENGINE_API Matrix4x4: public SquareMatrix<4, 0>
     {
     public:
         constexpr Matrix4x4() = default;

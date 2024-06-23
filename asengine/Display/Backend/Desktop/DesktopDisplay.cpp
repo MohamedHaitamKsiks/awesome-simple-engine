@@ -3,7 +3,7 @@
 
 namespace ASEngine
 {
-    void DesktopDisplay::Init()
+    void DesktopDisplay::InitImp()
     {
         if (!glfwInit())
         {
@@ -16,16 +16,25 @@ namespace ASEngine
         const auto& windowSettings = displaySettings.Window;
         const auto& viewportSettings = displaySettings.Viewport;
         const auto& renderingSettings = displaySettings.Rendering;
+        const auto& applicationSettings = ASEngine::GetInstance().GetSettings().Application;
 
         // create window with default values
-        m_Window = glfwCreateWindow(640 * 2, 480 * 2, "ASEngine Desktop Window", NULL, NULL);
+        m_Window = glfwCreateWindow(640, 480, "", NULL, NULL);
         
-        // set
+        // init opengl context
         glfwMakeContextCurrent(m_Window);
+
+        // set settings
+        SetWindowSize(windowSettings.Width, windowSettings.Height);
+        SetWindowTitle(applicationSettings.Name);
+        SetFullscreen(windowSettings.Fullscreen);
+        SetKeepAspectRatio(windowSettings.KeepAspectRatio);
+        SetViewportSize(viewportSettings.Width, viewportSettings.Height);
     }
 
-    void DesktopDisplay::Terminate()
+    void DesktopDisplay::TerminateImp()
     {
+        glfwDestroyWindow(m_Window);
         glfwTerminate();
     }
 

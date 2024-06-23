@@ -2,6 +2,8 @@
 
 namespace ASEngine
 {
+    ;
+
     Archetype& ArchetypeManager::GetArchetype(const Signature& signature)
     {
         // is archetype doesn't exist create it

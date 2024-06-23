@@ -15,10 +15,12 @@
 
 #include "Signature.h"
 
+#include "API/API.h"
+
 namespace ASEngine
 {
     // context of ecs: the EntityManager where all the entities exists
-    class EntityManager: public ISystem
+    class ASENGINE_API EntityManager : public ISystem
     {
     ASENGINE_DEFINE_SINGLETON(EntityManager);
 
@@ -39,7 +41,7 @@ namespace ASEngine
         void CleanDestroyQueue();
 
     private:
-        PoolAllocator<EntityData> m_Entities{UINT16_MAX};
+        PoolAllocator<EntityData> m_Entities{};
         std::vector<EntityID> m_DestroyQueue{};
         bool m_IsFirstFrame = true;
     };

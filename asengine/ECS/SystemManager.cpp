@@ -2,6 +2,8 @@
 
 namespace ASEngine
 {
+    ;
+
     SystemManager::~SystemManager()
     {
     }

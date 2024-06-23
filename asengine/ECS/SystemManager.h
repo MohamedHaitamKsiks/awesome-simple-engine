@@ -11,12 +11,14 @@
 
 #include "System.h"
 
+#include "API/API.h"
+
 // register system class
 #define ASENGINE_REGISTER_SYSTEM(systemClass) SystemManager::GetInstance().RegisterSystem<systemClass>()
 
 namespace ASEngine
 {
-    class SystemManager
+    class ASENGINE_API SystemManager
     {
     ASENGINE_DEFINE_SINGLETON(SystemManager);
     public:

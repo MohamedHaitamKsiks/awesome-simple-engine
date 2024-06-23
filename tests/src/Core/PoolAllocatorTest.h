@@ -21,7 +21,7 @@ private:
 
     // it is going to be editted by class constructor and destructor
     static int s_TestValue;
-    PoolAllocator<TestClass> m_Pool{};
+    PoolAllocator<TestClass> m_Pool{2};
 
     void Describe() override;
 };

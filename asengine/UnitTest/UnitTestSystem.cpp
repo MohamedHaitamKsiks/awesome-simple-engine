@@ -1,9 +1,13 @@
 #include "UnitTestSystem.h"
-#include <cstdlib>
 #include "Core/Debug/Debug.h"
+#include "Core/ASEngine/ASEngine.h"
+
+#include <cstdlib>
 
 namespace ASEngine
 {
+    ;
+
     void UnitTestSystem::Init()
     {
         // register unit tests

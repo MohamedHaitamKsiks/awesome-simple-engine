@@ -2,6 +2,7 @@
 #define __ASENGINE_CLASS_H
 
 #include "Core/String/UniqueString.h"
+#include "API/API.h"
 
 // add inside class we want to register with a name
 #define ASENGINE_DEFINE_CLASS(Type) \
@@ -20,7 +21,7 @@ namespace ASEngine
 
     // implementation of generic object
     template<typename T>
-    class Class
+    class ASENGINE_API Class
     {
     public:
         // get class name 

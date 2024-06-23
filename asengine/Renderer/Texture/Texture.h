@@ -8,6 +8,8 @@
 #include "Resource/ResourceDefinition.h"
 #include "Resource/ResourceSerialization.h"
 
+#include "API/API.h"
+
 namespace ASEngine
 {
     // filter
@@ -27,7 +29,7 @@ namespace ASEngine
     };
 
     // abstract texture (needs to be implemented depending on api)
-    class Texture: public Resource
+    class ASENGINE_API Texture : public Resource
     {
     ASENGINE_DEFINE_RESOURCE(Texture);
     ASENGINE_SERIALIZE_RESOURCE(Texture);

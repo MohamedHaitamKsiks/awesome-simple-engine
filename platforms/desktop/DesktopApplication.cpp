@@ -3,6 +3,15 @@
 namespace ASEngine
 {
 
+    DesktopApplication::DesktopApplication()
+    {
+    }
+
+    DesktopApplication::~DesktopApplication()
+    {
+        Terminate();
+    }
+
     int DesktopApplication::Run()
     {
         // init window
@@ -34,19 +43,15 @@ namespace ASEngine
         return 0;
     }
 
-    DesktopApplication::~DesktopApplication()
-    {
-        
-    }
 
     bool DesktopApplication::Init()
     {
         // setup application modules and systems
-        m_ASEngine.Setup();
+        ASEngine::GetInstance().Setup();
         Display::Create(Renderer::Backend::OPENGL);
         Registry();
-        m_ASEngine.Init();
-       
+        ASEngine::GetInstance().Init();
+
         return true;
     }
 
@@ -54,12 +59,12 @@ namespace ASEngine
     void DesktopApplication::Update(float delta)
     {
         Display::GetInstance().BeginFrame();
-        m_ASEngine.Update(delta);
+        ASEngine::GetInstance().Update(delta);
         Display::GetInstance().EndFrame();
     }
 
     void DesktopApplication::Terminate()
     {
-        m_ASEngine.Terminate();
+        ASEngine::GetInstance().Terminate();
     }
 } // namespace ASEngine

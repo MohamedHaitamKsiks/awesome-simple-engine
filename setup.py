@@ -15,7 +15,7 @@ def createDirectory(dirPath: str):
 #setup
 def setup(configPath: str):
     #compile engine
-    compileASEngine(["linux"])
+    compileASEngine(["linux", "windows"])
 
     #read config path
     config = {}

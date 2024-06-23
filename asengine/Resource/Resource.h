@@ -1,6 +1,8 @@
 #ifndef __ASENGINE_ABSTARCT_RESOURCE_H
 #define __ASENGINE_ABSTARCT_RESOURCE_H
 
+#include "API/API.h"
+
 #include "Class/Object.h"
 
 #include "Core/String/UniqueString.h"
@@ -9,8 +11,8 @@
 
 namespace ASEngine
 {
-    // Abstract Resource 
-    class Resource: public Object
+    // Abstract Resource
+    class ASENGINE_API Resource : public Object
     {
     public:
         virtual ~Resource() {};

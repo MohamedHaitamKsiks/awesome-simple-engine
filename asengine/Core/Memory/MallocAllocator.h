@@ -3,11 +3,12 @@
 
 #include <cstdlib>
 #include <memory>
+#include "API/API.h"
 
 namespace ASEngine
 {
     template <typename T>
-    struct MallocAllocator
+    struct ASENGINE_API MallocAllocator
     {
         typedef T value_type;
         inline T* allocate(const size_t n) const

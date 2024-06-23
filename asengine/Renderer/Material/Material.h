@@ -9,9 +9,11 @@
 #include "Renderer/Shader/Shader.h"
 #include "Renderer/Texture/Texture.h"
 
+#include "API/API.h"
+
 namespace ASEngine
 {
-    class Material: public Resource
+    class ASENGINE_API Material : public Resource
     {
     ASENGINE_DEFINE_RESOURCE(Material);
     ASENGINE_SERIALIZE_RESOURCE(Material);

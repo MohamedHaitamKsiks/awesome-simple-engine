@@ -8,9 +8,11 @@
 #include "Class/Class.h"
 #include "Class/ClassManager.h"
 
+#include "API/API.h"
+
 namespace ASEngine
 {
-    class IComponentClass
+    class ASENGINE_API IComponentClass
     {
     public:
         virtual AbstractComponent* New() = 0; 
@@ -20,7 +22,7 @@ namespace ASEngine
 
 
     template <typename T>
-    class ComponentClass: public IComponentClass
+    class ASENGINE_API ComponentClass: public IComponentClass
     {
     public:
         AbstractComponent* New() override 

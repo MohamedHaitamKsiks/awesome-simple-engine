@@ -13,13 +13,15 @@
 #include<stdexcept>
 #include<chrono>
 
+#include "API/API.h"
+
 // unit test expect predicat
 #define ASENGINE_EXPECT(predicat) ASEngine::UnitTest::Expect(predicat, __FILE__, __LINE__, #predicat)
 
 namespace ASEngine
 {
     // unit test container
-    class UnitTest
+    class ASENGINE_API UnitTest
     {
     public:
         UnitTest() = default;

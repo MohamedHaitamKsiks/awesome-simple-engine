@@ -158,7 +158,6 @@ We are not done yet, you need to register your components and systems to the mod
     // system registry ...
     ASENGINE_REGISTER_SYSTEM(SpriteRenderingSystem);
 };
-
 ````
 
 

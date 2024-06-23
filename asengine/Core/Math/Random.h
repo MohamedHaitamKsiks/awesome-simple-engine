@@ -2,10 +2,11 @@
 #ifndef __ASENGINE_RANDOM_H
 #define __ASENGINE_RANDOM_H
 
+#include "API/API.h"
 
 namespace ASEngine {
 
-	class Random 
+	class ASENGINE_API Random
 	{
 	public:
 		// generate random integer

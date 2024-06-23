@@ -15,8 +15,10 @@ namespace ASEngine
     class DesktopApplication 
     {
     public:
-        int Run();
+        DesktopApplication();
         ~DesktopApplication();
+
+        int Run();
 
     private:
 

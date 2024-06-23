@@ -2,6 +2,8 @@
 
 namespace ASEngine
 {
+    ;
+
     // unique string manager implementations
     UniqueStringID UniqueStringManager::Find(const std::string &targetString)
     {

@@ -11,9 +11,11 @@
 #include "Resource.h"
 #include "ResourceRef.h"
 
+#include "API/API.h"
+
 namespace ASEngine
 {
-    class IResourceClass: public ISystem
+    class ASENGINE_API IResourceClass : public ISystem
     {
     public:
         virtual ~IResourceClass() {};

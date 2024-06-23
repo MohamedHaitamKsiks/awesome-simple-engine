@@ -2,11 +2,12 @@
 #define __ASENGINE_COLLECTION_H
 
 #include <cstdint>
+#include "API/API.h"
 
 namespace ASEngine
 {
     // interface for collection
-    class ICollection
+    class ASENGINE_API ICollection
     {
     public:
         virtual uint32_t Add() = 0;

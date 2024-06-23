@@ -12,6 +12,7 @@
 
 #include<string>
 #include "Core/Memory/ByteBuffer.h"
+#include "API/API.h"
 
 namespace ASEngine {
 
@@ -30,8 +31,9 @@ namespace ASEngine {
         USERDATA
     };
 
-    class File {
-    
+    class ASENGINE_API File
+    {
+
     public:
         //get/set assetmanager for android 
         #ifdef __ANDROID__

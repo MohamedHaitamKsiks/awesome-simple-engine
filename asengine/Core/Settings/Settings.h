@@ -3,30 +3,31 @@
 
 #include <string>
 #include "Renderer/Renderer.h"
+#include "API/API.h"
 
 namespace ASEngine
 {
     // time settings
-    struct TimeSettings
+    struct ASENGINE_API TimeSettings
     {
         float FixedTimeStep = 0.02f;
     };
 
     // application settings
-    struct ApplicationSettings
+    struct ASENGINE_API ApplicationSettings
     {
         std::string Name = "ASEngine-Project";
     };
 
     // viewport settings
-    struct ViewportSettings
+    struct ASENGINE_API ViewportSettings
     {
         uint32_t Width = 0;
         uint32_t Height = 0;
     };
 
     // window settings
-    struct WindowSettings
+    struct ASENGINE_API WindowSettings
     {
         uint32_t Width = 0;
         uint32_t Height = 0;
@@ -35,13 +36,13 @@ namespace ASEngine
     };
 
     // renderer settings
-    struct RenderingSettings
+    struct ASENGINE_API RenderingSettings
     {
         Renderer::Backend Backend = Renderer::Backend::NONE;
     };
 
     // display settings
-    struct DisplaySettings
+    struct ASENGINE_API DisplaySettings
     {
         ViewportSettings Viewport;
         WindowSettings Window;
@@ -49,7 +50,7 @@ namespace ASEngine
     };
 
     // asengine settings
-    struct Settings
+    struct ASENGINE_API Settings
     {
         ApplicationSettings Application;
         DisplaySettings Display;

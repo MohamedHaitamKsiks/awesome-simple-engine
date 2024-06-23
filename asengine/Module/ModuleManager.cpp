@@ -2,6 +2,7 @@
 
 namespace ASEngine
 {
+    ;
 
     void ModuleManager::Registry()
     {

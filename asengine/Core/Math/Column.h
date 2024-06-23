@@ -7,12 +7,14 @@
 #include <algorithm>
 #include <cstdint>
 
+#include "API/API.h"
+
 namespace ASEngine
 {
     // column definition used to define matrices
-    // stride added 
-    template <size_t N , size_t Stride>
-    class Column
+    // stride added
+    template <size_t N, size_t Stride>
+    class ASENGINE_API Column
     {
     public:
         constexpr Column() = default;

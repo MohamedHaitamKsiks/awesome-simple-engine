@@ -19,15 +19,19 @@
 
 #include "Core/Settings/Settings.h"
 
+#include "API/API.h"
+
 namespace ASEngine 
 {
 
 	// asengine context 
-	// defines the core of the engine 
-	class ASEngine
+	// defines the core of the engine
+	class ASENGINE_API ASEngine
 	{
 	ASENGINE_DEFINE_SINGLETON(ASEngine);
 	public:
+		~ASEngine() = default;
+
 		// setup application before init and user registry
 		void Setup();
 

@@ -101,47 +101,24 @@ def compileEngineFor(plarform) -> int:
 
     #cmake
     if plarform == "linux":
-        compilationResult += os.system(f"cmake {enginePath}")
+        compilationResult += os.system(f"cmake  -DCMAKE_BUILD_TYPE=Debug {enginePath}")
     elif plarform == "windows":
         windowsCmakeToolchain = "cmake_toolchains/mingw-w64-x86_64.cmake"
         compilationResult += os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={windowsCmakeToolchain} {enginePath}")
     
     #make
     compilationResult += os.system("make")
-
-    #combine into one static librarty
-    #create .mri file
-    if pathlib.Path("asengine.a").exists():
-        os.remove("asengine.a")
-
-    mriCode = ["create asengine.a"]
-
-    libFilesList = list(pathlib.Path().rglob("*.a"))
-
-    for libFile in libFilesList:
-        if (libFile.name == "asegnine.a"):
-            continue
-        mriCode.append(f"addlib {str(libFile)}")
-        print("adding lib: ", str(libFile))
     
-    mriCode.append("save")
-    mriCode.append("end")
-
-    #save .mri file
-    mriFile = open("asengine.mri", "w")
-    mriFile.write('\n'.join(mriCode))
-    mriFile.close()
-
-    #generate asengine.a
-    os.system("ar -M <asengine.mri")
-
-    #copy asengine.a to lib
+    #copy asengine.so to lib
     os.chdir(enginePath)
 
     libPath = f"build/lib/{plarform}"
     os.makedirs(libPath, exist_ok=True)
-    shutil.copy(f"{buildFolderPath}/asengine.a", f"{libPath}/libasengine.a")
-
+    
+    if plarform == "linux":
+        shutil.copy(f"{buildFolderPath}/libasengine.so", f"{libPath}/libasengine.so")
+    elif plarform == "windows":
+        shutil.copy(f"{buildFolderPath}/libasengine.dll", f"{libPath}/libasengine.dll")
 
     return compilationResult
 

@@ -1,10 +1,12 @@
 #ifndef __ASENGINE_MODULE_H
 #define __ASENGINE_MODULE_H
 
+#include "API/API.h"
+
 namespace ASEngine
 {
     // module
-    class IModule
+    class ASENGINE_API IModule
     {
     public:
         virtual void Registry() = 0;

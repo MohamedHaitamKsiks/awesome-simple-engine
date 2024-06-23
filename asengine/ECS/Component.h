@@ -14,10 +14,12 @@
 
 #include "Entity.h" 
 
+#include "API/API.h"
+
 namespace ASEngine
 {
-    // abstract  component 
-    class AbstractComponent: public Object
+    // abstract  component
+    class ASENGINE_API AbstractComponent : public Object
     {
     public:
         virtual ~AbstractComponent() {};
@@ -41,7 +43,7 @@ namespace ASEngine
 
     // component
     template <typename T>
-    class Component : public AbstractComponent 
+    class ASENGINE_API Component : public AbstractComponent
     {
     ASENGINE_DEFINE_CLASS(T);
 
@@ -71,7 +73,7 @@ namespace ASEngine
 }
 
 // export no field
-#define ASENGINE_EXPORT_EMPTY(ComponentType) \
+#define  ASENGINE_EXPORT_EMPTY(ComponentType) \
     template <> \
     Json Serializer::Serialize(const ComponentType &value) \
     { \

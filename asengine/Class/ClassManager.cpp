@@ -1,6 +1,6 @@
-#include "ComponentClass.h"
+#include "ClassManager.h"
 
 namespace ASEngine
 {
-    
+    ;
 } // namespace ASEngine

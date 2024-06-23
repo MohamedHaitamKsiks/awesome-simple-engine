@@ -10,6 +10,8 @@
 
 namespace ASEngine
 {
+    ;
+
     ASENGINE_SERIALIZE_ENUM(Renderer::Backend, 
         NONE,
         OPENGL,
@@ -24,12 +26,6 @@ namespace ASEngine
     void Renderer::Terminate()
     {
         TerminateImp();
-
-        m_CurrentVertexBuffers.clear();
-
-        m_CurrentIndexBuffer = ResourceRef<Buffer>::NONE();
-        m_CurrentShader = ResourceRef<Shader>::NONE();
-        m_CurrentMaterial = ResourceRef<Material>::NONE();
     }
 
     void Renderer::BeginRendering()
@@ -37,17 +33,14 @@ namespace ASEngine
         m_DrawCallsCount = 0;
     }
 
-    // end rendering
+    // end rendering = reset bindings
     void Renderer::EndRendering()
     {
-    }
+        m_CurrentVertexBuffers.clear();
 
-    void Renderer::ExitUnsupportedRenderer(Backend backend)
-    {
-        Json backendObject;
-        Serializer::Deserialize(backendObject, backend);
-        
-        Debug::Error(std::string(backendObject), ": Unsupported backend!");
+        m_CurrentIndexBuffer = ResourceRef<Buffer>::NONE();
+        m_CurrentShader = ResourceRef<Shader>::NONE();
+        m_CurrentMaterial = ResourceRef<Material>::NONE();
     }
 
     void Renderer::BindVertexBuffer(ResourceRef<Buffer> vertexBuffer, uint32_t binding)
@@ -103,6 +96,8 @@ namespace ASEngine
         {
             m_CurrentShader->SetSamplerTexture(samplerName, sampler);
         }
+
+        m_CurrentMaterial = material;
     }
 
     

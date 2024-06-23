@@ -8,10 +8,12 @@
 #include "Component.h"
 #include "Signature.h"
 
+#include "API/API.h"
+
 namespace ASEngine
 {
-    // builder to create a new entity 
-    class EntityBuilder
+    // builder to create a new entity
+    class ASENGINE_API EntityBuilder
     {
         public:
             EntityBuilder() {};

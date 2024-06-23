@@ -1,10 +1,16 @@
 # Sets the minimum version of CMake required to build the native library.
 cmake_minimum_required(VERSION 3.22.1)
 set(CMAKE_CXX_STANDARD 20)
-add_compile_options(-Wall)
+add_compile_options(-Wall -static-libgcc -static-libstdc++)
+add_compile_definitions(ASENINE_EXPORTS)
 
+#create project
 project(asengine)
 include_directories(asengine)
+
+#link static library into dynamc library
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 
 #platform specific sources
 set(PLATFORM_SPECIFIC_SOURCES)
@@ -36,7 +42,7 @@ include_directories(dependencies/stb_image)
 
 add_library(
     asengine
-    STATIC
+    SHARED
     #Application
     asengine/Core/ASEngine/ASEngine.cpp
     #Settings
@@ -56,7 +62,6 @@ add_library(
     #modules
     asengine/Module/ModuleManager.cpp
     #memory
-    asengine/Core/Memory/PoolAllocator.cpp
     asengine/Core/Memory/ByteBuffer.cpp
     #math
     asengine/Core/Math/Random.cpp
@@ -65,8 +70,10 @@ add_library(
     asengine/Core/Math/Matrix4x4.cpp
     asengine/Core/Math/Vector3.cpp
     asengine/Core/Math/Quaternion.cpp
-    #input
+    #inpute
     asengine/Core/InputSystem/InputEvent.cpp
+    #class
+    asengine/Class/ClassManager.cpp
     #ecs
     asengine/ECS/EntityManager.cpp
     asengine/ECS/Archetype.cpp
@@ -124,21 +131,23 @@ if(NOT ANDROID)
     include_directories(${OPENGL_INCLUDE_DIRS})
     
     include_directories(dependencies/glew/include)
+    add_definitions(-DGLEW_STATIC)
     add_library(
         glew
         STATIC
         dependencies/glew/src/glew.c
     )
-    add_compile_definitions(GLEW_STATIC GLEW_BUILD)
+    
+    set_target_properties(asengine PROPERTIES LINK_FLAGS "-static-libgcc -static-libstdc++")
     
     target_link_libraries(
         asengine
-        stb_image
-        miniaudio
-        spirv_cross_glsl
+        PRIVATE stb_image
+        PRIVATE miniaudio
+        PRIVATE glew
+        PRIVATE glfw
+        PRIVATE spirv-cross-glsl
         OpenGL::GL
-        glew
-        glfw
     )
 
 else()
@@ -149,6 +158,5 @@ else()
         stb_image
     )
 endif()
-
 
 

@@ -2,6 +2,7 @@
 
 namespace ASEngine
 {
+    ;
 
     void ResourceManager::RegisterResourceClass(UniqueString resourceName, std::unique_ptr<IResourceClass> resourceClass)
     {

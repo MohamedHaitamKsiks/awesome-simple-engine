@@ -7,13 +7,15 @@
 #include "Resource/Resource.h"
 #include "Resource/ResourceDefinition.h"
 
+#include "API/API.h"
+
 namespace ASEngine
 {
     // define spirvbinary as vector of uint32_t
     using SpirvBinary = std::vector<uint32_t>;
 
     // shader source resource (parsed from spirv binary)
-    class ShaderSource: public Resource
+    class ASENGINE_API ShaderSource : public Resource
     {
     ASENGINE_DEFINE_RESOURCE(ShaderSource);
     public:

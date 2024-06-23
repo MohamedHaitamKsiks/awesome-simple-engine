@@ -7,10 +7,12 @@
 #include "Component.h"
 #include "Archetype.h"
 
+#include "API/API.h"
+
 namespace ASEngine
 {
     // entity data for look up ..
-    struct EntityData
+    struct ASENGINE_API EntityData
     {
         Archetype* ArchetypeOwner = nullptr;
         bool IsDestroyed = false;

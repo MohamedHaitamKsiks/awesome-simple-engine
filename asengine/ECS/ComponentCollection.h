@@ -5,13 +5,15 @@
 #include "Component.h"
 #include "Core/Collection/Collection.h"
 
+#include "API/API.h"
+
 namespace ASEngine
 {
     // component index in the collection
     using ComponentIndex = uint32_t;
 
     // interface of component collection behaviour
-    class IComponentCollection: public ICollection
+    class ASENGINE_API IComponentCollection : public ICollection
     {
     public:
         virtual AbstractComponent& ComponentAt(ComponentIndex index) = 0;
@@ -21,8 +23,8 @@ namespace ASEngine
 
 
     // template of component collection
-    template<typename ComponentType>
-    class ComponentCollection: public IComponentCollection
+    template <typename ComponentType>
+    class ASENGINE_API ComponentCollection : public IComponentCollection
     {
     public:
         ComponentCollection()

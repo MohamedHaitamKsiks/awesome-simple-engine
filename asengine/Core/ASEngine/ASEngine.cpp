@@ -16,20 +16,19 @@
 
 namespace ASEngine
 {
+    ;
 
     void ASEngine::Init()
     {
         ModuleManager::GetInstance().Registry();
-
-        // load project settings
-        LoadProjectSettings();
-
         SystemManager::GetInstance().Init();
-        Debug::Log("ASEngine init complete");
     }
 
     void ASEngine::Setup()
     {
+        // load project settings
+        LoadProjectSettings();
+
         // register application systems and modules
         RegisterBuiltInSystems();
         Debug::Log("ASEngine setup complete");
@@ -89,36 +88,16 @@ namespace ASEngine
 
     void ASEngine::LoadProjectSettings()
     {
-        /*//load json file
-        File projectSettingsFile;
-        projectSettingsFile.Open("project.settings.json", FileOpenMode::READ);
-        std::string projectSettingsString = projectSettingsFile.ReadText();
-        projectSettingsFile.Close();
+        // load settigs file
+        File settingsFile;
+        settingsFile.Open("project.settings.json", FileOpenMode::READ);
+        
+        // read settings as json
+        std::string settingsString = settingsFile.ReadText();
+        Json settingsObject = Json::parse(settingsString);
 
-        //parse to json
-        Json projectSettings = Json::parse(projectSettingsString);
-
-        // set project name
-        std::string projectName = projectSettings["name"].get<std::string>();
-        //Window::GetInstance().SetTitle(projectName);
-
-        // set view port
-        int viewportWidth = projectSettings["viewport"]["size"]["width"].get<int>();
-        int viewportHeight = projectSettings["viewport"]["size"]["height"].get<int>();
-        // Viewport::GetInstance().SetSize(viewportWidth, viewportHeight);
-
-        // set window size
-        int windowWidth = projectSettings["window"]["size"]["width"].get<int>();
-        int windowHeight = projectSettings["window"]["size"]["height"].get<int>();
-        // Window::GetInstance().SetSize(windowWidth, windowHeight);
-
-        // set fullscreen mode
-        bool windowIsFullscreen = projectSettings["window"]["fullscreen"].get<bool>();
-        // Window::GetInstance().SetFullscreen(windowIsFullscreen);
-
-        // set fixed time 
-        Time::FixedTimeStep = projectSettings["fixedTimeStep"].get<float>();
-        Time::TimeScale = 1.0f;*/
+        // deserialize settings
+        Serializer::Deserialize(settingsObject, m_Settings);
     }
 
 

@@ -5,12 +5,14 @@
 #include <vector>
 
 #include "Core/Singleton/Singleton.h"
+#include "API/API.h"
+
 #include "Module.h"
 
 namespace ASEngine
 {
     // module manager
-    class ModuleManager
+    class ASENGINE_API ModuleManager
     {
     ASENGINE_DEFINE_SINGLETON(ModuleManager);
     public:

@@ -2,14 +2,18 @@
 #define __ASENGINE_DISPLAY_H
 
 #include "Core/Singleton/Singleton.h"
+#include "Core/Signal/Signal.h"
+
 #include "Renderer/Renderer.h"
 
 #include "ECS/System.h"
 
+#include "API/API.h"
+
 namespace ASEngine
 {
-    // game's display: singleton = only one window 
-    class Display: public ISystem
+    // game's display: singleton = only one window
+    class ASENGINE_API Display : public ISystem
     {
     ASENGINE_DEFINE_SINGLETON(Display);
     public:
@@ -93,9 +97,17 @@ namespace ASEngine
             return m_WindowShouldClose;
         }
 
+        // get window signal
+        inline Signal<uint32_t, uint32_t>& GetWindowResizeSignal()
+        {
+            return m_WindowResizeSignal;
+        }
+
     protected:
         bool m_WindowShouldClose = false;
 
+        virtual void InitImp() = 0;
+        virtual void TerminateImp() = 0;
         virtual void SetWindowSizeImp(int width, int height) = 0;
         virtual void SetWindowTitleImp(const std::string& title) = 0;
         virtual void SetViewportSizeImp(uint32_t width, uint32_t height) = 0;
@@ -121,6 +133,12 @@ namespace ASEngine
 
         // title
         std::string m_WindowTitle = "";
+
+        // window resize signal
+        Signal<uint32_t, uint32_t> m_WindowResizeSignal{};
+
+        void Init() override;
+        void Terminate() override;
     };
 } // namespace ASEngine
 

@@ -2,5 +2,5 @@
 
 namespace ASEngine
 {
-
+    ;
 } // namespace ASEngine

@@ -2,9 +2,21 @@
 #include "OpenGL.h"
 #include "Buffer/OpenGLBuffer.h"
 #include "Texture/OpenGLTexture.h"
+#include "Display/Display.h"
 
 namespace ASEngine
 {
+    OpenGLRenderer::OpenGLRenderer(): Renderer()
+    {
+        // connect to resize signal
+        auto& resizeSignal = Display::GetInstance().GetWindowResizeSignal();
+        m_WindowResizeConnectionID = resizeSignal.Connect([this] (uint32_t width, uint32_t height)
+        {
+            GLViewportResize(width, height);
+            Debug::Log("Resized to ", width, "x", height);
+        });
+    }
+
     OpenGLRenderer::~OpenGLRenderer()
     {
 
@@ -18,7 +30,7 @@ namespace ASEngine
         Debug::Log("Glew Initialized");
     #endif
 
-        // 
+        // init opengl
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
 
@@ -32,7 +44,8 @@ namespace ASEngine
 
     void OpenGLRenderer::TerminateImp()
     {
-        
+        auto &resizeSignal = Display::GetInstance().GetWindowResizeSignal();
+        resizeSignal.Disconnect(m_WindowResizeConnectionID);
     }
 
     void OpenGLRenderer::BindVertexBufferImp(ResourceRef<Buffer> vertexBuffer, uint32_t binding)
@@ -155,6 +168,39 @@ namespace ASEngine
         for (const auto& attribute: layout.VertexAttributes)
         {
             glVertexAttribDivisor(attribute.Location, divisor);
+        }
+    }
+
+    void OpenGLRenderer::GLViewportResize(uint32_t width, uint32_t height)
+    {
+        // get aspect ratio of viewport
+        float viewportAspectRatio = Display::GetInstance().GetAspectRatio();
+
+        // get aspect ratio of window
+        float windowAspectRatio = static_cast<float>(width) / static_cast<float>(height);
+
+        // same aspect ratio
+        constexpr float PRECISION = 0.0001f;
+        if (abs(viewportAspectRatio - windowAspectRatio) < PRECISION)
+        {
+            // recompute viewport
+            glViewport(0, 0, width, height);
+        }
+        // window larger than viewport
+        else if (windowAspectRatio > viewportAspectRatio)
+        {
+            // get new width
+            GLint newWidth = static_cast<GLint>(viewportAspectRatio * height);
+            GLint viewportPosition = (width - newWidth) / 2;
+            glViewport(viewportPosition, 0, newWidth, height);
+        }
+        // window longuer than viewport
+        else
+        {
+            // get new height
+            GLint newHeight = static_cast<GLint>(width / viewportAspectRatio);
+            GLint viewportPosition = (height - newHeight) / 2;
+            glViewport(0, viewportPosition, width, newHeight);
         }
     }
 

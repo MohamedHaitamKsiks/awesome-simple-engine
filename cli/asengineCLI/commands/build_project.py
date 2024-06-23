@@ -70,22 +70,28 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
     glslangPath = relativeTo(configDir, config["glslang"])
     error |= scanAndCompileShaders(assetsPath, glslangPath)
 
+
+    ###################### COMPILING #########################
+
+    #engine paths
+    includePath = relativeTo(asenginePath, "./include")
+
+    #project source path 
+    projectSourcePath = relativeTo(projectPath, "./src");
+    libPath = relativeTo(asenginePath, f"./lib/{platformOS}") 
+    
+    #game build
+    buildPath = relativeTo(tmpPath, "./build")
+    
     # compile and run
     if platform in ["linux", "headless"]:
-        os.chdir(relativeTo(tmpPath, "./build"))
+
+        os.chdir(buildPath)
         #remove old build
         if os.path.exists("build"):
             os.remove("build")
 
-        #engine paths
-        includePath = relativeTo(asenginePath, "./include")
-        libPath = relativeTo(asenginePath, f"./lib/{platformOS}") 
-
-        #project source path 
-        projectSourcePath = relativeTo(projectPath, "./src");
-        print(includePath, libPath, projectSourcePath, sep="\n")
-        
-        error |= os.system(f"cmake -DASENGINE_INCLUDE_PATH={includePath} -DASENGINE_LIB_PATH={libPath} -DASENGINE_PROJECT_PATH={projectSourcePath} .. ")
+        error |= os.system(f"cmake -DCMAKE_BUILD_TYPE=Debug -DASENGINE_INCLUDE_PATH={includePath} -DASENGINE_LIB_PATH={libPath} -DASENGINE_PROJECT_PATH={projectSourcePath} .. ")
         error |= os.system("make")
         
         # run app
@@ -93,14 +99,20 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
         os.chdir(projectPath)
 
     elif platform == "windows":
-        os.chdir(relativeTo(tmpPath, "./build"))
+        os.chdir(buildPath)
+        
+        #copy libasengine.dll
+        shutil.copy(relativeTo(libPath, "./libasengine.dll"), relativeTo(buildPath, "./libasengine.dll"))
+
         #remove old build
         if os.path.exists("build.exe"):
             os.remove("build.exe")
 
-        error |= os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={cmakeWindowsToolChain} ..")
+        error |= os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={cmakeWindowsToolChain} -DASENGINE_INCLUDE_PATH={includePath} -DASENGINE_LIB_PATH={libPath} -DASENGINE_PROJECT_PATH={projectSourcePath} .. ")
         error |= os.system("make")
-        error |= os.system(f"wine {relativeTo(tmpPath, './build/build.exe')}")
+        
+        #run with wine
+        error |= os.system(f"wine {relativeTo(buildPath, './build.exe')}")
         os.chdir(projectPath)
 
     elif platform == "android":

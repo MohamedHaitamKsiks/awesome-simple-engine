@@ -4,6 +4,7 @@
 #include <functional>
 #include <string>
 
+#include "API/API.h"
 #include "UniqueStringManager.h"
 
 namespace ASEngine
@@ -15,7 +16,7 @@ namespace ASEngine
             1- fast comparaison
             2- efficient storing
     */
-    class UniqueString
+    class ASENGINE_API UniqueString
     {
     public:
         UniqueString();

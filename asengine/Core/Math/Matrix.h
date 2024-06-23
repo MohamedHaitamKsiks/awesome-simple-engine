@@ -3,13 +3,14 @@
 
 #include <cstdint>
 #include "Column.h"
+#include "API/API.h"
 
 namespace ASEngine
 {
     // define template for column-major matrix 
     // The matrix is define by it's dimentions + a stride added to each column
     template <size_t Cols, size_t Rows, size_t Stride>
-    class Matrix
+    class ASENGINE_API Matrix
     {
     protected:
         using ColumnType = Column<Rows, Stride>;

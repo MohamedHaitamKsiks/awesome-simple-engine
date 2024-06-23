@@ -4,7 +4,7 @@
 #include "OpenGL.h"
 #include "Shader/OpenGLShader.h"
 #include "Renderer/Renderer.h"
-
+#include "Core/Signal/Signal.h"
 
 namespace ASEngine
 {
@@ -12,10 +12,12 @@ namespace ASEngine
     class OpenGLRenderer: public Renderer
     {
     public:
-        // destrcutor
+        OpenGLRenderer();
         ~OpenGLRenderer();
 
     private:
+        SignalConnectionID m_WindowResizeConnectionID;
+
         void InitImp() override;
         void TerminateImp() override;
 
@@ -28,6 +30,9 @@ namespace ASEngine
 
         // gl bind vertex layout
         void GLBindVertexInputLayout(const VertexInputLayout& layout);
+
+        // opengl viewport resize for width and height
+        void GLViewportResize(uint32_t width, uint32_t height);
     };
 } // namespace ASEngine
 

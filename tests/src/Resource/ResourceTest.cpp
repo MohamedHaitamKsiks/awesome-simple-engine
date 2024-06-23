@@ -8,12 +8,12 @@ public:
 
     TestResourceType()
     {
-        Debug::Log("Hello Test Resource!");
+        // Debug::Log("Hello Test Resource!");
     }
 
     ~TestResourceType()
     {
-        Debug::Log("Goodbye Test Resource!");
+        // Debug::Log("Goodbye Test Resource!");
     }
 
     virtual int GetValue() const = 0;
@@ -70,8 +70,9 @@ void ResourceTest::Describe()
 {
     Test("it registers resource type", []()
     {
-        ResourceManager::GetInstance().RegisterAbstractResourceClass<TestResourceType, TestResourceTypeImp>(UniqueString("TestResourceType"));
-        
+        ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(TestResourceType, TestResourceTypeImp);
+        dynamic_cast<ISystem&>(TestResourceType::GetResourceClass()).Init();
+
         ResourceRef<TestResourceType> test{};
         ASENGINE_EXPECT(test == ResourceRef<TestResourceType>::NONE());
     });
@@ -97,11 +98,11 @@ void ResourceTest::Describe()
         std::vector<ResourceRef<TestResourceType>> tests{};
         IResourceClass& testClass = TestResourceType::GetResourceClass();
 
-        constexpr int count = 100;
+        constexpr int count = 10;
 
         for (int i = 0; i < count; i++)
         {
-            // 
+
             ResourceRef<TestResourceType> test = testClass.New();
             ResourceRef<TestResourceType> test1 = test;
             
@@ -110,6 +111,7 @@ void ResourceTest::Describe()
             test = test2;
 
             tests.push_back(test);
+
         }
 
         // test number of

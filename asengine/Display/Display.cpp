@@ -3,6 +3,17 @@
 
 namespace ASEngine
 {
+    ;
+
+    void Display::Init()
+    {
+        InitImp();
+    }
+
+    void Display::Terminate()
+    {
+        TerminateImp();
+    }
 
     void Display::SetWindowSize(uint32_t width, uint32_t height)
     {
@@ -10,6 +21,7 @@ namespace ASEngine
         m_WindowHeight = height;
 
         SetWindowSizeImp(width, height);
+        m_WindowResizeSignal.Emit(width, height);
     }
 
     void Display::SetViewportSize(uint32_t width, uint32_t height)
@@ -19,8 +31,10 @@ namespace ASEngine
 
         // get asspect ration
         m_AspectRatio = static_cast<float>(width) / static_cast<float>(height);  
-
         SetViewportSizeImp(width, height);
+        
+        // call resize to reset window
+        SetWindowSize(m_WindowWidth, m_WindowHeight);
     }
 
     void Display::SetFullscreen(bool fullscreen)

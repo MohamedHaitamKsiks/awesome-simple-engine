@@ -18,8 +18,8 @@
 
 // macros to implement uniform buffer type
 #define ASENGINE_IMPLEMENT_UNIFORM_BUFFER_IDENTIFIER_TYPE(Type) \
-    template void Material::SetShaderParam<Type>(UniqueString uniformName, UniqueString fieldName, const Type &value); \
-    template const Type &Material::GetShaderParam<Type>(UniqueString uniformName, UniqueString fieldName) const;
+    template ASENGINE_API void Material::SetShaderParam<Type>(UniqueString uniformName, UniqueString fieldName, const Type &value); \
+    template ASENGINE_API const Type &Material::GetShaderParam<Type>(UniqueString uniformName, UniqueString fieldName) const;
 
 // define resource ref
 ASENGINE_SERIALIZE_RESOURCE_REF(Material);

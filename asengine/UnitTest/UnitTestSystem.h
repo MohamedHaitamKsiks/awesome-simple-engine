@@ -8,6 +8,8 @@
 #include "ECS/System.h"
 #include "Core/Singleton/Singleton.h"
 
+#include "API/API.h"
+
 namespace ASEngine
 {
     // Inherit from to create a test application.
@@ -15,7 +17,7 @@ namespace ASEngine
     // Make sure to register it after all the systems you want to test.
     // Also run in headless mode.
     // The application will exit with 0 if all tests are fine.
-    class UnitTestSystem: public ISystem
+    class ASENGINE_API UnitTestSystem : public ISystem
     {
     ASENGINE_DEFINE_SINGLETON(UnitTestSystem);
 

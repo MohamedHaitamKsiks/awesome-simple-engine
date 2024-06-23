@@ -4,14 +4,14 @@
 
 #include "Math.h"
 #include "Core/Error/Assertion.h"
+#include "API/API.h"
 
 namespace ASEngine 
 {
     
     // 2D Vector
-    struct Vector2 
-    {
-                
+    struct ASENGINE_API Vector2
+    {     
         // data
         float x = 0.0f;
         float y = 0.0f;

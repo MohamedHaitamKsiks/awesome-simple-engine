@@ -12,6 +12,7 @@
 #include "Signature.h"
 
 #include "Macros/Foreach.h"
+#include "API/API.h"
 
 #define ASENGINE_ENTITY_QUERY_FOREACH_BEGIN(query, ...) \
 for (Archetype * archetype : query.GetArchetypes()) \
@@ -33,7 +34,7 @@ namespace ASEngine
     // ecs query to get list of archetypes
     // all entities will be queried in construction
     template <typename T, typename... types>
-    class EntityQuery
+    class ASENGINE_API EntityQuery
     {
     public:
         EntityQuery()

@@ -7,11 +7,12 @@
 #include "Core/Math/Vector2.h"
 
 #include "Keycodes.h"
+#include "API/API.h"
 
 namespace ASEngine 
 {
 
-	enum class InputEventType 
+	enum class InputEventType
 	{
 		// none
 		NONE = 0,
@@ -25,9 +26,8 @@ namespace ASEngine
 		KEYBOARD
 	};
 
-
 	// screen input event
-	struct InputEventScreenTouch
+	struct ASENGINE_API InputEventScreenTouch
 	{
 		static constexpr InputEventType TYPE() 
 		{
@@ -39,7 +39,7 @@ namespace ASEngine
 	};
 
 	// screen drag pointer event
-	struct InputEventScreenDrag
+	struct ASENGINE_API InputEventScreenDrag
 	{
 		static constexpr InputEventType TYPE()
 		{ 
@@ -57,7 +57,7 @@ namespace ASEngine
 	};
 
 	// mouse input button
-	struct InputEventMouseButton
+	struct ASENGINE_API InputEventMouseButton
 	{
 		static constexpr InputEventType TYPE() 
 		{
@@ -69,7 +69,7 @@ namespace ASEngine
 	};
 
 	// mouse input move
-	struct InputEventMouseMove
+	struct ASENGINE_API InputEventMouseMove
 	{
 		static constexpr InputEventType TYPE() 
 		{
@@ -79,7 +79,7 @@ namespace ASEngine
 	};
 
 	// keyboard
-	struct InputEventKeyboard
+	struct ASENGINE_API InputEventKeyboard
 	{
 		static constexpr InputEventType TYPE()
 		{
@@ -90,7 +90,7 @@ namespace ASEngine
 	};
 
 	// megaclass of all input event types so we avoid inheritance. since the number of events can't be that hight
-	class InputEvent
+	class ASENGINE_API InputEvent
 	{
 	public:
 		// get event type

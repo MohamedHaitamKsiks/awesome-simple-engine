@@ -15,11 +15,13 @@
 #include "ResourceRef.h"
 #include "IResourceClass.h"
 
+#include "API/API.h"
+
 namespace ASEngine
 {
     // implementation for each resource type
     template <typename T>
-    class ResourceClass: public IResourceClass
+    class ASENGINE_API ResourceClass : public IResourceClass
     {
     public:
         ResourceClass(UniqueString className): m_ClassName(className)
@@ -105,7 +107,6 @@ namespace ASEngine
         // clean up class
         void Init() override
         {
-            m_Resources.SetCapactity(UINT16_MAX);
         }
 
         void Terminate() override

@@ -4,6 +4,8 @@
 #include <vector>
 #include <cstdint>
 
+#include "API/API.h"
+
 namespace ASEngine
 {
     // vertex attribute types
@@ -26,7 +28,7 @@ namespace ASEngine
     };
 
     // descriptor for one vertex attribute to for a speficific shader
-    struct VertexAttribute
+    struct ASENGINE_API VertexAttribute
     {
         uint32_t Location = 0;
         VertexAttributeType Type = VertexAttributeType::NONE;
@@ -34,7 +36,7 @@ namespace ASEngine
     };
 
     // vertex input layout
-    struct VertexInputLayout
+    struct ASENGINE_API VertexInputLayout
     {
         uint32_t Binding = 0;
         size_t Stride = 0;

@@ -10,11 +10,12 @@
 
 #include "Core/String/UniqueString.h"
 
-
 #include "ComponentCollection.h"
 #include "Component.h"
 #include "Signature.h"
 #include "ComponentManager.h"
+
+#include "API/API.h"
 
 namespace ASEngine
 {
@@ -24,7 +25,7 @@ namespace ASEngine
     constexpr const ComponentIndex COMPONENT_INDEX_NULL = UINT32_MAX; 
 
     // archetype: list of components that an entity have. Picture it as a type of entity.
-    class Archetype
+    class ASENGINE_API Archetype
     {
     public:
         // add component to archetype

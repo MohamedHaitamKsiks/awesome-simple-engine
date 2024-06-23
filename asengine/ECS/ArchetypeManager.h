@@ -12,6 +12,8 @@
 
 #include "System.h"
 
+#include "API/API.h"
+
 namespace ASEngine
 {
     class ArchetypeManager: public ISystem
