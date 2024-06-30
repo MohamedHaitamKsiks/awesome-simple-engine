@@ -5,11 +5,12 @@
 #include "ECS/System.h"
 
 #include "Scene.h"
+#include "API/API.h"
 
 namespace ASEngine
 {
     // manages 
-    class SceneManager: public ISystem
+    class ASENGINE_API SceneManager: public ISystem
     {
     ASENGINE_DEFINE_SINGLETON(SceneManager);
 
