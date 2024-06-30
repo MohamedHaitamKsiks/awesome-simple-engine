@@ -44,10 +44,10 @@ namespace ASEngine
         {
             return Matrix4x4{
                 DataType{
-                    ColumnType{{ 1.0f, 0.0f, 0.0f, 0.0f }},
-                    ColumnType{{ 0.0f, 1.0f, 0.0f, 0.0f }},
-                    ColumnType{{ 0.0f, 0.0f, 1.0f, 0.0f }},
-                    ColumnType{{ v.x,  v.y,  v.z,  1.0f }}
+                    ColumnType{{ 1.0f, 0.0f, 0.0f,  v.x }},
+                    ColumnType{{ 0.0f, 1.0f, 0.0f,  v.y }},
+                    ColumnType{{ 0.0f, 0.0f, 1.0f,  v.z }},
+                    ColumnType{{ 0.0f, 0.0f, 0.0f,  1.0f}}
                 }
             };
         }

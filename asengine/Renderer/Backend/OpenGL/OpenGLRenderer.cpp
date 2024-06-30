@@ -3,19 +3,11 @@
 #include "Buffer/OpenGLBuffer.h"
 #include "Texture/OpenGLTexture.h"
 #include "Display/Display.h"
+#include "Core/Math/Math.h"
 
 namespace ASEngine
 {
-    OpenGLRenderer::OpenGLRenderer(): Renderer()
-    {
-        // connect to resize signal
-        auto& resizeSignal = Display::GetInstance().GetWindowResizeSignal();
-        m_WindowResizeConnectionID = resizeSignal.Connect([this] (uint32_t width, uint32_t height)
-        {
-            GLViewportResize(width, height);
-            Debug::Log("Resized to ", width, "x", height);
-        });
-    }
+
 
     OpenGLRenderer::~OpenGLRenderer()
     {
@@ -39,7 +31,14 @@ namespace ASEngine
         // set clear color
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        glEnable(GL_DEPTH_TEST);
+        // glEnable(GL_DEPTH_TEST);
+
+        // connect to resize signal
+        auto& resizeSignal = Display::GetInstance().GetWindowResizeSignal();
+        m_WindowResizeConnectionID = resizeSignal.Connect([this] (uint32_t width, uint32_t height)
+        {
+            GLViewportResize(width, height);
+        });
     }
 
     void OpenGLRenderer::TerminateImp()
@@ -181,7 +180,7 @@ namespace ASEngine
 
         // same aspect ratio
         constexpr float PRECISION = 0.0001f;
-        if (abs(viewportAspectRatio - windowAspectRatio) < PRECISION)
+        if (Math::Abs(viewportAspectRatio - windowAspectRatio) < PRECISION)
         {
             // recompute viewport
             glViewport(0, 0, width, height);

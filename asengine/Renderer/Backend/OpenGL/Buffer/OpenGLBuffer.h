@@ -37,7 +37,7 @@ namespace ASEngine
 
         // implementations
         void CreateImp(BufferType type) override;
-        void SetDataImp(const ByteBuffer &data) override;
+        void SetDataImp(const void *data, size_t size) override;
     };
 } // namespace ASEngine
 

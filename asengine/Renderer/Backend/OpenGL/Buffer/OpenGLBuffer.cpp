@@ -31,10 +31,10 @@ namespace ASEngine
         glGenBuffers(1, &m_GLBufferID);
     }
 
-    void OpenGLBuffer::SetDataImp(const ByteBuffer &data)
+    void OpenGLBuffer::SetDataImp(const void *data, size_t size)
     {
         glBindBuffer(m_GLBufferType, m_GLBufferID);
-        glBufferData(m_GLBufferType, data.GetSize(), data.GetData(), GL_DYNAMIC_DRAW);
+        glBufferData(m_GLBufferType, size, data, GL_DYNAMIC_DRAW);
     }
 
 } // namespace ASEngine

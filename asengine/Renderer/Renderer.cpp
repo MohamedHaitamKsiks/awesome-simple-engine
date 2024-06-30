@@ -10,8 +10,6 @@
 
 namespace ASEngine
 {
-    ;
-
     ASENGINE_SERIALIZE_ENUM(Renderer::Backend, 
         NONE,
         OPENGL,
@@ -79,8 +77,8 @@ namespace ASEngine
 
     void Renderer::BindMaterial(ResourceRef<Material> material)
     {
-        if (m_CurrentMaterial == material)
-            return;
+        //if (m_CurrentMaterial == material)
+        //    return;
 
         // bind shader of the material
         BindShader(material->GetShader());

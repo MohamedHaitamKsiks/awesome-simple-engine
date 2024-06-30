@@ -22,6 +22,21 @@ namespace ASEngine
         };
     }
 
+    Matrix3x3 Matrix3x3::ViewportProjection(uint32_t width, uint32_t height)
+    {
+        float viewportWidth = static_cast<float>(width);
+        float viewportHeight = static_cast<float>(height);
+
+        // get viewport transform
+        Matrix3x3 matrix = Matrix3x3::IDENTITY();
+        matrix[0][0] = 2.0f / viewportWidth;
+        matrix[1][1] = -2.0f / viewportHeight;
+        matrix[0][2] = -1.0f;
+        matrix[1][2] = 1.0f;
+
+        return matrix;
+    }
+
     ASENGINE_SERIALIAZE_MATRIX(Matrix3x3);
 
 } // namespace ASEngine

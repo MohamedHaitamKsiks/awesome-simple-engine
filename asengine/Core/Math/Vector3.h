@@ -34,7 +34,7 @@ namespace ASEngine
         } 
         static constexpr Vector3 ONE()
         {
-            return Vector3{1.0f, 1.0f, 0.0f};
+            return Vector3{1.0f, 1.0f, 1.0f};
         }
         static constexpr Vector3 LEFT()
         {

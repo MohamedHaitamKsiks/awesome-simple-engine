@@ -1,19 +1,40 @@
 #include "Texture.h"
 #include "Resource/ResourceRefSerialization.h"
+#include "Core/Serialization/SerializeEnum.h"
 
 ASENGINE_SERIALIZE_RESOURCE_REF(Texture);
 
 namespace ASEngine
 {
+    ASENGINE_SERIALIZE_ENUM(TextureFilter, 
+        NONE,
+        NEAREST,
+        LINEAR
+    );
+
+    ASENGINE_SERIALIZE_ENUM(TextureRepeatMode,
+        NONE,
+        REPEAT,
+        CLAMP
+    )
+
     template <>
     void Serializer::Deserialize(const Json &object, Texture &dest)
     {
+        // load png
         std::string imagePath = object.at("ImagePath").get<std::string>();
-        
         Image image{};
         image.LoadPNG(imagePath);
 
-        dest.Create(image, TextureFilter::LINEAR, TextureRepeatMode::REPEAT);
+        // get filter
+        TextureFilter filter = TextureFilter::NONE;
+        Serializer::Deserialize(object.at("Filter"), filter);
+
+        // get repeat mode
+        TextureRepeatMode repeat = TextureRepeatMode::NONE;
+        Serializer::Deserialize(object.at("RepeatMode"), repeat);
+
+        dest.Create(image, filter, repeat);
     }
 
     template <>

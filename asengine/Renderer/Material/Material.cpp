@@ -121,6 +121,16 @@ namespace ASEngine
         }
 
         // samplers
+        const auto& samplerObjects = object.at("Samplers");
+        for (const auto& [samplerName, samplerObject]: samplerObjects.items())
+        {
+            UniqueString uSamplerName{samplerName};
+            
+            ResourceRef<Texture> sampler = ResourceRef<Texture>::NONE();
+            Serializer::Deserialize(samplerObject, sampler);
+
+            dest.SetShaderParam(uSamplerName, sampler);
+        }
     }
 
     template <>

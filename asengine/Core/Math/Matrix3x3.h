@@ -5,9 +5,9 @@
 #include "Core/Error/Assertion.h"
 #include "SquareMatrix.h"
 #include "Vector2.h"
-#include "API/API.h"
-
 #include <array>
+
+#include "API/API.h"
 
 namespace ASEngine 
 {
@@ -51,9 +51,9 @@ namespace ASEngine
         {
             return Matrix3x3{
                 DataType{
-                    ColumnType{{ 1.0f, 0.0f, 0.0f, 0.0f }},
-                    ColumnType{{ 0.0f, 1.0f, 0.0f, 0.0f }},
-                    ColumnType{{ v.x,  v.y,  1.0f, 0.0f }}
+                    ColumnType{{ 1.0f, 0.0f,  v.x, 0.0f }},
+                    ColumnType{{ 0.0f, 1.0f,  v.y, 0.0f }},
+                    ColumnType{{ 0.0f, 0.0f, 1.0f, 0.0f }}
                 }
             }; 
         }
@@ -66,6 +66,9 @@ namespace ASEngine
                 m[1][2] * v.x + m[2][2] * v.y + m[3][2] 
             };
         }
+
+        // viewport projection
+        static Matrix3x3 ViewportProjection(uint32_t width, uint32_t height);
     };
 
 } //ASEngine

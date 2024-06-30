@@ -17,11 +17,11 @@ namespace ASEngine
         m_Type = type;
     }
 
-    void Buffer::SetData(const ByteBuffer &data)
+    void Buffer::SetData(const void *data, size_t size)
     {
-        ASENGINE_ASSERT(data.GetData(), "Data is NULL");
-        SetDataImp(data);
-        m_Size = data.GetSize();
+        ASENGINE_ASSERT(data, "Data is NULL");
+        SetDataImp(data, size);
+        m_Size = size;
     }
 
 } // namespace ASEngine

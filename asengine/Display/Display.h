@@ -135,6 +135,7 @@ namespace ASEngine
         std::string m_WindowTitle = "";
 
         // window resize signal
+        bool m_EmittingWindowSignal = false;
         Signal<uint32_t, uint32_t> m_WindowResizeSignal{};
 
         void Init() override;

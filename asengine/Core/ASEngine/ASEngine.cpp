@@ -16,7 +16,6 @@
 
 namespace ASEngine
 {
-    ;
 
     void ASEngine::Init()
     {

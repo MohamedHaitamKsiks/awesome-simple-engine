@@ -3,8 +3,6 @@
 
 namespace ASEngine
 {
-    ;
-
     void Display::Init()
     {
         InitImp();
@@ -21,7 +19,7 @@ namespace ASEngine
         m_WindowHeight = height;
 
         SetWindowSizeImp(width, height);
-        m_WindowResizeSignal.Emit(width, height);
+        m_EmittingWindowSignal = true;
     }
 
     void Display::SetViewportSize(uint32_t width, uint32_t height)
@@ -61,6 +59,13 @@ namespace ASEngine
     {
         BeginFrameImp();
         Renderer::GetInstance().BeginRendering();
+
+        // resize if necessary
+        if (m_EmittingWindowSignal)
+        {
+            m_WindowResizeSignal.Emit(m_WindowWidth, m_WindowHeight);
+            m_EmittingWindowSignal = false;
+        }
     }
 
     void Display::EndFrame()

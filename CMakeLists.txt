@@ -1,7 +1,7 @@
 # Sets the minimum version of CMake required to build the native library.
 cmake_minimum_required(VERSION 3.22.1)
 set(CMAKE_CXX_STANDARD 20)
-add_compile_options(-Wall -static-libgcc -static-libstdc++)
+add_compile_options(-Wall)
 add_compile_definitions(ASENINE_EXPORTS)
 
 #create project
@@ -125,7 +125,7 @@ if(NOT ANDROID)
     # add glfw
     add_subdirectory(dependencies/glfw-3.3.8)
     include_directories(dependencies/glfw-3.3.8/include)
-    
+
     # add opengl
     find_package(OpenGL REQUIRED)
     include_directories(${OPENGL_INCLUDE_DIRS})
@@ -137,9 +137,12 @@ if(NOT ANDROID)
         STATIC
         dependencies/glew/src/glew.c
     )
-    
-    set_target_properties(asengine PROPERTIES LINK_FLAGS "-static-libgcc -static-libstdc++")
-    
+
+    if(WIN32)
+        set_target_properties(asengine PROPERTIES LINK_FLAGS "-static-libgcc -static-libstdc++ -static")
+    endif()
+
+
     target_link_libraries(
         asengine
         PRIVATE stb_image

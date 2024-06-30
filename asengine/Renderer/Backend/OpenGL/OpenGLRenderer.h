@@ -12,7 +12,6 @@ namespace ASEngine
     class OpenGLRenderer: public Renderer
     {
     public:
-        OpenGLRenderer();
         ~OpenGLRenderer();
 
     private:

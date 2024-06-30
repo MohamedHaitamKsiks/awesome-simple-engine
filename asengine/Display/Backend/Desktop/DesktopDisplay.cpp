@@ -23,6 +23,7 @@ namespace ASEngine
         
         // init opengl context
         glfwMakeContextCurrent(m_Window);
+        glfwSwapInterval(0);
 
         // set settings
         SetWindowSize(windowSettings.Width, windowSettings.Height);

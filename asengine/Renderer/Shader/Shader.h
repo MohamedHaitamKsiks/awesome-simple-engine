@@ -24,7 +24,7 @@ namespace ASEngine
 {
     // abstarct class represention of a shader
     // shader is created with a vertex shader code and a fragment shader code
-    class ASENGINE_API Shader: public Resource
+    class ASENGINE_API Shader : public Resource
     {
     ASENGINE_DEFINE_RESOURCE(Shader);
     ASENGINE_SERIALIZE_RESOURCE(Shader);

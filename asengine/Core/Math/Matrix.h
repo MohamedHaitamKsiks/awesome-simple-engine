@@ -59,7 +59,7 @@ namespace ASEngine
                     result[i][j] = 0.0f;
                     for (int k = 0; k < Cols; k++)
                     {
-                        result[i][j] += a[k][j] + b[i][k];
+                        result[i][j] += a[k][j] * b[i][k];
                     }
                 }
             }
