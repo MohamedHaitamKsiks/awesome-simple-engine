@@ -31,8 +31,11 @@ private:
     Vector2 m_Velocity = Vector2::ZERO();
 };
 
-class PlayerBody: public PhysicsBody
+class PlayerBody : public PhysicsBody
 {
+public:
+    PlayerBody() {};
+
     void Update() override
     {
         PhysicsBody::Update();
@@ -44,7 +47,7 @@ class PlayerBody: public PhysicsBody
 
 
 // define components
-class Transform: public Component<Transform>
+struct Transform: public Component<Transform>
 {
 public:
     Vector2 Position = Vector2::ZERO();
@@ -63,7 +66,7 @@ private:
 
 ASENGINE_EXPORT(Transform, Position, Angle);
 
-class Body: public Component<Body>
+struct Body: public Component<Body>
 {
 public:
     Vector2 Velocity = Vector2::ZERO();
@@ -80,7 +83,7 @@ private:
 
 ASENGINE_EXPORT_EMPTY(Body);
 
-class Player: public Component<Player>
+struct Player: public Component<Player>
 {
 public:
     int Counter = 0;
@@ -105,26 +108,32 @@ public:
     void Update()
     {
         EntityQuery<Transform> query2{};
-        ASENGINE_ENTITY_QUERY_FOREACH_BEGIN(query2, Transform)
+        query2.ForEachCollection([](ComponentCollection<Transform>& transforms, size_t count)
         {
-            currentTransform.Position = Vector2{Random::Float(), Random::Float()};
-        } 
-        ASENGINE_ENTITY_QUERY_FOREACH_END();
-        
+            for (size_t i = 0; i < count; i++)
+            {
+                transforms[i].Position = Vector2{Random::Float(), Random::Float()};
+            }
+        });
         
         EntityQuery<Transform, Body> query{};
-        ASENGINE_ENTITY_QUERY_FOREACH_BEGIN(query, Transform, Body)
+        query.ForEachCollection([](ComponentCollection<Transform>& transforms, ComponentCollection<Body>& bodies, size_t count)
         {
-            currentTransform.Position += currentBody.Velocity;
-        }
-        ASENGINE_ENTITY_QUERY_FOREACH_END();
+            for (size_t i = 0; i < count; i++)
+            {
+                transforms[i].Position += bodies[i].Velocity;
+            }
+        });
+
     
         EntityQuery<Player> query3{};
-        ASENGINE_ENTITY_QUERY_FOREACH_BEGIN(query3, Player)
+        query3.ForEachCollection([](ComponentCollection<Player>& players, size_t count)
         {
-            currentPlayer.Counter++;
-        }
-        ASENGINE_ENTITY_QUERY_FOREACH_END();
+            for (size_t i = 0; i < count; i++)
+            {
+                players[i].Counter++;
+            }
+        });
 
     }
 

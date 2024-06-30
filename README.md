@@ -343,11 +343,21 @@ public:
   void Update(float delta)
   {
     // query components
-    TEntityQuery<SpriteComponent, TransformComponent>query{};
+    EntityQuery<SpriteComponent, TransformComponent>query{};
     
+    // if you have a small number of components you can use this
     query.ForEach([&delta](SpriteComponent& sprite, TransformComponent& transform)
     {
       //behaviour...
+    });
+
+    // for better performances use this
+    query.ForEachCollection([&delta](ComponentCollection<SpriteComponent>& sprite, ComponentCollection<TransformComponent>& transform, size_t count)
+    {
+      for (size_t i = 0; i < count; i++)
+      {
+        // behaviour 
+      }
     });
   }
 };

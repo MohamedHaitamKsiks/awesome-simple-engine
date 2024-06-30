@@ -14,21 +14,6 @@
 #include "Macros/Foreach.h"
 #include "API/API.h"
 
-#define ASENGINE_ENTITY_QUERY_FOREACH_BEGIN(query, ...) \
-for (Archetype * archetype : query.GetArchetypes()) \
-{ \
-    FOREACH(GET_COMPONENT_COLLECTION, __VA_ARGS__) \
-    for (ComponentIndex index = 0; index < archetype->GetSize(); index++) \
-    { \
-        FOREACH(GET_COMPONENT_AT_INDEX, __VA_ARGS__)
-
-#define ASENGINE_ENTITY_QUERY_FOREACH_END() \
-    } \
-}
-
-#define GET_COMPONENT_COLLECTION(ComponentType) auto& collectionOf ## ComponentType = archetype->GetComponentCollection<ComponentType>();
-#define GET_COMPONENT_AT_INDEX(ComponentType) auto &current ## ComponentType = collectionOf ## ComponentType[index];
-
 namespace ASEngine
 {
     // ecs query to get list of archetypes
@@ -70,19 +55,37 @@ namespace ASEngine
                     }, collections);
                 }
             }
-        };
+        }
+
+        // for each component collections (please use this for better performances)
+        template <typename FunctionType>
+        void ForEachCollection(FunctionType callback)
+        {
+            for (auto& archetype : m_Archetypes)
+            {
+                ComponentCollection<T> &collection = archetype->template GetComponentCollection<T>();
+                std::tuple<ComponentCollection<types> &...> collections(archetype->template GetComponentCollection<types>()...);
+                size_t componentsCount = collection.GetSize();
+
+                std::apply([callback, &collection, &componentsCount] (ComponentCollection<types> &...collections)
+                { 
+                    callback(collection, collections..., componentsCount); 
+                }, collections);
+                
+            }
+        }
 
         // get archetypes
         inline const std::vector<Archetype*> &GetArchetypes() const
         {
             return m_Archetypes;
-        };
+        }
 
         // get signature
         inline const Signature &GetSignature() const
         {
             return m_Signature;
-        };
+        }
 
     private:
         Signature m_Signature;
