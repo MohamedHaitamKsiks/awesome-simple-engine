@@ -9,7 +9,8 @@ namespace ASEngine
     );  
 
     ASENGINE_SERIALIZE_STRUCT(ApplicationSettings,
-        Name
+        Name,
+        MainScene
     );
 
     ASENGINE_SERIALIZE_STRUCT(ViewportSettings,

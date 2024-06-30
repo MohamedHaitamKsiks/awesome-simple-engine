@@ -17,6 +17,7 @@ namespace ASEngine
     struct ASENGINE_API ApplicationSettings
     {
         std::string Name = "ASEngine-Project";
+        std::string MainScene = "";
     };
 
     // viewport settings

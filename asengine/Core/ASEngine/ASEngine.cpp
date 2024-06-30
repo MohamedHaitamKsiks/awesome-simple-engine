@@ -11,6 +11,9 @@
 #include "ECS/ArchetypeManager.h"
 #include "ECS/ComponentManager.h"
 
+#include "Scene/Scene.h"
+#include "Scene/SceneManager.h"
+
 //#include "Audio/AudioEngine.h"
 //#include "Renderer/Viewport.h"
 
@@ -48,6 +51,9 @@ namespace ASEngine
     {
         ASENGINE_REGISTER_SYSTEM(ArchetypeManager);
         ASENGINE_REGISTER_SYSTEM(EntityManager);
+        
+        ASENGINE_REGISTER_RESOURCE_CLASS(Scene);
+        ASENGINE_REGISTER_SYSTEM(SceneManager);
     }
 
     void ASEngine::Terminate()

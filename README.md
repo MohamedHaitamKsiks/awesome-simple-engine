@@ -9,10 +9,10 @@ Cross-platform game engine written with c++.
   Install depencies:
 
   ```sh
-    $ sudo apt update &&
-    $ sudo apt-get -y install cmake &&
-    $ sudo apt-get -y install g++-mingw-w64 && 
-    $ sudo apt-get -y install freeglut3-dev
+    sudo apt update &&
+    sudo apt-get -y install cmake &&
+    sudo apt-get -y install g++-mingw-w64 && 
+    sudo apt-get -y install freeglut3-dev
   ```
 
   ### Windows
@@ -48,7 +48,7 @@ myBuffer->SetData(data, size);
 
 ### Textures
 
-A texture is an image stored in the GPU which can be used for rendering.
+A texture is an image stored in the GPU.
 
 Example:
 ```cpp
@@ -82,9 +82,9 @@ ResourceRef<Texture> texture = Texture::GetResourceClass().Load("textures/lead.t
 
 ASEngine supports Vulkan GLSL. When you build your game project all the shaders present in the assets folder gets compiled to their .spirv equivilent. 
 
-Make sure your shader codes ends with .frag .vert.
+Make sure your shader codes ends with .frag or .vert.
 
-To create a shader your need to provide it wiht the vertex ShaderSource and the fragment ShaderSource.
+To create a shader your need to provide it with the vertex and fragment ShaderSources.
 In addition you will need a VertexInputDescriptor to give it the layout of the vertex data.
 
 Example:
@@ -137,10 +137,6 @@ void main() {
         {
             "Location": 0,
             "Type": "VEC2"
-        },
-        {
-            "Location": 1,
-            "Type": "VEC4"
         }
       ]
     }
@@ -173,7 +169,7 @@ You can also create the shader in your assets folder as a json file:
 
 ### Materials
 
-A material is linked to a shader. It contains all the uniform data for the material.
+A material is linked to a shader. It contains all the uniform data and samplers for the material.
 
 Example:
 
@@ -247,7 +243,7 @@ Renderer::GetInstance().DrawElements(indexCount, instanceCount);
 
 ### Resource Manager
 
-Resource are garbage collected objects that can be loaded from a file o created by the programmer.
+Resources are garbage collected objects that can be loaded from a file or created programmatically.
 
 Resources are always accessed using a ResourceReference.
 

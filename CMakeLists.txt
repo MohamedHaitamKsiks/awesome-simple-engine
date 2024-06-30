@@ -82,6 +82,9 @@ add_library(
     asengine/ECS/ArchetypeManager.cpp
     asengine/ECS/EntityBuilder.cpp
     asengine/ECS/ComponentClass.cpp
+    #scene manager
+    asengine/Scene/Scene.cpp
+    asengine/Scene/SceneManager.cpp
     #resourcem_PositionY
     asengine/Resource/IResourceClass.cpp
     asengine/Resource/Resource.cpp
