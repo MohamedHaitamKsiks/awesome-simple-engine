@@ -47,6 +47,15 @@ namespace ASEngine
         Setup();
     }
 
+    void ASEngine::DestroyGlobalAttribute(const std::string &name)
+    {
+        if (m_GlobalAttributes.find(name) == m_GlobalAttributes.end())
+            return;
+
+        GlobalAttribute& attribute = m_GlobalAttributes[name];
+        attribute.Destroy();
+    }
+
     void ASEngine::RegisterBuiltInSystems()
     {
         ASENGINE_REGISTER_SYSTEM(ArchetypeManager);
@@ -59,6 +68,14 @@ namespace ASEngine
     void ASEngine::Terminate()
     {
         SystemManager::GetInstance().Terminate();
+        
+        // remove global attributes
+        for (auto& [name, attribute]: m_GlobalAttributes)
+        {
+            attribute.Destroy();
+        }
+
+        m_GlobalAttributes.clear();
     }
 
     void ASEngine::Update(float delta)

@@ -18,6 +18,7 @@
 #include "Resource/ResourceManager.h"
 
 #include "Core/Settings/Settings.h"
+#include "Core/Memory/ByteBuffer.h"
 
 #include "API/API.h"
 
@@ -77,9 +78,56 @@ namespace ASEngine
 			return m_TimeScale;
 		}
 
+		// set global attribute (needs to have a copy constructor)
+		template<typename T>
+		void SetGlobalAttribute(const std::string& name, const T& value)
+		{
+			// clean up any left attribute
+			DestroyGlobalAttribute(name);
+
+			// copy new dadta
+			T* copy = new T(value);
+
+			// create data
+			GlobalAttribute& newAttribute = m_GlobalAttributes[name];
+			newAttribute.Data = reinterpret_cast<void*>(copy);
+			newAttribute.DestroyFunction = [](void* data)
+			{
+				delete reinterpret_cast<T*>(data);
+			};
+		}
+
+		// get global attribute (make sure you get the correct type)
+		template <typename T>
+		const T& GetGlobalAttribute(const std::string& name) const
+		{
+			const T* data = reinterpret_cast<const T*>(m_GlobalAttributes.at(name).Data);
+			return *data;
+		}
+
 	private:
 		// console arguments
 		std::vector<std::string> m_Arguments{};
+
+		// global attributes (usefull to pass data from applications to asengine core)
+		struct GlobalAttribute
+		{
+			void* Data = nullptr;
+			
+			// destroy function
+			inline void Destroy()
+			{
+				DestroyFunction(Data);
+			}
+
+			std::function<void(void*)> DestroyFunction;
+
+		};
+
+		std::unordered_map<std::string, GlobalAttribute> m_GlobalAttributes{};
+
+		// destroy attribute
+		void DestroyGlobalAttribute(const std::string& name);
 
 		// event queue
 		std::vector<InputEvent> m_InputEventQueue{};

@@ -8,21 +8,14 @@ add_compile_definitions(ASENINE_EXPORTS)
 project(asengine)
 include_directories(asengine)
 
-#link static library into dynamc library
+#link static library into dynamc library for desktop
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 
 #platform specific sources
 set(PLATFORM_SPECIFIC_SOURCES)
-if (ANDROID)
-    set(PLATFORM_SPECIFIC_SOURCES ${PLATFORM_SPECIFIC_SOURCES} 
-        asengine/Core/FileSystem/FileAndroid.cpp
-        asengine/Core/Debug/DebugAndroid.cpp
-    )
-else() 
+if (WIN32 OR UNIX) 
     set(PLATFORM_SPECIFIC_SOURCES ${PLATFORM_SPECIFIC_SOURCES}
-        asengine/Core/FileSystem/FileDesktop.cpp
-        asengine/Core/Debug/DebugDesktop.cpp
         asengine/Display/Backend/Desktop/DesktopDisplay.cpp
         asengine/Display/Backend/Desktop/DesktopDisplayCreate.cpp
     )
@@ -124,7 +117,7 @@ add_library(
     ${PLATFORM_SPECIFIC_SOURCES}
 )
 
-if(NOT ANDROID)
+if(WIN32 OR UNIX)
     # add glfw
     add_subdirectory(dependencies/glfw-3.3.8)
     include_directories(dependencies/glfw-3.3.8/include)
@@ -154,14 +147,6 @@ if(NOT ANDROID)
         PRIVATE glfw
         PRIVATE spirv-cross-glsl
         OpenGL::GL
-    )
-
-else()
-    target_link_libraries(
-        asengine
-        spirv_cross_glsl
-        miniaudio
-        stb_image
     )
 endif()
 

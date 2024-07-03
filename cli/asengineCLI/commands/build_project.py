@@ -26,7 +26,7 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
     assert(config != {})
 
     # check platform validity
-    assert (platform in ("windows", "linux", "android", "headless"))
+    assert (platform in ("windows", "linux", "headless"))
 
     # get config directory
     configDir = dirPath(configPath)
@@ -44,25 +44,8 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
     #craete and copy platfrom to .tmp
     shutil.copytree(platformPath, tmpPath, dirs_exist_ok=True)
 
-    #we are going to compile from source for android
-    if platform == "android":
-        #copy asengine source
-        shutil.copytree(asengineSourcePath, 
-                        relativeTo(tmpPath, "./app/src/main/cpp/asengine"), 
-                        dirs_exist_ok=True, 
-                        ignore=shutil.ignore_patterns("build"))
-        
-        shutil.copytree(relativeTo(asenginePath, "./include"), 
-                        relativeTo(tmpPath, "./app/src/main/cpp/asengine/include"), 
-                        dirs_exist_ok=True)
-
-        #copy project code to by compiled
-        shutil.copytree(relativeTo(projectPath, "./src"), 
-                        relativeTo(tmpPath, "./app/src/main/cpp/project-src"), 
-                        dirs_exist_ok=True)
-
     #copy project assets
-    assetsPath = relativeTo(tmpPath, "./app/src/main/assets") if platform == "android" else relativeTo(tmpPath, "./build/assets")
+    assetsPath = relativeTo(tmpPath, "./build/assets")
     shutil.copytree(relativeTo(projectPath, "./assets"), assetsPath, dirs_exist_ok=True)
 
     #scan and compile shaders
@@ -115,28 +98,6 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
         error |= os.system(f"wine {relativeTo(buildPath, './build.exe')}")
         os.chdir(projectPath)
 
-    elif platform == "android":
-        # find sdk tools
-        sdkPath = config["targets"]["android"]["sdkPath"]
-        emulatorPath = relativeTo(sdkPath, "./tools")
-        adbPath = relativeTo(sdkPath, "./platform-tools")
-        avdName = config["targets"]["android"]["avdName"]
-
-        #build debug
-        os.chdir(tmpPath)
-
-        #set local.properties for android
-        os.system(f"echo 'sdk.dir = {sdkPath}' > local.properties")
-
-        os.system("./gradlew assembleDebug")
-        os.chdir(projectPath)
-
-        #install apk
-        os.chdir(adbPath)
-        os.system(f"./adb install {relativeTo(tmpPath, './app/build/outputs/apk/debug/app-debug.apk')}")
-        os.system(f"./adb shell am start -n com.example.androidsimpleengine/com.example.androidsimpleengine.MainActivity")
-        os.chdir(projectPath)
-        
     return error
 
 

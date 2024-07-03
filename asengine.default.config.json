@@ -1,14 +1,6 @@
 {
     "targets":
     {
-        "android":
-        {
-            "sdkPath": "",
-            "emulatorPath": "",
-            "avdName": "",
-            "type": "mobile",
-            "os": "android"
-        },
         "linux":
         {
             "type": "desktop",

@@ -1,14 +1,8 @@
 #ifndef __ASENGINE_FILESYSTEM_H
 #define __ASENGINE_FILESYSTEM_H
 
-
-#ifdef __ANDROID__
-#include <android/asset_manager.h>
-
-#else
 #include <fstream>
 
-#endif
 
 #include<string>
 #include "Core/Memory/ByteBuffer.h"
@@ -33,14 +27,7 @@ namespace ASEngine {
 
     class ASENGINE_API File
     {
-
     public:
-        //get/set assetmanager for android 
-        #ifdef __ANDROID__
-        static void SetAssetManager(AAssetManager *assetManager);
-        static inline AAssetManager* GetAssetManager() { return s_AssetManager; };
-        #endif
-
         // open file: read | write
         bool Open(const std::string &path, FileOpenMode mode, FileType type = FileType::RESOURCE);
 
@@ -65,15 +52,7 @@ namespace ASEngine {
     private:
         size_t m_Size = 0;
         FileOpenMode m_Mode = FileOpenMode::READ;
-        
-        #ifdef  __ANDROID__
-        static AAssetManager* s_AssetManager;
-        AAsset* m_Asset = nullptr;
-
-        #else
         std::fstream m_File;
-
-        #endif
     };
 
 } // ASEngine

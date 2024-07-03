@@ -23,7 +23,6 @@ def setup(configPath: str):
         config = json.load(configFile)
     
     #set paths to absolute
-    config["targets"]["android"]["sdkPath"]  = os.path.realpath(config["targets"]["android"]["sdkPath"])
     config["projectTemplatePath"] = os.path.realpath(config["projectTemplatePath"])
     config["platformsPath"] = os.path.realpath(config["platformsPath"])
     config["cmakeToolchains"]["windows"] = os.path.realpath(config["cmakeToolchains"]["windows"])
