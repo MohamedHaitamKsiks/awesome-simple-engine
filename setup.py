@@ -44,7 +44,7 @@ def setup(configPath: str):
 
     #run asengine's unit tests
     os.chdir("tests")
-    if subprocess.call(["asengine-cli", "build", "headless"]):
+    if subprocess.call(["asengine-cli", "build", "headless", "debug"]):
         return 1
     
     os.chdir("..")

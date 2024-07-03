@@ -87,12 +87,18 @@ def generateIncludeFiles():
     # os.chmod(entryPointPath, S_IREAD | S_IRGRP | S_IROTH) TODO
 
 # compile asengine 
-def compileEngineFor(plarform) -> int:
+def compileEngineFor(plarform: str, debug: bool = False) -> int:
+
     #asengine path
     enginePath = os.getcwd()
+    
+    #debug/release directory
+    debugDir = "debug" if debug else "release"
+
     #create build folder
-    buildFolderPath = f"build/.tmplib/{plarform}"
+    buildFolderPath = f"build/.tmplib/{plarform}/{debugDir}"
     os.makedirs(buildFolderPath, exist_ok=True)
+
     #compile the asengine
     os.chdir(buildFolderPath)
 
@@ -100,26 +106,43 @@ def compileEngineFor(plarform) -> int:
     compilationResult = 0
 
     #cmake
-    if plarform == "linux":
-        compilationResult += os.system(f"cmake  -DCMAKE_BUILD_TYPE=Debug {enginePath}")
-    elif plarform == "windows":
+    cmakeCompileCommand = ["cmake"]
+    
+    #debug flag for cmake
+    if debug:
+        cmakeCompileCommand.append("-DCMAKE_BUILD_TYPE=Debug")
+
+    # use windows toolchain
+    if plarform == "windows":
         windowsCmakeToolchain = "cmake_toolchains/mingw-w64-x86_64.cmake"
-        compilationResult += os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={windowsCmakeToolchain} {enginePath}")
+        cmakeCompileCommand.append(f"-DCMAKE_TOOLCHAIN_FILE={windowsCmakeToolchain}")
+
+    # add engine path
+    cmakeCompileCommand.append(enginePath)
+
+    #run cmake
+    compilationResult |= os.system(' '.join(cmakeCompileCommand))
     
     #make
-    compilationResult += os.system("make")
+    compilationResult |= os.system("make")
     
     #copy asengine.so to lib
     os.chdir(enginePath)
 
-    libPath = f"build/lib/{plarform}"
+    #copy engine to lib path
+    libPath = f"build/lib/{plarform}/{debugDir}"
     os.makedirs(libPath, exist_ok=True)
     
-    if plarform == "linux":
-        shutil.copy(f"{buildFolderPath}/libasengine.so", f"{libPath}/libasengine.so")
-    elif plarform == "windows":
-        shutil.copy(f"{buildFolderPath}/libasengine.dll", f"{libPath}/libasengine.dll")
+    #copy engine
+    engineDynamicLibraries = {
+        "linux": "libasengine.so",
+        "windows": "libasengine.dll"
+    }
 
+    engineDynamicLibrary = engineDynamicLibraries[plarform]
+    shutil.copy(f"{buildFolderPath}/{engineDynamicLibrary}", f"{libPath}/{engineDynamicLibrary}")
+
+    # return code of compilation
     return compilationResult
 
 #compile asengine given arguments (os)
@@ -130,7 +153,8 @@ def compileASEngine(platforms: list[str]) -> int:
     #compile the asengine
     compilationResult = 0
     for platform in platforms:
-        compilationResult |= compileEngineFor(platform)
+        compilationResult |= compileEngineFor(platform, debug=False)
+        compilationResult |= compileEngineFor(platform, debug=True)
 
     return compilationResult
 

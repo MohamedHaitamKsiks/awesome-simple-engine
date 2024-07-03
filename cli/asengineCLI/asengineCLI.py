@@ -28,8 +28,10 @@ def executeCommand(command: str, args: list[str] = []) -> int:
             error |= buildProject(relativeTo(scriptPath, "./resources/.asengine.config.json"), ".", "linux")
 
         case "build":
-            assert(len(args) == 1)
-            error |= buildProject(relativeTo(scriptPath, "./resources/.asengine.config.json"), ".", args[0])
+            assert(len(args) >= 1)
+            isDebug = len(args) > 1 and args[1] == "debug"
+
+            error |= buildProject(relativeTo(scriptPath, "./resources/.asengine.config.json"), ".", args[0], isDebug)
 
         case "generate-project":
             assert(len(args) == 1)

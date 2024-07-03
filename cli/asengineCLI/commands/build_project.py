@@ -7,7 +7,10 @@ from asengineCLI.commands.status import *
 from asengineCLI.commands.script_path import *
 from asengineCLI.commands.compile_shaders import scanAndCompileShaders
 
-def buildProject(configPath: str, projectPath: str, platform: str) -> int:
+def buildProject(configPath: str, projectPath: str, platform: str, debug: bool = False) -> int:
+    #debug mode
+    debugMode = "debug" if debug else "release"
+
     # error return
     error = 0 
     projectPath = relativeTo(projectPath, "")
@@ -33,15 +36,15 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
 
     #get asengine path
     asenginePath = config["asengine"]["buildPath"]
-    asengineSourcePath = config["asengine"]["sourcePath"]
     cmakeWindowsToolChain = config["cmakeToolchains"]["windows"]
     platformOS = config["targets"][platform]["os"]
     platformPath = relativeTo(config["platformsPath"], config["targets"][platform]["type"])
 
     #generated tmp folder name
-    tmpFileName = f".tmp.{ platform }"
+    tmpFileName = f".tmp.{ platform }.{debugMode}"
     tmpPath = relativeTo(projectPath, tmpFileName)
-    #craete and copy platfrom to .tmp
+
+    #create and copy platfrom to .tmp
     shutil.copytree(platformPath, tmpPath, dirs_exist_ok=True)
 
     #copy project assets
@@ -61,42 +64,51 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
 
     #project source path 
     projectSourcePath = relativeTo(projectPath, "./src");
-    libPath = relativeTo(asenginePath, f"./lib/{platformOS}") 
+    libPath = relativeTo(asenginePath, f"./lib/{platformOS}/{debugMode}") 
     
     #game build
     buildPath = relativeTo(tmpPath, "./build")
     
     # compile and run
-    if platform in ["linux", "headless"]:
+    os.chdir(buildPath)
 
-        os.chdir(buildPath)
-        #remove old build
-        if os.path.exists("build"):
-            os.remove("build")
+    #remove old builds
+    oldBuildFile = "build" if platformOS == "linux" else "build.exe"
+    if os.path.exists(oldBuildFile):
+        os.remove(oldBuildFile)
 
-        error |= os.system(f"cmake -DCMAKE_BUILD_TYPE=Debug -DASENGINE_INCLUDE_PATH={includePath} -DASENGINE_LIB_PATH={libPath} -DASENGINE_PROJECT_PATH={projectSourcePath} .. ")
-        error |= os.system("make")
-        
-        # run app
+    #cmake 
+    cmakeBuildCommand = ["cmake"]
+    
+    # add toolchains
+    if platformOS == "windows":
+        cmakeBuildCommand.append(f"-DCMAKE_TOOLCHAIN_FILE={cmakeWindowsToolChain}")
+
+    # debug mode 
+    if debug:
+        cmakeBuildCommand.append("-DCMAKE_BUILD_TYPE=Debug")
+
+    # add paths
+    cmakeBuildCommand.append(f"-DASENGINE_INCLUDE_PATH={includePath}")
+    cmakeBuildCommand.append(f"-DASENGINE_LIB_PATH={libPath}")
+    cmakeBuildCommand.append(f"-DASENGINE_PROJECT_PATH={projectSourcePath}")
+    
+    # add build path
+    cmakeBuildCommand.append("..")
+
+    # run compilation
+    error |= os.system(' '.join(cmakeBuildCommand))
+    error |= os.system("make")
+
+    # run output
+    if platformOS == "linux":
         error |= os.system("./build")
-        os.chdir(projectPath)
 
-    elif platform == "windows":
-        os.chdir(buildPath)
-        
-        #copy libasengine.dll
-        shutil.copy(relativeTo(libPath, "./libasengine.dll"), relativeTo(buildPath, "./libasengine.dll"))
-
-        #remove old build
-        if os.path.exists("build.exe"):
-            os.remove("build.exe")
-
-        error |= os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={cmakeWindowsToolChain} -DASENGINE_INCLUDE_PATH={includePath} -DASENGINE_LIB_PATH={libPath} -DASENGINE_PROJECT_PATH={projectSourcePath} .. ")
-        error |= os.system("make")
-        
-        #run with wine
+    elif platformOS == "windows":
         error |= os.system(f"wine {relativeTo(buildPath, './build.exe')}")
-        os.chdir(projectPath)
+
+    #end
+    os.chdir(projectPath)
 
     return error
 
