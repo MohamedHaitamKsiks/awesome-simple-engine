@@ -57,4 +57,5 @@ def setup(configPath: str, debugSetup=False):
 
 
 if __name__ == "__main__":
-    sys.exit(setup("asengine.default.config.json"))
+    isDebug = len(sys.argv) >= 2 and sys.argv[1] == "debug"
+    sys.exit(setup("asengine.default.config.json", isDebug))

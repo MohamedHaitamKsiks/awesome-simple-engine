@@ -21,17 +21,20 @@ if (WIN32 OR UNIX)
     )
 endif()
 
+#set dependencies dir
+set (DEPENDENCIES_DIRECTOY ${CMAKE_CURRENT_SOURCE_DIR}/dependencies)
+
 # add SPIRV-Cross
-add_subdirectory(dependencies/SPIRV-Cross)
-include_directories(dependencies/SPIRV-Cross)
+add_subdirectory(${DEPENDENCIES_DIRECTOY}/SPIRV-Cross)
+include_directories(${DEPENDENCIES_DIRECTOY}/SPIRV-Cross)
 
 # add miniaudio
-add_subdirectory(dependencies/miniaudio)
-include_directories(dependencies/miniaudio)
+add_subdirectory(${DEPENDENCIES_DIRECTOY}/miniaudio)
+include_directories(${DEPENDENCIES_DIRECTOY}/miniaudio)
 
 # add stb_image
-add_subdirectory(dependencies/stb_image)
-include_directories(dependencies/stb_image)
+add_subdirectory(${DEPENDENCIES_DIRECTOY}/stb_image)
+include_directories(${DEPENDENCIES_DIRECTOY}/stb_image)
 
 add_library(
     asengine
@@ -119,14 +122,14 @@ add_library(
 
 if(WIN32 OR UNIX)
     # add glfw
-    add_subdirectory(dependencies/glfw-3.3.8)
-    include_directories(dependencies/glfw-3.3.8/include)
+    add_subdirectory(${DEPENDENCIES_DIRECTOY}/glfw-3.3.8)
+    include_directories(${DEPENDENCIES_DIRECTOY}/glfw-3.3.8/include)
 
     # add opengl
     find_package(OpenGL REQUIRED)
     include_directories(${OPENGL_INCLUDE_DIRS})
     
-    include_directories(dependencies/glew/include)
+    include_directories(${DEPENDENCIES_DIRECTOY}/glew/include)
     add_definitions(-DGLEW_STATIC)
     add_library(
         glew

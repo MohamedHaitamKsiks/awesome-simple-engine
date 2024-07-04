@@ -1,7 +1,7 @@
 {
 	"Application":
 	{
-		"Name": "ASEgnine-Projet",
+		"Name": "Hello Triangle",
 		"MainScene": "scenes/main.scene.json" 
 	},
 
@@ -9,14 +9,14 @@
 	{
 		"Viewport": 
 		{
-			"Width": 320,
-			"Height": 180
+			"Width": 640,
+			"Height": 480
 		},
 
 		"Window": 
 		{
 			"Width": 640,
-			"Height": 360,
+			"Height": 480,
 			"KeepAspectRatio": true,
 			"Fullscreen": false
 		},
