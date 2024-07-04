@@ -2,8 +2,6 @@
 
 namespace ASEngine
 {
-    ;
-
     void ModuleManager::Registry()
     {
         for (auto& module: m_Modules)

@@ -146,14 +146,18 @@ def compileEngineFor(plarform: str, debug: bool = False) -> int:
     return compilationResult
 
 #compile asengine given arguments (os)
-def compileASEngine(platforms: list[str]) -> int:
+def compileASEngine(platforms: list[str], release=False) -> int:
     #generate include
     generateIncludeFiles()
 
     #compile the asengine
     compilationResult = 0
     for platform in platforms:
-        compilationResult |= compileEngineFor(platform, debug=False)
+        #build for release
+        if release:
+            compilationResult |= compileEngineFor(platform, debug=False)
+        
+        #build for debug
         compilationResult |= compileEngineFor(platform, debug=True)
 
     return compilationResult

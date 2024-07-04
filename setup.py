@@ -13,9 +13,14 @@ def createDirectory(dirPath: str):
 
 
 #setup
-def setup(configPath: str):
+def setup(configPath: str, debugSetup=False):
     #compile engine
-    compileASEngine(["linux", "windows"])
+    #debug mode only build for linux in debug
+    if debugSetup:
+        compileASEngine(["linux"], release=False)
+    #compile the engine for all the supported platforms in all modes
+    else:
+        compileASEngine(["linux", "windows"], release=True)
 
     #read config path
     config = {}
