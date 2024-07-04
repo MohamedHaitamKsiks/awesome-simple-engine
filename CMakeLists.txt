@@ -4,9 +4,12 @@ set(CMAKE_CXX_STANDARD 20)
 add_compile_options(-Wall)
 add_compile_definitions(ASENINE_EXPORTS)
 
+
+
 #create project
 project(asengine)
 include_directories(asengine)
+
 
 #link static library into dynamc library for desktop
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
@@ -121,9 +124,7 @@ add_library(
 )
 
 if(WIN32 OR UNIX)
-    # add glfw
-    add_subdirectory(${DEPENDENCIES_DIRECTOY}/glfw-3.3.8)
-    include_directories(${DEPENDENCIES_DIRECTOY}/glfw-3.3.8/include)
+    add_subdirectory(${DEPENDENCIES_DIRECTOY}/glfw-3.4)
 
     # add opengl
     find_package(OpenGL REQUIRED)
@@ -146,8 +147,8 @@ if(WIN32 OR UNIX)
         asengine
         PRIVATE stb_image
         PRIVATE miniaudio
-        PRIVATE glew
         PRIVATE glfw
+        PRIVATE glew
         PRIVATE spirv-cross-glsl
         OpenGL::GL
     )
