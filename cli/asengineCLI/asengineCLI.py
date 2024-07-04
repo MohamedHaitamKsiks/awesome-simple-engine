@@ -12,7 +12,6 @@ from asengineCLI.commands.documentation import showDocumentation
 from asengineCLI.commands.status import getProjectStatus
 from asengineCLI.commands.build_project import buildProject
 from asengineCLI.commands.script_path import *
-from asengineCLI.commands.generate_shader import generateShader
 
 def executeCommand(command: str, args: list[str] = []) -> int:
     scriptPath = dirPath(__file__)
@@ -26,24 +25,17 @@ def executeCommand(command: str, args: list[str] = []) -> int:
             print(getProjectStatus("./"))
 
         case "run":
-            error |= buildProject(relativeTo(scriptPath, "./resources/build.config.json"), ".", "linux")
+            error |= buildProject(relativeTo(scriptPath, "./resources/.asengine.config.json"), ".", "linux")
 
         case "build":
-            assert(len(args) == 1)
-            error |= buildProject(relativeTo(scriptPath, "./resources/build.config.json"), ".", args[0])
+            assert(len(args) >= 1)
+            isDebug = len(args) > 1 and args[1] == "debug"
 
-        case "generate-shader-3d":
-            assert(len(args) == 1)
-            error |= generateShader(args[0], relativeTo(scriptPath, "./resources/shader_templates"), "3D")
-
-        case "generate-shader-2d":
-            assert(len(args) == 1)
-            error |= generateShader(args[0], relativeTo(scriptPath, "./resources/shader_templates"), "2D")
-
+            error |= buildProject(relativeTo(scriptPath, "./resources/.asengine.config.json"), ".", args[0], isDebug)
 
         case "generate-project":
             assert(len(args) == 1)
-            generateProject(args[0], relativeTo(scriptPath, "./resources/.project_template"))
+            generateProject(args[0], relativeTo(scriptPath, "./resources/.asengine.config.json"))
 
         case "generate-component":
             assert(len(args) == 1)

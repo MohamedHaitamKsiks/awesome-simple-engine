@@ -3,126 +3,165 @@ import os
 import pathlib
 import shutil
 import sys
+import json
+from stat import S_IREAD, S_IRGRP, S_IROTH
 
-# generate include files
+
+# add header files
+def retrieveHeaders(root: pathlib.Path, excludedHeaders: set) -> list[pathlib.Path]:
+    #ignore if hidden
+    if root.name.startswith(".") or str(root) in excludedHeaders:
+        return []
+
+    #add .h and .hpp file
+    if  root.is_file():
+        if root.match("*.h") or root.match("*.hpp"):
+            return [root]
+        else:
+            return []
+
+    # add directory and look foch sub directories
+    paths = list(root.glob("*"))
+    headers = [root]
+    for path in paths:
+        headers += retrieveHeaders(path, excludedHeaders)
+        
+    return headers
+
+# generate include files (all read only)
 def generateIncludeFiles():
-    #add dependencies
-    dependenciesFolder = pathlib.Path("dependencies").iterdir()
-    for folder in dependenciesFolder:
-        if pathlib.Path(f"{str(folder)}/include").is_dir():
-            shutil.copytree(f"{str(folder)}/include", "build/include/dependencies/" + str(folder.name), dirs_exist_ok=True)
+    includedHeaders = []
+    excludedHeaders = set()
+    #open headers.json
+    with open("headers.json") as headersFile:
+        headers = json.load(headersFile)
+        includedHeaders = headers["include"]
+        excludedHeaders = set(headers["exclude"])
 
-    #entrypoint for include file (include it to include all the engine)
-    entryPointList = ["#ifndef ASENGINE_H\n#define ASENGINE_H\n"]
 
-    #get all header files
-    enginePath = pathlib.Path("engine")
-    headerFileList = list(enginePath.rglob("*.h")) + list(enginePath.rglob("*.hpp"))
+    #entrypoint for include file (include it to include all the asengine)
+    entryPointList = ["#ifndef __ASENGINE_INCLUDE_H\n#define __ASENGINE_INLUDE_H\n"]
 
-    for headerFile in headerFileList:
-        destFile = headerFile.relative_to("engine")
-        #add file to entry point
-        includeToEntryPoint = f'#include "{str(destFile)}"\n'
+    #add all included folders
+    headers: list[pathlib.Path] = []
+    for headerToInclude in includedHeaders:
+        headerPath = pathlib.Path(headerToInclude)
+        headers += retrieveHeaders(headerPath, excludedHeaders)
+
+    for header in headers:
+        relativeHeader = header.relative_to("./asengine")
+        if header.is_dir():
+            os.makedirs(f"build/include/{str(relativeHeader)}", exist_ok=True)
+            continue
+        
+        includeToEntryPoint = f'#include "{str(relativeHeader)}"\n'
         entryPointList.append(includeToEntryPoint)
         #copy file
-        os.makedirs("build/include/engine/" + str(destFile.parent), exist_ok=True)
-        
-        destPath = "build/include/engine/" + str(destFile)
-        
-        shutil.copy(str(headerFile),destPath)
-        shutil.copystat(str(headerFile),destPath)
-
+        destPath = f"build/include/{str(relativeHeader)}"
+        shutil.copy(str(header), destPath)
+        shutil.copystat(str(header), destPath)
+        # os.chmod(destPath, S_IREAD | S_IRGRP | S_IROTH) # TODO
 
     #create asengine.h
     entryPointList.append("#endif")
+    entryPointPath = "build/include/ASEngine.h"
 
     oldEntryPointList = ""
     newEntryPointList = ''.join(entryPointList)
 
-    if (pathlib.Path("build/include/engine/ASEngine.h").is_file()):
+    #don't save if value didn't change (avoid recompiling)
+    if (pathlib.Path(entryPointPath).is_file()):
         #get old entry file value
-        entryPointFile = open("build/include/engine/ASEngine.h", "r")
-        oldEntryPointList = entryPointFile.read()
-        entryPointFile.close()
-        #skip if same
-        if oldEntryPointList == newEntryPointList:
-            return
-    
-    entryPointFile = open("build/include/engine/ASEngine.h", "w")
-    entryPointFile.write(newEntryPointList)
-    entryPointFile.close()
+        with open(entryPointPath, "r")  as entryPointFile:
+            oldEntryPointList = entryPointFile.read()
 
-# compile engine 
-def compileEngineFor(plarform, graphicsAPI = "") -> int:
-    #engine path
+            #return 
+            if oldEntryPointList == newEntryPointList:
+                return
+
+    #save 
+    with open(entryPointPath, "w") as entryPointFile:
+        entryPointFile.write(newEntryPointList)
+        
+    #set entry point as read only
+    # os.chmod(entryPointPath, S_IREAD | S_IRGRP | S_IROTH) TODO
+
+# compile asengine 
+def compileEngineFor(plarform: str, debug: bool = False) -> int:
+
+    #asengine path
     enginePath = os.getcwd()
-    #cmake toolchains path
-    cmakeToolChainsPath = str(pathlib.Path(enginePath).parent) + "/cli/asengineCLI/resources/cmake-toolchains"
-    print(cmakeToolChainsPath)
+    
+    #debug/release directory
+    debugDir = "debug" if debug else "release"
+
     #create build folder
-    buildFolderPath = "build/lib/" + plarform
+    buildFolderPath = f"build/.tmplib/{plarform}/{debugDir}"
     os.makedirs(buildFolderPath, exist_ok=True)
-    #compile the engine
+
+    #compile the asengine
     os.chdir(buildFolderPath)
 
     # keep track of compilation result
     compilationResult = 0
 
     #cmake
-    if plarform == "linux":
-        compilationResult += os.system(f"cmake {enginePath}")
-    elif plarform == "windows":
-        windowsCmakeToolchain = f"{cmakeToolChainsPath}/mingw-w64-x86_64.cmake"
-        compilationResult += os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={windowsCmakeToolchain} {enginePath}")
+    cmakeCompileCommand = ["cmake"]
+    
+    #debug flag for cmake
+    if debug:
+        cmakeCompileCommand.append("-DCMAKE_BUILD_TYPE=Debug")
+
+    # use windows toolchain
+    if plarform == "windows":
+        windowsCmakeToolchain = "cmake_toolchains/mingw-w64-x86_64.cmake"
+        cmakeCompileCommand.append(f"-DCMAKE_TOOLCHAIN_FILE={windowsCmakeToolchain}")
+
+    # add engine path
+    cmakeCompileCommand.append(enginePath)
+
+    #run cmake
+    compilationResult |= os.system(' '.join(cmakeCompileCommand))
     
     #make
-    compilationResult += os.system("make")
-
-    #combine into one static librarty
-    #create .mri file
-    if pathlib.Path("asengine.a").exists():
-        os.remove("asengine.a")
-
-    mriCode = ["create asengine.a"]
-
-    libFilesList = list(pathlib.Path().rglob("*.a"))
-
-    for libFile in libFilesList:
-        if (libFile.name == "asegnine.a"):
-            continue
-        mriCode.append(f"addlib {str(libFile)}")
+    compilationResult |= os.system("make")
     
-    mriCode.append("save")
-    mriCode.append("end")
-
-    #save .mri file
-    mriFile = open("asengine.mri", "w")
-    mriFile.write('\n'.join(mriCode))
-    mriFile.close()
-
-    #generate asengine.a
-    os.system("ar -M <asengine.mri")
-
+    #copy asengine.so to lib
     os.chdir(enginePath)
 
+    #copy engine to lib path
+    libPath = f"build/lib/{plarform}/{debugDir}"
+    os.makedirs(libPath, exist_ok=True)
+    
+    #copy engine
+    engineDynamicLibraries = {
+        "linux": "libasengine.so",
+        "windows": "libasengine.dll"
+    }
+
+    engineDynamicLibrary = engineDynamicLibraries[plarform]
+    shutil.copy(f"{buildFolderPath}/{engineDynamicLibrary}", f"{libPath}/{engineDynamicLibrary}")
+
+    # return code of compilation
     return compilationResult
 
-#compile engine given arguments (os)
-def compile(platforms: list[str]) -> int:
-    os.chdir("asengine")
-
+#compile asengine given arguments (os)
+def compileASEngine(platforms: list[str], release=False) -> int:
     #generate include
     generateIncludeFiles()
 
-    #compile the engine
+    #compile the asengine
     compilationResult = 0
     for platform in platforms:
-        compilationResult |= compileEngineFor(platform)
-
-    os.chdir("..")
+        #build for release
+        if release:
+            compilationResult |= compileEngineFor(platform, debug=False)
+        
+        #build for debug
+        compilationResult |= compileEngineFor(platform, debug=True)
 
     return compilationResult
 
 #main
 if __name__ == "__main__":
-    sys.exit(compile(sys.argv[1:]) % 255)        
+    sys.exit(compileASEngine(sys.argv[1:]) % 255)

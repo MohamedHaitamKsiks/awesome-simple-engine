@@ -9,7 +9,6 @@ def getProjectIsValid(projectPath: str) -> tuple[bool, list[str]]:
         "assets",
         "src",
         "src/CMakeLists.txt",
-        "src/registry.h",
         "src/registry.cpp",
         "assets/project.settings.json",
     ]

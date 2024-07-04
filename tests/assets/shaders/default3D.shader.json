@@ -1,0 +1,33 @@
+{
+    "Vertex": "default3D.vert",
+    "Fragment": "default3D.frag",
+    "VertexInputDescriptor": 
+    {  
+        "VertexInputLayouts":
+        [
+            {
+                "Binding": 0,
+                "VertexInputRate": "VERTEX",
+                "VertexAttributes":
+                [
+                    {
+                        "Location": 0,
+                        "Type": "VEC3"
+                    },
+                    {
+                        "Location": 1,
+                        "Type": "VEC3"
+                    },
+                    {
+                        "Location": 2,
+                        "Type": "VEC3"
+                    },
+                    {
+                        "Location": 3,
+                        "Type": "VEC3"
+                    }
+                ]
+            }
+        ]
+    }
+}

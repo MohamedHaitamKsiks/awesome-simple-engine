@@ -1,7 +1,11 @@
-#include "registry.h"
-#include "TestModule/TestModule.h"
+#include "ASEngine.h"
+#include "ASEngineTestSystem/ASEngineTestSystem.h"
 
-void Registry()
+namespace ASEngine
 {
-    ModuleManager::RegisterModule<TestModule>();
-}
+    void Registry()
+    {
+        SystemManager::GetInstance().RegisterSystem<ASEngineTestSystem>();
+    }
+    
+} // namespace ASEngine

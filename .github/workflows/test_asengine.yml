@@ -1,0 +1,38 @@
+name: Compile and run Tests
+
+on:
+    push:
+        branches: [main]
+
+    pull_request:
+        branches: [main]
+
+jobs:
+    build:
+        strategy:
+            matrix:
+                os: [ubuntu-latest] 
+
+        runs-on: ubuntu-latest
+
+        steps:
+            -   uses: actions/checkout@v2
+
+            -   name: Debug output
+                run: |
+                    ls ./dependencies/glfw-3.4
+
+            -   name: Install dependencies
+                run: |
+                    sudo apt update &&
+                    sudo apt-get -y install cmake &&
+                    sudo apt-get -y install g++-mingw-w64 &&
+                    sudo apt-get -y install freeglut3-dev && 
+                    sudo apt-get -y install xorg-dev libgl1-mesa-dev
+                
+            -   name: Compile and run tests
+                run: python3 setup.py
+
+            
+
+

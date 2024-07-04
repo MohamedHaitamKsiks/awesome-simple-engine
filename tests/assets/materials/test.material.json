@@ -1,12 +1,14 @@
 {
-    "Shaders": {
-        "Vertex": "",
-        "Fragment": ""
+    "Shader": "shaders/default3D.shader.json",
+    "UniformBuffers": 
+    {
+        "Data":
+        {
+            "SomeNumber": 5
+        }
     },
-    "UniformBufferShaders": {
-
-    },
-    "Samplers2D": {
-        
+    "Samplers": 
+    {
+        "Texture": "textures/example.texture.json"
     }
 }

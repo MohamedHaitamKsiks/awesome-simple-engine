@@ -1,7 +1,6 @@
+build/
 .tmp*
 .vscode/
-build/
-demos/
 
 # Editors
 .vscode/
@@ -19,7 +18,7 @@ Thumbs.db
 # Source for the following rules: https://raw.githubusercontent.com/github/gitignore/master/Python.gitignore
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
+*.py[cod]Example2D
 *$py.class
 
 # C extensions

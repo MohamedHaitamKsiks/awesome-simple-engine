@@ -27,6 +27,6 @@ Commands list:
 + run:
     Same as build for linux in debug.
 
-+ build <windows | linux | android> <debug | release>:
++ build <windows | linux | headless> <debug | release>:
     Build current project.
 

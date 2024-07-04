@@ -1,0 +1,16 @@
+{
+    "VertexInputLayouts": 
+    [
+        {
+            "Binding": 0,
+            "InputRate": "VERTEX",
+            "VertexAttributes": 
+            [
+                {
+                    "Location": 0,
+                    "Type": "VEC2"
+                }
+            ]
+        }
+    ]
+}

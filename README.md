@@ -9,10 +9,10 @@ Cross-platform game engine written with c++.
   Install depencies:
 
   ```sh
-    $ sudo apt update &&
-    $ sudo apt-get -y install cmake &&
-    $ sudo apt-get -y install g++-mingw-w64 && 
-    $ sudo apt-get -y install freeglut3-dev
+    sudo apt update &&
+    sudo apt-get -y install cmake &&
+    sudo apt-get -y install g++-mingw-w64 && 
+    sudo apt-get -y install freeglut3-dev
   ```
 
   ### Windows
@@ -21,79 +21,281 @@ Cross-platform game engine written with c++.
 
 ## Features
 
-### 3D Renderer
+### API Agnostic Renderer
 
-The renderer uses a mix of batching and gpu instancing to optimise draw calls. 
+ASEgnine offers a low level renderer that gives the user more control while also being easier to use than your typical OpenGL or Vulkan. 
 
-Let's draw some cubes as a example:
+Only OpenGL is supported for now. But I plan to add Vulkan soon.
+
+### Buffers
+
+Buffers are used to store data in the GPU. There are 3 types of buffers:
+
+1. Array Buffers 
+2. Index Buffers
+3. Uniform Buffers
+
+Example:
+
 ```cpp
-  // ...
-  // register mesh
-  Mesh3D mesh = Renderer3D::RegisterMesh(cubeMeshInfo);
-  //...
+// create your buffer
+ResourceRef<Buffer> myBuffer = Buffer::GetResourceClass().New();
+myBuffer->Create(BufferType::ARRAY);
 
-  // init mesh instance info
-  MeshInstanceInfo3D meshInstaneInfo;
-  meshInstaneInfo.Mesh = mesh;
-  meshInstaneInfo.MaterialID = ResourceManager<Material>::GetResourceId(UniqueString("materials/material3D.json"));
-  // init list of transforms each one is going to result in a new instance of the mesh.
-  meshInstaneInfo.Transforms = TDynamicArray<mat4>();
+// send data
+myBuffer->SetData(data, size);
+```
 
-  // add transforms ...
+### Textures
 
-  // register mesh isntance 
-  MeshInstance3D instance = Renderer3D::RegisterMeshInstance(meshInstanceInfo);
+A texture is an image stored in the GPU.
 
+Example:
+```cpp
+// load the png 
+Image image{};
+image.LoadPNG("path.to.image.png");
+
+// create the texture
+ResourceRef<Texture> myTexture = Texture::GetResourceClass().New();
+
+myTexture->Create(image, TextureFilter::LINEAR, TextureRepeatMode::REPEAT);
+```
+
+Textures are serializable resources so you can create them in your assets folder as json files:
+
+```json
+{
+  "ImagePath": "textures/leaf.png",
+  "Filter": "NEAREST",
+  "RepeatMode": "REPEAT"
+}
+```
+
+You can then load them like this:
+
+```cpp
+ResourceRef<Texture> texture = Texture::GetResourceClass().Load("textures/lead.texture.json");
+```
+
+### Shaders
+
+ASEngine supports Vulkan GLSL. When you build your game project all the shaders present in the assets folder gets compiled to their .spirv equivilent. 
+
+Make sure your shader codes ends with .frag or .vert.
+
+To create a shader your need to provide it with the vertex and fragment ShaderSources.
+In addition you will need a VertexInputDescriptor to give it the layout of the vertex data.
+
+Example:
+
+1. Vertex shader:
+
+```glsl
+#version 450
+
+//attribute
+layout(location = 0) in vec2 v_Position;
+layout(location = 1) in vec4 v_Modulate;
+
+// outs
+layout(location = 0) out vec4 MODULATE;
+
+// main function is generated
+void main() {
+    MODULATE = v_Modulate;
+    gl_Position = vec4(vec3(v_Position, 0.0), 1.0);
+}
 
 ```
 
+2. Fragment shader:
 
-### 2D Renderer
+```glsl
+#version 450
 
-The renderer uses batch rendering with 16000 quads per draw call.
+layout(location = 0) in vec4 MODULATE;
+layout(location = 0) out vec4 FragColor;
+
+void main() {
+    FragColor = MODULATE;
+}
+
+```
+
+3. VertexInputDescriptor
+
+```json
+{  
+  "VertexInputLayouts":
+  [
+    {
+      "Binding": 0,
+      "InputRate": "VERTEX",
+      "VertexAttributes":
+      [
+        {
+            "Location": 0,
+            "Type": "VEC2"
+        }
+      ]
+    }
+  ]
+}
+```
+
+Creating the shader:
+
+```cpp
+// importing sources and descriptor
+ResourceRef<ShaderSource> vertexSource = ShaderSource::GetResourceClass().Load("shaders/test.vert");
+ResourceRef<ShaderSource> fragmentSource = ShaderSource::GetResourceClass().Load("shaders/test.frag");
+ResourceRef<VertexInputDescriptor> descriptor = VertexInputDescriptor::GetResourceClass().Load("shaders/test.descriptor.json");
+
+// create shader
+ResourceRef<Shader> shader = Shader::GetResourceClass().New();
+shader->Create(vertexSource, fragmentSource, descriptor);
+```
+
+You can also create the shader in your assets folder as a json file:
+
+```json
+{
+  "Vertex": "shaders/test.vert",
+  "Fragment": "shaders/test.frag",
+  "VertexInputDescriptor": "shaders/test.descriptor.json"
+}
+```
+
+### Materials
+
+A material is linked to a shader. It contains all the uniform data and samplers for the material.
 
 Example:
-````cpp
-  Quad2D quad = Quad2D(size, transform, color);
-  Renderer2D::DrawQuad(quad, materialID);
-````
+
+```cpp
+ResourceRef<Material> material = Material::GetResourceClass().New();
+
+material->Create(shader);
+
+material->SetShaderParam("Wold", "Position", worldPosition);
+material->SetShaderParam("Texture", myTexture);
+```
+
+Materials are serializable resources. You can create them as json files in the assets folder.
+
+```json
+{
+    "Shader": "shaders/default2D/default2D.shader.json",
+    "UniformBuffers":
+    {
+      "World":
+      {
+        "Position":
+        {
+          "x": 5.0,
+          "y": 2.0,
+          "z": 0.0
+        }
+      }
+    },
+    "Samplers":
+    {
+        "Texture": "textures/leaf.texture.json"
+    }
+}
+```
+
+### Renderer System
+
+To make a draw call your need to
+
+1. Bind the vertex buffers
+
+```cpp
+Renderer::GetInstance().BindVertexBuffer(vertexBuffer, binding);
+```
+
+2. Bind the index buffer
+
+```cpp
+Renderer::GetInstance().BindIndexBuffer(indexBuffer);
+```
+
+3. Bind a material
+```cpp
+Renderer::GetInstance().BindMaterial(material);
+```
+
+You can also bind a shader and set the uniform buffers manually.
+
+4. Make a draw class
+
+```cpp
+Renderer::GetInstance().DrawElements(indexCount);
+```
+
+or if you want to use GPU Instancing
+
+```cpp
+Renderer::GetInstance().DrawElements(indexCount, instanceCount);
+```
 
 ### Resource Manager
 
-Most resources in the engine are referenced by a unique Id that can either be assigned by the user or generated.
+Resources are garbage collected objects that can be loaded from a file or created programmatically.
 
+Resources are always accessed using a ResourceReference.
 
-The default resources are:
+```cpp
+// getting resource class
+auto& textureClass = Texture::GetResourceClass();
 
+// creating reference
+ResourceRef<Texture> createdTexture = textureClass.New();
 
-#### 1. Images
+// loading resource
+ResourceRef<Texture> loadedTexture = textureClass.Load("assets/example.texture.json");
 
-Loading images from png files that can be used to generate textures to draw.
+// automatically destroyed if not needed 
+```
 
-````cpp
-    Image img;
-    img.load(imagePath);
-    
-    //we can use it to create textures in the gpu
-    Texture texture = Texture::LoadFromImage(img);
-````
+### Create a resource class
 
-#### 2. Shaders
+Example of resource resource class:
 
-````cpp
-    Shader shader;
-    shader.Load("shaders/default.glsl");
-````
+Header file:
+```cpp
+class Buffer: public Resource
+{
+ASENGINE_DEFINE_RESOURCE(Buffer);
+public:
+  virtual ~Buffer() {};
 
-#### 3. Materials
+  // create buffer
+  void Create(BufferType type);
 
-Create material depending of shader.
+private:
+  BufferType m_Type = BufferType::NONE;
+};
+```
 
-````cpp
-  Material mat;
-  mat.Create(shaderId);
-  mat.SetShaderParam(UniqueString("u_Texture"), texture);
-````
+Source file:
+```cpp
+ASENGINE_SERIALIZE_RESOURCE_REF(Buffer);
+
+// ...
+```
+
+Your register your resource class like this:
+```cpp
+ASENGINE_REGISTER_RESOURCE_CLASS(Buffer);
+```
+
+If you want a resource class with different implementations (useful for API agnostic architectures), you can register your resource class like this:
+```cpp
+ASENGINE_REGISTER_ABSTRACT_RESOURCE(Buffer, OpenGLBuffer); 
+```
 
 ### Entity Component System
 
@@ -112,10 +314,14 @@ Create a struct that inherits from Component.
 Example:
 
 ````cpp
-struct SpriteComponent: Component<SpriteComponent> {
+struct SpriteComponent: public Component<SpriteComponent> 
+{
   ResourceID SpriteID;
   float Frame = 0.0f;
   float FrameRate = 8.0f;
+
+  void OnCreate() override;
+  void OnDestroy() override;
 };
 ````
 
@@ -129,18 +335,27 @@ Example:
 class SpriteRenderingSystem: public ISystem
 {
 public:
-
-    // on update
-    void OnUpdate(float delta)
+  // update
+  void Update(float delta)
+  {
+    // query components
+    EntityQuery<SpriteComponent, TransformComponent>query{};
+    
+    // if you have a small number of components you can use this
+    query.ForEach([&delta](SpriteComponent& sprite, TransformComponent& transform)
     {
-        // query components
-        TEntityQuery<SpriteComponent, TransformComponent>query{};
-        
-        query.ForEach([&delta](SpriteComponent& sprite, TransformComponent& transform)
-        {
-            //behaviour...
-        });
-    }
+      //behaviour...
+    });
+
+    // for better performances use this
+    query.ForEachCollection([&delta](ComponentCollection<SpriteComponent>& sprite, ComponentCollection<TransformComponent>& transform, size_t count)
+    {
+      for (size_t i = 0; i < count; i++)
+      {
+        // behaviour 
+      }
+    });
+  }
 };
 ````
 
@@ -157,36 +372,32 @@ Example:
   builder.AddComponents(sprite, transform);
 
   // create entity
-  Entity entity = World::Create(builder);
+  auto& entityManager = EntityManager::GetInstance();
+  EntityID entityID = entityManager.Create(builder);
 
   // destroy entity
-  World::Destroy(entity);
+  entityManager.Destroy(entityID);
 ````
 
 We are not done yet, you need to register your components and systems to the module your working on.
 
 ````cpp
     // component registry ...
-    ComponentManager::RegisterComponent<SpriteComponent>(UniqueString("Sprite"));
+    ASENGINE_REGISTER_COMPONENT(SpriteComponent);
 
     // system registry ...
-    SystemManager::RegisterSystem<SpriteRenderingSystem>();
-};
-
+    ASENGINE_REGISTER_SYSTEM(SpriteRenderingSystem);
 ````
 
 
 ### Other Features
 
-1. Interpolation
+1. Math
 
-2. Math
+2. Log
 
-3. Log
+3. UniqueStrings
 
-4. UniqueStrings
-
-5. Modules
 
 ## Future of the engine.
 

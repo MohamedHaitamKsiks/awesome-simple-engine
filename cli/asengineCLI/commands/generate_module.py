@@ -5,14 +5,22 @@ import shutil
 
 # generate module name in working dir
 def generateModule(moduleName: str):
-    #generate folders
-    os.mkdir("components")
-    os.mkdir("systems")
-    os.mkdir("resources")
+     # generate module
+    os.mkdir(moduleName)
+    os.chdir(moduleName)
+
+    os.mkdir("demos")
+    os.mkdir("src")
+
+    # generate source files
+    os.chdir("src")
+
+    #guard
+    guardName = f"__ASENGINE_MODULE_{ moduleName.upper() }_H"
 
     #header file
-    headerContent = f"""#ifndef { moduleName.upper() }_H
-#define { moduleName.upper() }_H
+    headerContent = f"""#ifndef {guardName}
+#define {guardName}
 
 #include "ASEngine.h"
 
@@ -20,20 +28,10 @@ using namespace ASEngine;
 
 class { moduleName } : public IModule
 { '{' }
-    // register components
-    void RegisterComponents();
-
-    // register systems
-    void RegisterSystems();
-
-    // init resources managers
-    void InitResourceManagers();
-
-    // terminate resource managers
-    void TerminateResourceManagers();
+    void Registry() override;
 { '}' };
 
-#endif // { moduleName.upper() }_H
+#endif // { moduleName }
 """
     #save file
     with open(f"{ moduleName }.h", "w") as moduleFile:
@@ -42,24 +40,9 @@ class { moduleName } : public IModule
     #source file
     sourceContent = f'''#include "{ moduleName }.h"
 
-void {moduleName}::RegisterComponents() 
+void {moduleName}::Registry() 
 {'{'}
-    // register components
-{'}'}
-
-void {moduleName}::RegisterSystems()
-{'{'}
-    // register systems
-{'}'}
-
-void {moduleName}::InitResourceManagers()
-{'{'}
-    // init resource managers
-{'}'}
-
-void {moduleName}::TerminateResourceManagers()
-{'{'}
-    // terminate resource managers
+    // regiter systems, components and resource types
 {'}'}
 '''
     with open(f"{ moduleName }.cpp", "w") as moduleFile:
@@ -67,7 +50,7 @@ void {moduleName}::TerminateResourceManagers()
 
     #cmake
     cmakeContent = f"""cmake_minimum_required(VERSION 3.22.1)
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 
 project({ moduleName })
 
@@ -89,16 +72,6 @@ if __name__ == "__main__":
     # arguments: module name
     assert(len(sys.argv) == 2)
     moduleName = sys.argv[1]
-
-    # generate module
-    os.mkdir(moduleName)
-    os.chdir(moduleName)
-
-    os.mkdir("demos")
-    os.mkdir("src")
-
-    # generate source files
-    os.chdir("src")
 
     generateModule(moduleName)
 

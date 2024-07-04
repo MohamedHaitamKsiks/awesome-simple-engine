@@ -1,0 +1,34 @@
+{
+	"Application":
+	{
+		"Name": "Hello Triangle",
+		"MainScene": "scenes/main.scene.json" 
+	},
+
+	"Display":
+	{
+		"Viewport": 
+		{
+			"Width": 640,
+			"Height": 480
+		},
+
+		"Window": 
+		{
+			"Width": 640,
+			"Height": 480,
+			"KeepAspectRatio": true,
+			"Fullscreen": false
+		},
+
+		"Rendering":
+		{
+			"Backend": "OpenGL"
+		}
+	},
+
+	"Time":
+	{
+		"FixedTimeStep": 0.02
+	}
+}

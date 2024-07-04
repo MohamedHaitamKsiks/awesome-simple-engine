@@ -13,7 +13,7 @@ def generateComponentCode(name: str) -> tuple[str, str]:
 
 using namespace ASEngine;
 
-struct {name}: public TComponent<{name}>
+struct {name}: public Component<{name}>
 {'{'}
     // add data fields...
 {'}'};

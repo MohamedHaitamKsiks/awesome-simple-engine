@@ -7,9 +7,13 @@ from asengineCLI.commands.status import *
 from asengineCLI.commands.script_path import *
 from asengineCLI.commands.compile_shaders import scanAndCompileShaders
 
-def buildProject(configPath: str, projectPath: str, platform: str) -> int:
+def buildProject(configPath: str, projectPath: str, platform: str, debug: bool = False) -> int:
+    #debug mode
+    debugMode = "debug" if debug else "release"
+
     # error return
     error = 0 
+    projectPath = relativeTo(projectPath, "")
 
     # check project validity
     isValid, missingRequirements = getProjectIsValid(projectPath)
@@ -25,60 +29,26 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
     assert(config != {})
 
     # check platform validity
-    assert (platform in ("windows", "linux", "android"))
+    assert (platform in ("windows", "linux", "headless"))
 
     # get config directory
     configDir = dirPath(configPath)
 
     #get asengine path
-    platformPath = relativeTo(configDir, config["targets"][platform]["platformPath"])
-    asenginePath = relativeTo(configDir, config["asenginePath"])
-    asengineSourcePath = relativeTo(configDir, config["asengineSourcePath"])
-    cmakeWindowsToolChain = relativeTo(configDir, config["cmakeWindowsToolchain"])
+    asenginePath = config["asengine"]["buildPath"]
+    cmakeWindowsToolChain = config["cmakeToolchains"]["windows"]
+    platformOS = config["targets"][platform]["os"]
+    platformPath = relativeTo(config["platformsPath"], config["targets"][platform]["type"])
 
     #generated tmp folder name
-    tmpFileName = f".tmp.{ platform }"
+    tmpFileName = f".tmp.{ platform }.{debugMode}"
     tmpPath = relativeTo(projectPath, tmpFileName)
-    #craete and copy platfrom to .tmp
+
+    #create and copy platfrom to .tmp
     shutil.copytree(platformPath, tmpPath, dirs_exist_ok=True)
 
-    #we are going to compile from source for android
-    if platform == "android":
-        #copy engine source
-        shutil.copytree(asengineSourcePath, 
-                        relativeTo(tmpPath, "./app/src/main/cpp/asengine"), 
-                        dirs_exist_ok=True, 
-                        ignore=shutil.ignore_patterns("build"))
-        
-        shutil.copytree(relativeTo(asenginePath, "./include"), 
-                        relativeTo(tmpPath, "./app/src/main/cpp/asengine/include"), 
-                        dirs_exist_ok=True)
-
-        #copy project code to by compiled
-        shutil.copytree(relativeTo(projectPath, "./src"), 
-                        relativeTo(tmpPath, "./app/src/main/cpp/project-src"), 
-                        dirs_exist_ok=True)
-
-    #desktop build 
-    else:
-        #copy compiled engine to temp project
-        shutil.copytree(relativeTo(asenginePath, "./include"), 
-                        relativeTo(tmpPath, "./asengine/include"), 
-                        dirs_exist_ok=True)
-
-        if not os.path.isdir(relativeTo(tmpPath, "./asengine/lib")):
-            os.mkdir(relativeTo(tmpPath, "./asengine/lib"))
-
-        shutil.copy(relativeTo(asenginePath, f"./lib/{platform}/asengine.a"), 
-                    relativeTo(tmpPath, "./asengine/lib/libasengine.a"))
-
-        #copy project code to by compiled
-        shutil.copytree(relativeTo(projectPath, "./src"), 
-                        relativeTo(tmpPath, "./project-src"), 
-                        dirs_exist_ok=True)
-
     #copy project assets
-    assetsPath = relativeTo(tmpPath, "./app/src/main/assets") if platform == "android" else relativeTo(tmpPath, "./build/assets")
+    assetsPath = relativeTo(tmpPath, "./build/assets")
     shutil.copytree(relativeTo(projectPath, "./assets"), assetsPath, dirs_exist_ok=True)
 
     #scan and compile shaders
@@ -86,53 +56,60 @@ def buildProject(configPath: str, projectPath: str, platform: str) -> int:
     glslangPath = relativeTo(configDir, config["glslang"])
     error |= scanAndCompileShaders(assetsPath, glslangPath)
 
+
+    ###################### COMPILING #########################
+
+    #engine paths
+    includePath = relativeTo(asenginePath, "./include")
+
+    #project source path 
+    projectSourcePath = relativeTo(projectPath, "./src");
+    libPath = relativeTo(asenginePath, f"./lib/{platformOS}/{debugMode}") 
+    
+    #game build
+    buildPath = relativeTo(tmpPath, "./build")
+    
     # compile and run
-    if platform == "linux":
-        os.chdir(relativeTo(tmpPath, "./build"))
-        #remove old build
-        if os.path.exists("build"):
-            os.remove("build")
+    os.chdir(buildPath)
 
-        error |= os.system("cmake .. ")
-        error |= os.system("make")
-        
-        # run app
+    #remove old builds
+    oldBuildFile = "build" if platformOS == "linux" else "build.exe"
+    if os.path.exists(oldBuildFile):
+        os.remove(oldBuildFile)
+
+    #cmake 
+    cmakeBuildCommand = ["cmake"]
+    
+    # add toolchains
+    if platformOS == "windows":
+        cmakeBuildCommand.append(f"-DCMAKE_TOOLCHAIN_FILE={cmakeWindowsToolChain}")
+
+    # debug mode 
+    if debug:
+        cmakeBuildCommand.append("-DCMAKE_BUILD_TYPE=Debug")
+
+    # add paths
+    cmakeBuildCommand.append(f"-DASENGINE_INCLUDE_PATH={includePath}")
+    cmakeBuildCommand.append(f"-DASENGINE_LIB_PATH={libPath}")
+    cmakeBuildCommand.append(f"-DASENGINE_PROJECT_PATH={projectSourcePath}")
+    
+    # add build path
+    cmakeBuildCommand.append("..")
+
+    # run compilation
+    error |= os.system(' '.join(cmakeBuildCommand))
+    error |= os.system("make")
+
+    # run output
+    if platformOS == "linux":
         error |= os.system("./build")
-        os.chdir(projectPath)
 
-    elif platform == "windows":
-        os.chdir(relativeTo(tmpPath, "./build"))
-        #remove old build
-        if os.path.exists("build.exe"):
-            os.remove("build.exe")
+    elif platformOS == "windows":
+        error |= os.system(f"wine {relativeTo(buildPath, './build.exe')}")
 
-        error |= os.system(f"cmake -DCMAKE_TOOLCHAIN_FILE={cmakeWindowsToolChain} ..")
-        error |= os.system("make")
-        error |= os.system(f"wine {relativeTo(tmpPath, './build/build.exe')}")
-        os.chdir(projectPath)
+    #end
+    os.chdir(projectPath)
 
-    elif platform == "android":
-        # find sdk tools
-        sdkPath = relativeTo(configDir, config["targets"]["android"]["sdkPath"])
-        emulatorPath = relativeTo(sdkPath, "./tools")
-        adbPath = relativeTo(sdkPath, "./platform-tools")
-        avdName = config["targets"]["android"]["avdName"]
-
-        #build debug
-        os.chdir(tmpPath)
-
-        #set local.properties for android
-        os.system(f"echo 'sdk.dir = {sdkPath}' > local.properties")
-
-        os.system("./gradlew assembleDebug")
-        os.chdir(projectPath)
-
-        #install apk
-        os.chdir(adbPath)
-        os.system(f"./adb install {relativeTo(tmpPath, './app/build/outputs/apk/debug/app-debug.apk')}")
-        os.system(f"./adb shell am start -n com.example.androidsimpleengine/com.example.androidsimpleengine.MainActivity")
-        os.chdir(projectPath)
-        
     return error
 
 
