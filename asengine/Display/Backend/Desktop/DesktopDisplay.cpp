@@ -14,11 +14,11 @@ namespace ASEngine
         // get settings
         const auto& displaySettings = ASEngine::GetInstance().GetSettings().Display;
         const auto& windowSettings = displaySettings.Window;
-        const auto& viewportSettings = displaySettings.Viewport;
         const auto& renderingSettings = displaySettings.Rendering;
         const auto& applicationSettings = ASEngine::GetInstance().GetSettings().Application;
 
         // create window with default values
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
         m_Window = glfwCreateWindow(640, 480, "", NULL, NULL);
         
         // init opengl context
@@ -30,7 +30,6 @@ namespace ASEngine
         SetWindowTitle(applicationSettings.Name);
         SetFullscreen(windowSettings.Fullscreen);
         SetKeepAspectRatio(windowSettings.KeepAspectRatio);
-        SetViewportSize(viewportSettings.Width, viewportSettings.Height);
     }
 
     void DesktopDisplay::TerminateImp()
@@ -59,10 +58,6 @@ namespace ASEngine
     void DesktopDisplay::SetWindowTitleImp(const std::string &title)
     {
         glfwSetWindowTitle(m_Window, title.c_str());
-    }
-
-    void DesktopDisplay::SetViewportSizeImp(uint32_t width, uint32_t height)
-    {
     }
 
     void DesktopDisplay::SetFullscreenImp(bool fullscreen)

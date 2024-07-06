@@ -25,10 +25,13 @@ namespace ASEngine
         void BindIndexBufferImp(ResourceRef<Buffer> indexBuffer) override;
         void DrawElementsImp(uint32_t indexCount, uint32_t instanceCount = 1) override;
         void BindShaderImp(ResourceRef<Shader> shader) override;
-        void ClearImp();
+        void ClearImp() override;
+        void BeginImp(ResourceRef<Viewport> viewport) override;
+        void EndImp() override;
 
         // gl bind vertex layout
         void GLBindVertexInputLayout(const VertexInputLayout& layout);
+        void GLBindFramebuffer(GLuint frameBufferID, uint32_t width, uint32_t height);
 
         // opengl viewport resize for width and height
         void GLViewportResize(uint32_t width, uint32_t height);

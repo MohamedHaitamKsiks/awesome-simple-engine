@@ -1,0 +1,9 @@
+{
+    "Shader": "shaders/default.shader.json",
+    "UniformBuffers": 
+    {
+    },
+    "Samplers": 
+    {
+    }
+}

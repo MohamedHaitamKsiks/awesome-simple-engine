@@ -34,6 +34,9 @@ namespace ASEngine
     ASENGINE_DEFINE_RESOURCE(Texture);
     ASENGINE_SERIALIZE_RESOURCE(Texture);
     public:
+        // create texture memory but with no value
+        void Create(uint32_t width, uint32_t height, TextureFilter filter, TextureRepeatMode repeat);
+
         // create texture from image
         void Create(const Image& image, TextureFilter filter, TextureRepeatMode repeat);
 
@@ -61,9 +64,9 @@ namespace ASEngine
             return m_Height;
         }
     protected:
-        // api implemetation for create from imagev
+        // api implemetation for create from image
         virtual void CreateImp(const Image &image, TextureFilter filter, TextureRepeatMode repeat) = 0;
-
+        virtual void CreateEmptyImp(uint32_t width, uint32_t height , TextureFilter filter, TextureRepeatMode repeat) = 0;
     private:
         uint32_t m_Width = 0;
         uint32_t m_Height = 0;

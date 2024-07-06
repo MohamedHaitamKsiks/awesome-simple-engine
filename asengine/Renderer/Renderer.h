@@ -7,6 +7,7 @@
 #include "Buffer/Buffer.h"
 #include "Shader/Shader.h"
 #include "Material/Material.h"
+#include "Viewport/Viewport.h"
 
 #include "ECS/System.h"
 #include "Core/Singleton/Singleton.h"
@@ -63,11 +64,17 @@ namespace ASEngine
             return m_DrawCallsCount;
         }
 
-        // begin
-        void BeginRendering();
-
-        // end rendering
-        void EndRendering();
+        // begin rendering to viewport
+        void Begin(ResourceRef<Viewport> viewport);
+        
+        // begin rendering to screen
+        inline void Begin()
+        {
+            Begin(ResourceRef<Viewport>::NONE());
+        }
+        
+        // end current viewport
+        void End();
 
     protected:
         // implementations
@@ -78,6 +85,8 @@ namespace ASEngine
         virtual void ClearImp() = 0;
         virtual void InitImp() = 0;
         virtual void TerminateImp() = 0;
+        virtual void BeginImp(ResourceRef<Viewport> viewport) = 0;
+        virtual void EndImp() = 0;
 
         // get current ver
         inline const std::unordered_map<uint32_t, ResourceRef<Buffer>>& GetCurrentVertexBuffers() const
@@ -95,21 +104,32 @@ namespace ASEngine
             return m_CurrentShader;
         }
 
+        inline ResourceRef<Viewport> GetCurrentViewport() const
+        {
+            return m_CurrentViewport;
+        }
+
 
     private:
         // current buffers
         std::unordered_map<uint32_t, ResourceRef<Buffer>> m_CurrentVertexBuffers{};
         ResourceRef<Buffer> m_CurrentIndexBuffer = ResourceRef<Buffer>::NONE();
+
         // current shader
         ResourceRef<Shader> m_CurrentShader = ResourceRef<Shader>::NONE();
         // current material
         ResourceRef<Material> m_CurrentMaterial = ResourceRef<Material>::NONE();
+
+        // current viewport
+        ResourceRef<Viewport> m_CurrentViewport = ResourceRef<Viewport>::NONE();
+        bool m_UsingViewport = false;
 
         // count draw calls
         uint32_t m_DrawCallsCount = 0;
         
         void Init() override;
         void Terminate() override;
+
     };
     
 } // namespace ASEngine

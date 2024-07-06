@@ -8,6 +8,9 @@
 
 #include "Backend/RendererBackend.h"
 
+// check of in rendering context
+#define ASSERT_RENDERER_BEGIN() ASENGINE_ASSERT(m_UsingViewport, "Make sure to call begin to render to a viewport or directly to the screen!")
+
 namespace ASEngine
 {
     ASENGINE_SERIALIZE_ENUM(Renderer::Backend, 
@@ -26,14 +29,27 @@ namespace ASEngine
         TerminateImp();
     }
 
-    void Renderer::BeginRendering()
+    void Renderer::Begin(ResourceRef<Viewport> viewport)
     {
-        m_DrawCallsCount = 0;
+        ASENGINE_ASSERT(!m_UsingViewport, "Cannot Begin before closing your current viewport");
+        m_UsingViewport = true;
+
+        m_CurrentViewport = viewport;
+
+        BeginImp(viewport);
     }
 
-    // end rendering = reset bindings
-    void Renderer::EndRendering()
+    void Renderer::End()
     {
+        ASENGINE_ASSERT(m_UsingViewport, "Nothing to end");
+        m_UsingViewport = false;
+        
+        // call imp
+        EndImp();
+
+        // unbind all render resources
+        m_CurrentViewport = ResourceRef<Viewport>::NONE();
+        
         m_CurrentVertexBuffers.clear();
 
         m_CurrentIndexBuffer = ResourceRef<Buffer>::NONE();
@@ -43,6 +59,7 @@ namespace ASEngine
 
     void Renderer::BindVertexBuffer(ResourceRef<Buffer> vertexBuffer, uint32_t binding)
     {
+        ASSERT_RENDERER_BEGIN();
         // don't bind if already bound
         if (m_CurrentVertexBuffers.find(binding) != m_CurrentVertexBuffers.end() && m_CurrentVertexBuffers.at(binding) == vertexBuffer)
             return;
@@ -53,6 +70,7 @@ namespace ASEngine
 
     void Renderer::BindIndexBuffer(ResourceRef<Buffer> indexBuffer)
     {
+        ASSERT_RENDERER_BEGIN();
         if (m_CurrentIndexBuffer == indexBuffer)
             return;
 
@@ -61,13 +79,15 @@ namespace ASEngine
     }
 
     void Renderer::DrawElements(uint32_t indexCount, uint32_t instanceCount)
-    { 
+    {
+        ASSERT_RENDERER_BEGIN();
         DrawElementsImp(indexCount, instanceCount);
         m_DrawCallsCount++;
     }
 
     void Renderer::BindShader(ResourceRef<Shader> shader)
     {
+        ASSERT_RENDERER_BEGIN();
         if (m_CurrentShader == shader)
             return;
 
@@ -77,8 +97,7 @@ namespace ASEngine
 
     void Renderer::BindMaterial(ResourceRef<Material> material)
     {
-        //if (m_CurrentMaterial == material)
-        //    return;
+        ASSERT_RENDERER_BEGIN();
 
         // bind shader of the material
         BindShader(material->GetShader());

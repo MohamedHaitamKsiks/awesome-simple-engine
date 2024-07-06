@@ -7,12 +7,6 @@
 
 	"Display":
 	{
-		"Viewport": 
-		{
-			"Width": 320,
-			"Height": 180
-		},
-
 		"Window": 
 		{
 			"Width": 640,

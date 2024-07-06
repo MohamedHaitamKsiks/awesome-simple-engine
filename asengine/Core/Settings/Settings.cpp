@@ -13,11 +13,6 @@ namespace ASEngine
         MainScene
     );
 
-    ASENGINE_SERIALIZE_STRUCT(ViewportSettings,
-        Width,
-        Height
-    );
-
     ASENGINE_SERIALIZE_STRUCT(WindowSettings,
         Width,
         Height,
@@ -30,7 +25,6 @@ namespace ASEngine
     );
 
     ASENGINE_SERIALIZE_STRUCT(DisplaySettings,
-        Viewport,
         Window,
         Rendering
     );
@@ -40,4 +34,5 @@ namespace ASEngine
         Display,
         Time
     );
+    
 } // namespace ASEngine

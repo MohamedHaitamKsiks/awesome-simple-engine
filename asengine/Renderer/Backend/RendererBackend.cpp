@@ -6,6 +6,7 @@
 #include "Renderer/VertexInput/VertexInputDescriptor.h"
 #include "Renderer/Material/Material.h"
 #include "Renderer/Shader/ShaderSource.h"
+#include "Renderer/Viewport/Viewport.h"
 
 // opengl
 #include "OpenGL/OpenGLRenderer.h"
@@ -13,6 +14,7 @@
 #include "OpenGL/Shader/OpenGLShader.h"
 #include "OpenGL/Texture/OpenGLTexture.h"
 #include "OpenGL/VertexInput/OpenGLVertexInputDescriptor.h"
+#include "OpenGL/Viewport/OpenGLViewport.h"
 
 // vulkan
 
@@ -23,6 +25,7 @@ namespace ASEngine
     {
         ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(Buffer, OpenGLBuffer);
         ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(Texture, OpenGLTexture);
+        ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(Viewport, OpenGLViewport);
         ASENGINE_REGISTER_RESOURCE_CLASS(ShaderSource);
         ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(VertexInputDescriptor, OpenGLVertexInputDescriptor);
         ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(Shader, OpenGLShader);

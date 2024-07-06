@@ -28,28 +28,13 @@ namespace ASEngine
         // get window width
         inline uint32_t GetWindowWidth() const
         {
-            return m_WindowHeight;
+            return m_WindowWidth;
         }
 
         // get window height
         inline uint32_t GetWindowHeight() const
         {
             return m_WindowHeight;
-        }
-
-        // set viewport size
-        void SetViewportSize(uint32_t width, uint32_t height);
-
-        // get viewport width
-        inline uint32_t GetViewportWidth() const
-        {
-            return m_ViewportWidth;
-        }
-
-        // get viewport height
-        inline uint32_t GetViewportHeight() const
-        {
-            return m_ViewportHeight;
         }
 
         // set fullscreen 
@@ -110,7 +95,6 @@ namespace ASEngine
         virtual void TerminateImp() = 0;
         virtual void SetWindowSizeImp(int width, int height) = 0;
         virtual void SetWindowTitleImp(const std::string& title) = 0;
-        virtual void SetViewportSizeImp(uint32_t width, uint32_t height) = 0;
         virtual void SetFullscreenImp(bool fullscreen) = 0;
         virtual void BeginFrameImp() = 0;
         virtual void EndFrameImp() = 0;
@@ -119,10 +103,6 @@ namespace ASEngine
         // window size
         uint32_t m_WindowWidth = 0;
         uint32_t m_WindowHeight = 0;
-
-        // viewport size
-        uint32_t m_ViewportWidth = 0;
-        uint32_t m_ViewportHeight = 0;
 
         // fullscreen
         bool m_Fullscreen = false;
@@ -142,7 +122,5 @@ namespace ASEngine
         void Terminate() override;
     };
 } // namespace ASEngine
-
-
 
 #endif // __ASENGINE_DISPLAY_H

@@ -20,13 +20,6 @@ namespace ASEngine
         std::string MainScene = "";
     };
 
-    // viewport settings
-    struct ASENGINE_API ViewportSettings
-    {
-        uint32_t Width = 0;
-        uint32_t Height = 0;
-    };
-
     // window settings
     struct ASENGINE_API WindowSettings
     {
@@ -45,7 +38,6 @@ namespace ASEngine
     // display settings
     struct ASENGINE_API DisplaySettings
     {
-        ViewportSettings Viewport;
         WindowSettings Window;
         RenderingSettings Rendering;
     };

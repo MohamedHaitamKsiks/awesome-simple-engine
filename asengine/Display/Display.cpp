@@ -1,5 +1,5 @@
 #include "Display.h"
-#include "Renderer/Renderer.h"
+
 
 namespace ASEngine
 {
@@ -20,19 +20,6 @@ namespace ASEngine
 
         SetWindowSizeImp(width, height);
         m_EmittingWindowSignal = true;
-    }
-
-    void Display::SetViewportSize(uint32_t width, uint32_t height)
-    {
-        m_ViewportWidth = width;
-        m_ViewportHeight = height;
-
-        // get asspect ration
-        m_AspectRatio = static_cast<float>(width) / static_cast<float>(height);  
-        SetViewportSizeImp(width, height);
-        
-        // call resize to reset window
-        SetWindowSize(m_WindowWidth, m_WindowHeight);
     }
 
     void Display::SetFullscreen(bool fullscreen)
@@ -58,7 +45,6 @@ namespace ASEngine
     void Display::BeginFrame()
     {
         BeginFrameImp();
-        Renderer::GetInstance().BeginRendering();
 
         // resize if necessary
         if (m_EmittingWindowSignal)
@@ -70,7 +56,6 @@ namespace ASEngine
 
     void Display::EndFrame()
     {
-        Renderer::GetInstance().EndRendering();
         EndFrameImp();
     }
 

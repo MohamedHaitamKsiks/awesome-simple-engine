@@ -28,7 +28,6 @@ namespace ASEngine
         void TerminateImp() override;
         void SetWindowSizeImp(int width, int height) override;
         void SetWindowTitleImp(const std::string &title) override;
-        void SetViewportSizeImp(uint32_t width, uint32_t height) override;
         void SetFullscreenImp(bool fullscreen) override;
         void BeginFrameImp() override;
         void EndFrameImp() override;
