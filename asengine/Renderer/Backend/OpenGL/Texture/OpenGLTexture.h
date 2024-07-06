@@ -22,10 +22,19 @@ namespace ASEngine
     private:
         GLuint m_GLTextureID;
        
+        
         void CreateImp(const Image &image, TextureFilter filter, TextureRepeatMode repeat) override;
-    
+        void CreateEmptyImp(uint32_t width, uint32_t height , TextureFilter filter, TextureRepeatMode repeat) override;
+
+        // get corresponding GLuint for filter
         static GLuint GetGLTextureFilter(TextureFilter filter);
+        
+        // get corresponding GLuint for repeat mode
         static GLuint GetGLTextureRepeatMode(TextureRepeatMode repeat);
+        
+        // generate opengl texture
+        static GLuint GLGenerateTexture(TextureFilter filter, TextureRepeatMode repeat);
+
     };
 } // namespace ASEngine
 

@@ -45,6 +45,18 @@ namespace ASEngine
 
     ASENGINE_SERIALIZE_RESOURCE_IMP(Texture);
 
+    void Texture::Create(uint32_t width, uint32_t height, TextureFilter filter, TextureRepeatMode repeat)
+    {
+        // save data
+        m_Width = width;
+        m_Height = height;
+        m_Filter = filter;
+        m_RepeatMode = repeat;
+
+        // call implementation
+        CreateEmptyImp(width, height, filter, repeat);
+    }
+
     void Texture::Create(const Image &image, TextureFilter filter, TextureRepeatMode repeat)
     {
         // save data

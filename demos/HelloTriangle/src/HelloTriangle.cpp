@@ -22,10 +22,10 @@ void HelloTriangle::Init()
         Vertex{Vector2{1.0f, -1.0f}, Color::RED()},
         Vertex{Vector2{-1.0f, -1.0f}, Color::BLUE()}
     };
-    m_VertexBuffer->SetData(ByteBuffer(vertexData.data(), vertexData.size() * sizeof(Vertex)));
+    m_VertexBuffer->SetData(vertexData.data(), vertexData.size() * sizeof(Vertex));
 
     std::vector<uint32_t> indices = {0, 1, 2};
-    m_IndexBuffer->SetData(ByteBuffer(indices.data(), indices.size() * sizeof(uint32_t)));
+    m_IndexBuffer->SetData(indices.data(), indices.size() * sizeof(uint32_t));
 
     // craete shader
     m_Shader = Shader::GetResourceClass().Load("shaders/default.shader.json");
@@ -36,6 +36,8 @@ void HelloTriangle::Update(float delta)
 {
     auto& renderer = Renderer::GetInstance();
 
+    renderer.Begin();
+
     renderer.Clear();
 
     renderer.BindShader(m_Shader);
@@ -44,4 +46,6 @@ void HelloTriangle::Update(float delta)
     renderer.BindIndexBuffer(m_IndexBuffer);
 
     renderer.DrawElements(3);
+
+    renderer.End();
 }

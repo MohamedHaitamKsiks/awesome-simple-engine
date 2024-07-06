@@ -105,6 +105,8 @@ add_library(
     asengine/Renderer/VertexInput/VertexInputDescriptor.cpp
     # gpu-buffers
     asengine/Renderer/Buffer/Buffer.cpp
+    #viewport
+    asengine/Renderer/Viewport/Viewport.cpp
     # textures
     asengine/Renderer/Texture/Image.cpp
     asengine/Renderer/Texture/Texture.cpp
@@ -116,6 +118,7 @@ add_library(
     asengine/Renderer/Backend/OpenGL/Texture/OpenGLTexture.cpp
     asengine/Renderer/Backend/OpenGL/Shader/OpenGLShader.cpp
     asengine/Renderer/Backend/OpenGL/VertexInput/OpenGLVertexInputDescriptor.cpp
+    asengine/Renderer/Backend/OpenGL/Viewport/OpenGLViewport.cpp
     #testing
     asengine/UnitTest/UnitTest.cpp
     asengine/UnitTest/UnitTestSystem.cpp

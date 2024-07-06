@@ -1,4 +1,4 @@
 python3 build.py $1
 cd demos
-cd HelloTriangle
+cd ViewportExample
 asengine-cli build $1 debug

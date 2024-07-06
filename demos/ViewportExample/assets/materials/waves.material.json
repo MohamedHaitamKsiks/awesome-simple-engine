@@ -1,0 +1,13 @@
+{
+    "Shader": "shaders/waves.shader.json",
+    "UniformBuffers": {},
+    "Samplers": 
+    {
+        "WavesTexture": 
+        {
+            "ImagePath": "materials/waves.png",
+            "Filter": "LINEAR",
+            "RepeatMode": "REPEAT"
+        }
+    }
+}
