@@ -346,9 +346,9 @@ Create a struct that inherits from Component.
 Example:
 
 ````cpp
-struct SpriteComponent: public Component<SpriteComponent> 
+struct SpriteRenderer: public Component<SpriteComponent> 
 {
-  ResourceID SpriteID;
+  ResourceRef<Sprite> SpriteToRender;
   float Frame = 0.0f;
   float FrameRate = 8.0f;
 
@@ -371,7 +371,7 @@ public:
   void Update(float delta)
   {
     // query components
-    EntityQuery<SpriteComponent, TransformComponent>query{};
+    EntityQuery<SpriteRenderer, TransformComponent>query{};
     
     // if you have a small number of components you can use this
     query.ForEach([&delta](SpriteComponent& sprite, TransformComponent& transform)
@@ -380,7 +380,7 @@ public:
     });
 
     // for better performances use this
-    query.ForEachCollection([&delta](ComponentCollection<SpriteComponent>& sprite, ComponentCollection<TransformComponent>& transform, size_t count)
+    query.ForEachCollection([&delta](ComponentCollection<SpriteRenderer>& sprites, ComponentCollection<TransformComponent>& transforms, size_t count)
     {
       for (size_t i = 0; i < count; i++)
       {
@@ -397,7 +397,7 @@ You can create entities and delete with the help of an entity builder.
 
 Example:
 ````cpp
-  SpriteComponent sprite{};
+  SpriteRenderer sprite{};
   TransformComponent tranform{};
 
   EntityBuilder builder;
@@ -415,7 +415,7 @@ We are not done yet, you need to register your components and systems to the mod
 
 ````cpp
     // component registry ...
-    ASENGINE_REGISTER_COMPONENT(SpriteComponent);
+    ASENGINE_REGISTER_COMPONENT(SpriteRenderer);
 
     // system registry ...
     ASENGINE_REGISTER_SYSTEM(SpriteRenderingSystem);
