@@ -206,6 +206,18 @@ Materials are serializable resources. You can create them as json files in the a
 }
 ```
 
+### Viewports 
+
+Viewports are rendering contexts that allow you to draw onto a framebuffer and retrieve the results as textures.
+
+Example:
+
+```cpp
+ResourceRef<Viewport> viewport = Viewport::GetResourceClass().New();
+viewport->Create(320, 180, 1);
+```
+
+
 ### Renderer System
 
 To make a draw call your need to
@@ -239,6 +251,26 @@ or if you want to use GPU Instancing
 
 ```cpp
 Renderer::GetInstance().DrawElements(indexCount, instanceCount);
+```
+
+All rendering commands needs to be done in a viewport context.
+
+```cpp
+
+Renderer::GetInstance().Begin(viewport);
+
+// Draw commands to viewport
+
+Renderer::GetInstance().End();
+
+// ...
+
+Renderer::GetInstance().Begin();
+
+// Draw commands to backbuffer
+
+Renderer::GetInstance().End();
+
 ```
 
 ### Resource Manager
