@@ -1,4 +1,5 @@
 #include "Display.h"
+#include "Core/ASEngine/ASEngine.h"
 
 
 namespace ASEngine

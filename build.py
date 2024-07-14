@@ -1,4 +1,5 @@
 #imports
+import glob
 import os
 import pathlib
 import shutil
@@ -40,7 +41,7 @@ def generateIncludeFiles():
 
 
     #entrypoint for include file (include it to include all the asengine)
-    entryPointList = ["#ifndef __ASENGINE_INCLUDE_H\n#define __ASENGINE_INLUDE_H\n"]
+    entryPointList = ["#ifndef __ASENGINE_INCLUDE_H\n#define __ASENGINE_INCLUDE_H\n"]
 
     #add all included folders
     headers: list[pathlib.Path] = []
@@ -99,14 +100,19 @@ def compileEngineFor(plarform: str, debug: bool = False) -> int:
     buildFolderPath = f"build/.tmplib/{plarform}/{debugDir}"
     os.makedirs(buildFolderPath, exist_ok=True)
 
-    #compile the asengine
-    os.chdir(buildFolderPath)
-
     # keep track of compilation result
     compilationResult = 0
 
     #cmake
     cmakeCompileCommand = ["cmake"]
+
+    #set os flag
+    osFlags = {
+        "linux": "LINUX",
+        "windows": "WINDOWS",
+        "web": "WEB"
+    }
+    cmakeCompileCommand.append(f"-DASENGINE_OS={osFlags[plarform]}")
     
     #debug flag for cmake
     if debug:
@@ -116,15 +122,26 @@ def compileEngineFor(plarform: str, debug: bool = False) -> int:
     if plarform == "windows":
         windowsCmakeToolchain = "cmake_toolchains/mingw-w64-x86_64.cmake"
         cmakeCompileCommand.append(f"-DCMAKE_TOOLCHAIN_FILE={windowsCmakeToolchain}")
+    
+    #compile with emcmake for web
+    elif plarform == "web":
+        emcmakePath = os.path.realpath("./emsdk/upstream/emscripten/emcmake")
+        cmakeCompileCommand = [emcmakePath] + cmakeCompileCommand
 
     # add engine path
     cmakeCompileCommand.append(enginePath)
 
     #run cmake
+    emmakePath = os.path.realpath("./emsdk/upstream/emscripten/emmake") # for web
+
+    os.chdir(buildFolderPath)    
     compilationResult |= os.system(' '.join(cmakeCompileCommand))
     
     #make
-    compilationResult |= os.system("make")
+    if plarform == "web":
+        compilationResult |= os.system(f"{emmakePath} make")
+    else:
+        compilationResult |= os.system("make")
     
     #copy asengine.so to lib
     os.chdir(enginePath)
@@ -133,14 +150,17 @@ def compileEngineFor(plarform: str, debug: bool = False) -> int:
     libPath = f"build/lib/{plarform}/{debugDir}"
     os.makedirs(libPath, exist_ok=True)
     
-    #copy engine
-    engineDynamicLibraries = {
-        "linux": "libasengine.so",
-        "windows": "libasengine.dll"
+    #copy engine (web is a static library)
+    engineLibrariesExt = {
+        "linux": "*.so",
+        "windows": "*.dll",
+        "web": "*.a"
     }
 
-    engineDynamicLibrary = engineDynamicLibraries[plarform]
-    shutil.copy(f"{buildFolderPath}/{engineDynamicLibrary}", f"{libPath}/{engineDynamicLibrary}")
+    engineLibraryExt = engineLibrariesExt[plarform]
+    engineLibraryFiles = pathlib.Path(buildFolderPath).rglob(engineLibraryExt)
+    for file in engineLibraryFiles:
+        shutil.copy2(file, f"{libPath}")
 
     # return code of compilation
     return compilationResult

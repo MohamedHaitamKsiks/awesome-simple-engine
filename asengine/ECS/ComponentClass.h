@@ -15,6 +15,8 @@ namespace ASEngine
     class ASENGINE_API IComponentClass
     {
     public:
+        virtual ~IComponentClass() {}
+
         virtual AbstractComponent* New() = 0; 
 
         virtual IComponentCollection* CreateComponentCollection() = 0;
@@ -25,6 +27,8 @@ namespace ASEngine
     class ASENGINE_API ComponentClass: public IComponentClass
     {
     public:
+        ~ComponentClass() {}
+
         AbstractComponent* New() override 
         {
             return new T();

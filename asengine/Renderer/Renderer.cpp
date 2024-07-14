@@ -99,20 +99,20 @@ namespace ASEngine
     {
         ASSERT_RENDERER_BEGIN();
 
-        // bind shader of the material
-        BindShader(material->GetShader());
-
         // bind uniform values to shader
         for (auto& [uniformBufferName, byteBuffer]: material->m_UniformBuffers)
         {
-            m_CurrentShader->SetUniformBuffer(uniformBufferName, byteBuffer);
+            material->GetShader()->SetUniformBuffer(uniformBufferName, byteBuffer);
         }
 
         // bind samplers
         for (auto &[samplerName, sampler] : material->m_Samplers)
         {
-            m_CurrentShader->SetSamplerTexture(samplerName, sampler);
+            material->GetShader()->SetSamplerTexture(samplerName, sampler);
         }
+
+        // bind shader of the material
+        BindShader(material->GetShader());
 
         m_CurrentMaterial = material;
     }

@@ -1,6 +1,12 @@
 {
     "targets":
     {
+        "web":
+        {
+            "type": "web",
+            "os": "web",
+            "emsdkPath": "./emsdk"
+        },
         "linux":
         {
             "type": "desktop",

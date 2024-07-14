@@ -6,11 +6,11 @@
 
 namespace ASEngine
 {
-    void Display::Create(Renderer::Backend backend)
+    void Display::Create()
     {
         // register display 
         ASENGINE_REGISTER_SYSTEM(DesktopDisplay);
-
+        
         // create opengl renderer
         RendererBackend::CreateOpenGLRenderer();
     }

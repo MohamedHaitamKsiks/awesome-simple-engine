@@ -1,6 +1,7 @@
 #include "DesktopDisplay.h"
 #include "Core/ASEngine/ASEngine.h"
 
+
 namespace ASEngine
 {
     void DesktopDisplay::InitImp()
@@ -16,12 +17,23 @@ namespace ASEngine
         const auto& windowSettings = displaySettings.Window;
         const auto& renderingSettings = displaySettings.Rendering;
         const auto& applicationSettings = ASEngine::GetInstance().GetSettings().Application;
-
+        
         // create window with default values
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-        m_Window = glfwCreateWindow(640, 480, "", NULL, NULL);
+
+        if (renderingSettings.Backend == Renderer::Backend::OPENGL)
+        {
+            // init opengl context
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+        }
+        else
+        {
+            
+        }
+
+        m_Window = glfwCreateWindow(windowSettings.Width, windowSettings.Height, applicationSettings.Name.c_str(), nullptr, nullptr);
         
-        // init opengl context
         glfwMakeContextCurrent(m_Window);
         glfwSwapInterval(0);
 

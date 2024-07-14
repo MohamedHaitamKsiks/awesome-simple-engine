@@ -9,6 +9,9 @@ using namespace ASEngine;
 template<typename VectorType>
 class VectorTest: public UnitTest
 {
+public:
+    ~VectorTest() {}
+
 private:
     void Describe() override;
     virtual void DescribeSpecializedTests() = 0;

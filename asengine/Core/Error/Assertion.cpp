@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include "Core/Debug/Debug.h"
+#include "Core/ASEngine/ASEngine.h"
 
 namespace ASEngine
 {
@@ -14,7 +15,8 @@ namespace ASEngine
         Debug::Error(filePath, ":", line);
         Debug::Error("Assertion '", predicatMessage,"' failed");
         Debug::Error(errorMessage);
-        exit(1);
+        
+        ASEngine::GetInstance().Exit(1);
     }
     
 } // namespace ASEngine

@@ -32,9 +32,6 @@ namespace ASEngine
         // gl bind vertex layout
         void GLBindVertexInputLayout(const VertexInputLayout& layout);
         void GLBindFramebuffer(GLuint frameBufferID, uint32_t width, uint32_t height);
-
-        // opengl viewport resize for width and height
-        void GLViewportResize(uint32_t width, uint32_t height);
     };
 } // namespace ASEngine
 

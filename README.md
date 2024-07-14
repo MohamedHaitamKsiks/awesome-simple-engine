@@ -4,20 +4,24 @@ Cross-platform game engine written with c++.
 
 ## Dependencies
   
-  ### Debian / Ubuntu
+### Debian / Ubuntu
 
-  Install depencies:
+Install depencies:
 
-  ```sh
-    sudo apt update &&
-    sudo apt-get -y install cmake &&
-    sudo apt-get -y install g++-mingw-w64 && 
-    sudo apt-get -y install freeglut3-dev
-  ```
+```sh
+#install emsdk
+./install_emsdk.sh
 
-  ### Windows
+#other dependencies
+sudo apt update &&
+sudo apt-get -y install cmake &&
+sudo apt-get -y install g++-mingw-w64 && 
+sudo apt-get -y install freeglut3-dev
+```
 
-  Use WSL to run ubuntu commands and install dependencies.
+### Windows
+
+Use WSL to run ubuntu commands and install dependencies (Not tested).
 
 ## Features
 
@@ -433,4 +437,4 @@ We are not done yet, you need to register your components and systems to the mod
 
 ## Future of the engine.
 
-The Engine is still under active development with many missing featues.
+The Engine is still under active development with missing important features.

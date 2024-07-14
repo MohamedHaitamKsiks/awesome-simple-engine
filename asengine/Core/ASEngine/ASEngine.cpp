@@ -14,8 +14,8 @@
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
 
-//#include "Audio/AudioEngine.h"
-//#include "Renderer/Viewport.h"
+#include <chrono>
+#define SEC_TO_MICRO 1000000.0f;
 
 namespace ASEngine
 {
@@ -23,6 +23,11 @@ namespace ASEngine
     void ASEngine::Init()
     {
         ModuleManager::GetInstance().Registry();
+
+        // register the world and scene manager
+        ASENGINE_REGISTER_SYSTEM(EntityManager);
+        ASENGINE_REGISTER_SYSTEM(SceneManager);
+
         SystemManager::GetInstance().Init();
     }
 
@@ -59,10 +64,7 @@ namespace ASEngine
     void ASEngine::RegisterBuiltInSystems()
     {
         ASENGINE_REGISTER_SYSTEM(ArchetypeManager);
-        ASENGINE_REGISTER_SYSTEM(EntityManager);
-        
         ASENGINE_REGISTER_RESOURCE_CLASS(Scene);
-        ASENGINE_REGISTER_SYSTEM(SceneManager);
     }
 
     void ASEngine::Terminate()
@@ -107,6 +109,34 @@ namespace ASEngine
         EntityManager::GetInstance().CleanDestroyQueue();
     }
 
+    int ASEngine::Run(std::function<void(float)> updateFunction)
+    {
+        float delta = 0.02f;
+
+        while(!m_IsExit)
+        {
+            // get time now
+            const auto pastTime = std::chrono::high_resolution_clock::now();
+
+            updateFunction(delta);
+
+            // compute delta
+            const auto currentTime = std::chrono::high_resolution_clock::now();
+            delta = std::chrono::duration_cast<std::chrono::microseconds>(currentTime - pastTime).count() / SEC_TO_MICRO;
+
+        };
+
+        return m_ExitReturnCode;
+    }
+
+    void ASEngine::Exit(int code)
+    {
+        if (m_IsExit)
+            return;
+
+        m_IsExit = true;
+        m_ExitReturnCode = code;
+    }
 
     void ASEngine::LoadProjectSettings()
     {

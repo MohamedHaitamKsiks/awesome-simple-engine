@@ -3,9 +3,15 @@ import sys
 import os
 import shutil
 import json
+import pathlib
+
 from asengineCLI.commands.status import *
 from asengineCLI.commands.script_path import *
 from asengineCLI.commands.compile_shaders import scanAndCompileShaders
+
+def removeIfExists(filePath: str):
+    if os.path.exists(filePath):
+        os.remove(filePath)
 
 def buildProject(configPath: str, projectPath: str, platform: str, debug: bool = False) -> int:
     #debug mode
@@ -29,7 +35,7 @@ def buildProject(configPath: str, projectPath: str, platform: str, debug: bool =
     assert(config != {})
 
     # check platform validity
-    assert (platform in ("windows", "linux", "headless"))
+    assert (platform in ("windows", "linux", "headless", "web"))
 
     # get config directory
     configDir = dirPath(configPath)
@@ -37,6 +43,7 @@ def buildProject(configPath: str, projectPath: str, platform: str, debug: bool =
     #get asengine path
     asenginePath = config["asengine"]["buildPath"]
     cmakeWindowsToolChain = config["cmakeToolchains"]["windows"]
+    emsdkPath = config["targets"]["web"]["emsdkPath"]
     platformOS = config["targets"][platform]["os"]
     platformPath = relativeTo(config["platformsPath"], config["targets"][platform]["type"])
 
@@ -59,13 +66,14 @@ def buildProject(configPath: str, projectPath: str, platform: str, debug: bool =
 
     ###################### COMPILING #########################
 
+
     #engine paths
     includePath = relativeTo(asenginePath, "./include")
 
     #project source path 
     projectSourcePath = relativeTo(projectPath, "./src");
     libPath = relativeTo(asenginePath, f"./lib/{platformOS}/{debugMode}") 
-    
+
     #game build
     buildPath = relativeTo(tmpPath, "./build")
     
@@ -73,16 +81,28 @@ def buildProject(configPath: str, projectPath: str, platform: str, debug: bool =
     os.chdir(buildPath)
 
     #remove old builds
-    oldBuildFile = "build" if platformOS == "linux" else "build.exe"
-    if os.path.exists(oldBuildFile):
-        os.remove(oldBuildFile)
+    if platformOS == "linux":
+        removeIfExists("build")
 
+    elif platformOS == "windows":
+        removeIfExists("build.exe")
+
+    elif platformOS == "web":
+        removeIfExists("index.wasm")
+        removeIfExists("index.html")
+    
     #cmake 
     cmakeBuildCommand = ["cmake"]
     
     # add toolchains
     if platformOS == "windows":
         cmakeBuildCommand.append(f"-DCMAKE_TOOLCHAIN_FILE={cmakeWindowsToolChain}")
+    
+    #compile with emcmake for web
+    elif platformOS == "web":
+        emcmakePath = relativeTo(emsdkPath, "./upstream/emscripten/emcmake")
+        cmakeBuildCommand = [emcmakePath] + cmakeBuildCommand
+
 
     # debug mode 
     if debug:
@@ -98,7 +118,20 @@ def buildProject(configPath: str, projectPath: str, platform: str, debug: bool =
 
     # run compilation
     error |= os.system(' '.join(cmakeBuildCommand))
-    error |= os.system("make")
+
+    if platformOS == "web":
+        emmakePath = relativeTo(emsdkPath, "./upstream/emscripten/emmake")
+        error |= os.system(f"{emmakePath} make")
+    else:
+        error |= os.system("make")
+
+    # copy dynamic libraries for linux and windows
+    if platformOS in ["windows", "linux"]:
+        dynamicLibraryExt = ".so" if platformOS == "linux" else ".dll" 
+        libsToCopy = pathlib.Path(libPath).rglob(f"*{dynamicLibraryExt}")
+
+        for lib in libsToCopy:
+            shutil.copy2(lib, buildPath)
 
     # run output
     if platformOS == "linux":
@@ -106,6 +139,9 @@ def buildProject(configPath: str, projectPath: str, platform: str, debug: bool =
 
     elif platformOS == "windows":
         error |= os.system(f"wine {relativeTo(buildPath, './build.exe')}")
+
+    elif platformOS == "web":
+        os.system("python3 -m http.server 8080")
 
     #end
     os.chdir(projectPath)

@@ -7,6 +7,9 @@ using namespace ASEngine;
 
 class UniqueStringTest: public UnitTest
 {
+public:
+    ~UniqueStringTest() {}
+
 private:
     // test data
     UniqueString m_SomeString; 

@@ -20,7 +20,7 @@ def setup(configPath: str, debugSetup=False):
         compileASEngine(["linux"], release=False)
     #compile the engine for all the supported platforms in all modes
     else:
-        compileASEngine(["linux", "windows"], release=True)
+        compileASEngine(["linux", "windows", "web"], release=True)
 
     #read config path
     config = {}
@@ -33,6 +33,7 @@ def setup(configPath: str, debugSetup=False):
     config["cmakeToolchains"]["windows"] = os.path.realpath(config["cmakeToolchains"]["windows"])
     config["asengine"]["buildPath"] = os.path.realpath(config["asengine"]["buildPath"])
     config["asengine"]["sourcePath"] = os.path.realpath(config["asengine"]["sourcePath"])
+    config["targets"]["web"]["emsdkPath"] = os.path.realpath(config["targets"]["web"]["emsdkPath"])
 
     # create config
     CLI_ASENIGNE_CONFIG_PATH = "cli/asengineCLI/resources/.asengine.config.json"

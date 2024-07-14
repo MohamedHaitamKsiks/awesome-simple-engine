@@ -6,6 +6,10 @@ using namespace ASEngine;
 
 class ECSTest: public UnitTest
 {
+public:
+    ~ECSTest() {}
+
+private:
     void Describe() override;
 };
 

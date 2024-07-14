@@ -1,13 +1,16 @@
 #include "ShaderSourceTest.h"
 
+ShaderSourceTest::~ShaderSourceTest()
+{
+    
+}
+
 void ShaderSourceTest::Describe()
 {
-    // register shader source 
-    ResourceManager::GetInstance().RegisterResourceClass<ShaderSource>(UniqueString("ShaderSource"));
-
     // load resource
     Test("it loads shader source", [this]()
     {
+        ASENGINE_REGISTER_RESOURCE_CLASS(ShaderSource);
         m_Source = ShaderSource::GetResourceClass().Load("shaders/default3D.vert"); 
     });
 
@@ -56,5 +59,8 @@ void ShaderSourceTest::Describe()
     {
         UniqueString samplerName{"Texture"};
         ASENGINE_EXPECT(m_Source->GetShaderParams().Samplers.find(samplerName) != m_Source->GetShaderParams().Samplers.end());
+
+        // clean up necessaray be cause we registered the shader source class after shader source test causing
+        m_Source = ResourceRef<ShaderSource>::NONE();
     });
 }

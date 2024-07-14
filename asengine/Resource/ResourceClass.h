@@ -92,7 +92,7 @@ namespace ASEngine
         UniqueString m_ClassName;
 
         // remove
-        void Destroy(Resource &resource)
+        void Destroy(Resource &resource) override
         {
             if (resource.m_Path != m_EmptyPath && m_ResourcePaths.find(resource.m_Path) != m_ResourcePaths.end())
             {

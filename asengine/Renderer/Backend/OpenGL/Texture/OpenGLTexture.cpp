@@ -64,7 +64,7 @@ namespace ASEngine
                 glRepeatMode = GL_REPEAT;
                 break;
             case TextureRepeatMode::CLAMP:
-                glRepeatMode = GL_CLAMP;
+                glRepeatMode = GL_CLAMP_TO_EDGE;
                 break;
             default: 
                 Debug::Warning("Unsupported TextureRepeatMode");

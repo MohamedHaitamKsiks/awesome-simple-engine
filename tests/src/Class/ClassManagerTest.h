@@ -6,6 +6,10 @@ using namespace ASEngine;
 
 class ClassManagerTest: public UnitTest
 {
+public:
+    ClassManagerTest() {}
+
+private:
     void Describe() override;
 };
 

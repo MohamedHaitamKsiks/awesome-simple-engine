@@ -8,6 +8,7 @@ using namespace ASEngine;
 class ShaderSourceTest: public UnitTest
 {
 public:
+    ~ShaderSourceTest();
     void Describe() override;
 
 private:

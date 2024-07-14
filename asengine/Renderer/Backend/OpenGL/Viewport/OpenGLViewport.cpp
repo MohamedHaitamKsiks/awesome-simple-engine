@@ -30,14 +30,15 @@ namespace ASEngine
             ResourceRef<OpenGLTexture> texture = GetTexture(i);
 
             GLenum colorAttachement = GL_COLOR_ATTACHMENT0 + static_cast<GLenum>(i);
-            glFramebufferTexture(GL_FRAMEBUFFER, colorAttachement, texture->GetGLTextureID(), 0);
-        
+            glFramebufferTexture2D(GL_FRAMEBUFFER, colorAttachement, GL_TEXTURE_2D, texture->GetGLTextureID(), 0);
+
             drawBuffers.push_back(colorAttachement);
         }
         glDrawBuffers(drawBuffers.size(), drawBuffers.data());
 
-        // check if done
         ASENGINE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Couldn't create OpenGLViewport");
+        
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
 } // namespace ASEngine

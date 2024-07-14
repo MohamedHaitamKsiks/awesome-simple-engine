@@ -6,7 +6,6 @@
 
 namespace ASEngine
 {
-    ;
 
     void UnitTestSystem::Init()
     {
@@ -22,7 +21,12 @@ namespace ASEngine
         }
 
         // exit with error code of all tests
-        exit(err);
+        ASEngine::GetInstance().Exit(err);
+    }
+
+    void UnitTestSystem::Terminate()
+    {
+        m_Tests.clear();
     }
 
 } // namespace ASEngine

@@ -50,6 +50,8 @@ namespace ASEngine
         {
             ResourceRef<Buffer> uniformBuffer = Buffer::GetResourceClass().New();
             uniformBuffer->Create(BufferType::UNIFORM_BUFFER);
+            Debug::Log(uniformBufferInfo.Size);
+            uniformBuffer->SetData(nullptr, uniformBufferInfo.Size);
 
             m_UniformBuffers[uniformName] = uniformBuffer; 
         }

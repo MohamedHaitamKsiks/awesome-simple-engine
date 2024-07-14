@@ -12,6 +12,9 @@
 
 ASENGINE_SERIALIZE_RESOURCE_REF(ShaderSource);
 
+#define UNIFORM_BUFFER_LAYOUT_SIZE(size) (size + max(16 - size, 0));
+
+
 namespace ASEngine
 {
     void ShaderSource::Create(const SpirvBinary &spirv)
@@ -30,7 +33,7 @@ namespace ASEngine
 
             // get type
             const auto &uniformBufferType = glsl.get_type(uniformBuffer.type_id);
-            ubInfo.Size = glsl.get_declared_struct_size(uniformBufferType);
+            ubInfo.Size = (glsl.get_declared_struct_size(uniformBufferType) / 16 + 1) * 16;
 
             // get uniform buffer members
             const auto &memberTypes = uniformBufferType.member_types;

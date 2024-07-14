@@ -3,9 +3,9 @@
 layout(location = 0) in vec2 UV;
 layout(location = 0) out vec4 FragColor;
 
-layout(binding = 0) uniform sampler2D ScreenTexture; 
-layout(binding = 1) uniform sampler2D WavesTexture;
-layout(binding = 2) uniform Timer
+layout(binding = 1) uniform sampler2D ScreenTexture; 
+layout(binding = 2) uniform sampler2D WavesTexture;
+layout(std140, binding = 0) uniform Timer
 {
     float Time;
 } timer;

@@ -22,6 +22,8 @@ namespace ASEngine
     ASENGINE_DEFINE_SINGLETON(UnitTestSystem);
 
     protected:
+        ~UnitTestSystem() {};
+
         // register tests 
         virtual void Registry() = 0;
 
@@ -35,9 +37,10 @@ namespace ASEngine
         }
     private:
         // all registered tests
-        std::unordered_map<std::string, std::unique_ptr<UnitTest>> m_Tests;
+        std::unordered_map<std::string, std::unique_ptr<UnitTest>> m_Tests{};
     
         void Init() override;
+        void Terminate() override;
     };
 } // namespace ASEngine
 

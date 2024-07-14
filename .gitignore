@@ -128,5 +128,6 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
-#
-install.sh
+
+#ignore installed dependenceies
+emsdk/

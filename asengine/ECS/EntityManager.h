@@ -43,7 +43,6 @@ namespace ASEngine
     private:
         PoolAllocator<EntityData> m_Entities{};
         std::vector<EntityID> m_DestroyQueue{};
-        bool m_IsFirstFrame = true;
     };
 
 
