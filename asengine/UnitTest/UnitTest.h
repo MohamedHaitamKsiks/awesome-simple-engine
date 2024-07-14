@@ -25,6 +25,7 @@ namespace ASEngine
     {
     public:
         UnitTest() = default;
+        virtual ~UnitTest() {};
 
         // run tests and returns 0 if it's OK
         int Run(); 

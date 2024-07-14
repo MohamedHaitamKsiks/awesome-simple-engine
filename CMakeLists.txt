@@ -4,28 +4,56 @@ set(CMAKE_CXX_STANDARD 20)
 add_compile_options(-Wall)
 add_compile_definitions(ASENINE_EXPORTS)
 
-
-
 #create project
 project(asengine)
 include_directories(asengine)
 
+# get asengine os
+if(ASENGINE_OS STREQUAL "LINUX")
+    set (ASENGINE_LINUX TRUE)
+    add_compile_definitions(ASENGINE_LINUX)
+endif()
 
-#link static library into dynamc library for desktop
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+if(ASENGINE_OS STREQUAL "WINDOWS")
+    set (ASENGINE_WINDOWS TRUE)
+    add_compile_definitions(ASENGINE_WINDOWS)
+endif()
+
+if(ASENGINE_OS STREQUAL "WEB")
+    set (ASENGINE_WEB TRUE)
+    add_compile_definitions(ASENGINE_WEB)
+endif()
+
+
+# desktop
+if (ASENGINE_WINDOWS OR ASENGINE_LINUX)
+    set (ASENGINE_DESKTOP TRUE)
+    add_compile_definitions(ASENGINE_DESKTOP)
+endif()
+
 
 #platform specific sources
 set(PLATFORM_SPECIFIC_SOURCES)
-if (WIN32 OR UNIX) 
+if (ASENGINE_DESKTOP) 
     set(PLATFORM_SPECIFIC_SOURCES ${PLATFORM_SPECIFIC_SOURCES}
         asengine/Display/Backend/Desktop/DesktopDisplay.cpp
         asengine/Display/Backend/Desktop/DesktopDisplayCreate.cpp
     )
 endif()
 
+if (ASENGINE_WEB) 
+    set(PLATFORM_SPECIFIC_SOURCES ${PLATFORM_SPECIFIC_SOURCES}
+        asengine/Display/Backend/Web/WebDisplay.cpp
+        asengine/Display/Backend/Web/WebDisplayCreate.cpp
+    )
+endif()
+
 #set dependencies dir
 set (DEPENDENCIES_DIRECTOY ${CMAKE_CURRENT_SOURCE_DIR}/dependencies)
+
+    #link static library into dynamc library for desktop
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 
 # add SPIRV-Cross
 add_subdirectory(${DEPENDENCIES_DIRECTOY}/SPIRV-Cross)
@@ -39,9 +67,8 @@ include_directories(${DEPENDENCIES_DIRECTOY}/miniaudio)
 add_subdirectory(${DEPENDENCIES_DIRECTOY}/stb_image)
 include_directories(${DEPENDENCIES_DIRECTOY}/stb_image)
 
-add_library(
-    asengine
-    SHARED
+#source
+set (SOURCE
     #Application
     asengine/Core/ASEngine/ASEngine.cpp
     #Settings
@@ -126,7 +153,17 @@ add_library(
     ${PLATFORM_SPECIFIC_SOURCES}
 )
 
-if(WIN32 OR UNIX)
+if(ASENGINE_DESKTOP)
+    message("Desktop Build")
+
+
+    #build engine to dynamic library for desktop
+    add_library(
+        asengine
+        SHARED
+        ${SOURCE}
+    )
+
     add_subdirectory(${DEPENDENCIES_DIRECTOY}/glfw-3.4)
 
     # add opengl
@@ -141,7 +178,7 @@ if(WIN32 OR UNIX)
         dependencies/glew/src/glew.c
     )
 
-    if(WIN32)
+    if(ASENGINE_WINDOWS)
         set_target_properties(asengine PROPERTIES LINK_FLAGS "-static-libgcc -static-libstdc++ -static")
     endif()
 
@@ -155,6 +192,28 @@ if(WIN32 OR UNIX)
         PRIVATE spirv-cross-glsl
         OpenGL::GL
     )
+endif()
+
+
+if (ASENGINE_WEB)
+    message("Web Build")    
+
+
+    #build as static library for web
+    add_library(
+        asengine
+        STATIC
+        ${SOURCE}
+    )
+
+    target_link_libraries(
+        asengine
+        stb_image
+        miniaudio
+        spirv-cross-glsl
+    )
+    
+
 endif()
 
 

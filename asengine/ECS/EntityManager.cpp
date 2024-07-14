@@ -6,13 +6,12 @@
 
 namespace ASEngine
 {
-    ;
 
     void EntityManager::Terminate()
     {
-        DestroyAll();
+        /*DestroyAll();
         CleanDestroyQueue();
-        m_Entities.Clear();
+        m_Entities.Clear();*/
     }
 
     EntityID EntityManager::Create(const EntityBuilder &builder)

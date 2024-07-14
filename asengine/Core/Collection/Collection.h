@@ -10,6 +10,8 @@ namespace ASEngine
     class ASENGINE_API ICollection
     {
     public:
+        virtual ~ICollection() {}
+
         virtual uint32_t Add() = 0;
 
         virtual void Remove(uint32_t index) = 0;

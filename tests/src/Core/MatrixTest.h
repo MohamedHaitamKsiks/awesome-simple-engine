@@ -9,6 +9,9 @@ using namespace ASEngine;
 template <typename MatrixType>
 class MatrixTest : public UnitTest
 {
+public:
+    ~MatrixTest() {}
+
 private:
     void Describe() override;
     virtual void DescribeSpecializedTests() = 0;

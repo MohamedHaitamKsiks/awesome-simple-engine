@@ -22,6 +22,7 @@
 
 #include "API/API.h"
 
+
 namespace ASEngine 
 {
 
@@ -47,6 +48,12 @@ namespace ASEngine
 
 		// update application
 		void Update(float delta);
+
+		// run game loop
+		int Run(std::function<void(float)> updateFunction);
+
+		// exit game with return code
+		void Exit(int code);
 
 		// queue event
 		inline void QueueInputEvent(const InputEvent& event)
@@ -146,6 +153,10 @@ namespace ASEngine
 
 		// settings
 		Settings m_Settings;
+
+		// is closed
+		bool m_IsExit = false;
+		float m_ExitReturnCode = 0;
 
 		// register all builtin systems before any user system
 		void RegisterBuiltInSystems();

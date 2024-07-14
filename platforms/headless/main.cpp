@@ -1,27 +1,25 @@
-#include <chrono>
-#define SEC_TO_MICRO 1000000.0f
-
 #include "ASEngine.h"
 
-// headless application
-// simple game loop with no screen nor any input system
+// Headless application
+
 int main(int argc, char *argv[])
 {
+    // setup engine
+    ASEngine::ASEngine m_ASEngine{};
+    m_ASEngine.Setup(argc, argv);
 
-    ASEngine::ASEngine engine{};
-    engine.Setup(argc, argv);
+    // init
     ASEngine::Registry();
-    engine.Init();
+    m_ASEngine.Init();
 
-    float delta = 0.01f;
-    while (true)
+    // run application
+    int returnCode = m_ASEngine.Run([&m_ASEngine](float delta)
     {
-        const auto pastTime = std::chrono::high_resolution_clock::now();
+        m_ASEngine.Update(delta);
+    });
 
-        engine.Update(delta);
-
-        // compute delta
-        const auto currentTime = std::chrono::high_resolution_clock::now();
-        delta = std::chrono::duration_cast<std::chrono::microseconds>(currentTime - pastTime).count() / SEC_TO_MICRO;
-    }
+    // cleanup 
+    m_ASEngine.Terminate();
+    
+    return returnCode;
 }

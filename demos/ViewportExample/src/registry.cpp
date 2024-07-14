@@ -2,7 +2,10 @@
 #include "ViewportExample.h"
 
 // module registry for the game
-void ASEngine::Registry()
+namespace ASEngine
 {
-    ASENGINE_REGISTER_SYSTEM(ViewportExample);
-}
+    void Registry()
+    {
+        ASENGINE_REGISTER_SYSTEM(ViewportExample);
+    }
+} // ASEngine

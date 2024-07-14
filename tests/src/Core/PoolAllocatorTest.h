@@ -8,6 +8,9 @@ using namespace ASEngine;
 
 class PoolAllocatorTest: public UnitTest
 {
+public:
+    ~PoolAllocatorTest() {}
+
 private:
     // test class
     class TestClass

@@ -18,10 +18,6 @@ jobs:
         steps:
             -   uses: actions/checkout@v2
 
-            -   name: Debug output
-                run: |
-                    ls ./dependencies/glfw-3.4
-
             -   name: Install dependencies
                 run: |
                     sudo apt update &&
@@ -30,6 +26,9 @@ jobs:
                     sudo apt-get -y install freeglut3-dev && 
                     sudo apt-get -y install xorg-dev libgl1-mesa-dev
                 
+            -   name: Install emsdk
+                run: ./install_emsdk.sh
+
             -   name: Compile and run tests
                 run: python3 setup.py
 

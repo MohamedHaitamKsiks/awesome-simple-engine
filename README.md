@@ -4,20 +4,24 @@ Cross-platform game engine written with c++.
 
 ## Dependencies
   
-  ### Debian / Ubuntu
+### Debian / Ubuntu
 
-  Install depencies:
+Install depencies:
 
-  ```sh
-    sudo apt update &&
-    sudo apt-get -y install cmake &&
-    sudo apt-get -y install g++-mingw-w64 && 
-    sudo apt-get -y install freeglut3-dev
-  ```
+```sh
+#install emsdk
+./install_emsdk.sh
 
-  ### Windows
+#other dependencies
+sudo apt update &&
+sudo apt-get -y install cmake &&
+sudo apt-get -y install g++-mingw-w64 && 
+sudo apt-get -y install freeglut3-dev
+```
 
-  Use WSL to run ubuntu commands and install dependencies.
+### Windows
+
+Use WSL to run ubuntu commands and install dependencies (Not tested).
 
 ## Features
 
@@ -346,9 +350,9 @@ Create a struct that inherits from Component.
 Example:
 
 ````cpp
-struct SpriteComponent: public Component<SpriteComponent> 
+struct SpriteRenderer: public Component<SpriteComponent> 
 {
-  ResourceID SpriteID;
+  ResourceRef<Sprite> SpriteToRender;
   float Frame = 0.0f;
   float FrameRate = 8.0f;
 
@@ -371,7 +375,7 @@ public:
   void Update(float delta)
   {
     // query components
-    EntityQuery<SpriteComponent, TransformComponent>query{};
+    EntityQuery<SpriteRenderer, TransformComponent>query{};
     
     // if you have a small number of components you can use this
     query.ForEach([&delta](SpriteComponent& sprite, TransformComponent& transform)
@@ -380,7 +384,7 @@ public:
     });
 
     // for better performances use this
-    query.ForEachCollection([&delta](ComponentCollection<SpriteComponent>& sprite, ComponentCollection<TransformComponent>& transform, size_t count)
+    query.ForEachCollection([&delta](ComponentCollection<SpriteRenderer>& sprites, ComponentCollection<TransformComponent>& transforms, size_t count)
     {
       for (size_t i = 0; i < count; i++)
       {
@@ -397,7 +401,7 @@ You can create entities and delete with the help of an entity builder.
 
 Example:
 ````cpp
-  SpriteComponent sprite{};
+  SpriteRenderer sprite{};
   TransformComponent tranform{};
 
   EntityBuilder builder;
@@ -415,7 +419,7 @@ We are not done yet, you need to register your components and systems to the mod
 
 ````cpp
     // component registry ...
-    ASENGINE_REGISTER_COMPONENT(SpriteComponent);
+    ASENGINE_REGISTER_COMPONENT(SpriteRenderer);
 
     // system registry ...
     ASENGINE_REGISTER_SYSTEM(SpriteRenderingSystem);
@@ -433,4 +437,4 @@ We are not done yet, you need to register your components and systems to the mod
 
 ## Future of the engine.
 
-The Engine is still under active development with many missing featues.
+The Engine is still under active development with missing important features.

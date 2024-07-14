@@ -16,6 +16,8 @@ namespace ASEngine
     class ASENGINE_API IComponentCollection : public ICollection
     {
     public:
+        virtual ~IComponentCollection() {}
+
         virtual AbstractComponent& ComponentAt(ComponentIndex index) = 0;
         
         virtual const AbstractComponent& ComponentAt(ComponentIndex index) const = 0 ;
@@ -33,7 +35,10 @@ namespace ASEngine
             m_Components.reserve(UINT16_MAX);
         }
 
-        ComponentIndex Add()
+        ~ComponentCollection()
+        {}
+
+        ComponentIndex Add() override
         {
             ComponentType component{};
             m_Components.push_back(component);
@@ -46,22 +51,22 @@ namespace ASEngine
             return static_cast<ComponentIndex>(m_Components.size() - 1);
         }
 
-        void Remove(ComponentIndex index)
+        void Remove(ComponentIndex index) override
         {
             m_Components.erase(m_Components.cbegin() + index);
         }
 
-        size_t GetSize() const
+        size_t GetSize() const override
         {
             return m_Components.size();
         }
 
-        AbstractComponent &ComponentAt(ComponentIndex index)
+        AbstractComponent &ComponentAt(ComponentIndex index) override
         {
             return m_Components[index];
         }
-        
-        const AbstractComponent &ComponentAt(ComponentIndex index) const
+
+        const AbstractComponent &ComponentAt(ComponentIndex index) const override
         {
             return m_Components[index];
         }

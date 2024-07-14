@@ -9,6 +9,8 @@ namespace ASEngine
     class ASENGINE_API IModule
     {
     public:
+        virtual ~IModule() {}
+
         virtual void Registry() = 0;
     };
     

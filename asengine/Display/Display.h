@@ -20,7 +20,7 @@ namespace ASEngine
         virtual ~Display() {}; // make it polymorphic
 
         // create display
-        static void Create(Renderer::Backend backend);
+        static void Create();
 
         // set window size (makes your go out of fullscreen)
         void SetWindowSize(uint32_t width, uint32_t height);

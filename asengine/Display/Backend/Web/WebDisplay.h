@@ -1,27 +1,24 @@
-#ifndef __ASENGINE_DESKTOP_DISPLAY_H
-#define __ASENGINE_DESKTOP_DISPLAY_H
-
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
+#ifndef __ASENGINE_WEB_DISPLAY_H
+#define __ASENGINE_WEB_DISPLAY_H
 
 #include "Display/Display.h"
 
+#include <emscripten.h>
+#include <emscripten/html5.h>
+
 namespace ASEngine
 {
-    // desktop display using glfw
-    class DesktopDisplay: public Display
+    // web display using glfw
+    class WebDisplay: public Display
     {
     public:
-        ~DesktopDisplay() {}
+        ~WebDisplay() {}
     
     private:
-        GLFWwindow *m_Window = nullptr;
-
         uint32_t m_WindowedWindowWidth = 0;
         uint32_t m_WindowedWindowHeight = 0;
 
-        uint32_t m_PositionX = 0;
-        uint32_t m_PositionY = 0;
+        EMSCRIPTEN_WEBGL_CONTEXT_HANDLE m_WebGLContext = 0;
 
         // implementation for desktop
         void InitImp() override;
@@ -34,4 +31,4 @@ namespace ASEngine
     };
 } // namespace ASEngine
 
-#endif // __ASENGINE_DESKTOP_DISPLAY_H
+#endif // __ASENGINE_DESKTOP_WEB_H

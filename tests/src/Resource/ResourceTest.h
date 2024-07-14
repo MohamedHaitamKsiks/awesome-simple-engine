@@ -6,6 +6,10 @@ using namespace ASEngine;
 
 class ResourceTest : public UnitTest
 {
+public:
+    ~ResourceTest() {}
+
+private:
     void Describe() override;
 };
 

@@ -52,7 +52,7 @@ namespace ASEngine
         spirv_cross::CompilerGLSL glsl(spirv);
 
         spirv_cross::CompilerGLSL::Options options;
-        options.version = 310;
+        options.version = 300;
         options.es = true;
         glsl.set_common_options(options);
 

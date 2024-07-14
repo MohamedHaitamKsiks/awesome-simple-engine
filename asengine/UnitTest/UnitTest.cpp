@@ -20,7 +20,7 @@ namespace ASEngine
         {
             std::stringstream errorSS;
             errorSS << file << ":" << line << ": Wrong predicat: " << errorMessage;
-            throw TestFailException(errorSS.str());
+            throw TestFailException(errorSS.str().c_str());
         }
     }
 

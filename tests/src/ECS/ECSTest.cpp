@@ -288,7 +288,8 @@ void ECSTest::Describe()
 
         ASENGINE_EXPECT(ecsDeltaTime < oopDeltaTime);
 
-        EntityManager::GetInstance().DestroyAll();
+        // clean up when I optimize the destroy all function
+        // EntityManager::GetInstance().DestroyAll();
 
     });
 }

@@ -34,6 +34,7 @@ namespace ASEngine
 
         // opengl buffer type
         GLuint m_GLBufferType = 0;
+        bool m_Created = false;
 
         // implementations
         void CreateImp(BufferType type) override;

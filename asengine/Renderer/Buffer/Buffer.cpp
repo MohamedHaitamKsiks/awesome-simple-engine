@@ -19,7 +19,6 @@ namespace ASEngine
 
     void Buffer::SetData(const void *data, size_t size)
     {
-        ASENGINE_ASSERT(data, "Data is NULL");
         SetDataImp(data, size);
         m_Size = size;
     }
