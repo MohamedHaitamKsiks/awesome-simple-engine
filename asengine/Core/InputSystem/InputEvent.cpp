@@ -20,5 +20,5 @@
 
 namespace ASEngine
 {
-    FOREACH(GENERATE_GETTERS_SETTERS, InputEventScreenTouch, InputEventScreenDrag, InputEventMouseButton, InputEventMouseMove, InputEventKeyboard)
+    FOREACH(GENERATE_GETTERS_SETTERS, InputEventMouseButton, InputEventMouseMove, InputEventKeyboard)
 } // namespace ASEngine

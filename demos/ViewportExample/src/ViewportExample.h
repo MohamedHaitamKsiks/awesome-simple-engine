@@ -26,8 +26,14 @@ private:
 
     float m_Timer = 0.0f;
 
+    Vector2 m_MousePosition = Vector2::ZERO();
+    Vector2 m_TargetMousePosition = Vector2::ZERO();
+    Vector2 Lerp(const Vector2& a, const Vector2& b, float t);
+    bool m_MouseDown = false; 
+
     void Init() override;
     void Update(float delta) override;
+    void OnInputEvent(const InputEvent& event) override;
     void Terminate() override;
 
 };

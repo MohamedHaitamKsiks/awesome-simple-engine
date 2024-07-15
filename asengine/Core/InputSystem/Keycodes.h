@@ -1,10 +1,10 @@
-#ifndef KEYCODE_H
-#define KEYCODE_H
+#ifndef __ASENGINE_KEYCODE_H
+#define __ASENGINE_KEYCODE_H
 
 namespace ASEngine
 {
-
-    enum Keycode{
+    enum class Keycode
+    {
         /* The unknown key */
         KEY_UNKNOWN = -1,
 
@@ -137,4 +137,4 @@ namespace ASEngine
 
 } // namepace ASEgine
 
-#endif // KEYCODE_H
+#endif // __ASENGINE_KEYCODE_H

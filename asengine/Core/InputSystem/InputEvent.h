@@ -11,49 +11,28 @@
 
 namespace ASEngine 
 {
-
+	
 	enum class InputEventType
 	{
 		// none
 		NONE = 0,
-		// pointer events
-		SCREEN_TOUCH,
-		SCREEN_DRAG,
 		// mouse event
 		MOUSE_BUTTON,
 		MOUSE_MOVE,
 		// keyboard
-		KEYBOARD
+		KEYBOARD,
+		// gamepad
+		GAMEPAD
 	};
 
-	// screen input event
-	struct ASENGINE_API InputEventScreenTouch
-	{
-		static constexpr InputEventType TYPE() 
-		{
-			return InputEventType::SCREEN_TOUCH;
-		}
-		bool Pressed;
-		int PointerIndex;
-		Vector2 Position;
-	};
-
-	// screen drag pointer event
-	struct ASENGINE_API InputEventScreenDrag
-	{
-		static constexpr InputEventType TYPE()
-		{ 
-			return InputEventType::SCREEN_DRAG;
-		}
-		int PointerIndex;
-		Vector2 Position;
-	};
 
 	// mouse input
 	enum class MouseButton
 	{
-		LEFT_CLICK,
-		RIGHT_CLICK
+		NONE = 0,
+		LEFT,
+		RIGHT,
+		MIDDLE
 	};
 
 	// mouse input button
@@ -63,7 +42,7 @@ namespace ASEngine
 		{
 			return InputEventType::MOUSE_BUTTON;
 		}
-		MouseButton Button;
+		MouseButton Button = MouseButton::NONE;
 		bool Pressed;
 		Vector2 Position;
 	};
@@ -100,7 +79,7 @@ namespace ASEngine
 		}
 
 		// constructors
-		InputEvent() = default;
+		InputEvent() = delete;
 
 		// construct from Event
 		template <typename T>
@@ -121,11 +100,12 @@ namespace ASEngine
 		// event type
 		InputEventType m_Type = InputEventType::NONE;
 		// different events
-		InputEventScreenTouch m_InputEventScreenTouch;
-		InputEventScreenDrag m_InputEventScreenDrag;
-		InputEventMouseButton m_InputEventMouseButton;
-		InputEventMouseMove m_InputEventMouseMove;
-		InputEventKeyboard m_InputEventKeyboard;
+		union
+		{
+			InputEventMouseButton m_InputEventMouseButton;
+			InputEventMouseMove m_InputEventMouseMove;
+			InputEventKeyboard m_InputEventKeyboard;
+		};
 	};
 
 } // ASEngine

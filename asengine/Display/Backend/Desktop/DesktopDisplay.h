@@ -31,6 +31,11 @@ namespace ASEngine
         void SetFullscreenImp(bool fullscreen) override;
         void BeginFrameImp() override;
         void EndFrameImp() override;
+
+        // glfw input callbaks
+        static void GLFWKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+        static void GLFWCursorPosCallback(GLFWwindow *window, double xpos, double ypos);
+        static void GLFWMouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
     };
 } // namespace ASEngine
 
