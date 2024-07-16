@@ -26,22 +26,34 @@ namespace ASEngine
         // connect function to the signal with signature similar to the signal signature
         inline SignalConnectionID Connect(std::function<void(T, types...)> callback)
         {
-            SignalConnectionID connectionID = static_cast<SignalConnectionID>(m_Callbacks.size());
-            m_Callbacks.push_back(callback);
+            SignalConnectionID connectionID;
+            if (m_FreeConnectionIDs.size() > 0)
+            {
+                connectionID = m_FreeConnectionIDs.back();
+                m_FreeConnectionIDs.pop_back();
+            }
+            else
+            {
+                connectionID = m_MaxSignalID;
+                m_MaxSignalID++;
+            }
+
+            m_Callbacks[connectionID] = callback;
 
             return connectionID;
         }
 
         // disconnect
-        inline void Disconnect(SignalConnectionID connection)
+        inline void Disconnect(SignalConnectionID connectionID)
         {
-            //m_Callbacks.Free(static_cast<ChunkID>(connection));
+            m_FreeConnectionIDs.push_back(connectionID);
+            m_Callbacks.erase(connectionID);
         }
 
         // emit signal
         void Emit(T t, types... args)
         {
-            for (auto& callback: m_Callbacks)
+            for (auto& [connectionID, callback]: m_Callbacks)
             {
                 callback(t, args...);
             }
@@ -49,8 +61,9 @@ namespace ASEngine
 
     private:
         // list of functions connected to the signal
-       std::vector<std::function<void(T, types...)>> m_Callbacks{};
+       std::unordered_map<SignalConnectionID, std::function<void(T, types...)>> m_Callbacks{};
        std::vector<SignalConnectionID> m_FreeConnectionIDs{}; 
+       SignalConnectionID m_MaxSignalID = 0;
     };
 
 } // namespace ASEngine
