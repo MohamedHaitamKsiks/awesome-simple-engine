@@ -27,6 +27,15 @@ namespace ASEngine
         SetWindowTitle(applicationSettings.Name);
         SetFullscreen(windowSettings.Fullscreen);
         SetKeepAspectRatio(windowSettings.KeepAspectRatio);
+
+        // set keyboard callback
+        emscripten_set_keydown_callback(_ASENGINE_WEB_CANVAS_ID, nullptr, true, WebDisplay::EMKeyDownCallback);
+        emscripten_set_keyup_callback(_ASENGINE_WEB_CANVAS_ID, nullptr, true, WebDisplay::EMKeyUpCallback);
+
+        // set mouse callbacks
+        emscripten_set_mousemove_callback(_ASENGINE_WEB_CANVAS_ID, nullptr, true, WebDisplay::EMMoveMouseCallback);
+        emscripten_set_mousedown_callback(_ASENGINE_WEB_CANVAS_ID, nullptr, true, WebDisplay::EMMouseButtonDownCallback);
+        emscripten_set_mouseup_callback(_ASENGINE_WEB_CANVAS_ID, nullptr, true, WebDisplay::EMMouseButtonUpCallback);
     }
 
     void WebDisplay::TerminateImp()
@@ -37,7 +46,7 @@ namespace ASEngine
 
     void WebDisplay::SetWindowSizeImp(int width, int height)
     {
-        emscripten_set_canvas_size(width, height);
+        emscripten_set_canvas_element_size(_ASENGINE_WEB_CANVAS_ID, width, height);
     }
 
     void WebDisplay::SetWindowTitleImp(const std::string &title)
@@ -54,8 +63,6 @@ namespace ASEngine
             SetWindowSize(m_WindowedWindowWidth, m_WindowedWindowHeight);
             return;
         }
-
-        // set fullscreen 
 
         // get current display size 
         m_WindowedWindowWidth = GetWindowWidth();
@@ -79,6 +86,83 @@ namespace ASEngine
     void WebDisplay::EndFrameImp()
     {
         emscripten_webgl_commit_frame();
+    }
+
+    EM_BOOL WebDisplay::EMKeyDownCallback(int eventType, const EmscriptenKeyboardEvent *emKeyEvent, void *userData)
+    {
+        return EMKeyCallback(eventType, emKeyEvent, userData, true);
+    }
+
+    EM_BOOL WebDisplay::EMKeyUpCallback(int eventType, const EmscriptenKeyboardEvent *emKeyEvent, void *userData)
+    {
+        return EMKeyCallback(eventType, emKeyEvent, userData, false);
+    }
+
+    EM_BOOL WebDisplay::EMKeyCallback(int eventType, const EmscriptenKeyboardEvent *emKeyEvent, void *userData, bool keydown)
+    {
+        InputEventKeyboard keyEvent{};
+        keyEvent.Code = static_cast<Keycode>(emKeyEvent->keyCode);
+        keyEvent.Pressed = keydown;
+
+        InputEvent event{keyEvent};
+        ASEngine::GetInstance().QueueInputEvent(event);
+        return EM_FALSE;
+    }
+
+    EM_BOOL WebDisplay::EMMoveMouseCallback(int eventType, const EmscriptenMouseEvent *emMouseEvent, void *userData)
+    {
+        InputEventMouseMove mouseMoveEvent{};
+        mouseMoveEvent.Position = Vector2{static_cast<float>(emMouseEvent->targetX), static_cast<float>(emMouseEvent->targetY)};
+
+        InputEvent event{mouseMoveEvent};
+        ASEngine::GetInstance().QueueInputEvent(event);
+        return EM_FALSE;
+    }
+
+    EM_BOOL WebDisplay::EMMouseButtonCallback(int eventType, const EmscriptenMouseEvent *emMouseEvent, void *userData, bool mousedown)
+    {
+        InputEventMouseButton mouseButtonEvent{};
+        switch (emMouseEvent->button)
+        {
+        case 0:
+            mouseButtonEvent.Button = MouseButton::LEFT;
+            break;
+        case 2:
+            mouseButtonEvent.Button = MouseButton::RIGHT;
+            break;
+        case 1:
+            mouseButtonEvent.Button = MouseButton::MIDDLE;
+            break;
+        default:
+            mouseButtonEvent.Button = MouseButton::NONE;
+            break;
+        }
+
+        // don't push unsupported buttons
+        if (mouseButtonEvent.Button == MouseButton::NONE)
+            return EM_FALSE;
+
+        // get mouse position
+        mouseButtonEvent.Position = Vector2{static_cast<float>(emMouseEvent->targetX), static_cast<float>(emMouseEvent->targetY)};
+
+        // pressed state
+        mouseButtonEvent.Pressed = mousedown;
+
+        // push event
+        InputEvent event{mouseButtonEvent};
+        ASEngine::GetInstance().QueueInputEvent(event);
+
+        return EM_FALSE;
+    }
+
+    EM_BOOL WebDisplay::EMMouseButtonDownCallback(int eventType, const EmscriptenMouseEvent *emMouseEvent, void *userData)
+    {
+        return EMMouseButtonCallback(eventType, emMouseEvent, userData, true);
+    }
+
+    EM_BOOL WebDisplay::EMMouseButtonUpCallback(int eventType, const EmscriptenMouseEvent *emMouseEvent, void *userData)
+    {
+        return EMMouseButtonCallback(eventType, emMouseEvent, userData, false);
     }
 
 } // namespace ASEngine

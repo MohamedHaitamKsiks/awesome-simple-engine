@@ -28,6 +28,17 @@ namespace ASEngine
         void SetFullscreenImp(bool fullscreen) override;
         void BeginFrameImp() override;
         void EndFrameImp() override;
+
+        static EM_BOOL EMKeyDownCallback(int eventType, const EmscriptenKeyboardEvent *emKeyEvent, void *userData);
+        static EM_BOOL EMKeyUpCallback(int eventType, const EmscriptenKeyboardEvent *emKeyEvent, void *userData);
+        static EM_BOOL EMKeyCallback(int eventType, const EmscriptenKeyboardEvent *emKeyEvent, void *userData, bool keydown);
+    
+        static EM_BOOL EMMoveMouseCallback (int eventType, const EmscriptenMouseEvent *emMouseEvent, void *userData);
+        
+        static EM_BOOL EMMouseButtonCallback(int eventType, const EmscriptenMouseEvent *emMouseEvent, void *userData, bool mousedown);
+        static EM_BOOL EMMouseButtonDownCallback(int eventType, const EmscriptenMouseEvent *emMouseEvent, void *userData);
+        static EM_BOOL EMMouseButtonUpCallback(int eventType, const EmscriptenMouseEvent *emMouseEvent, void *userData);
+
     };
 } // namespace ASEngine
 
