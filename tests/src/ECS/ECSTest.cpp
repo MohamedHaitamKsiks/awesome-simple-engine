@@ -170,6 +170,29 @@ void ECSTest::Describe()
         EntityManager::GetInstance().CleanDestroyQueue();
     });
 
+        
+    Test("It can get component", []()
+    {
+        EntityBuilder builder;
+
+        Transform transform{};
+        transform.Position = Vector2{50.0f, 50.0f};
+        transform.Angle = Math::PI / 4.0f;
+
+        Body body{};
+        body.Velocity = Vector2::ZERO();
+
+        builder.AddComponents(transform, body);
+
+        EntityID entityID = EntityManager::GetInstance().Create(builder);
+
+        auto& entityTransform = EntityManager::GetInstance().GetComponent<Transform>(entityID);
+        ASENGINE_EXPECT(Math::Abs(entityTransform.Angle - Math::PI / 4.0f) < 0.001f);
+
+        EntityManager::GetInstance().Destroy(entityID);
+        EntityManager::GetInstance().CleanDestroyQueue();
+    });
+
 
     Test("It can query over entities with Transform and Body components", []()
     {
@@ -181,7 +204,7 @@ void ECSTest::Describe()
         Body body{};
         body.Velocity = Vector2::ZERO();
 
-        EntityBuilder builder;
+        EntityBuilder builder{};
         builder.AddComponents(transform, body);
 
         constexpr int transformBodyCount = 5;
@@ -192,7 +215,7 @@ void ECSTest::Describe()
             EntityManager::GetInstance().Create(builder);
 
         // create entities with transfome
-        EntityBuilder builderTrasnformOnly;
+        EntityBuilder builderTrasnformOnly{};
         builderTrasnformOnly.AddComponents(transform);
         for (int i = 0; i < transformCount; i++)
             EntityManager::GetInstance().Create(builderTrasnformOnly);
@@ -205,6 +228,7 @@ void ECSTest::Describe()
             ASENGINE_EXPECT(Math::Abs(transform.Angle - Math::PI / 4.0f) < 0.001f);
             entityCount ++;
         });
+
         ASENGINE_EXPECT(entityCount == transformBodyCount);
 
         // transform
@@ -264,20 +288,20 @@ void ECSTest::Describe()
         // [Transform, Body]
         EntityBuilder builder;
         builder.AddComponents(transform, body, player);
-
-        for (int i = 0; i < entityCount / 2; i++)
-            EntityManager::GetInstance().Create(builder);
-
+        // [Transform]
         EntityBuilder builder2;
         builder2.AddComponents(transform);
 
-        // [Transform]
+        // create [Transform, Body]
+        for (int i = 0; i < entityCount / 2; i++)
+            EntityManager::GetInstance().Create(builder);
+        
         for (int i = 0; i < entityCount / 2; i++)
             EntityManager::GetInstance().Create(builder2);
 
         PhysicsSystem s{};
 
-        //get delta time of ecs
+        // get delta time of ecs
         pastTime = std::chrono::high_resolution_clock::now();
 
         s.Update();
@@ -286,10 +310,11 @@ void ECSTest::Describe()
         float ecsDeltaTime = std::chrono::duration_cast<std::chrono::microseconds>(currentTime - pastTime).count();
         Debug::Log("ECS Delta Time", ecsDeltaTime / 1000.0f, "ms");
 
-        ASENGINE_EXPECT(ecsDeltaTime < oopDeltaTime);
 
         // clean up when I optimize the destroy all function
-        // EntityManager::GetInstance().DestroyAll();
+        EntityManager::GetInstance().DestroyAll();
+        EntityManager::GetInstance().CleanDestroyQueue();
 
+        ASENGINE_EXPECT(ecsDeltaTime < oopDeltaTime);
     });
 }

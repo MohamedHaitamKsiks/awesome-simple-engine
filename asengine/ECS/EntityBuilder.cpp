@@ -1,5 +1,7 @@
 #include "EntityBuilder.h"
 #include "ComponentManager.h"
+#include "ArchetypeManager.h"
+
 
 #include "Core/Serialization/Json.h"
 #include "Core/Serialization/Serializer.h"
@@ -22,6 +24,9 @@ namespace ASEngine
         // add component
         m_Components[componentName] = std::move(newComponent);
         m_Signature.emplace(componentName);
+
+        // get currrent archetype
+        m_Archetype = &ArchetypeManager::GetInstance().GetArchetype(m_Signature);
     }
 
     void EntityBuilder::AddComponent(UniqueString componentName, const AbstractComponent &component)

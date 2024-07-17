@@ -21,6 +21,9 @@ namespace ASEngine
         virtual AbstractComponent& ComponentAt(ComponentIndex index) = 0;
         
         virtual const AbstractComponent& ComponentAt(ComponentIndex index) const = 0 ;
+
+        // only keep component in these indicies
+        virtual void KeepOnly(const std::vector<ComponentIndex> indices) = 0;
     };
 
 
@@ -40,20 +43,35 @@ namespace ASEngine
 
         ComponentIndex Add() override
         {
-            ComponentType component{};
-            m_Components.push_back(component);
+            m_Components.emplace_back();
             return static_cast<ComponentIndex>(m_Components.size() - 1);
         };
 
         ComponentIndex Add(const ComponentType& component)
         {
-            m_Components.pop_back(component);
+            m_Components.push_back(component);
             return static_cast<ComponentIndex>(m_Components.size() - 1);
         }
 
         void Remove(ComponentIndex index) override
         {
             m_Components.erase(m_Components.cbegin() + index);
+        }
+
+        void KeepOnly(const std::vector<ComponentIndex> indices)
+        {
+            ComponentIndex currentIndex = 0;
+            for (const auto& index: indices)
+            {
+                if (index != currentIndex && index < m_Components.size())
+                {
+                    m_Components[index] = m_Components[currentIndex];
+                }
+
+                currentIndex++;
+            }
+
+            m_Components.resize(indices.size());
         }
 
         size_t GetSize() const override
