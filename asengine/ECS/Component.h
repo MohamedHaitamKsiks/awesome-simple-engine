@@ -53,9 +53,9 @@ namespace ASEngine
         // usefull for copying components from EntityBuilder to Archetype
         void Copy(const AbstractComponent& component) override
         {
-            const T* castedSrc = dynamic_cast<const T*>(&component);
-            T* castedDest = dynamic_cast<T*>(this);
-            ASENGINE_ASSERT(castedSrc, "Component Source Invalid Type");
+            const T* castedSrc = static_cast<const T*>(&component);
+            T* castedDest = static_cast<T*>(this);
+            // ASENGINE_ASSERT(castedSrc, "Component Source Invalid Type");
 
             *castedDest = *castedSrc;
         }

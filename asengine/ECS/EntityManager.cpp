@@ -6,32 +6,36 @@
 
 namespace ASEngine
 {
+    void EntityManager::Init()
+    {
+        m_DestroyQueue.reserve(UINT16_MAX);
+    }
 
     void EntityManager::Terminate()
     {
-        /*DestroyAll();
+        DestroyAll();
         CleanDestroyQueue();
-        m_Entities.Clear();*/
+        m_Entities.Clear();
     }
 
     EntityID EntityManager::Create(const EntityBuilder &builder)
     {
-        // archetype owner
-        const auto& signature = builder.GetSignature();
+        // archetype owner   
+        Archetype* archetype = builder.m_Archetype;
         
-        Archetype& archetype = ArchetypeManager::GetInstance().GetArchetype(signature);
-        
+        // craete entity id
         EntityID entityID = m_Entities.Allocate();
         EntityData& data = m_Entities.Get(entityID);
-        data.ArchetypeOwner = &archetype;
+        data.ArchetypeOwner = archetype;
         data.IsDestroyed = false;
         data.Persistent = builder.GetPersistant();
 
-        ComponentIndex index = archetype.AddEntity(entityID);
+        ComponentIndex index = archetype->AddEntity(entityID);
+        data.Index = index;
 
         for (const auto& [componentName, componentValue]: builder.GetComponents())
         {
-            auto& collection = archetype.GetComponentCollection(componentName);
+            auto& collection = archetype->GetComponentCollection(componentName);
             auto& component = collection.ComponentAt(index);
 
             component.Copy(*componentValue);
@@ -56,6 +60,16 @@ namespace ASEngine
         m_DestroyQueue.push_back(entityID);
     }
 
+    AbstractComponent &EntityManager::GetComponent(UniqueString componentName, EntityID entityID)
+    {
+        ASENGINE_ASSERT(!m_Entities.IsFree(entityID), "EntityID not found");
+
+        auto &entityData = m_Entities.Get(entityID);
+        IComponentCollection &collection = entityData.ArchetypeOwner->GetComponentCollection(componentName);
+
+        return collection.ComponentAt(entityData.Index);
+    }
+
     void EntityManager::DestroyAll()
     {
         size_t entityCounter = 0;
@@ -78,12 +92,17 @@ namespace ASEngine
 
     void EntityManager::CleanDestroyQueue()
     {
-        for (auto entity: m_DestroyQueue)
+        auto& archetypesToClean = ArchetypeManager::GetInstance().GetArchetypes();
+        // clean archetypes
+        for (auto& [signature, archetype]: archetypesToClean)
         {
-            EntityData& data = m_Entities.Get(entity);
-            auto* archetype = data.ArchetypeOwner;
-            archetype->RemoveEntity(entity);
-            m_Entities.Free(entity);
+            archetype.RemoveDestroyedEntites();
+        }
+
+        // remove entity datas
+        for (auto entityID: m_DestroyQueue)
+        {
+            m_Entities.Free(entityID);
         }
         
         m_DestroyQueue.clear();

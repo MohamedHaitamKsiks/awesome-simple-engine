@@ -15,6 +15,7 @@ namespace ASEngine
     struct ASENGINE_API EntityData
     {
         Archetype* ArchetypeOwner = nullptr;
+        ComponentIndex Index = 0;
         bool IsDestroyed = false;
         bool Persistent = false;
     };

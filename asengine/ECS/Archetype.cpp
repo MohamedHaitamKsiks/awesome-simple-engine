@@ -1,5 +1,7 @@
 #include "Archetype.h"
 #include "Core/Error/Assertion.h"
+
+#include "EntityManager.h"
 #include "ComponentManager.h"
 #include "ComponentClass.h"
 
@@ -34,8 +36,49 @@ namespace ASEngine
         m_Entities.push_back(entityID);
         return index;
     }
-    
-    void Archetype::RemoveEntity(EntityID entityID)
+
+    void Archetype::RemoveDestroyedEntites()
+    {
+        // get entity data
+        auto& entityManager = EntityManager::GetInstance();
+        auto& entitiesData = entityManager.m_Entities;
+        
+        // get component indices keep
+        std::vector<ComponentIndex> indices{};
+        indices.reserve(m_Entities.size());
+
+        // entities to keep
+        std::vector<EntityID> entities{};
+        entities.reserve(m_Entities.size());
+
+        for (EntityID entityID: m_Entities)
+        {
+            EntityData& entityData = entitiesData.Get(entityID);
+            if (entityData.IsDestroyed)
+                continue;
+
+            indices.push_back(entityData.Index);
+            entities.push_back(entityID);
+        }
+
+        // clean component collections
+        for (auto &[componentName, collection] : m_ComponentCollections)
+            collection->KeepOnly(indices);
+
+        // update entity comoponent index
+        for (ComponentIndex index = 0; index < entities.size(); index++)
+        {
+            EntityID entityID = entities[index];
+
+            EntityData &entityData = entitiesData.Get(entityID);
+            entityData.Index = index;
+        }
+
+        // set new entities
+        m_Entities.swap(entities);
+    }
+
+    /*void Archetype::RemoveEntity(EntityID entityID)
     {
         // find component index
         ComponentIndex index = GetComponentIndexOfEntity(entityID);
@@ -46,18 +89,6 @@ namespace ASEngine
             collection->Remove(index);
         
         m_Entities.erase(m_Entities.begin() + index);
-    }
-
-    ComponentIndex Archetype::GetComponentIndexOfEntity(EntityID entityID)
-    {
-        // find component index
-        for (ComponentIndex i = 0; i < m_Entities.size(); i++)
-        {
-            if (m_Entities[i] == entityID)
-                return i;
-        }
-        return COMPONENT_INDEX_NULL;
-    }
-
+    }*/
 
 } // namespace ASEngine

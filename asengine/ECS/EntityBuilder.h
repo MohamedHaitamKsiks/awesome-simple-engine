@@ -7,6 +7,7 @@
 #include "Core/String/UniqueString.h"
 #include "Component.h"
 #include "Signature.h"
+#include "Archetype.h"
 
 #include "API/API.h"
 
@@ -41,7 +42,7 @@ namespace ASEngine
             }
 
             // get components
-            inline const std::unordered_map<UniqueString, std::unique_ptr<AbstractComponent>>& GetComponents() const
+            inline const std::map<UniqueString, std::unique_ptr<AbstractComponent>>& GetComponents() const
             {
                 return m_Components;
             }
@@ -69,13 +70,16 @@ namespace ASEngine
             }
 
         private:
-            std::unordered_map<UniqueString, std::unique_ptr<AbstractComponent>> m_Components{};
+            std::map<UniqueString, std::unique_ptr<AbstractComponent>> m_Components{};
             
             // cache signatrue
             Signature m_Signature{};
+            Archetype* m_Archetype = nullptr;
 
             // is entity going to be kept when changing scene
             bool m_Persistent = false;
+
+            friend class EntityManager;
     };
 
 } // namespace ASEngine

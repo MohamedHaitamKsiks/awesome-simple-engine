@@ -60,7 +60,7 @@ namespace ASEngine
             static_assert(std::is_base_of_v<Component<T>, T>);
             UniqueString componentName = Component<T>::GetName();
             
-            ComponentCollection<T>& collection = dynamic_cast<ComponentCollection<T>&>(GetComponentCollection(componentName));
+            ComponentCollection<T>& collection = static_cast<ComponentCollection<T>&>(GetComponentCollection(componentName));
             return collection;
         }
 
@@ -73,17 +73,14 @@ namespace ASEngine
         // add entity
         ComponentIndex AddEntity(EntityID entityID);
 
-        // remove entity
-        void RemoveEntity(EntityID entityID);
+        // destroyed entities
+        void RemoveDestroyedEntites();
 
         // get entity count
         inline size_t GetSize() const
         {
             return m_Entities.size();
         }
-
-        // get component index
-        ComponentIndex GetComponentIndexOfEntity(EntityID entityID);
 
         // get component collections tuple
         template<typename T, typename... types>
@@ -98,7 +95,7 @@ namespace ASEngine
         Signature m_Signature{};
 
         // component collections
-        std::unordered_map<UniqueString, std::unique_ptr<IComponentCollection>> m_ComponentCollections;
+        std::map<UniqueString, std::unique_ptr<IComponentCollection>> m_ComponentCollections;
 
         // entity to component
         std::vector<EntityID> m_Entities{};

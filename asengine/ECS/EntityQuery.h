@@ -47,7 +47,7 @@ namespace ASEngine
                 ComponentCollection<T> &collection = archetype->template GetComponentCollection<T>();
                 std::tuple<ComponentCollection<types> &...> collections(archetype->template GetComponentCollection<types>()...);
 
-                for (ComponentIndex i = 0; i < collection.GetSize(); i++)
+                for (ComponentIndex i = 0; i < archetype->GetSize(); i++)
                 {
                     std::apply([callback, &collection, &i] (ComponentCollection<types> &...collections)
                     { 
