@@ -16,7 +16,7 @@ from asengineCLI.commands.script_path import *
 def executeCommand(command: str, args: list[str] = []) -> int:
     scriptPath = dirPath(__file__)
     error = 0
-    
+
     match command:
         case "help":
             showDocumentation(relativeTo(scriptPath, "./resources/documentation.txt"))
@@ -39,7 +39,7 @@ def executeCommand(command: str, args: list[str] = []) -> int:
 
         case "generate-component":
             assert(len(args) == 1)
-            generateComponent(args[0], args[1])
+            generateComponent(args[0])
 
         case "generate-system":
             assert(len(args) == 1)
@@ -69,5 +69,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-

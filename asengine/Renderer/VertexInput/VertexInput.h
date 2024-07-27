@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <cstddef>
 
 #include "API/API.h"
 
@@ -47,4 +48,4 @@ namespace ASEngine
 } // namespace ASEngine
 
 
-#endif // 
+#endif //

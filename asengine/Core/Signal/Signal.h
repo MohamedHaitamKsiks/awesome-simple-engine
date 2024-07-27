@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <functional>
+#include <cstdint>
 
 #include "API/API.h"
 
@@ -62,7 +63,7 @@ namespace ASEngine
     private:
         // list of functions connected to the signal
        std::unordered_map<SignalConnectionID, std::function<void(T, types...)>> m_Callbacks{};
-       std::vector<SignalConnectionID> m_FreeConnectionIDs{}; 
+       std::vector<SignalConnectionID> m_FreeConnectionIDs{};
        SignalConnectionID m_MaxSignalID = 0;
     };
 

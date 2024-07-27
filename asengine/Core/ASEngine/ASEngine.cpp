@@ -15,7 +15,7 @@
 #include "Scene/SceneManager.h"
 
 #include <chrono>
-#define SEC_TO_MICRO 1000000.0f;
+#define SEC_TO_MICRO 1000000.0f
 
 namespace ASEngine
 {
@@ -70,7 +70,7 @@ namespace ASEngine
     void ASEngine::Terminate()
     {
         SystemManager::GetInstance().Terminate();
-        
+
         // remove global attributes
         for (auto& [name, attribute]: m_GlobalAttributes)
         {
@@ -143,7 +143,7 @@ namespace ASEngine
         // load settigs file
         File settingsFile;
         settingsFile.Open("project.settings.json", FileOpenMode::READ);
-        
+
         // read settings as json
         std::string settingsString = settingsFile.ReadText();
         Json settingsObject = Json::parse(settingsString);
@@ -154,4 +154,3 @@ namespace ASEngine
 
 
 } // ASEngine
-

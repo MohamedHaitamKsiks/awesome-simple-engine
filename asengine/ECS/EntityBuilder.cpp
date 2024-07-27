@@ -16,6 +16,15 @@ namespace ASEngine
         }
     }
 
+    EntityBuilder &EntityBuilder::operator=(const EntityBuilder &builder)
+    {
+        for (auto &[componentName, component] : builder.m_Components)
+        {
+            AddComponent(componentName, *component);
+        }
+        return *this;
+    }
+
     void EntityBuilder::AddComponent(UniqueString componentName)
     {
         IComponentClass& componentClass = ComponentManager::GetInstance().GetComponentClass(componentName);

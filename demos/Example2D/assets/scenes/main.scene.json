@@ -1,0 +1,45 @@
+{
+  "Entities": [
+    {
+      "BouncingFoxSpawner": {
+        "Count": 10000
+      }
+    },
+    {
+      "Camera2D": {
+        "Layers": ["Default"],
+        "Target": "viewports/pixel.viewport.json"
+      },
+      "CameraController": {},
+      "Transform2D": {
+        "Position": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "Rotation": 0.0,
+        "Entities": []
+      }
+    },
+    {
+      "Camera2D": {
+        "Layers": ["PixelViewport"]
+      },
+      "Transform2D": {
+        "Position": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "Rotation": 0.0,
+        "Entities": []
+      }
+    }
+  ]
+}

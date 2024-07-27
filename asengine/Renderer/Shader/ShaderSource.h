@@ -26,14 +26,14 @@ namespace ASEngine
 
         // load shader (use path to shader it is converted to spirv automatically)
         bool Load(const std::string& path) override;
-        
+
         // get shader params
         inline const ShaderParams& GetShaderParams() const
         {
             return m_Params;
         }
 
-        // get spirv 
+        // get spirv
         inline const SpirvBinary& GetSpirv() const
         {
             return m_Spirv;

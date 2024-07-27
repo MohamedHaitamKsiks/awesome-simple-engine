@@ -1,0 +1,16 @@
+{
+  "Texture": {
+    "ImagePath": "textures/spr_run.png",
+    "Filter": "NEAREST",
+    "RepeatMode": "REPEAT"
+  },
+
+  "HFrames": 6,
+  "VFrames": 1,
+
+  "RelativeToCenter": true,
+  "Offset": {
+    "x": 0.0,
+    "y": 0.0
+  }
+}

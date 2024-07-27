@@ -17,7 +17,7 @@ namespace ASEngine
 
     void OpenGLRenderer::InitImp()
     {
-        // init glew 
+        // init glew
     #ifdef ASENGINE_USING_GLEW
         glewInit();
         Debug::Log("Glew Initialized");
@@ -32,6 +32,10 @@ namespace ASEngine
         // set clear color
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
+        // print opengl renderer
+        const GLubyte* renderer = glGetString(GL_RENDERER); // Returns a hint to the model
+        Debug::Log("Using OpenGL With: ", renderer);
+
         // glEnable(GL_DEPTH_TEST);
     }
 
@@ -41,12 +45,12 @@ namespace ASEngine
         resizeSignal.Disconnect(m_WindowResizeConnectionID);
     }
 
-    void OpenGLRenderer::BindVertexBufferImp(ResourceRef<Buffer> vertexBuffer, uint32_t binding)
+    void OpenGLRenderer::BindVertexBufferImp(const ResourceRef<Buffer>& vertexBuffer, uint32_t binding)
     {
         // nothing to do for now
     }
 
-    void OpenGLRenderer::BindIndexBufferImp(ResourceRef<Buffer> indexBuffer)
+    void OpenGLRenderer::BindIndexBufferImp(const ResourceRef<Buffer>& indexBuffer)
     {
         // nothing to do for now
     }
@@ -69,7 +73,7 @@ namespace ASEngine
 
         // bind vertex buffers
         const auto& vertexBuffers = GetCurrentVertexBuffers();
-        
+
         ResourceRef<VertexInputDescriptor> vertexInputDescriptor = glShader->GetVertexInputDescritor();
         const auto& layouts = vertexInputDescriptor->GetVertexInputLayouts();
 
@@ -94,7 +98,7 @@ namespace ASEngine
             glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
     }
 
-    void OpenGLRenderer::BindShaderImp(ResourceRef<Shader> shader)
+    void OpenGLRenderer::BindShaderImp(const ResourceRef<Shader>& shader)
     {
         ResourceRef<OpenGLShader> glShader = shader;
         // use gl program
@@ -112,7 +116,7 @@ namespace ASEngine
             glBindBufferBase(GL_UNIFORM_BUFFER, ubInfo.Binding, glBuffer->GetGLBufferID());
         }
 
-        // set samplers to uniform 
+        // set samplers to uniform
         auto& glSamplers = glShader->GetGLSamplers();
         for (auto& [samplerName, glSamplerInfo]: glSamplers)
         {
@@ -164,7 +168,7 @@ namespace ASEngine
         }
     }
 
-    void OpenGLRenderer::BeginImp(ResourceRef<Viewport> viewport)
+    void OpenGLRenderer::BeginImp(const ResourceRef<Viewport>& viewport)
     {
         // default viewport
         if (viewport == ResourceRef<Viewport>::NONE())
@@ -176,7 +180,7 @@ namespace ASEngine
 
         // bind viewport
         GLuint frameBufferID = ResourceRef<OpenGLViewport>(viewport)->GetGLFrameBufferID();
-        GLBindFramebuffer(frameBufferID, viewport->GetWidth(), viewport->GetHeight()); 
+        GLBindFramebuffer(frameBufferID, viewport->GetWidth(), viewport->GetHeight());
     }
 
     void OpenGLRenderer::EndImp()

@@ -19,7 +19,7 @@ namespace ASEngine
         virtual ~IComponentCollection() {}
 
         virtual AbstractComponent& ComponentAt(ComponentIndex index) = 0;
-        
+
         virtual const AbstractComponent& ComponentAt(ComponentIndex index) const = 0 ;
 
         // only keep component in these indicies
@@ -58,7 +58,7 @@ namespace ASEngine
             m_Components.erase(m_Components.cbegin() + index);
         }
 
-        void KeepOnly(const std::vector<ComponentIndex> indices)
+        void KeepOnly(const std::vector<ComponentIndex> indices) override
         {
             ComponentIndex currentIndex = 0;
             for (const auto& index: indices)

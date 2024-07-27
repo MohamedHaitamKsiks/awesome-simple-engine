@@ -1,8 +1,13 @@
 # Sets the minimum version of CMake required to build the native library.
 cmake_minimum_required(VERSION 3.22.1)
 set(CMAKE_CXX_STANDARD 20)
+
 add_compile_options(-Wall)
 add_compile_definitions(ASENINE_EXPORTS)
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
+#generate compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 #create project
 project(asengine)
@@ -34,14 +39,14 @@ endif()
 
 #platform specific sources
 set(PLATFORM_SPECIFIC_SOURCES)
-if (ASENGINE_DESKTOP) 
+if (ASENGINE_DESKTOP)
     set(PLATFORM_SPECIFIC_SOURCES ${PLATFORM_SPECIFIC_SOURCES}
         asengine/Display/Backend/Desktop/DesktopDisplay.cpp
         asengine/Display/Backend/Desktop/DesktopDisplayCreate.cpp
     )
 endif()
 
-if (ASENGINE_WEB) 
+if (ASENGINE_WEB)
     set(PLATFORM_SPECIFIC_SOURCES ${PLATFORM_SPECIFIC_SOURCES}
         asengine/Display/Backend/Web/WebDisplay.cpp
         asengine/Display/Backend/Web/WebDisplayCreate.cpp
@@ -66,6 +71,10 @@ include_directories(${DEPENDENCIES_DIRECTOY}/miniaudio)
 # add stb_image
 add_subdirectory(${DEPENDENCIES_DIRECTOY}/stb_image)
 include_directories(${DEPENDENCIES_DIRECTOY}/stb_image)
+
+# add freetype
+include_directories(${DEPENDENCIES_DIRECTOY}/freetype-2.10.0/include)
+add_subdirectory(${DEPENDENCIES_DIRECTOY}/freetype-2.10.0)
 
 #source
 set (SOURCE
@@ -149,6 +158,14 @@ set (SOURCE
     #testing
     asengine/UnitTest/UnitTest.cpp
     asengine/UnitTest/UnitTestSystem.cpp
+    #2d
+    asengine/2D/Transform2D/Transform2D.cpp
+    asengine/2D/Quad2D/Quad2D.cpp
+    asengine/2D/Layer2D/Layer2D.cpp
+    asengine/2D/Camera2D/Camera2D.cpp
+    asengine/2D/Renderer2D/Renderer2D.cpp
+    asengine/2D/Sprite/Sprite.cpp
+    asengine/2D/Font/Font.cpp
     #platform src
     ${PLATFORM_SPECIFIC_SOURCES}
 )
@@ -169,7 +186,7 @@ if(ASENGINE_DESKTOP)
     # add opengl
     find_package(OpenGL REQUIRED)
     include_directories(${OPENGL_INCLUDE_DIRS})
-    
+
     include_directories(${DEPENDENCIES_DIRECTOY}/glew/include)
     add_definitions(-DGLEW_STATIC)
     add_library(
@@ -190,13 +207,14 @@ if(ASENGINE_DESKTOP)
         PRIVATE glfw
         PRIVATE glew
         PRIVATE spirv-cross-glsl
+        PRIVATE freetype
         OpenGL::GL
     )
 endif()
 
 
 if (ASENGINE_WEB)
-    message("Web Build")    
+    message("Web Build")
 
 
     #build as static library for web
@@ -211,9 +229,8 @@ if (ASENGINE_WEB)
         stb_image
         miniaudio
         spirv-cross-glsl
+        freetype
     )
-    
+
 
 endif()
-
-

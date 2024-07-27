@@ -11,14 +11,14 @@ namespace ASEngine
     void Archetype::AddComponent(UniqueString componentName)
     {
         ASENGINE_ASSERT(m_Signature.count(componentName) == 0, "Component Already Exists");
-        
+
         m_Signature.emplace(componentName);
-        
+
         // create component collection
         IComponentClass& componentClass = ComponentManager::GetInstance().GetComponentClass(componentName);
         std::unique_ptr<IComponentCollection> collection{componentClass.CreateComponentCollection()};
         m_ComponentCollections[componentName] = std::move(collection);
-    
+
     }
 
     IComponentCollection& Archetype::GetComponentCollection(UniqueString componentName)
@@ -29,12 +29,26 @@ namespace ASEngine
 
     ComponentIndex Archetype::AddEntity(EntityID entityID)
     {
-        ComponentIndex index;
+        ComponentIndex index = 0;
         for (auto& [componentName, collection]: m_ComponentCollections)
             index = collection->Add();
-        
+
         m_Entities.push_back(entityID);
         return index;
+    }
+
+    void Archetype::RemoveEntity(EntityID entityID)
+    {
+        // get entity data
+        auto &entityManager = EntityManager::GetInstance();
+        auto &entitiesData = entityManager.m_Entities;
+
+        // call on destroy
+        ComponentIndex index = entitiesData.Get(entityID).Index;
+        for (auto &[componentName, collection] : m_ComponentCollections)
+        {
+            collection->ComponentAt(index).OnDestroy();
+        }
     }
 
     void Archetype::RemoveDestroyedEntites()
@@ -42,7 +56,7 @@ namespace ASEngine
         // get entity data
         auto& entityManager = EntityManager::GetInstance();
         auto& entitiesData = entityManager.m_Entities;
-        
+
         // get component indices keep
         std::vector<ComponentIndex> indices{};
         indices.reserve(m_Entities.size());
@@ -60,6 +74,9 @@ namespace ASEngine
             indices.push_back(entityData.Index);
             entities.push_back(entityID);
         }
+
+        if (entities.size() == m_Entities.size())
+            return;
 
         // clean component collections
         for (auto &[componentName, collection] : m_ComponentCollections)
@@ -87,7 +104,7 @@ namespace ASEngine
         // remove components
         for (auto& [componentName, collection] : m_ComponentCollections)
             collection->Remove(index);
-        
+
         m_Entities.erase(m_Entities.begin() + index);
     }*/
 

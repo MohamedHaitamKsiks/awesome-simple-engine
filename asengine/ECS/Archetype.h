@@ -73,6 +73,9 @@ namespace ASEngine
         // add entity
         ComponentIndex AddEntity(EntityID entityID);
 
+        // remove entity
+        void RemoveEntity(EntityID entityID);
+
         // destroyed entities
         void RemoveDestroyedEntites();
 

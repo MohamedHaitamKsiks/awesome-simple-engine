@@ -42,9 +42,8 @@ namespace ASEngine
 
             for (auto& item: object)
             {
-                T deserializedItem;
+                T& deserializedItem = dest.emplace_back();
                 Deserialize(item, deserializedItem);
-                dest.push_back(deserializedItem);
             }
         }
     };

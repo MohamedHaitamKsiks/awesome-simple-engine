@@ -22,6 +22,8 @@ namespace ASEngine
             // copy constructor
             EntityBuilder(const EntityBuilder& builder);
 
+            EntityBuilder& operator=(const EntityBuilder& builder);
+
             // add component with no initial value
             void AddComponent(UniqueString componentName);
 

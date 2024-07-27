@@ -16,7 +16,7 @@ namespace ASEngine
         const auto& windowSettings = displaySettings.Window;
         const auto& renderingSettings = displaySettings.Rendering;
         const auto& applicationSettings = ASEngine::GetInstance().GetSettings().Application;
-        
+
         // create window with default values
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
@@ -32,7 +32,7 @@ namespace ASEngine
         }
 
         m_Window = glfwCreateWindow(windowSettings.Width, windowSettings.Height, applicationSettings.Name.c_str(), nullptr, nullptr);
-        
+
         glfwMakeContextCurrent(m_Window);
         glfwSwapInterval(0);
 
@@ -118,10 +118,14 @@ namespace ASEngine
 
     void DesktopDisplay::GLFWKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
     {
+        // only send on pressed and on releaseed event
+        if (action != GLFW_PRESS && action != GLFW_RELEASE)
+            return;
+
         InputEventKeyboard keyEvent{};
         keyEvent.Code = static_cast<Keycode>(key);
         keyEvent.Pressed = action == GLFW_PRESS;
-        
+
         InputEvent event{keyEvent};
         ASEngine::GetInstance().QueueInputEvent(event);
     }
@@ -137,13 +141,18 @@ namespace ASEngine
 
     void DesktopDisplay::GLFWMouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
     {
+        // only send on pressed and on releaseed event
+        if (action != GLFW_PRESS && action != GLFW_RELEASE)
+            return;
+
+
         InputEventMouseButton mouseButtonEvent{};
         switch (button)
         {
         case GLFW_MOUSE_BUTTON_LEFT:
-            mouseButtonEvent.Button = MouseButton::LEFT; 
+            mouseButtonEvent.Button = MouseButton::LEFT;
             break;
-        
+
         case GLFW_MOUSE_BUTTON_RIGHT:
             mouseButtonEvent.Button = MouseButton::RIGHT;
             break;

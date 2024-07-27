@@ -3,9 +3,11 @@ cmake_minimum_required(VERSION 3.22.1)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 project(desktop)
 
-#include the engine 
+#include the engine
 include_directories(${ASENGINE_INCLUDE_PATH})
 link_directories(${ASENGINE_LIB_PATH})
 
@@ -20,5 +22,3 @@ target_link_libraries(
     PRIVATE ${PROJECT_LIBRARIES}
     PUBLIC asengine
 )
-
-

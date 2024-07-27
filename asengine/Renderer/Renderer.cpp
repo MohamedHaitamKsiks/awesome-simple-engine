@@ -13,7 +13,7 @@
 
 namespace ASEngine
 {
-    ASENGINE_SERIALIZE_ENUM(Renderer::Backend, 
+    ASENGINE_SERIALIZE_ENUM(Renderer::Backend,
         NONE,
         OPENGL,
         VULKAN
@@ -29,7 +29,7 @@ namespace ASEngine
         TerminateImp();
     }
 
-    void Renderer::Begin(ResourceRef<Viewport> viewport)
+    void Renderer::Begin(const ResourceRef<Viewport>& viewport)
     {
         ASENGINE_ASSERT(!m_UsingViewport, "Cannot Begin before closing your current viewport");
         m_UsingViewport = true;
@@ -43,13 +43,13 @@ namespace ASEngine
     {
         ASENGINE_ASSERT(m_UsingViewport, "Nothing to end");
         m_UsingViewport = false;
-        
+
         // call imp
         EndImp();
 
         // unbind all render resources
         m_CurrentViewport = ResourceRef<Viewport>::NONE();
-        
+
         m_CurrentVertexBuffers.clear();
 
         m_CurrentIndexBuffer = ResourceRef<Buffer>::NONE();
@@ -57,7 +57,7 @@ namespace ASEngine
         m_CurrentMaterial = ResourceRef<Material>::NONE();
     }
 
-    void Renderer::BindVertexBuffer(ResourceRef<Buffer> vertexBuffer, uint32_t binding)
+    void Renderer::BindVertexBuffer(const ResourceRef<Buffer>& vertexBuffer, uint32_t binding)
     {
         ASSERT_RENDERER_BEGIN();
         // don't bind if already bound
@@ -68,7 +68,7 @@ namespace ASEngine
         m_CurrentVertexBuffers[binding] = vertexBuffer;
     }
 
-    void Renderer::BindIndexBuffer(ResourceRef<Buffer> indexBuffer)
+    void Renderer::BindIndexBuffer(const ResourceRef<Buffer>& indexBuffer)
     {
         ASSERT_RENDERER_BEGIN();
         if (m_CurrentIndexBuffer == indexBuffer)
@@ -85,7 +85,7 @@ namespace ASEngine
         m_DrawCallsCount++;
     }
 
-    void Renderer::BindShader(ResourceRef<Shader> shader)
+    void Renderer::BindShader(const ResourceRef<Shader>& shader)
     {
         ASSERT_RENDERER_BEGIN();
         if (m_CurrentShader == shader)
@@ -95,7 +95,7 @@ namespace ASEngine
         m_CurrentShader = shader;
     }
 
-    void Renderer::BindMaterial(ResourceRef<Material> material)
+    void Renderer::BindMaterial(const ResourceRef<Material>& material)
     {
         ASSERT_RENDERER_BEGIN();
 
@@ -117,5 +117,5 @@ namespace ASEngine
         m_CurrentMaterial = material;
     }
 
-    
+
 } // namespace ASEngine

@@ -9,7 +9,7 @@
 
 #include "API/API.h"
 
-namespace ASEngine 
+namespace ASEngine
 {
 
     //Matrix3x3 column-major and with stride be compatible with std140
@@ -31,6 +31,9 @@ namespace ASEngine
         {
         }
 
+        // get translation * scale * rotation matrix
+        static Matrix3x3 Transform(const Vector2& position, const Vector2& scale, float rotation);
+
         // scale
         inline static constexpr Matrix3x3 Scale(const Vector2& s)
         {
@@ -45,25 +48,25 @@ namespace ASEngine
 
         //rotation
         static Matrix3x3 Rotation(float angle);
-        
+
         //translate
         inline static constexpr Matrix3x3 Translate(const Vector2& v)
         {
             return Matrix3x3{
                 DataType{
-                    ColumnType{{ 1.0f, 0.0f,  v.x, 0.0f }},
-                    ColumnType{{ 0.0f, 1.0f,  v.y, 0.0f }},
-                    ColumnType{{ 0.0f, 0.0f, 1.0f, 0.0f }}
+                    ColumnType{{ 1.0f, 0.0f, 0.0f, 0.0f }},
+                    ColumnType{{ 0.0f, 1.0f, 0.0f, 0.0f }},
+                    ColumnType{{  v.x,  v.y, 1.0f, 0.0f }}
                 }
-            }; 
+            };
         }
 
         // transform vec
         friend inline constexpr Vector2 operator*(const Matrix3x3& m, const Vector2& v)
         {
             return Vector2{
-                m[1][1] * v.x + m[2][1] * v.y + m[3][1],
-                m[1][2] * v.x + m[2][2] * v.y + m[3][2] 
+                m[0][0] * v.x + m[1][0] * v.y + m[2][0],
+                m[0][1] * v.x + m[1][1] * v.y + m[2][1]
             };
         }
 
