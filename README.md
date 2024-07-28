@@ -51,10 +51,10 @@ Running Example2D demo:
 
 ### 2D Module
 
-ASEngine offers a high level 2D Module that supports Transform Hiearchy, Sprites, Text rendering, and other drawing functions.
-The 2D renderer uses batching to reduce the number of draw calls. 
+ASEngine provides a comprehensive 2D module that includes features for transform hierarchy, sprite management, text rendering, and various drawing functions. This module enhances performance by using batching techniques to minimize the number of draw calls.
 
-You can add it to your project in the registry function: 
+To integrate the 2D module into your project, you need to add it through the registry function:
+
 
 ```sh
 Module2D::Init();
