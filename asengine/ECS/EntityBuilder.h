@@ -55,6 +55,13 @@ namespace ASEngine
                 return *m_Components[componentName];
             }
 
+            // get component by types
+            template<typename T>
+            inline T& GetComponent()
+            {
+                return static_cast<T&>(*m_Components[Component<T>::GetName()]);
+            }
+
             // get signature
             const Signature& GetSignature() const
             {
@@ -73,7 +80,7 @@ namespace ASEngine
 
         private:
             std::map<UniqueString, std::unique_ptr<AbstractComponent>> m_Components{};
-            
+
             // cache signatrue
             Signature m_Signature{};
             Archetype* m_Archetype = nullptr;

@@ -1,31 +1,31 @@
-#include "2D/Transform2D/Transform2D.h"
 #include "BouncingFoxSpawner.h"
 #include "BouncingFox.h"
-#include "Core/Math/Random.h"
-#include "Core/Math/Vector2.h"
-#include "ECS/EntityBuilder.h"
-#include "ECS/EntityManager.h"
+
 
 ASENGINE_SERIALIZE_STRUCT(BouncingFoxSpawner, Count);
 
-void BouncingFoxSpawner::OnCreate(EntityID entityID)
+void BouncingFoxSpawner::Spawn(uint32_t count)
 {
-    for (uint32_t i = 0; i < Count; i++)
+    EntityBuilder boucingFoxBuilder;
+    boucingFoxBuilder.AddComponents(Transform2D{}, BouncingFox{});
+
+    auto& fox = boucingFoxBuilder.GetComponent<BouncingFox>();
+    auto& transform = boucingFoxBuilder.GetComponent<Transform2D>();
+
+    for (uint32_t i = 0; i < count; i++)
     {
         // craete entity builder
-        EntityBuilder boucingFoxBuilder;
-
-        BouncingFox fox;
         fox.Velocity = Vector2::RIGHT().Rotate(Random::Range(0.0f, 2.0f * Math::PI)) * Random::Range(150.0f, 300.0f);
-
-        Transform2D transform;
         transform.Position = Vector2(320.0f, 180.0f) / 2.0f;
-
-        boucingFoxBuilder.AddComponents(transform, fox);
 
         // spawn foxes
         EntityManager::GetInstance().Create(boucingFoxBuilder);
     }
+}
+
+void BouncingFoxSpawner::OnCreate(EntityID entityID)
+{
+    Spawn(Count);
 }
 
 void BouncingFoxSpawner::OnDestroy() {}

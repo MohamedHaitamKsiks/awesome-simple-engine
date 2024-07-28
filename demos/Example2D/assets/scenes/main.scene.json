@@ -2,7 +2,7 @@
   "Entities": [
     {
       "BouncingFoxSpawner": {
-        "Count": 10000
+        "Count": 1
       }
     },
     {
@@ -21,7 +21,27 @@
           "y": 1.0
         },
         "Rotation": 0.0,
-        "Entities": []
+        "Entities": [
+          {
+            "Transform2D": {
+              "Position": {
+                "x": 16.0,
+                "y": 16.0
+              },
+              "Scale": {
+                "x": 2.0,
+                "y": 2.0
+              },
+              "Rotation": 45.0
+            },
+            "BouncingFox": {
+              "Velocity": {
+                "x": 0.0,
+                "y": 0.0
+              }
+            }
+          }
+        ]
       }
     },
     {

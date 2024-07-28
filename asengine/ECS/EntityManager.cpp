@@ -53,10 +53,7 @@ namespace ASEngine
     {
         EntityData& data = m_Entities.Get(entityID);
         if (data.IsDestroyed)
-        {
-            Debug::Error("Warning: Entity", entityID, "already removed!");
             return;
-        }
 
         // queue entity to destroy
         data.IsDestroyed = true;
@@ -85,6 +82,8 @@ namespace ASEngine
 
             // get entity data
             auto& entityData = m_Entities.Get(entityID);
+            if (entityData.IsDestroyed)
+                continue;
 
             // destroy entity
             if (!entityData.Persistent)

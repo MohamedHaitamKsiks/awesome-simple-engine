@@ -1,4 +1,5 @@
 #include "Font.h"
+#include "Core/Math/Math.h"
 #include "Core/Math/Vector2.h"
 #include "Renderer/Material/Material.h"
 #include "Renderer/Texture/Texture.h"
@@ -84,7 +85,6 @@ namespace ASEngine
         ASENGINE_ASSERT(FT_New_Memory_Face(ftLib, reinterpret_cast<FT_Byte*>(fontBuffer.GetData()), fontBuffer.GetSize(), 0, &face) == 0, "Failed to create font face!");
 
         FT_Set_Pixel_Sizes(face, 0, size);
-        //FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
 
         // font image
         Image fontImage;
@@ -155,5 +155,42 @@ namespace ASEngine
         m_CharacterSeparation = characterSeparation;
         m_LineSeparation = lineSeparation;
         m_SpaceSize = spaceSize;
+    }
+
+    Vector2 Font::GetExtremities(const std::string& text) const
+    {
+        Vector2 cursorPosition = Vector2::ZERO();
+        Vector2 extremities = Vector2::ZERO();
+
+        for (auto character: text)
+        {
+            auto& characterInfo = GetCharacterInfo(character);
+
+            // return to line
+            if (character == '\n')
+            {
+                cursorPosition.x = 0.0f;
+                cursorPosition.y += static_cast<float>(GetLineSeparation() + GetSize());
+            }
+            // space
+            else if (character == ' ')
+            {
+                cursorPosition.x += static_cast<float>(GetSpaceSize());
+            }
+            // other characters
+            else
+            {
+                cursorPosition.x += static_cast<float>(characterInfo.Width + GetCharacterSeparation());
+            }
+
+            // compute extremities
+            extremities.x = Math::Max(extremities.x, cursorPosition.x);
+            extremities.y = Math::Max(extremities.y, cursorPosition.y);
+        }
+
+        // add one line to extremities
+        extremities.y += GetSize();
+
+        return extremities;
     }
 } // namespace ASEngine

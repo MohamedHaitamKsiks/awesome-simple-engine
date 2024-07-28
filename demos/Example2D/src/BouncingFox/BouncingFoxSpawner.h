@@ -8,6 +8,7 @@ using namespace ASEngine;
 struct BouncingFoxSpawner: public Component<BouncingFoxSpawner>
 {
     uint32_t Count = 0;
+    void Spawn(uint32_t count);
 
     void OnCreate(EntityID entityID) override;
     void OnDestroy() override;

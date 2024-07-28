@@ -29,6 +29,7 @@ private:
     void Init() override;
     void Update(float delta) override;
     void OnRender2D(Renderer2D& renderer2D);
+    void OnInputEvent(const InputEvent& event) override;
     void Terminate() override;
 };
 

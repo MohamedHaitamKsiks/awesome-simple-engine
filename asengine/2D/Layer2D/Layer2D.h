@@ -22,12 +22,31 @@
 
 namespace ASEngine
 {
+    enum class TextHorizontalAlign
+    {
+        LEFT,
+        CENTER,
+        RIGHT
+    };
+
+    enum class TextVerticalAlign
+    {
+        TOP,
+        MIDDLE,
+        BOTTOM
+    };
+
+
     // layer 2D
     class ASENGINE_API Layer2D
     {
     public:
         Layer2D() {}
         ~Layer2D() {}
+
+        // porhibit copy
+        Layer2D(const Layer2D&) = delete;
+        Layer2D& operator=(const Layer2D&) = delete;
 
         // draw quad 2d to layer
         void DrawQuad2D(const Quad2D& quad2D, const ResourceRef<Material>& material);
@@ -47,6 +66,11 @@ namespace ASEngine
         // draw fill rectangle
         void DrawFillRectangle(const Vector2& size, const Matrix3x3& transform, const Color& color);
 
+        // draw line
+        void DrawLine(const Vector2& start, const Vector2& end, float lineThickness, const Matrix3x3& transform, const Color& color);
+
+        // draw line using material
+        void DrawLine(const Vector2& start, const Vector2& end, float lineThickness, const Matrix3x3& transform, const Color& color, const ResourceRef<Material>& material);
 
         // draw text
         inline void DrawText(const ResourceRef<Font>& font, const std::string text, const Matrix3x3& transform, const Color& color)
@@ -57,6 +81,14 @@ namespace ASEngine
         // draw text with material
         void DrawText(const ResourceRef<Font>& font, const std::string text, const Matrix3x3& transform, const Color& color, const ResourceRef<Material>& material);
 
+        // draw text with align
+        void DrawTextAlign(const ResourceRef<Font>& font, const std::string text, const Matrix3x3& transform, TextHorizontalAlign horizontalAlign, TextVerticalAlign verticalAlign, const Color& color)
+        {
+            DrawTextAlign(font, text, transform, horizontalAlign, verticalAlign, color, font->GetSprite()->GetMaterial());
+        }
+
+        // draw text with align and material
+        void DrawTextAlign(const ResourceRef<Font>& font, const std::string text, const Matrix3x3& transform, TextHorizontalAlign horizontalAlign, TextVerticalAlign verticalAlign, const Color& color, const ResourceRef<Material>& material);
 
     protected:
         friend class Renderer2D;
@@ -66,6 +98,7 @@ namespace ASEngine
 
         // draw layer
         void Draw(const Matrix3x3& cameraTranform, const Matrix3x3& viewportTransform);
+
     private:
         // quad 2d command with material
         struct Quad2DCommand

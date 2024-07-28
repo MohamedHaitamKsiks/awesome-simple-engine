@@ -24,7 +24,6 @@ namespace ASEngine
         Vector2 Position = Vector2::ZERO();
         Vector2 Scale = Vector2::ONE();
         float Rotation = 0.0f;
-        std::vector<EntityBuilder> Entities = {};
 
         // get local transformation matrix
         inline Matrix3x3 GetLocalTransform() const
@@ -52,6 +51,9 @@ namespace ASEngine
 
     private:
         std::unordered_set<EntityID> m_ChildIDs{}; // should have the transform component
+        std::vector<EntityBuilder> m_ChildBuilders = {}; //
+        friend class Serializer;
+
         EntityID m_ParentID = CHUNK_NULL;
         EntityID m_OwnerID = CHUNK_NULL; // id of owner entity
 

@@ -166,6 +166,7 @@ set (SOURCE
     asengine/2D/Renderer2D/Renderer2D.cpp
     asengine/2D/Sprite/Sprite.cpp
     asengine/2D/Font/Font.cpp
+    asengine/2D/Module2D.cpp
     #platform src
     ${PLATFORM_SPECIFIC_SOURCES}
 )

@@ -1,6 +1,7 @@
 #ifndef __ASENGINE_FONT_H
 #define __ASENGINE_FONT_H
 
+#include "Core/Math/Vector2.h"
 #include "Renderer/Texture/Texture.h"
 #include "Renderer/Material/Material.h"
 
@@ -75,6 +76,9 @@ namespace ASEngine
         {
             return m_SpaceSize;
         }
+
+        // get extremities of string if rendered wiht his font (to be able to align it)
+        Vector2 GetExtremities(const std::string& text) const;
 
     private:
         ResourceRef<Sprite> m_Sprite = ResourceRef<Sprite>::NONE();

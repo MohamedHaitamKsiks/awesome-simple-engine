@@ -2,6 +2,7 @@
 
 #include "2D/Quad2D/Quad2D.h"
 #include "2D/Renderer2D/Renderer2D.h"
+#include "Core/Math/Matrix3x3.h"
 #include "Core/Math/Vector2.h"
 #include "Renderer/Material/Material.h"
 #include "Renderer/Renderer.h"
@@ -40,7 +41,8 @@ namespace ASEngine
 
         // cache names
         m_Renderer2DName = UniqueString("Renderer2D");
-        m_CameraTransformName = UniqueString("CameraTransform");
+        m_CameraTransformName = UniqueString("CameraTransform");void DrawLine(const Vector2& start, const Vector2& end, const Color& color, const ResourceRef<Material>& material);
+
         m_ViewportTransfromName = UniqueString("ViewportTransform");
     }
 
@@ -82,13 +84,31 @@ namespace ASEngine
         quad2D.Create(size, transform, color, Vector2::ZERO(), Vector2::ONE());
     }
 
+    void Layer2D::DrawLine(const Vector2& start, const Vector2& end, float lineThickness, const Matrix3x3& transform, const Color& color)
+    {
+        DrawLine(start, end, lineThickness, transform, color, Renderer2D::GetInstance().GetFillRectangleDefaultMaterial());
+    }
+
+    void Layer2D::DrawLine(const Vector2& start, const Vector2& end, float lineThickness, const Matrix3x3& transform, const Color& color, const ResourceRef<Material>& material)
+    {
+        // get line params
+        float lineLenght = (end - start).Length();
+        float lineAngle = -(end - start).Angle();
+
+        // get transform
+        Matrix3x3 lineTransform = transform * Matrix3x3::Transform(start, Vector2::ONE(), lineAngle);
+
+        // draw line as quad
+        Quad2D& quad2D = DrawQuad2D(material);
+        quad2D.Create(Vector2(lineLenght, lineThickness), lineTransform, color, Vector2::ZERO(), Vector2::ONE());
+    }
+
     void Layer2D::DrawText(const ResourceRef<Font>& font, const std::string text, const Matrix3x3& transform, const Color& color, const ResourceRef<Material>& material)
     {
         Vector2 cursorPosition = Vector2::ZERO();
         for (auto character: text)
         {
             auto& characterInfo = font->GetCharacterInfo(character);
-
 
             // return to line
             if (character == '\n')
@@ -112,6 +132,42 @@ namespace ASEngine
         }
     }
 
+    void Layer2D::DrawTextAlign(const ResourceRef<Font>& font, const std::string text, const Matrix3x3& transform, TextHorizontalAlign horizontalAlign, TextVerticalAlign verticalAlign, const Color& color, const ResourceRef<Material>& material)
+    {
+        Vector2 alignOffset = Vector2::ZERO();
+        Vector2 extremities = font->GetExtremities(text);
+
+        // get horizontal align offset
+        if(horizontalAlign == TextHorizontalAlign::LEFT)
+        {
+            alignOffset.x = 0.0f;
+        }
+        else if (horizontalAlign == TextHorizontalAlign::CENTER)
+        {
+            alignOffset.x = -extremities.x * 0.5f;
+        }
+        else
+        {
+            alignOffset.x = -extremities.x;
+        }
+
+        // get vertical align offset
+        if(verticalAlign == TextVerticalAlign::TOP)
+        {
+            alignOffset.y = 0.0f;
+        }
+        else if (verticalAlign == TextVerticalAlign::MIDDLE)
+        {
+            alignOffset.y = -extremities.y * 0.5f;
+        }
+        else
+        {
+            alignOffset.y = -extremities.y;
+        }
+
+        // draw text
+        DrawText(font, text, transform * Matrix3x3::Translate(alignOffset), color, material);
+    }
 
     void Layer2D::Draw(const Matrix3x3& cameraTranform, const Matrix3x3& viewportTransform)
     {

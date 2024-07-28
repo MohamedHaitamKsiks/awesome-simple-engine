@@ -13,12 +13,7 @@ namespace ASEngine
 {
     void Registry()
     {
-        ASENGINE_REGISTER_COMPONENT(Transform2D);
-        ASENGINE_REGISTER_COMPONENT(Camera2D);
-        ASENGINE_REGISTER_SYSTEM(Renderer2D);
-
-        ASENGINE_REGISTER_RESOURCE_CLASS(Sprite);
-        ASENGINE_REGISTER_RESOURCE_CLASS(Font);
+        Module2D::Init();
 
         ASENGINE_REGISTER_COMPONENT(CameraController);
         ASENGINE_REGISTER_COMPONENT(BouncingFox);

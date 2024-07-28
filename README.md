@@ -1,33 +1,61 @@
 # Awesome Simple Engine
 
-Cross-platform game engine written with c++. 
+Cross-platform game engine written with c++.
 
 ## Dependencies
-  
+
 ### Debian / Ubuntu
 
 Install depencies:
 
 ```sh
-#install emsdk
+#install emsdk for web
 ./install_emsdk.sh
 
 #other dependencies
 sudo apt update &&
 sudo apt-get -y install cmake &&
-sudo apt-get -y install g++-mingw-w64 && 
-sudo apt-get -y install freeglut3-dev
+sudo apt-get -y install g++-mingw-w64 &&
+sudo apt-get -y install freeglut3-dev &&
+sudo apt-get -y install xorg-dev libgl1-mesa-dev
 ```
 
-### Windows
+## Setup
 
-Use WSL to run ubuntu commands and install dependencies (Not tested).
+To compile and run unit test of the engine run the setup.py script
+
+```sh
+python3 setup.py
+```
+
+## Run Demos
+
+Demos are located in the /demos folder. You can run them with this command:
+
+```sh
+./run_demo.sh <demo-name> <platform-name>
+```
+
+Example:
+
+Running Example2D demo:
+
+```sh
+./run_demo.sh Example2D linux
+```
+
+![10,0000 sprites](./screenshots/10000_sprites_example.png?raw=true)
+
 
 ## Features
 
-### API Agnostic Renderer
+### 2D
 
-ASEgnine offers a low level renderer that gives the user more control while also being easier to use than your typical OpenGL or Vulkan. 
+
+
+### Low Level Renderer
+
+ASEgnine offers a low level renderer that gives the user more control while also being easier to use than your typical OpenGL or Vulkan.
 
 Only OpenGL is supported for now. But I plan to add Vulkan soon.
 
@@ -35,7 +63,7 @@ Only OpenGL is supported for now. But I plan to add Vulkan soon.
 
 Buffers are used to store data in the GPU. There are 3 types of buffers:
 
-1. Array Buffers 
+1. Array Buffers
 2. Index Buffers
 3. Uniform Buffers
 
@@ -56,7 +84,7 @@ A texture is an image stored in the GPU.
 
 Example:
 ```cpp
-// load the png 
+// load the png
 Image image{};
 image.LoadPNG("path.to.image.png");
 
@@ -84,7 +112,7 @@ ResourceRef<Texture> texture = Texture::GetResourceClass().Load("textures/lead.t
 
 ### Shaders
 
-ASEngine supports Vulkan GLSL. When you build your game project all the shaders present in the assets folder gets compiled to their .spirv equivilent. 
+ASEngine supports Vulkan GLSL. When you build your game project all the shaders present in the assets folder gets compiled to their .spirv equivilent.
 
 Make sure your shader codes ends with .frag or .vert.
 
@@ -130,7 +158,7 @@ void main() {
 3. VertexInputDescriptor
 
 ```json
-{  
+{
   "VertexInputLayouts":
   [
     {
@@ -210,7 +238,7 @@ Materials are serializable resources. You can create them as json files in the a
 }
 ```
 
-### Viewports 
+### Viewports
 
 Viewports are rendering contexts that allow you to draw onto a framebuffer and retrieve the results as textures.
 
@@ -293,7 +321,7 @@ ResourceRef<Texture> createdTexture = textureClass.New();
 // loading resource
 ResourceRef<Texture> loadedTexture = textureClass.Load("assets/example.texture.json");
 
-// automatically destroyed if not needed 
+// automatically destroyed if not needed
 ```
 
 ### Create a resource class
@@ -330,7 +358,7 @@ ASENGINE_REGISTER_RESOURCE_CLASS(Buffer);
 
 If you want a resource class with different implementations (useful for API agnostic architectures), you can register your resource class like this:
 ```cpp
-ASENGINE_REGISTER_ABSTRACT_RESOURCE(Buffer, OpenGLBuffer); 
+ASENGINE_REGISTER_ABSTRACT_RESOURCE(Buffer, OpenGLBuffer);
 ```
 
 ### Entity Component System
@@ -350,7 +378,7 @@ Create a struct that inherits from Component.
 Example:
 
 ````cpp
-struct SpriteRenderer: public Component<SpriteComponent> 
+struct SpriteRenderer: public Component<SpriteComponent>
 {
   ResourceRef<Sprite> SpriteToRender;
   float Frame = 0.0f;
@@ -376,7 +404,7 @@ public:
   {
     // query components
     EntityQuery<SpriteRenderer, TransformComponent>query{};
-    
+
     // if you have a small number of components you can use this
     query.ForEach([&delta](SpriteComponent& sprite, TransformComponent& transform)
     {
@@ -388,7 +416,7 @@ public:
     {
       for (size_t i = 0; i < count; i++)
       {
-        // behaviour 
+        // behaviour
       }
     });
   }
