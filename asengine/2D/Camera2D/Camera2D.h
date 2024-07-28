@@ -13,6 +13,7 @@ namespace ASEngine
     struct ASENGINE_API Camera2D: public Component<Camera2D>
     {
         ResourceRef<Viewport> Target = ResourceRef<Viewport>::NONE();
+        bool PixelSnapping = false;
         std::unordered_set<UniqueString> Layers = {};
 
         void OnCreate(EntityID entityID);

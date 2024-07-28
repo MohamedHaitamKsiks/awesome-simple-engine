@@ -44,6 +44,7 @@ namespace ASEngine
                 // process type
                 const auto &memberType = glsl.get_type(memberTypes[i]);
                 const auto &baseMemberType = memberType.basetype;
+                Debug::Log(glsl.get_member_name(uniformBufferType.self, i), baseMemberType, spirv_cross::SPIRType::UInt);
 
                 // adapt base member type to ShaderIdentifierType
                 switch (baseMemberType)

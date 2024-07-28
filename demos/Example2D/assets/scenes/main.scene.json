@@ -8,6 +8,7 @@
     {
       "Camera2D": {
         "Layers": ["Default"],
+        "PixelSnapping": true,
         "Target": "viewports/pixel.viewport.json"
       },
       "CameraController": {},

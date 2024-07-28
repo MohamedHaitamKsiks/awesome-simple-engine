@@ -97,7 +97,7 @@ namespace ASEngine
         void Init();
 
         // draw layer
-        void Draw(const Matrix3x3& cameraTranform, const Matrix3x3& viewportTransform);
+        void Draw(const Matrix3x3& cameraTranform, const Matrix3x3& viewportTransform, bool pixelSnapping);
 
     private:
         // quad 2d command with material
@@ -122,6 +122,7 @@ namespace ASEngine
         UniqueString m_Renderer2DName;
         UniqueString m_CameraTransformName;
         UniqueString m_ViewportTransfromName;
+        UniqueString m_PixelSnappingName;
 
         // vbo
         ResourceRef<Buffer> m_VertexBuffer = ResourceRef<Buffer>::NONE();

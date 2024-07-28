@@ -98,7 +98,7 @@ namespace ASEngine
                 if (camera2D.Layers.find(layerName) == camera2D.Layers.end())
                     continue;
 
-                m_Layers2D[layerName].Draw(cameraTransform, viewportTransform);
+                m_Layers2D[layerName].Draw(cameraTransform, viewportTransform, camera2D.PixelSnapping);
             }
 
             renderer.End();
