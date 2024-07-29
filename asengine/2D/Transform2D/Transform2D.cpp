@@ -9,7 +9,7 @@
 namespace ASEngine
 {
     template<>
-    void Serializer::Deserialize(const Json& object, Transform2D& dest)
+    void  Serializer::Deserialize(const Json& object, Transform2D& dest)
     {
         // deserialize fields
         Serializer::Deserialize(object.at("Position"), dest.Position);
@@ -28,7 +28,7 @@ namespace ASEngine
     }
 
     template<>
-    Json Serializer::Serialize(const Transform2D& dest)
+    Json  Serializer::Serialize(const Transform2D& dest)
     {
         return Json({});
     }

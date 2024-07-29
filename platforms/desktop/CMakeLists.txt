@@ -10,6 +10,7 @@ project(desktop)
 #include the engine
 include_directories(${ASENGINE_INCLUDE_PATH})
 link_directories(${ASENGINE_LIB_PATH})
+include(${ASENGINE_LIB_PATH}/asengine_libraries.cmake)
 
 #add project
 include_directories(${ASENGINE_PROJECT_PATH})
@@ -19,6 +20,6 @@ add_executable(build  main.cpp)
 
 target_link_libraries(
     build
-    PRIVATE ${PROJECT_LIBRARIES}
-    PUBLIC asengine
+    ${PROJECT_LIBRARIES}
+    ${ASENGINE_LIBRARIES}
 )

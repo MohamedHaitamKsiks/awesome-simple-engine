@@ -6,11 +6,11 @@
 #include "ECS/Component.h"
 #include "Renderer/Viewport/Viewport.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
-    struct ASENGINE_API Camera2D: public Component<Camera2D>
+    struct  Camera2D: public Component<Camera2D>
     {
         ResourceRef<Viewport> Target = ResourceRef<Viewport>::NONE();
         bool PixelSnapping = false;

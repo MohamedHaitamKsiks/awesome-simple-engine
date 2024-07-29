@@ -4,12 +4,12 @@
 #include "Core/Math/Vector2.h"
 #include "Renderer/Color.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // base definition of vertex 2D
-    struct ASENGINE_API Vertex2D
+    struct  Vertex2D
     {
         Vector2 Position;
         Vector2 TextureCoord;

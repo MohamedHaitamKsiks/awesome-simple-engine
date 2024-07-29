@@ -4,13 +4,13 @@
 namespace ASEngine
 {
     template<>
-    Json Serializer::Serialize(const Camera2D& camera2D)
+    Json  Serializer::Serialize(const Camera2D& camera2D)
     {
         return Json({});
     }
 
     template<>
-    void Serializer::Deserialize(const Json& object, Camera2D& camera2D)
+    void  Serializer::Deserialize(const Json& object, Camera2D& camera2D)
     {
         // get targetr
         if (object.find("Target") != object.end())

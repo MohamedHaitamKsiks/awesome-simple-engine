@@ -49,7 +49,7 @@ namespace ASEngine \
     } \
     \
     template <> \
-    Json Serializer::Serialize(const ResourceRef<Type> &dest) \
+    Json  Serializer::Serialize(const ResourceRef<Type> &dest) \
     { \
         return Json(); \
     } \

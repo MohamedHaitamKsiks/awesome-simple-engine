@@ -39,7 +39,7 @@
     { \
         ASENGINE_ASSERT(object.is_object(), ""); \
         FOREACH(__DESERIALIZE_STRUCT_FIELD,  __VA_ARGS__) \
-    } 
+    }
 
 
 #endif // __ASENGINE_SERIALIZE_STRUCT_H

@@ -15,7 +15,7 @@
 #include "Signature.h"
 #include "ComponentManager.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
@@ -25,7 +25,7 @@ namespace ASEngine
     constexpr const ComponentIndex COMPONENT_INDEX_NULL = UINT32_MAX; 
 
     // archetype: list of components that an entity have. Picture it as a type of entity.
-    class ASENGINE_API Archetype
+    class  Archetype
     {
     public:
         // add component to archetype

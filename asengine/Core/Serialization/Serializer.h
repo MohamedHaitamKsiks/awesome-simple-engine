@@ -1,7 +1,7 @@
 #ifndef __ASENGINE_SERIALIZER_H
 #define __ASENGINE_SERIALIZER_H
 
-#include "API/API.h"
+
 
 #include<string>
 #include "Core/Error/Assertion.h"
@@ -10,7 +10,7 @@
 namespace ASEngine
 {
     // serializer of a type
-    class ASENGINE_API Serializer
+    class  Serializer
     {
     public:
         // serialize

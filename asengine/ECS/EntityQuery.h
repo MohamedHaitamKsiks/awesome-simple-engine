@@ -12,14 +12,14 @@
 #include "Signature.h"
 
 #include "Macros/Foreach.h"
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // ecs query to get list of archetypes
     // all entities will be queried in construction
     template <typename T, typename... types>
-    class ASENGINE_API EntityQuery
+    class  EntityQuery
     {
     public:
         EntityQuery()

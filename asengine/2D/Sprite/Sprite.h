@@ -14,11 +14,11 @@
 #include "Resource/ResourceDefinition.h"
 #include "Resource/ResourceSerialization.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
-    class ASENGINE_API Sprite: public Resource
+    class  Sprite: public Resource
     {
     ASENGINE_DEFINE_RESOURCE(Sprite);
     ASENGINE_SERIALIZE_RESOURCE(Sprite);

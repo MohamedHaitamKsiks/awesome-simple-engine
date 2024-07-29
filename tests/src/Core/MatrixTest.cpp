@@ -19,11 +19,11 @@ inline void MatrixTest<MatrixType>::Describe()
             }
             matrixObject.push_back(column);
         }
-        
+
         // deserialize
         MatrixType matrix;
         Serializer::Deserialize(matrixObject, matrix);
-    
+
         // compare result
         for (uint32_t j = 0; j < MatrixType::GetColumnsSize(); j++)
         {
@@ -54,12 +54,12 @@ void Matrix3x3Test::DescribeSpecializedTests()
     {
         Matrix3x3 a = Matrix3x3::Scale(Vector2::ONE() * 2.0f);
         Matrix3x3 b = Matrix3x3::Translate(Vector2{160.0f, 158.0f});
-        Matrix3x3 ab = a * b;
+        Matrix3x3 ab =  b * a ;
 
         ASENGINE_EXPECT(ab[0][0] == 2.0f);
         ASENGINE_EXPECT(ab[1][1] == 2.0f);
-        ASENGINE_EXPECT(ab[0][2] == 160.0f);
-        ASENGINE_EXPECT(ab[1][2] == 158.0f);
+        ASENGINE_EXPECT(ab[2][0] == 160.0f);
+        ASENGINE_EXPECT(ab[2][1] == 158.0f);
     });
 }
 

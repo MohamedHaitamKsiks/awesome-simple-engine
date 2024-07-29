@@ -1,7 +1,7 @@
 #ifndef __ASENGINE_RENDERER_H
 #define __ASENGINE_RENDERER_H
 
-#include "API/API.h"
+
 #include "VertexInput/VertexInput.h"
 
 #include "Buffer/Buffer.h"
@@ -20,7 +20,7 @@ namespace ASEngine
         You can create multiple classes inheriting from this class with specifications
         For example: OpenGLRenderer, VulkanRenderer...
     */
-    class ASENGINE_API Renderer : public ISystem
+    class  Renderer : public ISystem
     {
     ASENGINE_DEFINE_SINGLETON(Renderer);
     public:

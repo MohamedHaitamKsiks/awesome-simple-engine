@@ -12,7 +12,7 @@ ASENGINE_SERIALIZE_RESOURCE_REF(Sprite);
 namespace ASEngine
 {
     template <>
-    void Serializer::Deserialize(const Json &object, Sprite &dest)
+    void  Serializer::Deserialize(const Json &object, Sprite &dest)
     {
         // get texture
         ResourceRef<Texture> texture;
@@ -54,7 +54,7 @@ namespace ASEngine
     }
 
     template <>
-    Json Serializer::Serialize(const Sprite &value)
+    Json  Serializer::Serialize(const Sprite &value)
     {
         return Json({});
     }

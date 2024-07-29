@@ -2,14 +2,14 @@
 #ifndef __ASENGINE_DEBUG_H
 #define __ASENGINE_DEBUG_H
 
-#include "API/API.h"
+
 
 #include<sstream>
 #include<string>
 
 namespace ASEngine {
 
-	class ASENGINE_API Debug
+	class  Debug
 	{
 	public:
 		// set color types

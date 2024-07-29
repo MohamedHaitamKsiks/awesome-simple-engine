@@ -9,12 +9,12 @@
 #include "Signature.h"
 #include "Archetype.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // builder to create a new entity
-    class ASENGINE_API EntityBuilder
+    class  EntityBuilder
     {
         public:
             EntityBuilder() {};

@@ -9,12 +9,12 @@
 #include "ECS/Component.h"
 #include "ECS/EntityBuilder.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // transfom 2d
-    struct ASENGINE_API Transform2D: public Component<Transform2D>
+    struct  Transform2D: public Component<Transform2D>
     {
     public:
         Transform2D() = default;

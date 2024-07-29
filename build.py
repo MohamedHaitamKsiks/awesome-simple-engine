@@ -154,15 +154,16 @@ def compileEngineFor(plarform: str, debug: bool = False) -> int:
 
     #copy engine (web is a static library)
     engineLibrariesExt = {
-        "linux": "*.so",
-        "windows": "*.dll",
-        "web": "*.a"
+        "linux": ["*.a", "asengine_libraries.cmake"],
+        "windows": ["*.a", "asengine_libraries.cmake"],
+        "web": ["*.a", "asengine_libraries.cmake"]
     }
 
-    engineLibraryExt = engineLibrariesExt[plarform]
-    engineLibraryFiles = pathlib.Path(buildFolderPath).rglob(engineLibraryExt)
-    for file in engineLibraryFiles:
-        shutil.copy2(file, f"{libPath}")
+    engineLibraryExts = engineLibrariesExt[plarform]
+    for engineLibraryExt in engineLibraryExts:
+        engineLibraryFiles = pathlib.Path(buildFolderPath).rglob(engineLibraryExt)
+        for file in engineLibraryFiles:
+            shutil.copy2(file, f"{libPath}")
 
     # return code of compilation
     return compilationResult

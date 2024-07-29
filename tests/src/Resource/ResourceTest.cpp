@@ -27,13 +27,13 @@ private:
 ASENGINE_SERIALIZE_RESOURCE_REF(TestResourceType);
 
 template <>
-void Serializer::Deserialize(const Json &object, TestResourceType &dest)
+void  Serializer::Deserialize(const Json &object, TestResourceType &dest)
 {
     dest.SetValue(object.at("Value").get<int>());
 }
 
 template <>
-Json Serializer::Serialize(const TestResourceType &value)
+Json  Serializer::Serialize(const TestResourceType &value)
 {
     Json object = Json({});
     object["Value"] = value.GetValue();

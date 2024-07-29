@@ -4,12 +4,12 @@
 #include <cstdint>
 #include <cstddef>
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // memory safe byte buffer to fill with data
-    class ASENGINE_API ByteBuffer
+    class  ByteBuffer
     {
     public: 
         ByteBuffer() {};

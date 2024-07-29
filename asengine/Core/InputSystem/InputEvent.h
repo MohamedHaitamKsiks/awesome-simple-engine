@@ -7,7 +7,7 @@
 #include "Core/Math/Vector2.h"
 
 #include "Keycodes.h"
-#include "API/API.h"
+
 
 namespace ASEngine 
 {
@@ -36,7 +36,7 @@ namespace ASEngine
 	};
 
 	// mouse input button
-	struct ASENGINE_API InputEventMouseButton
+	struct  InputEventMouseButton
 	{
 		static constexpr InputEventType TYPE() 
 		{
@@ -48,7 +48,7 @@ namespace ASEngine
 	};
 
 	// mouse input move
-	struct ASENGINE_API InputEventMouseMove
+	struct  InputEventMouseMove
 	{
 		static constexpr InputEventType TYPE() 
 		{
@@ -58,7 +58,7 @@ namespace ASEngine
 	};
 
 	// keyboard
-	struct ASENGINE_API InputEventKeyboard
+	struct  InputEventKeyboard
 	{
 		static constexpr InputEventType TYPE()
 		{
@@ -69,7 +69,7 @@ namespace ASEngine
 	};
 
 	// megaclass of all input event types so we avoid inheritance. since the number of events can't be that hight
-	class ASENGINE_API InputEvent
+	class  InputEvent
 	{
 	public:
 		// get event type

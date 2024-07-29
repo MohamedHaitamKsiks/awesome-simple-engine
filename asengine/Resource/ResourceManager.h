@@ -17,7 +17,7 @@
 
 #include "Class/ClassManager.h"
 
-#include "API/API.h"
+
 
 // register abstract resource class
 #define ASENGINE_REGISTER_ABSTRACT_RESOURCE_CLASS(base, imp) ResourceManager::GetInstance().RegisterAbstractResourceClass<base, imp>(UniqueString(#base))
@@ -29,9 +29,9 @@ namespace ASEngine
 {
     class Resource;
 
-    // resource manager: 
+    // resource manager:
     // Responsible for resource collections
-    class ASENGINE_API ResourceManager
+    class  ResourceManager
     {
     ASENGINE_DEFINE_SINGLETON(ResourceManager);
 
@@ -42,11 +42,11 @@ namespace ASEngine
         {
             static_assert(std::is_base_of_v<Resource, Base>);
             static_assert(std::is_base_of_v<Base, Derived>);
-        
-            // register base class 
-            ClassManager::GetInstance().RegisterClass<Base>(resourceName);  
 
-            // add resource class of the derived 
+            // register base class
+            ClassManager::GetInstance().RegisterClass<Base>(resourceName);
+
+            // add resource class of the derived
             std::unique_ptr<IResourceClass> resourceClass = std::make_unique<ResourceClass<Derived>>(resourceName);
             RegisterResourceClass(resourceName, std::move(resourceClass));
         }
@@ -64,7 +64,7 @@ namespace ASEngine
         // get resource class by name
         inline IResourceClass& GetResouceClass(UniqueString resourceName)
         {
-            ASENGINE_ASSERT(m_ResourceClasses.find(resourceName) != m_ResourceClasses.end(), "Resource class not registered");
+            ASENGINE_ASSERT(m_ResourceClasses.find(resourceName) != m_ResourceClasses.end(), std::string(resourceName.GetString()) + "Resource class not registered");
             return *m_ResourceClasses[resourceName];
         }
 

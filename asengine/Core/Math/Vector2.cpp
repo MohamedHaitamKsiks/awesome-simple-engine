@@ -13,14 +13,14 @@ namespace ASEngine
 
         return Vector2
         {
-            x * cosAngle - y * sinAngle,
-            x * sinAngle + y * cosAngle
+            x * cosAngle + y * sinAngle,
+            -x * sinAngle + y * cosAngle
         };
     }
 
     // serialization of vector2
     template <>
-    Json Serializer::Serialize(const Vector2 &value)
+    Json  Serializer::Serialize(const Vector2 &value)
     {
         Json vector2Obj = Json({});
         vector2Obj["x"] = value.x;
@@ -30,7 +30,7 @@ namespace ASEngine
     }
 
     template <>
-    void Serializer::Deserialize(const Json &object, Vector2 &dest)
+    void  Serializer::Deserialize(const Json &object, Vector2 &dest)
     {
         ASENGINE_ASSERT(object.is_object(), "Can't deserialize Vecto2 if it's not an object");
         Serializer::Deserialize(object.at("x"), dest.x);

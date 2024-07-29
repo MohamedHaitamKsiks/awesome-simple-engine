@@ -1,12 +1,12 @@
 #ifndef __ASENGINE_COLOR_H
 #define __ASENGINE_COLOR_H
 
-#include "API/API.h"
+
 
 namespace ASEngine 
 {
 
-    struct ASENGINE_API Color
+    struct  Color
     {
         //red
         float r = 0.0f;

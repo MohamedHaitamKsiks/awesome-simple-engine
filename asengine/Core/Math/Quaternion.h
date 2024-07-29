@@ -1,12 +1,12 @@
 #ifndef __ASENGINE_QUATERNION_H
 #define __ASENGINE_QUATERNION_H
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // defintion of quaternion used for 3d rotations
-    struct ASENGINE_API Quaternion
+    struct  Quaternion
     {
         // quaternion axies
         // real part

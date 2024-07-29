@@ -16,7 +16,7 @@
 #include "ComponentCollection.h"
 #include "Signature.h"
 
-#include "API/API.h"
+
 
 // register component type
 #define ASENGINE_REGISTER_COMPONENT(component) ComponentManager::GetInstance().RegisterComponent<component>(UniqueString(#component))
@@ -24,7 +24,7 @@
 namespace ASEngine
 {
     // singleton that manages components
-    class ASENGINE_API ComponentManager
+    class  ComponentManager
     {
     ASENGINE_DEFINE_SINGLETON(ComponentManager);
     public:

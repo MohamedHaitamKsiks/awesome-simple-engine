@@ -9,12 +9,12 @@
 #include "Core/Memory/ByteBuffer.h"
 #include "Renderer/Color.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // image resource
-    class ASENGINE_API Image
+    class  Image
     {
     public:
         //constructor

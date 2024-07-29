@@ -11,7 +11,7 @@ ASENGINE_SERIALIZE_RESOURCE_REF(Shader);
 namespace ASEngine
 {
     template<>
-    void Serializer::Deserialize(const Json& object, Shader& dest)
+    void  Serializer::Deserialize(const Json& object, Shader& dest)
     {
         // load vertex source
         ResourceRef<ShaderSource> vertexSource;
@@ -30,7 +30,7 @@ namespace ASEngine
     }
 
     template<>
-    Json Serializer::Serialize(const Shader& value)
+    Json  Serializer::Serialize(const Shader& value)
     {
         return Json({});
     }

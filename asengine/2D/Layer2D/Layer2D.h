@@ -15,7 +15,7 @@
 #include "Renderer/Material/Material.h"
 
 
-#include "API/API.h"
+
 #include "Resource/ResourceRef.h"
 
 #define _ASENGINE_QUAD_MAX_COUNT 16383
@@ -38,7 +38,7 @@ namespace ASEngine
 
 
     // layer 2D
-    class ASENGINE_API Layer2D
+    class  Layer2D
     {
     public:
         Layer2D() {}

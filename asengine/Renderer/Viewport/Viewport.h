@@ -6,14 +6,14 @@
 #include "Resource/ResourceDefinition.h"
 #include "Resource/ResourceSerialization.h"
 
-#include "API/API.h"
+
 
 #include "Renderer/Texture/Texture.h"
 
 namespace ASEngine
 {
     // viewport context to render to
-    class ASENGINE_API Viewport: public Resource
+    class  Viewport: public Resource
     {
     ASENGINE_DEFINE_RESOURCE(Viewport);
     ASENGINE_SERIALIZE_RESOURCE(Viewport);

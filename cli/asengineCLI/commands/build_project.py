@@ -18,7 +18,7 @@ def buildProject(configPath: str, projectPath: str, platform: str, debug: bool =
     debugMode = "debug" if debug else "release"
 
     # error return
-    error = 0 
+    error = 0
     projectPath = relativeTo(projectPath, "")
 
     # check project validity
@@ -27,11 +27,11 @@ def buildProject(configPath: str, projectPath: str, platform: str, debug: bool =
         print('\n'.join(missingRequirements))
         return 1
 
-    #load config 
+    #load config
     config = {}
     with open(configPath) as file:
         config = json.loads(file.read())
-        
+
     assert(config != {})
 
     # check platform validity
@@ -70,13 +70,13 @@ def buildProject(configPath: str, projectPath: str, platform: str, debug: bool =
     #engine paths
     includePath = relativeTo(asenginePath, "./include")
 
-    #project source path 
+    #project source path
     projectSourcePath = relativeTo(projectPath, "./src");
-    libPath = relativeTo(asenginePath, f"./lib/{platformOS}/{debugMode}") 
+    libPath = relativeTo(asenginePath, f"./lib/{platformOS}/{debugMode}")
 
     #game build
     buildPath = relativeTo(tmpPath, "./build")
-    
+
     # compile and run
     os.chdir(buildPath)
 
@@ -90,21 +90,21 @@ def buildProject(configPath: str, projectPath: str, platform: str, debug: bool =
     elif platformOS == "web":
         removeIfExists("index.wasm")
         removeIfExists("index.html")
-    
-    #cmake 
+
+    #cmake
     cmakeBuildCommand = ["cmake"]
-    
+
     # add toolchains
     if platformOS == "windows":
         cmakeBuildCommand.append(f"-DCMAKE_TOOLCHAIN_FILE={cmakeWindowsToolChain}")
-    
+
     #compile with emcmake for web
     elif platformOS == "web":
         emcmakePath = relativeTo(emsdkPath, "./upstream/emscripten/emcmake")
         cmakeBuildCommand = [emcmakePath] + cmakeBuildCommand
 
 
-    # debug mode 
+    # debug mode
     if debug:
         cmakeBuildCommand.append("-DCMAKE_BUILD_TYPE=Debug")
 
@@ -112,7 +112,7 @@ def buildProject(configPath: str, projectPath: str, platform: str, debug: bool =
     cmakeBuildCommand.append(f"-DASENGINE_INCLUDE_PATH={includePath}")
     cmakeBuildCommand.append(f"-DASENGINE_LIB_PATH={libPath}")
     cmakeBuildCommand.append(f"-DASENGINE_PROJECT_PATH={projectSourcePath}")
-    
+
     # add build path
     cmakeBuildCommand.append("..")
 
@@ -126,12 +126,12 @@ def buildProject(configPath: str, projectPath: str, platform: str, debug: bool =
         error |= os.system("make")
 
     # copy dynamic libraries for linux and windows
-    if platformOS in ["windows", "linux"]:
-        dynamicLibraryExt = ".so" if platformOS == "linux" else ".dll" 
-        libsToCopy = pathlib.Path(libPath).rglob(f"*{dynamicLibraryExt}")
+    #if platformOS in ["windows", "linux"]:
+    #    dynamicLibraryExt = ".so" if platformOS == "linux" else ".dll"
+    #    libsToCopy = pathlib.Path(libPath).rglob(f"*{dynamicLibraryExt}")
 
-        for lib in libsToCopy:
-            shutil.copy2(lib, buildPath)
+    #   for lib in libsToCopy:
+    #        shutil.copy2(lib, buildPath)
 
     # run output
     if platformOS == "linux":

@@ -2,14 +2,14 @@
 #define __ASENGINE_RESOURCE_REF_H
 
 #include "Resource.h"
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // garbage collected reference to resource
     // AVOID CYCLIC REFERENCING
     template <typename T>
-    class ASENGINE_API ResourceRef
+    class  ResourceRef
     {
     public:
         constexpr ResourceRef()

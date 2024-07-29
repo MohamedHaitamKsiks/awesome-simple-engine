@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <memory>
 
-#include "API/API.h"
+
 
 #include "Class.h"
 #include "Object.h"
@@ -15,7 +15,7 @@
 namespace ASEngine
 {
     // manages classes    
-    class ASENGINE_API ClassManager
+    class  ClassManager
     {
     ASENGINE_DEFINE_SINGLETON(ClassManager);
     

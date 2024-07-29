@@ -18,8 +18,8 @@
 
 // macros to implement uniform buffer type
 #define ASENGINE_IMPLEMENT_UNIFORM_BUFFER_IDENTIFIER_TYPE(Type) \
-    template ASENGINE_API void Material::SetShaderParam<Type>(UniqueString uniformName, UniqueString fieldName, const Type &value); \
-    template ASENGINE_API const Type &Material::GetShaderParam<Type>(UniqueString uniformName, UniqueString fieldName) const;
+    template  void Material::SetShaderParam<Type>(UniqueString uniformName, UniqueString fieldName, const Type &value); \
+    template  const Type &Material::GetShaderParam<Type>(UniqueString uniformName, UniqueString fieldName) const;
 
 // define resource ref
 ASENGINE_SERIALIZE_RESOURCE_REF(Material);
@@ -38,7 +38,7 @@ namespace ASEngine
 
     // serialiazation start
     template<>
-    void Serializer::Deserialize(const Json& object, Material& dest)
+    void  Serializer::Deserialize(const Json& object, Material& dest)
     {
         // create the material
         ResourceRef<Shader> shader = ResourceRef<Shader>::NONE();
@@ -134,7 +134,7 @@ namespace ASEngine
     }
 
     template <>
-    Json Serializer::Serialize(const Material &material)
+    Json  Serializer::Serialize(const Material &material)
     {
         return Json({});
     }

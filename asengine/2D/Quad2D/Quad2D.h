@@ -8,12 +8,12 @@
 
 #include "Renderer/Color.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // quad vertices
-    struct ASENGINE_API Quad2D
+    struct  Quad2D
     {
         Vertex2D Vertices[4];
 

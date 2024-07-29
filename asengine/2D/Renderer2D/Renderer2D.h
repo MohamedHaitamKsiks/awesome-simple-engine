@@ -16,12 +16,12 @@
 
 #include "Core/Singleton/Singleton.h"
 
-#include "API/API.h"
+
 #include "Renderer/Texture/Texture.h"
 
 namespace ASEngine
 {
-    class ASENGINE_API Renderer2D: public ISystem
+    class  Renderer2D: public ISystem
     {
     ASENGINE_DEFINE_SINGLETON(Renderer2D);
     public:

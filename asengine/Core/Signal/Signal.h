@@ -5,7 +5,7 @@
 #include <functional>
 #include <cstdint>
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
@@ -14,7 +14,7 @@ namespace ASEngine
 
     // signal class
     template <typename T, typename... types>
-    class ASENGINE_API Signal
+    class  Signal
     {
     public:
         Signal() = default;

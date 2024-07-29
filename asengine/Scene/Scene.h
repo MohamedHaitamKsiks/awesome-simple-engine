@@ -10,11 +10,11 @@
 
 #include "ECS/EntityBuilder.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
-    class ASENGINE_API Scene: public Resource
+    class  Scene: public Resource
     {
     ASENGINE_DEFINE_RESOURCE(Scene);
     ASENGINE_SERIALIZE_RESOURCE(Scene);

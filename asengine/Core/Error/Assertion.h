@@ -1,7 +1,7 @@
 #ifndef __ASENGINE_ASSERT_H
 #define __ASENGINE_ASSERT_H
 
-#include "API/API.h"
+
 #include <string>
 
 #ifdef ASENGINE_NO_ASSERT
@@ -16,7 +16,7 @@
 
 namespace ASEngine
 {
-    class ASENGINE_API Assertion
+    class  Assertion
     {
     public:
         static void Expect(bool predicat, const std::string& predicatMessage, const std::string& errorMessage, const std::string& filePath, int line);

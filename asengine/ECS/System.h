@@ -2,12 +2,12 @@
 #define __ASENGINE_SYSTEM_H
 
 #include "Core/InputSystem/InputEvent.h"
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // system interface
-    class ASENGINE_API ISystem
+    class  ISystem
     {
     public:
         virtual ~ISystem() = default;

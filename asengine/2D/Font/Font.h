@@ -12,14 +12,14 @@
 
 #include "2D/Sprite/Sprite.h"
 
-#include "API/API.h"
+
 
 #define _ASENGINE_FONT_CHARACTER_NUMBER 128
 
 namespace ASEngine
 {
     // font
-    class ASENGINE_API Font: public Resource
+    class  Font: public Resource
     {
     ASENGINE_DEFINE_RESOURCE(Font);
     ASENGINE_SERIALIZE_RESOURCE(Font);

@@ -26,7 +26,7 @@ ASENGINE_SERIALIZE_RESOURCE_REF(Font);
 namespace ASEngine
 {
     template <>
-    void Serializer::Deserialize(const Json &object, Font &dest)
+    void  Serializer::Deserialize(const Json &object, Font &dest)
     {
         std::string fontPath = "";
         Serializer::Deserialize(object.at("FontPath"), fontPath);
@@ -54,7 +54,7 @@ namespace ASEngine
     }
 
     template <>
-    Json Serializer::Serialize(const Font &dest)
+    Json  Serializer::Serialize(const Font &dest)
     {
         return Json({});
     }
