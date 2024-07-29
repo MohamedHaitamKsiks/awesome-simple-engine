@@ -15,7 +15,7 @@ target_link_libraries(
     asengine-project
 )
 
-set(PROJECT_LIBRARIES 
+set(PROJECT_LIBRARIES
     asengine-project
     PARENT_SCOPE
 )

@@ -1,12 +1,12 @@
 #ifndef __ASENGINE_MODULE_H
 #define __ASENGINE_MODULE_H
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // module
-    class ASENGINE_API IModule
+    class  IModule
     {
     public:
         virtual ~IModule() {}

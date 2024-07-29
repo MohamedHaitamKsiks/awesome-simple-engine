@@ -1,0 +1,66 @@
+{
+  "Entities": [
+    {
+      "BouncingFoxSpawner": {
+        "Count": 1
+      }
+    },
+    {
+      "Camera2D": {
+        "Layers": ["Default"],
+        "PixelSnapping": true,
+        "Target": "viewports/pixel.viewport.json"
+      },
+      "CameraController": {},
+      "Transform2D": {
+        "Position": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "Rotation": 0.0,
+        "Entities": [
+          {
+            "Transform2D": {
+              "Position": {
+                "x": 16.0,
+                "y": 16.0
+              },
+              "Scale": {
+                "x": 2.0,
+                "y": 2.0
+              },
+              "Rotation": 45.0
+            },
+            "BouncingFox": {
+              "Velocity": {
+                "x": 0.0,
+                "y": 0.0
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Camera2D": {
+        "Layers": ["PixelViewport"]
+      },
+      "Transform2D": {
+        "Position": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "Rotation": 0.0,
+        "Entities": []
+      }
+    }
+  ]
+}

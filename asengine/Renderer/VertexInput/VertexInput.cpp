@@ -34,7 +34,7 @@ namespace ASEngine
 
     // vertex input serialiazation
     template <>
-    void Serializer::Deserialize(const Json& object, VertexInputLayout& dest)
+    void  Serializer::Deserialize(const Json& object, VertexInputLayout& dest)
     {
         ASENGINE_DESERIALIZE_STRUCT_FIELD(dest, Binding);
         ASENGINE_DESERIALIZE_STRUCT_FIELD(dest, InputRate);
@@ -82,7 +82,7 @@ namespace ASEngine
     }
 
     template <>
-    Json Serializer::Serialize(const VertexInputLayout& value)
+    Json  Serializer::Serialize(const VertexInputLayout& value)
     {
         Json object = Json({});
         ASENGINE_SERIALIZE_STRUCT_FIELD(value, Binding);

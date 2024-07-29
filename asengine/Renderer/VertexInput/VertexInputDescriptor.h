@@ -10,12 +10,12 @@
 
 #include "VertexInput.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // Describe the layout of the vertex input
-    class ASENGINE_API VertexInputDescriptor : public Resource
+    class  VertexInputDescriptor : public Resource
     {
     ASENGINE_DEFINE_RESOURCE(VertexInputDescriptor);
     ASENGINE_SERIALIZE_RESOURCE(VertexInputDescriptor);

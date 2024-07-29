@@ -4,11 +4,11 @@
 
 #include "Core/Error/Assertion.h"
 #include "Math.h"
-#include "API/API.h"
+
 
 namespace ASEngine 
 {
-    struct ASENGINE_API Vector3
+    struct  Vector3
     {
         //data
         float x = 0.0f;

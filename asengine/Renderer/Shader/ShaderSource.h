@@ -7,7 +7,7 @@
 #include "Resource/Resource.h"
 #include "Resource/ResourceDefinition.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
@@ -15,7 +15,7 @@ namespace ASEngine
     using SpirvBinary = std::vector<uint32_t>;
 
     // shader source resource (parsed from spirv binary)
-    class ASENGINE_API ShaderSource : public Resource
+    class  ShaderSource : public Resource
     {
     ASENGINE_DEFINE_RESOURCE(ShaderSource);
     public:
@@ -26,14 +26,14 @@ namespace ASEngine
 
         // load shader (use path to shader it is converted to spirv automatically)
         bool Load(const std::string& path) override;
-        
+
         // get shader params
         inline const ShaderParams& GetShaderParams() const
         {
             return m_Params;
         }
 
-        // get spirv 
+        // get spirv
         inline const SpirvBinary& GetSpirv() const
         {
             return m_Spirv;

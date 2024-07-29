@@ -11,12 +11,12 @@ namespace ASEngine
     {
         if (predicat)
             return;
-        
+
         Debug::Error(filePath, ":", line);
         Debug::Error("Assertion '", predicatMessage,"' failed");
         Debug::Error(errorMessage);
-        
-        ASEngine::GetInstance().Exit(1);
+
+        exit(1);
     }
-    
+
 } // namespace ASEngine

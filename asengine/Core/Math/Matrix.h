@@ -3,14 +3,14 @@
 
 #include <cstdint>
 #include "Column.h"
-#include "API/API.h"
+
 
 namespace ASEngine
 {
-    // define template for column-major matrix 
+    // define template for column-major matrix
     // The matrix is define by it's dimentions + a stride added to each column
     template <size_t Cols, size_t Rows, size_t Stride>
-    class ASENGINE_API Matrix
+    class  Matrix
     {
     protected:
         using ColumnType = Column<Rows, Stride>;
@@ -47,22 +47,30 @@ namespace ASEngine
             return static_cast<uint32_t>(Rows);
         }
 
-        // matrix multiplication (naive implementation)
+        // matrix multiplication
         template <size_t Cols_B>
-        friend constexpr Matrix<Cols_B, Rows, Stride> operator*(const Matrix &a, const Matrix<Cols_B, Cols, Stride> &b)
+        inline constexpr static void Multiply(const Matrix &a, const Matrix<Cols_B, Cols, Stride> &b,  Matrix<Cols_B, Rows, Stride>& result)
         {
-            Matrix<Cols_B, Rows, Stride> result;
-            for (int j = 0; j < Rows; j++)
+            for (size_t j = 0; j < Rows; j++)
             {
-                for (int i = 0; i < Cols_B; i++)
+                for (size_t i = 0; i < Cols_B; i++)
                 {
-                    result[i][j] = 0.0f;
-                    for (int k = 0; k < Cols; k++)
+                    float tmp = 0.0f;
+                    for (size_t k = 0; k < Cols; k++)
                     {
-                        result[i][j] += a[k][j] * b[i][k];
+                        tmp += a[k][j] * b[i][k];
                     }
+                    result[i][j] = tmp;
                 }
             }
+        }
+
+        // matrix multiplication
+        template <size_t Cols_B>
+        inline friend constexpr Matrix<Cols_B, Rows, Stride> operator*(const Matrix &a, const Matrix<Cols_B, Cols, Stride> &b)
+        {
+            Matrix<Cols_B, Rows, Stride> result;
+            Matrix::Multiply(a, b, result);
 
             return result;
         }
@@ -71,9 +79,9 @@ namespace ASEngine
         friend constexpr Matrix operator+(const Matrix &a, const Matrix &b)
         {
             Matrix result;
-            for (int j = 0; j < Rows; j++)
+            for (size_t j = 0; j < Rows; j++)
             {
-                for (int i = 0; i < Cols; i++)
+                for (size_t i = 0; i < Cols; i++)
                 {
                     result[i][j] = a[i][j] + b[i][j];
                 }
@@ -85,9 +93,9 @@ namespace ASEngine
         friend constexpr Matrix operator-(const Matrix &a, const Matrix &b)
         {
             Matrix result;
-            for (uint32_t j = 0; j < Rows; j++)
+            for (size_t j = 0; j < Rows; j++)
             {
-                for (uint32_t i = 0; i < Cols; i++)
+                for (size_t i = 0; i < Cols; i++)
                 {
                     result[i][j] = a[i][j] - b[i][j];
                 }
@@ -99,9 +107,9 @@ namespace ASEngine
         friend constexpr Matrix operator*(const Matrix &matrix, float s)
         {
             Matrix result;
-            for (uint32_t j = 0; j < Rows; j++)
+            for (size_t j = 0; j < Rows; j++)
             {
-                for (uint32_t i = 0; i < Cols; i++)
+                for (size_t i = 0; i < Cols; i++)
                 {
                     result[i][j] =  matrix[i][j] * s;
                 }

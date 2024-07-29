@@ -7,12 +7,12 @@
 #include "Component.h"
 #include "Archetype.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // entity data for look up ..
-    struct ASENGINE_API EntityData
+    struct  EntityData
     {
         Archetype* ArchetypeOwner = nullptr;
         ComponentIndex Index = 0;

@@ -16,12 +16,12 @@
 
 #include "Signature.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // context of ecs: the EntityManager where all the entities exists
-    class ASENGINE_API EntityManager : public ISystem
+    class  EntityManager : public ISystem
     {
     ASENGINE_DEFINE_SINGLETON(EntityManager);
 

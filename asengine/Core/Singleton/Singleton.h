@@ -3,7 +3,7 @@
 
 #include "Core/Error/Assertion.h"
 #include "Core/Debug/Debug.h"
-#include "API/API.h"
+
 
 /*
     definition for singleton template
@@ -40,7 +40,7 @@ public: \
 namespace ASEngine
 {
     template <typename Type>
-    class ASENGINE_API Singleton
+    class  Singleton
     {
     public:
         static Type* s_Instance;

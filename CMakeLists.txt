@@ -1,8 +1,13 @@
 # Sets the minimum version of CMake required to build the native library.
 cmake_minimum_required(VERSION 3.22.1)
 set(CMAKE_CXX_STANDARD 20)
+
 add_compile_options(-Wall)
 add_compile_definitions(ASENINE_EXPORTS)
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
+#generate compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 #create project
 project(asengine)
@@ -34,14 +39,14 @@ endif()
 
 #platform specific sources
 set(PLATFORM_SPECIFIC_SOURCES)
-if (ASENGINE_DESKTOP) 
+if (ASENGINE_DESKTOP)
     set(PLATFORM_SPECIFIC_SOURCES ${PLATFORM_SPECIFIC_SOURCES}
         asengine/Display/Backend/Desktop/DesktopDisplay.cpp
         asengine/Display/Backend/Desktop/DesktopDisplayCreate.cpp
     )
 endif()
 
-if (ASENGINE_WEB) 
+if (ASENGINE_WEB)
     set(PLATFORM_SPECIFIC_SOURCES ${PLATFORM_SPECIFIC_SOURCES}
         asengine/Display/Backend/Web/WebDisplay.cpp
         asengine/Display/Backend/Web/WebDisplayCreate.cpp
@@ -50,10 +55,6 @@ endif()
 
 #set dependencies dir
 set (DEPENDENCIES_DIRECTOY ${CMAKE_CURRENT_SOURCE_DIR}/dependencies)
-
-    #link static library into dynamc library for desktop
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 
 # add SPIRV-Cross
 add_subdirectory(${DEPENDENCIES_DIRECTOY}/SPIRV-Cross)
@@ -66,6 +67,10 @@ include_directories(${DEPENDENCIES_DIRECTOY}/miniaudio)
 # add stb_image
 add_subdirectory(${DEPENDENCIES_DIRECTOY}/stb_image)
 include_directories(${DEPENDENCIES_DIRECTOY}/stb_image)
+
+# add freetype
+include_directories(${DEPENDENCIES_DIRECTOY}/freetype-2.10.0/include)
+add_subdirectory(${DEPENDENCIES_DIRECTOY}/freetype-2.10.0)
 
 #source
 set (SOURCE
@@ -149,27 +154,47 @@ set (SOURCE
     #testing
     asengine/UnitTest/UnitTest.cpp
     asengine/UnitTest/UnitTestSystem.cpp
+    #2d
+    asengine/2D/Transform2D/Transform2D.cpp
+    asengine/2D/Quad2D/Quad2D.cpp
+    asengine/2D/Layer2D/Layer2D.cpp
+    asengine/2D/Camera2D/Camera2D.cpp
+    asengine/2D/Renderer2D/Renderer2D.cpp
+    asengine/2D/Sprite/Sprite.cpp
+    asengine/2D/Font/Font.cpp
+    asengine/2D/Module2D.cpp
     #platform src
     ${PLATFORM_SPECIFIC_SOURCES}
 )
 
+
+#build engine to static library
+add_library(
+    asengine-core
+    STATIC
+    ${SOURCE}
+)
+
+# set asengine libraries for the asengine_libraries.cmake
+set(ASENGINE_LIBRARIES
+    asengine-core
+    stb_image
+    miniaudio
+    spirv-cross-core
+    spirv-cross-glsl
+    spirv-cross-util
+    freetype
+)
+
+set (AENGINE_INTERFACE_CMAKE "cmake_minimum_required(VERSION 3.22.1)\n")
+
 if(ASENGINE_DESKTOP)
     message("Desktop Build")
 
-
-    #build engine to dynamic library for desktop
-    add_library(
-        asengine
-        SHARED
-        ${SOURCE}
-    )
-
+    # add glfw
     add_subdirectory(${DEPENDENCIES_DIRECTOY}/glfw-3.4)
 
-    # add opengl
-    find_package(OpenGL REQUIRED)
-    include_directories(${OPENGL_INCLUDE_DIRS})
-    
+    # add glew
     include_directories(${DEPENDENCIES_DIRECTOY}/glew/include)
     add_definitions(-DGLEW_STATIC)
     add_library(
@@ -178,42 +203,51 @@ if(ASENGINE_DESKTOP)
         dependencies/glew/src/glew.c
     )
 
-    if(ASENGINE_WINDOWS)
-        set_target_properties(asengine PROPERTIES LINK_FLAGS "-static-libgcc -static-libstdc++ -static")
-    endif()
-
-
+    #link libraries for web
     target_link_libraries(
-        asengine
-        PRIVATE stb_image
-        PRIVATE miniaudio
-        PRIVATE glfw
-        PRIVATE glew
-        PRIVATE spirv-cross-glsl
-        OpenGL::GL
+        asengine-core
+        stb_image
+        miniaudio
+        glfw
+        glew
+        spirv-cross-glsl
+        freetype
     )
+
+    #create cmake list of libraries
+    set (AENGINE_INTERFACE_CMAKE "${AENGINE_INTERFACE_CMAKE}
+    # add opengl
+    find_package(OpenGL REQUIRED)
+
+    set (ASENGINE_LIBRARIES
+        ${ASENGINE_LIBRARIES}
+        glew
+        glfw3
+        OpenGL::GL
+    )")
+
 endif()
 
 
 if (ASENGINE_WEB)
-    message("Web Build")    
+    message("Web Build")
 
-
-    #build as static library for web
-    add_library(
-        asengine
-        STATIC
-        ${SOURCE}
-    )
-
+    #link libraries for web
     target_link_libraries(
-        asengine
+        asengine-core
         stb_image
         miniaudio
         spirv-cross-glsl
+        freetype
     )
-    
+
+    #create cmake list of libraries
+    set (AENGINE_INTERFACE_CMAKE "${AENGINE_INTERFACE_CMAKE}
+    set (ASENGINE_LIBRARIES
+        ${ASENGINE_LIBRARIES}
+    )")
 
 endif()
 
-
+#save asengien_libraries.cmake
+file(WRITE "${CMAKE_BINARY_DIR}/asengine_libraries.cmake" "${AENGINE_INTERFACE_CMAKE}")

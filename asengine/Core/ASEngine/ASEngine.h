@@ -20,7 +20,7 @@
 #include "Core/Settings/Settings.h"
 #include "Core/Memory/ByteBuffer.h"
 
-#include "API/API.h"
+
 
 
 namespace ASEngine 
@@ -28,7 +28,7 @@ namespace ASEngine
 
 	// asengine context 
 	// defines the core of the engine
-	class ASENGINE_API ASEngine
+	class  ASEngine
 	{
 	ASENGINE_DEFINE_SINGLETON(ASEngine);
 	public:

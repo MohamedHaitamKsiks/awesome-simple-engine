@@ -2,12 +2,12 @@
 #define __ASENGINE_MATH_H
 
 #include <cmath>
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // interface for cmath functions
-    class ASENGINE_API Math
+    class  Math
     {
     public:
         // constants

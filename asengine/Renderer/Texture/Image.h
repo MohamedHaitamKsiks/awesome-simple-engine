@@ -9,12 +9,12 @@
 #include "Core/Memory/ByteBuffer.h"
 #include "Renderer/Color.h"
 
-#include "API/API.h"
 
-namespace ASEngine 
+
+namespace ASEngine
 {
     // image resource
-    class ASENGINE_API Image
+    class  Image
     {
     public:
         //constructor
@@ -22,26 +22,29 @@ namespace ASEngine
 
         // create from with and height
         void Create(uint32_t width, uint32_t height);
-        
+
         // load png
         void LoadPNG(const std::string& path);
 
         // get image pixel
-        Color GetPixelAt(int x, int y) const;
+        Color GetPixelAt(uint32_t x, uint32_t y) const;
 
-        // set image pixel 
-        void SetPixelAt(int x, int y, const Color& color);
+        // set image pixel
+        void SetPixelAt(uint32_t x, uint32_t y, const Color& color);
+
+        // set image pixel with rgba as bytes
+        void SetPixelAt(uint32_t x, uint32_t y, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
         // get image width
-        inline int GetWidth() const 
-        { 
-            return m_Width; 
+        inline int GetWidth() const
+        {
+            return m_Width;
         }
 
         // get image height
-        inline int GetHeight() const 
-        { 
-            return m_Height; 
+        inline int GetHeight() const
+        {
+            return m_Height;
         }
 
         // get pixel buffer
@@ -56,7 +59,7 @@ namespace ASEngine
 
         int m_Width = -1;
         int m_Height = -1;
-        
+
         int m_Channels = -1;
     };
 

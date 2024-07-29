@@ -5,7 +5,7 @@
 #include "Component.h"
 #include "Core/Collection/Collection.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
@@ -13,13 +13,13 @@ namespace ASEngine
     using ComponentIndex = uint32_t;
 
     // interface of component collection behaviour
-    class ASENGINE_API IComponentCollection : public ICollection
+    class  IComponentCollection : public ICollection
     {
     public:
         virtual ~IComponentCollection() {}
 
         virtual AbstractComponent& ComponentAt(ComponentIndex index) = 0;
-        
+
         virtual const AbstractComponent& ComponentAt(ComponentIndex index) const = 0 ;
 
         // only keep component in these indicies
@@ -29,7 +29,7 @@ namespace ASEngine
 
     // template of component collection
     template <typename ComponentType>
-    class ASENGINE_API ComponentCollection : public IComponentCollection
+    class ComponentCollection : public IComponentCollection
     {
     public:
         ComponentCollection()
@@ -58,7 +58,7 @@ namespace ASEngine
             m_Components.erase(m_Components.cbegin() + index);
         }
 
-        void KeepOnly(const std::vector<ComponentIndex> indices)
+        void KeepOnly(const std::vector<ComponentIndex> indices) override
         {
             ComponentIndex currentIndex = 0;
             for (const auto& index: indices)

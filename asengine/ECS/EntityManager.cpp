@@ -3,6 +3,9 @@
 #include "ArchetypeManager.h"
 
 #include "Core/Debug/Debug.h"
+#include "ECS/ArchetypeManager.h"
+#include "ECS/Signature.h"
+#include <unordered_set>
 
 namespace ASEngine
 {
@@ -20,9 +23,9 @@ namespace ASEngine
 
     EntityID EntityManager::Create(const EntityBuilder &builder)
     {
-        // archetype owner   
+        // archetype owner
         Archetype* archetype = builder.m_Archetype;
-        
+
         // craete entity id
         EntityID entityID = m_Entities.Allocate();
         EntityData& data = m_Entities.Get(entityID);
@@ -43,21 +46,21 @@ namespace ASEngine
         }
 
         return entityID;
-        
+
     };
-    
+
     void EntityManager::Destroy(EntityID entityID)
     {
         EntityData& data = m_Entities.Get(entityID);
         if (data.IsDestroyed)
-        {
-            Debug::Error("Warning: Entity", entityID, "already removed!");
             return;
-        }
 
-        //queue entity to destroy
+        // queue entity to destroy
         data.IsDestroyed = true;
         m_DestroyQueue.push_back(entityID);
+
+        // destroy component
+        data.ArchetypeOwner->RemoveEntity(entityID);
     }
 
     AbstractComponent &EntityManager::GetComponent(UniqueString componentName, EntityID entityID)
@@ -79,6 +82,8 @@ namespace ASEngine
 
             // get entity data
             auto& entityData = m_Entities.Get(entityID);
+            if (entityData.IsDestroyed)
+                continue;
 
             // destroy entity
             if (!entityData.Persistent)
@@ -92,11 +97,17 @@ namespace ASEngine
 
     void EntityManager::CleanDestroyQueue()
     {
-        auto& archetypesToClean = ArchetypeManager::GetInstance().GetArchetypes();
-        // clean archetypes
-        for (auto& [signature, archetype]: archetypesToClean)
+        // retrieve archetypes to clean
+        std::unordered_set<Signature> archetypesToClean = {};
+        for (auto entityID: m_DestroyQueue)
         {
-            archetype.RemoveDestroyedEntites();
+            archetypesToClean.insert(m_Entities.Get(entityID).ArchetypeOwner->GetSignature());
+        }
+
+        // clean archetypes
+        for (const auto& signature: archetypesToClean)
+        {
+            ArchetypeManager::GetInstance().GetArchetype(signature).RemoveDestroyedEntites();
         }
 
         // remove entity datas
@@ -104,7 +115,7 @@ namespace ASEngine
         {
             m_Entities.Free(entityID);
         }
-        
+
         m_DestroyQueue.clear();
     }
 

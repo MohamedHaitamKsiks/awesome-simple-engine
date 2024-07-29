@@ -37,12 +37,12 @@ namespace ASEngine
 
     //Serialization
     template <>
-    Json Serializer::Serialize(const UniqueString &value)
+    Json  Serializer::Serialize(const UniqueString &value)
     {
         return Json(value.GetString());
     }
     template <>
-    void Serializer::Deserialize(const Json &object, UniqueString &dest)
+    void  Serializer::Deserialize(const Json &object, UniqueString &dest)
     {
         ASENGINE_ASSERT(object.is_string(), "Can't deserialize UniqueString if Json object is not a string");
         dest = UniqueString(object);

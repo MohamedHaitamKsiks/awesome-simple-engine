@@ -8,12 +8,12 @@
 
 #include "ECS/System.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // game's display: singleton = only one window
-    class ASENGINE_API Display : public ISystem
+    class  Display : public ISystem
     {
     ASENGINE_DEFINE_SINGLETON(Display);
     public:

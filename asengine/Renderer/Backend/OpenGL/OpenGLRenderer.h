@@ -20,13 +20,13 @@ namespace ASEngine
         void InitImp() override;
         void TerminateImp() override;
 
-        // opengl implementations 
-        void BindVertexBufferImp(ResourceRef<Buffer> vertexBuffer, uint32_t binding = 0) override;
-        void BindIndexBufferImp(ResourceRef<Buffer> indexBuffer) override;
+        // opengl implementations
+        void BindVertexBufferImp(const ResourceRef<Buffer>& vertexBuffer, uint32_t binding = 0) override;
+        void BindIndexBufferImp(const ResourceRef<Buffer>& indexBuffer) override;
         void DrawElementsImp(uint32_t indexCount, uint32_t instanceCount = 1) override;
-        void BindShaderImp(ResourceRef<Shader> shader) override;
+        void BindShaderImp(const ResourceRef<Shader>& shader) override;
         void ClearImp() override;
-        void BeginImp(ResourceRef<Viewport> viewport) override;
+        void BeginImp(const ResourceRef<Viewport>& viewport) override;
         void EndImp() override;
 
         // gl bind vertex layout

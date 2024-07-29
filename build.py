@@ -26,7 +26,7 @@ def retrieveHeaders(root: pathlib.Path, excludedHeaders: set) -> list[pathlib.Pa
     headers = [root]
     for path in paths:
         headers += retrieveHeaders(path, excludedHeaders)
-        
+
     return headers
 
 # generate include files (all read only)
@@ -35,9 +35,9 @@ def generateIncludeFiles():
     excludedHeaders = set()
     #open headers.json
     with open("headers.json") as headersFile:
-        headers = json.load(headersFile)
-        includedHeaders = headers["include"]
-        excludedHeaders = set(headers["exclude"])
+        jsonHeaders = json.load(headersFile)
+        includedHeaders = jsonHeaders["include"]
+        excludedHeaders = set(jsonHeaders["exclude"])
 
 
     #entrypoint for include file (include it to include all the asengine)
@@ -54,7 +54,7 @@ def generateIncludeFiles():
         if header.is_dir():
             os.makedirs(f"build/include/{str(relativeHeader)}", exist_ok=True)
             continue
-        
+
         includeToEntryPoint = f'#include "{str(relativeHeader)}"\n'
         entryPointList.append(includeToEntryPoint)
         #copy file
@@ -76,23 +76,23 @@ def generateIncludeFiles():
         with open(entryPointPath, "r")  as entryPointFile:
             oldEntryPointList = entryPointFile.read()
 
-            #return 
+            #return
             if oldEntryPointList == newEntryPointList:
                 return
 
-    #save 
+    #save
     with open(entryPointPath, "w") as entryPointFile:
         entryPointFile.write(newEntryPointList)
-        
+
     #set entry point as read only
     # os.chmod(entryPointPath, S_IREAD | S_IRGRP | S_IROTH) TODO
 
-# compile asengine 
+# compile asengine
 def compileEngineFor(plarform: str, debug: bool = False) -> int:
 
     #asengine path
     enginePath = os.getcwd()
-    
+
     #debug/release directory
     debugDir = "debug" if debug else "release"
 
@@ -113,16 +113,18 @@ def compileEngineFor(plarform: str, debug: bool = False) -> int:
         "web": "WEB"
     }
     cmakeCompileCommand.append(f"-DASENGINE_OS={osFlags[plarform]}")
-    
+
     #debug flag for cmake
     if debug:
         cmakeCompileCommand.append("-DCMAKE_BUILD_TYPE=Debug")
+    else:
+        cmakeCompileCommand.append("-DCMAKE_BUILD_TYPE=Release")
 
     # use windows toolchain
     if plarform == "windows":
         windowsCmakeToolchain = "cmake_toolchains/mingw-w64-x86_64.cmake"
         cmakeCompileCommand.append(f"-DCMAKE_TOOLCHAIN_FILE={windowsCmakeToolchain}")
-    
+
     #compile with emcmake for web
     elif plarform == "web":
         emcmakePath = os.path.realpath("./emsdk/upstream/emscripten/emcmake")
@@ -134,33 +136,34 @@ def compileEngineFor(plarform: str, debug: bool = False) -> int:
     #run cmake
     emmakePath = os.path.realpath("./emsdk/upstream/emscripten/emmake") # for web
 
-    os.chdir(buildFolderPath)    
+    os.chdir(buildFolderPath)
     compilationResult |= os.system(' '.join(cmakeCompileCommand))
-    
+
     #make
     if plarform == "web":
         compilationResult |= os.system(f"{emmakePath} make")
     else:
         compilationResult |= os.system("make")
-    
+
     #copy asengine.so to lib
     os.chdir(enginePath)
 
     #copy engine to lib path
     libPath = f"build/lib/{plarform}/{debugDir}"
     os.makedirs(libPath, exist_ok=True)
-    
+
     #copy engine (web is a static library)
     engineLibrariesExt = {
-        "linux": "*.so",
-        "windows": "*.dll",
-        "web": "*.a"
+        "linux": ["*.a", "asengine_libraries.cmake"],
+        "windows": ["*.a", "asengine_libraries.cmake"],
+        "web": ["*.a", "asengine_libraries.cmake"]
     }
 
-    engineLibraryExt = engineLibrariesExt[plarform]
-    engineLibraryFiles = pathlib.Path(buildFolderPath).rglob(engineLibraryExt)
-    for file in engineLibraryFiles:
-        shutil.copy2(file, f"{libPath}")
+    engineLibraryExts = engineLibrariesExt[plarform]
+    for engineLibraryExt in engineLibraryExts:
+        engineLibraryFiles = pathlib.Path(buildFolderPath).rglob(engineLibraryExt)
+        for file in engineLibraryFiles:
+            shutil.copy2(file, f"{libPath}")
 
     # return code of compilation
     return compilationResult
@@ -176,12 +179,12 @@ def compileASEngine(platforms: list[str], release=False) -> int:
         #build for release
         if release:
             compilationResult |= compileEngineFor(platform, debug=False)
-        
         #build for debug
-        compilationResult |= compileEngineFor(platform, debug=True)
+        else:
+            compilationResult |= compileEngineFor(platform, debug=True)
 
     return compilationResult
 
 #main
 if __name__ == "__main__":
-    sys.exit(compileASEngine(sys.argv[1:]) % 255)
+    sys.exit(compileASEngine([sys.argv[1]], sys.argv[2] == "release") % 255)

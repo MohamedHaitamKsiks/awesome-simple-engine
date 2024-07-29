@@ -6,7 +6,7 @@ ASENGINE_SERIALIZE_RESOURCE_REF(Viewport);
 namespace ASEngine
 {
     template <>
-    void Serializer::Deserialize(const Json &object, Viewport &dest)
+    void  Serializer::Deserialize(const Json &object, Viewport &dest)
     {
         // get width
         uint32_t width = 0;
@@ -21,7 +21,7 @@ namespace ASEngine
     }
 
     template <>
-    Json Serializer::Serialize(const Viewport &value)
+    Json  Serializer::Serialize(const Viewport &value)
     {
         return Json({});
     }

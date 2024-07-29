@@ -5,14 +5,17 @@
 #include <vector>
 
 #include "Core/Singleton/Singleton.h"
-#include "API/API.h"
+
 
 #include "Module.h"
+
+// register module
+#define  ASENGINE_REGISTER_MODULE(module) ModuleManager::GetInstance().RegisterModule<module>()
 
 namespace ASEngine
 {
     // module manager
-    class ASENGINE_API ModuleManager
+    class  ModuleManager
     {
     ASENGINE_DEFINE_SINGLETON(ModuleManager);
     public:
@@ -26,7 +29,7 @@ namespace ASEngine
             m_Modules.push_back(std::move(newModule));
         }
 
-    
+
     protected:
         // only allow ASEngine class to call these functions
         friend class ASEngine;

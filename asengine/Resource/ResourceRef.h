@@ -2,14 +2,14 @@
 #define __ASENGINE_RESOURCE_REF_H
 
 #include "Resource.h"
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // garbage collected reference to resource
     // AVOID CYCLIC REFERENCING
     template <typename T>
-    class ASENGINE_API ResourceRef
+    class  ResourceRef
     {
     public:
         constexpr ResourceRef()
@@ -53,7 +53,7 @@ namespace ASEngine
             {
                 static_cast<Resource *>(m_Instance)->IncrementReferenceCounter();
             }
-            
+
             return *this;
         }
 
@@ -92,23 +92,18 @@ namespace ASEngine
             }
         }
 
-        T* operator->()
-        {
-            return m_Instance;
-        }
-
-        const T* operator->() const
+        T* operator->() const
         {
             return m_Instance;
         }
 
         // test equality of two reference (are they referencing to the same thing)
-        inline constexpr bool operator==(const ResourceRef& ref)
+        inline constexpr bool operator==(const ResourceRef& ref) const
         {
             return m_Instance == ref.m_Instance;
         }
 
-        inline constexpr bool operator!=(const ResourceRef &ref)
+        inline constexpr bool operator!=(const ResourceRef &ref) const
         {
             return !(*this == ref);
         }
@@ -119,7 +114,7 @@ namespace ASEngine
             return ResourceRef(nullptr);
         }
 
-    private : 
+    private :
         T *m_Instance = nullptr;
 
         constexpr ResourceRef(T* instance): m_Instance(instance)
@@ -135,7 +130,7 @@ namespace ASEngine
         friend class ResourceRef;
     };
 
-    
+
 } // namespace ASEngine
 
 

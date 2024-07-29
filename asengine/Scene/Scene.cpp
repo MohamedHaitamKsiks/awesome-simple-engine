@@ -9,7 +9,7 @@ ASENGINE_SERIALIZE_RESOURCE_REF(Scene);
 namespace ASEngine
 {
     template<>
-    void Serializer::Deserialize(const Json& object, Scene& dest)
+    void  Serializer::Deserialize(const Json& object, Scene& dest)
     {
         std::vector<EntityBuilder> builders = {};
         Serializer::Deserialize(object.at("Entities"), builders);
@@ -18,7 +18,7 @@ namespace ASEngine
     }
 
     template <>
-    Json Serializer::Serialize(const Scene &scene)
+    Json  Serializer::Serialize(const Scene &scene)
     {
         Json sceneObject = Json({});
         sceneObject["Entities"] = Serializer::Serialize(scene.m_Builders);

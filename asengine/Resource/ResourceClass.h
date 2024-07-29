@@ -15,13 +15,13 @@
 #include "ResourceRef.h"
 #include "IResourceClass.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // implementation for each resource type
     template <typename T>
-    class ASENGINE_API ResourceClass : public IResourceClass
+    class  ResourceClass : public IResourceClass
     {
     public:
         ResourceClass(UniqueString className): m_ClassName(className)

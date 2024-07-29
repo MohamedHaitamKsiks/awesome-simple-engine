@@ -16,6 +16,15 @@ namespace ASEngine
         }
     }
 
+    EntityBuilder &EntityBuilder::operator=(const EntityBuilder &builder)
+    {
+        for (auto &[componentName, component] : builder.m_Components)
+        {
+            AddComponent(componentName, *component);
+        }
+        return *this;
+    }
+
     void EntityBuilder::AddComponent(UniqueString componentName)
     {
         IComponentClass& componentClass = ComponentManager::GetInstance().GetComponentClass(componentName);
@@ -37,7 +46,7 @@ namespace ASEngine
 
     // serialization of Entity Builder
     template <>
-    Json Serializer::Serialize(const EntityBuilder &value)
+    Json  Serializer::Serialize(const EntityBuilder &value)
     {
         Json object = Json({});
         // add later ...
@@ -45,7 +54,7 @@ namespace ASEngine
     }
 
     template <>
-    void Serializer::Deserialize(const Json &object, EntityBuilder &dest)
+    void  Serializer::Deserialize(const Json &object, EntityBuilder &dest)
     {
         for (auto &component : object.items())
         {

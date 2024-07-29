@@ -6,7 +6,7 @@
 
 #include<string>
 #include "Core/Memory/ByteBuffer.h"
-#include "API/API.h"
+
 
 namespace ASEngine {
 
@@ -25,7 +25,7 @@ namespace ASEngine {
         USERDATA
     };
 
-    class ASENGINE_API File
+    class  File
     {
     public:
         // open file: read | write

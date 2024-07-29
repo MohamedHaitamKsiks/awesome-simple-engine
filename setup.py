@@ -20,13 +20,14 @@ def setup(configPath: str, debugSetup=False):
         compileASEngine(["linux"], release=False)
     #compile the engine for all the supported platforms in all modes
     else:
+        compileASEngine(["linux", "windows", "web"], release=False)
         compileASEngine(["linux", "windows", "web"], release=True)
 
     #read config path
     config = {}
     with open(configPath, "r") as configFile:
         config = json.load(configFile)
-    
+
     #set paths to absolute
     config["projectTemplatePath"] = os.path.realpath(config["projectTemplatePath"])
     config["platformsPath"] = os.path.realpath(config["platformsPath"])
@@ -45,14 +46,14 @@ def setup(configPath: str, debugSetup=False):
     os.chdir("cli")
     if subprocess.call([sys.executable, "-m", "pip", "install", "-e", "."]):
         return 1
-    
+
     os.chdir("..")
 
     #run asengine's unit tests
     os.chdir("tests")
     if subprocess.call(["asengine-cli", "build", "headless", "debug"]):
         return 1
-    
+
     os.chdir("..")
     return 0
 

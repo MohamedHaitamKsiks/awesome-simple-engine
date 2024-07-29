@@ -4,12 +4,14 @@ cmake_minimum_required(VERSION 3.22.1)
 set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 project(index)
 
-#include the engine 
+#include the engine
 include_directories(${ASENGINE_INCLUDE_PATH})
 link_directories(${ASENGINE_LIB_PATH})
+include(${ASENGINE_LIB_PATH}/asengine_libraries.cmake)
 
 #add project
 add_subdirectory(${ASENGINE_PROJECT_PATH} ${CMAKE_BINARY_DIR}/project_build)
@@ -21,13 +23,6 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s ALLOW_MEMORY_GROWTH -s 
 
 target_link_libraries(
     index
-    PRIVATE ${PROJECT_LIBRARIES}
-    PRIVATE asengine
-    PRIVATE stb_image
-    PRIVATE miniaudio
-    PRIVATE spirv-cross-glsl
-    PRIVATE spirv-cross-core
-    PRIVATE spirv-cross-util
+    ${PROJECT_LIBRARIES}
+    ${ASENGINE_LIBRARIES}
 )
-    
-    

@@ -9,18 +9,20 @@
 #include "Signature.h"
 #include "Archetype.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
     // builder to create a new entity
-    class ASENGINE_API EntityBuilder
+    class  EntityBuilder
     {
         public:
             EntityBuilder() {};
 
             // copy constructor
             EntityBuilder(const EntityBuilder& builder);
+
+            EntityBuilder& operator=(const EntityBuilder& builder);
 
             // add component with no initial value
             void AddComponent(UniqueString componentName);
@@ -53,6 +55,13 @@ namespace ASEngine
                 return *m_Components[componentName];
             }
 
+            // get component by types
+            template<typename T>
+            inline T& GetComponent()
+            {
+                return static_cast<T&>(*m_Components[Component<T>::GetName()]);
+            }
+
             // get signature
             const Signature& GetSignature() const
             {
@@ -71,7 +80,7 @@ namespace ASEngine
 
         private:
             std::map<UniqueString, std::unique_ptr<AbstractComponent>> m_Components{};
-            
+
             // cache signatrue
             Signature m_Signature{};
             Archetype* m_Archetype = nullptr;

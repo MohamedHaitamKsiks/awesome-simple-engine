@@ -19,7 +19,7 @@ namespace ASEngine
     )
 
     template <>
-    void Serializer::Deserialize(const Json &object, Texture &dest)
+    void  Serializer::Deserialize(const Json &object, Texture &dest)
     {
         // load png
         std::string imagePath = object.at("ImagePath").get<std::string>();
@@ -38,7 +38,7 @@ namespace ASEngine
     }
 
     template <>
-    Json Serializer::Serialize(const Texture &value)
+    Json  Serializer::Serialize(const Texture &value)
     {
         return Json({});
     }

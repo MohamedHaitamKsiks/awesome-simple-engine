@@ -131,3 +131,6 @@ dmypy.json
 
 #ignore installed dependenceies
 emsdk/
+
+#compile commands
+.clangd

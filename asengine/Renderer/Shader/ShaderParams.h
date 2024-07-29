@@ -7,7 +7,7 @@
 #include "Core/String/UniqueString.h"
 #include "Resource/ResourceRef.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
@@ -22,7 +22,7 @@ namespace ASEngine
     };
 
     // all data of a shader uniform buffer identifier
-    struct ASENGINE_API ShaderUniformBufferIdentifier
+    struct  ShaderUniformBufferIdentifier
     {
         ShaderIdentifierType Type = ShaderIdentifierType::UNDEFINED;               // type
         UniqueString Name;                       // name
@@ -33,7 +33,7 @@ namespace ASEngine
     };
 
     // uniform buffer info
-    struct ASENGINE_API ShaderUniformBufferInfo
+    struct  ShaderUniformBufferInfo
     {
         uint32_t Binding = 0;
         size_t Size = 0;
@@ -42,14 +42,14 @@ namespace ASEngine
     };
 
     // shader sampler infos
-    struct ASENGINE_API ShaderSamplerInfo
+    struct  ShaderSamplerInfo
     {
         UniqueString Name;
         uint32_t Binding;
     };
 
     // shader params
-    struct ASENGINE_API ShaderParams
+    struct  ShaderParams
     {
         std::unordered_map<UniqueString, ShaderUniformBufferInfo> UniformBuffers = {};
         std::unordered_map<UniqueString, ShaderSamplerInfo> Samplers = {};

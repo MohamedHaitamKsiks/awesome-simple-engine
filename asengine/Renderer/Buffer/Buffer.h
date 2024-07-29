@@ -6,7 +6,7 @@
 
 #include "Core/Memory/ByteBuffer.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
@@ -20,7 +20,7 @@ namespace ASEngine
     };
 
     // abstract class for rendering buffer
-    class ASENGINE_API Buffer : public Resource
+    class  Buffer : public Resource
     {
     ASENGINE_DEFINE_RESOURCE(Buffer);
     public:

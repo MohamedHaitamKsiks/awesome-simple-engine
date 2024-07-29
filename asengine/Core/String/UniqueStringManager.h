@@ -9,7 +9,7 @@
 #include "Core/Error/Assertion.h"
 #include "Core/Singleton/Singleton.h"
 
-#include "API/API.h"
+
 
 namespace ASEngine
 {
@@ -18,7 +18,7 @@ namespace ASEngine
     constexpr uint32_t UNIQUE_STRING_ID_NULL = UINT32_MAX;
 
     // unique string manager, use UniqueString type directly
-    class ASENGINE_API UniqueStringManager
+    class  UniqueStringManager
     {
         ASENGINE_DEFINE_SINGLETON(UniqueStringManager);
         public:

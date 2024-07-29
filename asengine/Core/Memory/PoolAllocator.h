@@ -12,7 +12,7 @@
 
 #include "Core/Error/Assertion.h"
 #include "Core/Debug/Debug.h"
-#include "API/API.h"
+
 
 namespace ASEngine 
 {
@@ -25,7 +25,7 @@ namespace ASEngine
     freeing is the same
     */
     template <typename T>
-    class ASENGINE_API PoolAllocator
+    class  PoolAllocator
     {
     public:
     // allocator traits to interact with allocator

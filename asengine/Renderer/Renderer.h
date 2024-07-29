@@ -1,7 +1,7 @@
 #ifndef __ASENGINE_RENDERER_H
 #define __ASENGINE_RENDERER_H
 
-#include "API/API.h"
+
 #include "VertexInput/VertexInput.h"
 
 #include "Buffer/Buffer.h"
@@ -17,10 +17,10 @@ namespace ASEngine
     /*
         Abstract class of the renderer
         It is the main interface between the user and the gpu
-        You can create multiple classes inheriting from this class with specifications 
+        You can create multiple classes inheriting from this class with specifications
         For example: OpenGLRenderer, VulkanRenderer...
     */
-    class ASENGINE_API Renderer : public ISystem
+    class  Renderer : public ISystem
     {
     ASENGINE_DEFINE_SINGLETON(Renderer);
     public:
@@ -38,19 +38,19 @@ namespace ASEngine
         virtual ~Renderer(){}
 
         // bind vertex buffer to an input rate
-        void BindVertexBuffer(ResourceRef<Buffer> vertexBuffer, uint32_t binding = 0);
+        void BindVertexBuffer(const ResourceRef<Buffer>& vertexBuffer, uint32_t binding = 0);
 
         // bind index buffer
-        void BindIndexBuffer(ResourceRef<Buffer> indexBuffer);
+        void BindIndexBuffer(const ResourceRef<Buffer>& indexBuffer);
 
         // draw elements after binding vertex/index buffers with possibility of instanciating (draw call)
         void DrawElements(uint32_t indexCount, uint32_t instanceCount = 1);
 
         // bind shader
-        void BindShader(ResourceRef<Shader> shader);
+        void BindShader(const ResourceRef<Shader>& shader);
 
         // bind material
-        void BindMaterial(ResourceRef<Material> material);
+        void BindMaterial(const ResourceRef<Material>& material);
 
         // clear screen
         inline void Clear()
@@ -58,34 +58,34 @@ namespace ASEngine
             ClearImp();
         }
 
-        // get current draw calls count 
+        // get current draw calls count
         inline uint32_t GetDrawCallsCount() const
         {
             return m_DrawCallsCount;
         }
 
         // begin rendering to viewport
-        void Begin(ResourceRef<Viewport> viewport);
-        
+        void Begin(const ResourceRef<Viewport>& viewport);
+
         // begin rendering to screen
         inline void Begin()
         {
             Begin(ResourceRef<Viewport>::NONE());
         }
-        
+
         // end current viewport
         void End();
 
     protected:
         // implementations
-        virtual void BindVertexBufferImp(ResourceRef<Buffer> vertexBuffer, uint32_t binding = 0) = 0;
-        virtual void BindIndexBufferImp(ResourceRef<Buffer> indexBuffer) = 0;
+        virtual void BindVertexBufferImp(const ResourceRef<Buffer>& vertexBuffer, uint32_t binding = 0) = 0;
+        virtual void BindIndexBufferImp(const ResourceRef<Buffer>& indexBuffer) = 0;
         virtual void DrawElementsImp(uint32_t indexCount, uint32_t instanceCount = 1) = 0;
-        virtual void BindShaderImp(ResourceRef<Shader> shader) = 0;
+        virtual void BindShaderImp(const ResourceRef<Shader>& shader) = 0;
         virtual void ClearImp() = 0;
         virtual void InitImp() = 0;
         virtual void TerminateImp() = 0;
-        virtual void BeginImp(ResourceRef<Viewport> viewport) = 0;
+        virtual void BeginImp(const ResourceRef<Viewport>& viewport) = 0;
         virtual void EndImp() = 0;
 
         // get current ver
@@ -94,17 +94,17 @@ namespace ASEngine
             return m_CurrentVertexBuffers;
         }
 
-        inline ResourceRef<Buffer> GetCurrentIndexBuffer() const
+        inline const ResourceRef<Buffer>& GetCurrentIndexBuffer() const
         {
             return m_CurrentIndexBuffer;
         }
 
-        inline ResourceRef<Shader> GetCurrentShader() const
+        inline const ResourceRef<Shader>& GetCurrentShader() const
         {
             return m_CurrentShader;
         }
 
-        inline ResourceRef<Viewport> GetCurrentViewport() const
+        inline const ResourceRef<Viewport>& GetCurrentViewport() const
         {
             return m_CurrentViewport;
         }
@@ -126,12 +126,12 @@ namespace ASEngine
 
         // count draw calls
         uint32_t m_DrawCallsCount = 0;
-        
+
         void Init() override;
         void Terminate() override;
 
     };
-    
+
 } // namespace ASEngine
 
 

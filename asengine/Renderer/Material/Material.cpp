@@ -18,8 +18,8 @@
 
 // macros to implement uniform buffer type
 #define ASENGINE_IMPLEMENT_UNIFORM_BUFFER_IDENTIFIER_TYPE(Type) \
-    template ASENGINE_API void Material::SetShaderParam<Type>(UniqueString uniformName, UniqueString fieldName, const Type &value); \
-    template ASENGINE_API const Type &Material::GetShaderParam<Type>(UniqueString uniformName, UniqueString fieldName) const;
+    template  void Material::SetShaderParam<Type>(UniqueString uniformName, UniqueString fieldName, const Type &value); \
+    template  const Type &Material::GetShaderParam<Type>(UniqueString uniformName, UniqueString fieldName) const;
 
 // define resource ref
 ASENGINE_SERIALIZE_RESOURCE_REF(Material);
@@ -38,7 +38,7 @@ namespace ASEngine
 
     // serialiazation start
     template<>
-    void Serializer::Deserialize(const Json& object, Material& dest)
+    void  Serializer::Deserialize(const Json& object, Material& dest)
     {
         // create the material
         ResourceRef<Shader> shader = ResourceRef<Shader>::NONE();
@@ -53,7 +53,7 @@ namespace ASEngine
             UniqueString ubUniqueString{uniformBufferName}; // cache unique string to
             const ShaderParams& params = shader->GetShaderParams();
             const ShaderUniformBufferInfo& uniformBufferInfo = params.UniformBuffers.at(ubUniqueString);
-            
+
             // identifiers
             for (const auto& [identifierName, identifierValue]: uniformBufferObject.items())
             {
@@ -117,7 +117,7 @@ namespace ASEngine
                     break;
                 }
 
-            } 
+            }
         }
 
         // samplers
@@ -125,7 +125,7 @@ namespace ASEngine
         for (const auto& [samplerName, samplerObject]: samplerObjects.items())
         {
             UniqueString uSamplerName{samplerName};
-            
+
             ResourceRef<Texture> sampler = ResourceRef<Texture>::NONE();
             Serializer::Deserialize(samplerObject, sampler);
 
@@ -134,14 +134,14 @@ namespace ASEngine
     }
 
     template <>
-    Json Serializer::Serialize(const Material &material)
+    Json  Serializer::Serialize(const Material &material)
     {
         return Json({});
     }
 
     ASENGINE_SERIALIZE_RESOURCE_IMP(Material);
     // end serialiazation
-    
+
     void Material::Create(ResourceRef<Shader> shader)
     {
         // get shader uniform buffer info
@@ -162,6 +162,26 @@ namespace ASEngine
 
         // set shader
         m_Shader = shader;
+    }
+
+    ResourceRef<Material> Material::Clone()
+    {
+        ResourceRef<Material> material = Material::GetResourceClass().New();
+        material->Create(m_Shader);
+
+        // copy uniform buffers
+        for (const auto &[uniformBufferName, uniformBuffer] : m_UniformBuffers)
+        {
+            material->m_UniformBuffers[uniformBufferName] = ByteBuffer(uniformBuffer);
+        }
+
+        // copy textures
+        for (const auto &[samplerName, sampler] : m_Samplers)
+        {
+            material->m_Samplers[samplerName] = sampler;
+        }
+
+        return material;
     }
 
     Material::ParamType Material::GetIdentifierParamType(const ShaderUniformBufferIdentifier &identifier)
@@ -290,7 +310,7 @@ namespace ASEngine
         dataBuffer.SetDataAt(&value, sizeof(T), identifier.Offset);
     }
 
-    
+
     // get shader params
     template <typename T>
     const T &Material::GetShaderParam(UniqueString uniformName, UniqueString fieldName) const
@@ -309,7 +329,7 @@ namespace ASEngine
     }
 
     // add implementations for each type
-    FOREACH(ASENGINE_IMPLEMENT_UNIFORM_BUFFER_IDENTIFIER_TYPE, 
+    FOREACH(ASENGINE_IMPLEMENT_UNIFORM_BUFFER_IDENTIFIER_TYPE,
         bool,
         int,
         uint32_t,
