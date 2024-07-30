@@ -5,7 +5,7 @@ namespace ASEngine
 {
     // defined implementation for basic types
     // int
-    template<> 
+    template<>
     Json  Serializer::Serialize(const int &value)
     {
         return Json(value);
@@ -49,7 +49,7 @@ namespace ASEngine
     {
         return Json(value);
     }
-    template <> 
+    template <>
     void  Serializer::Deserialize(const Json &object, bool &dest)
     {
         ASENGINE_ASSERT(object.is_boolean(), "Can't deserialize bool if Json object is not a boolean");
