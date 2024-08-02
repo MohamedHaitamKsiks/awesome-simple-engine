@@ -1,0 +1,4 @@
+{
+  "Layers": ["Default"],
+  "DefaultMaterial": "materials/default2D.material.json"
+}

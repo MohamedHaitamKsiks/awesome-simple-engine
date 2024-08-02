@@ -5,6 +5,7 @@ namespace ASEngine
 {
     void Registry()
     {
-        
+        Module2D::Init();
+        AudioModule::Init();
     }
 } // ASEngine
