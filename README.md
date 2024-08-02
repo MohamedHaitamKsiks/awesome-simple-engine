@@ -49,6 +49,57 @@ Running Example2D demo:
 
 ## Features
 
+### Audio Module
+
+The ASEngine includes a powerful AudioModule that provides features for audio playback, control, and manipulation.
+This module only supports .wav formats.
+
+To integrate the AudioModule into your project, you need to add it through the registry function:
+
+
+```sh
+AudioModule::Init();
+```
+
+Check out the AudioExample demo available in the demos folder.
+
+### AudioSource
+
+The AudioSource class represents an audio asset that can be loaded and played using the AudioEngine.
+
+You can create it as a json file:
+```json
+{
+  "Path": "path/to/audio.wav"
+}
+```
+
+### AudioOutput
+
+The AudioOutput class is responsible for managing the output settings of the audio, such as volume.
+
+```cpp
+AudioOutput& audioOutput = AudioEngine::GetInstance().GetAudioOuput("Default");
+audioOutput.SetVolume(0.5f); // Set volume to 50%
+```
+
+### AudioEngine
+
+The AudioEngine class serves as the central hub for managing and playing audio within an application.
+It provides functionality to load, control, and play audio resources.
+
+```cpp
+auto& audioEngine = AudioEngine::GetInstance();
+ResourceRef<AudioSource> audioSource = AudioSource::GetResourceClass().Load("path/to/audio.json");
+ResourceRef<AudioPlayer> player = audioEngine.Play("Default", audioSource, 1.0f, true);
+
+if (audioEngine.IsPlaying(player)) {
+    // Do something while the audio is playing
+}
+
+audioEngine.Stop(player);
+```
+
 ### 2D Module
 
 ASEngine provides a comprehensive 2D module that includes features for transform hierarchy, sprite management, text rendering, and various drawing functions. This module enhances performance by using batching techniques to minimize the number of draw calls.
@@ -64,7 +115,6 @@ You can check out the Example2D demo in the demos folder to test this module.
 
 ### Renderer2D
 
-
 Renderer2D is a singleton system responsible for rendering 2D graphics. It offers a range of functionalities:
 
 #### Renderer Settings:
@@ -79,23 +129,9 @@ Example:
 }
 ```
 
-#### Layer Management:
-
-1. GetLayer(UniqueString layerName): Retrieve a specific layer by name.
-2. GetLayerNames(): Retrieve all layer names.
-
-
-#### Resource Accessors:
-
-1. GetDefaultShader(): Access the default shader.
-2. GetDefaultMaterial(): Access the default material.
-3. GetFillRectangleDefaultMaterial(): Access the default material for filling rectangles.
-4. GetFillRectangleTexture(): Access the texture used for filling rectangles (one white pixel).
-
 #### Render Signal:
 
-Rendering operations should be performed within the RenderSignal event to ensure that all custom rendering logic is executed correctly and efficiently. This approach allows you to hook into the rendering pipeline and execute rendering commands in a structured and organized manner.
-
+Rendering operations should be performed within the RenderSignal event to ensure that all custom rendering logic is executed correctly and efficiently.
 You can get the render signal with the GetOnRendere2D() method:
 
 ```cpp
@@ -175,7 +211,7 @@ layer.DrawTextAlign(font, "Hello World!", transform, TextHorizontalAlign::CENTER
 
 ### Sprites
 
-A Sprite is a resource that consists of multiple frames arranged in a grid within a single Texture. 
+A Sprite is a resource that consists of multiple frames arranged in a grid within a single Texture.
 
 Example:
 
@@ -215,15 +251,11 @@ Example of font:
 
 ### Transform2D
 
-Transform2D is a component designed for handling 2D transformations of entities. 
+Transform2D is a component designed for handling 2D transformations of entities.
 
-It provides properties for managing position, scale, and rotation, and methods to compute local and global transformation matrices. 
+It provides properties for managing position, scale, and rotation, and methods to compute local and global transformation matrices.
 
-The component also supports parent-child relationships, allowing for hierarchical transformations. 
-
-Key methods:
- 1. GetLocalTransform(): returns the local transformation matrix.
- 2. GetGlobalTransform(): returns the global transformation matrix incorporating parent transformations. 
+The component also supports parent-child relationships, allowing for hierarchical transformations.
 
 For efficient performance, it's recommended to cache global transformation results when possible.
 
@@ -248,13 +280,13 @@ Example:
 
 ### Camera2D
 
-Camera2D is a component used for managing 2D camera properties. 
+Camera2D is a component used for managing 2D camera properties.
 
-It includes a Target property to specify the viewport, a PixelSnapping option to enable or disable snapping of the camera position to pixel boundaries, and a set of Layers to control which layers the camera will render. 
+It includes a Target property to specify the viewport, a PixelSnapping option to enable or disable snapping of the camera position to pixel boundaries, and a set of Layers to control which layers the camera will render.
 
-The Transform2D component is required for the camera to render entities into the target. 
+The Transform2D component is required for the camera to render entities into the target.
 
-If the Target is set to NONE, the camera renders directly to the screen. 
+If the Target is not set, the camera renders directly to the screen.
 
 Example:
 

@@ -163,6 +163,12 @@ set (SOURCE
     asengine/2D/Sprite/Sprite.cpp
     asengine/2D/Font/Font.cpp
     asengine/2D/Module2D.cpp
+    #audio
+    asengine/Audio/AudioEngine/AudioEngine.cpp
+    asengine/Audio/AudioSource/AudioSource.cpp
+    asengine/Audio/AudioOutput/AudioOutput.cpp
+    asengine/Audio/AudioPlayer/AudioPlayer.cpp
+    asengine/Audio/AudioModule.cpp
     #platform src
     ${PLATFORM_SPECIFIC_SOURCES}
 )

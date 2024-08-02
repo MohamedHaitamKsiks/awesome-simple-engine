@@ -1,5 +1,0 @@
-{
-    "Vertex": "shaders/default.vert",
-    "Fragment": "shaders/default.frag",
-    "VertexInputDescriptor": "shaders/default.descriptor.json"
-}
