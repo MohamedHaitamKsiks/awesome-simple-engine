@@ -4,7 +4,7 @@ void AudioExample::Init()
 {
     // music comming from: https://opengameart.org/content/colossal-boss-battle-theme
     m_BossMainSource = AudioSource::GetResourceClass().Load("audios/boss_main.audio.json");
-    m_PlayingID = AudioEngine::GetInstance().Play(m_BossMainSource, 1.0f, true);
+    m_Player = AudioEngine::GetInstance().Play("Default", m_BossMainSource, 1.0f, true);
 
     Renderer2D::GetInstance().GetOnRender2D().Connect([this](Renderer2D& renderer2D)
     {
@@ -14,7 +14,7 @@ void AudioExample::Init()
 
 void AudioExample::OnRender2D(Renderer2D& renderer2D)
 {
-    if (!AudioEngine::GetInstance().IsPlaying(m_PlayingID))
+    if (!AudioEngine::GetInstance().IsPlaying(m_Player))
         return;
 
     constexpr size_t rectangleCount = 320;
@@ -24,7 +24,7 @@ void AudioExample::OnRender2D(Renderer2D& renderer2D)
 
     for (size_t i = 0; i < rectangleCount; i ++)
     {
-        size_t frameIndex = AudioEngine::GetInstance().GetCurrentFrameIndex(m_PlayingID);
+        size_t frameIndex = m_Player->GetFrameIndex();
         float value = m_BossMainSource->GetValue(frameIndex + i, 0);
 
 
@@ -55,20 +55,19 @@ void AudioExample::OnInputEvent(const InputEvent& event)
     else if (m_CurrentVolume < 0.0f)
         m_CurrentVolume = 0.0f;
 
-    if (AudioEngine::GetInstance().IsPlaying(m_PlayingID))
-        AudioEngine::GetInstance().SetVolume(m_PlayingID, m_CurrentVolume);
+    if (AudioEngine::GetInstance().IsPlaying(m_Player))
+        AudioEngine::GetInstance().GetAudioOuput("Default").SetVolume(m_CurrentVolume);
 
     // stop/play
     if (keyEvent.Code == Keycode::KEY_SPACE)
     {
-        if (AudioEngine::GetInstance().IsPlaying(m_PlayingID))
+        if (AudioEngine::GetInstance().IsPlaying(m_Player))
         {
-            AudioEngine::GetInstance().Stop(m_PlayingID);
-            m_PlayingID = CHUNK_NULL;
+            AudioEngine::GetInstance().Stop(m_Player);
         }
         else
         {
-            m_PlayingID = AudioEngine::GetInstance().Play(m_BossMainSource, 1.0f, true);
+            m_Player = AudioEngine::GetInstance().Play("Default", m_BossMainSource, 1.0f, true);
         }
     }
 }

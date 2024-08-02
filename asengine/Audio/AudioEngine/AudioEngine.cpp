@@ -11,7 +11,7 @@
 
 namespace ASEngine
 {
-    ASENGINE_SERIALIZE_STRUCT(AudioEngine::Settings, Channels, SampleRate);
+    ASENGINE_SERIALIZE_STRUCT(AudioEngine::Settings, Channels, SampleRate, Outputs);
 
     // save ma device as static variable since AudioEngine is a singleton.
     // It's not a memeber of the class since i don't want to add miniaudio to the header files of the engine
@@ -34,45 +34,47 @@ namespace ASEngine
             buffer[i] = 0.0f;
 
         // add to buffer
-        const auto& audioPlayingIDs = audioEngine.GetAudioPlayinIDs();
-        std::vector<AudioPlayingID> audioPlayingIDsToDelete = {};
 
-        for(AudioPlayingID audioPlayingID: audioPlayingIDs)
+        for (auto& [outputName, output]: audioEngine.m_Outputs)
         {
-            auto& audioPlayingInfo = audioEngine.m_PlayingInfos.Get(audioPlayingID);
+            std::vector<ResourceRef<AudioPlayer>> audioPlayersToStop = {};
 
-            for (uint32_t i = 0; i < frameCount; i++)
+            const auto& players = output.GetPlayers();
+            for(const auto& [playerID, player]: players)
             {
-                // check frame index
-                if (audioPlayingInfo.FrameIndex >= audioPlayingInfo.Source->GetFrameCount())
+                const auto& source = player->GetSource();
+                for (uint32_t i = 0; i < frameCount; i++)
                 {
-                    if (audioPlayingInfo.IsLooping)
+                    // check frame index
+                    if (player->GetFrameIndex() >= source->GetFrameCount())
                     {
-                        audioPlayingInfo.FrameIndex = 0;
+                        if (player->IsLooping())
+                        {
+                            player->m_FrameIndex = 0;
+                        }
+                        else
+                        {
+                            audioPlayersToStop.push_back(player);
+                            break;
+                        }
                     }
-                    else
+
+                    // write
+                    for (uint32_t j = 0; j < audioEngine.GetChannels(); j++)
                     {
-                        audioPlayingIDsToDelete.push_back(audioPlayingID);
-                        break;
+                        buffer[audioEngine.GetChannels() * i + j] += output.GetVolume() * player->GetVolume() * source->GetValue(player->GetFrameIndex() + j, audioEngine.GetChannels());
                     }
-                }
 
-                // write
-                for (uint32_t j = 0; j < audioEngine.GetChannels(); j++)
-                {
-                    const auto& audioSourceData = audioPlayingInfo.Source->GetData();
-                    buffer[audioEngine.GetChannels() * i + j] += audioPlayingInfo.Volume * audioSourceData[audioEngine.GetChannels() * audioPlayingInfo.FrameIndex + j];
+                    player->m_FrameIndex++;
                 }
-
-                audioPlayingInfo.FrameIndex++;
+            }
+            // delete audio playing ids
+            for (const auto& audioPlayingID: audioPlayersToStop)
+            {
+                output.Stop(audioPlayingID);
             }
         }
 
-        // delete audio playing ids
-        for (AudioPlayingID audioPlayingID: audioPlayingIDsToDelete)
-        {
-            audioEngine.Stop(audioPlayingID);
-        }
 
         // data to output
         memcpy(output, buffer, sizeof(float) * bufferSize);
@@ -107,37 +109,49 @@ namespace ASEngine
         ASENGINE_ASSERT(ma_device_init(nullptr, &config, &g_Device) == MA_SUCCESS, "Cound't initialize audio device!");
         // start device
         ma_device_start(&g_Device); // The device is sleeping by default so you'll need to start it manually.
+
+        // create audio outputs
+        for (auto outputName: m_Settings.Outputs)
+        {
+            m_Outputs[outputName];
+        }
     }
 
     void AudioEngine::Terminate()
     {
         // stop all
-        m_PlayingInfos.Clear();
+        m_Outputs.clear();
         ma_device_uninit(&g_Device);
     }
 
-    AudioPlayingID AudioEngine::Play(const ResourceRef<AudioSource>& source, float volume, bool looping)
+    // play audio
+    ResourceRef<AudioPlayer> AudioEngine::Play(UniqueString outputName, const ResourceRef<AudioSource>& source, float volume, bool looping)
     {
-        // craete audio playin
-        AudioPlayingID audioPlayingID = m_PlayingInfos.Allocate();
-
-        AudioPlayingInfo& audioPlayingInfo = m_PlayingInfos.Get(audioPlayingID);
-        audioPlayingInfo.FrameIndex = 0;
-        audioPlayingInfo.Volume = volume;
-        audioPlayingInfo.IsLooping = looping;
-        audioPlayingInfo.Source = source;
-
-        // add audio playing id
-        m_PlayingIDs.insert(audioPlayingID);
-
-        return audioPlayingID;
+        auto& output = m_Outputs[outputName];
+        return output.Play(source, volume, looping);
     }
 
-    void AudioEngine::Stop(AudioPlayingID audioPlayingID)
+    // stop audio
+    void AudioEngine::Stop(const ResourceRef<AudioPlayer>& player)
     {
-        ASENGINE_ASSERT(IsPlaying(audioPlayingID), "Audio playing id is not currently playing!");
+        for (auto& [outputName, output]: m_Outputs)
+        {
+            if (output.IsPlaying(player))
+            {
+                output.Stop(player);
+                return;
+            }
+        }
+    }
 
-        m_PlayingIDs.erase(audioPlayingID);
-        m_PlayingInfos.Free(audioPlayingID);
+    // is playing
+    bool AudioEngine::IsPlaying(const ResourceRef<AudioPlayer>& player) const
+    {
+        for (auto& [outputName, output]: m_Outputs)
+        {
+            if (output.IsPlaying(player))
+                return true;
+        }
+        return false;
     }
 } // namespace ASEngine

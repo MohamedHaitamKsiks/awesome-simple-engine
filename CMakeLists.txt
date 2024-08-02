@@ -166,6 +166,8 @@ set (SOURCE
     #audio
     asengine/Audio/AudioEngine/AudioEngine.cpp
     asengine/Audio/AudioSource/AudioSource.cpp
+    asengine/Audio/AudioOutput/AudioOutput.cpp
+    asengine/Audio/AudioPlayer/AudioPlayer.cpp
     asengine/Audio/AudioModule.cpp
     #platform src
     ${PLATFORM_SPECIFIC_SOURCES}

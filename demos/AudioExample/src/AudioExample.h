@@ -11,7 +11,7 @@ private:
     void OnRender2D(Renderer2D& renderer2D);
     void OnInputEvent(const InputEvent& event) override;
 
-    AudioPlayingID m_PlayingID = CHUNK_NULL;
+    ResourceRef<AudioPlayer> m_Player{};
     float m_CurrentVolume = 1.0f;
     ResourceRef<AudioSource> m_BossMainSource{};
 };
