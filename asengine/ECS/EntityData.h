@@ -18,6 +18,7 @@ namespace ASEngine
         ComponentIndex Index = 0;
         bool IsDestroyed = false;
         bool Persistent = false;
+        UniqueString Tag{};
     };
 
 } // namespace ASEngine

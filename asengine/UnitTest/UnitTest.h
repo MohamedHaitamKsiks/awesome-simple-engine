@@ -16,7 +16,7 @@
 
 
 // unit test expect predicat
-#define ASENGINE_EXPECT(predicat) ASEngine::UnitTest::Expect(predicat, __FILE__, __LINE__, #predicat)
+#define ASENGINE_EXPECT(predicat) UnitTest::Expect(predicat, __FILE__, __LINE__, #predicat)
 
 namespace ASEngine
 {
@@ -28,12 +28,12 @@ namespace ASEngine
         virtual ~UnitTest() {};
 
         // run tests and returns 0 if it's OK
-        int Run(); 
+        int Run();
 
     protected:
         // describe test suit
         virtual void Describe() = 0;
-        
+
         // add test case
         void Test(const std::string& testCaseName, const std::function<void()>& testCallback);
 

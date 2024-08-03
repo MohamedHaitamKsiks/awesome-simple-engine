@@ -31,8 +31,10 @@ namespace ASEngine
         EntityData& data = m_Entities.Get(entityID);
         data.ArchetypeOwner = archetype;
         data.IsDestroyed = false;
-        data.Persistent = builder.GetPersistant();
+        data.Persistent = builder.IsPersistant();
+        data.Tag = builder.GetTag();
 
+        // create entity
         ComponentIndex index = archetype->AddEntity(entityID);
         data.Index = index;
 
@@ -43,6 +45,14 @@ namespace ASEngine
 
             component.Copy(*componentValue);
             component.OnCreate(entityID);
+        }
+
+        // add tag
+        if (builder.HasTag())
+        {
+            UniqueString tag = builder.GetTag();
+            ASENGINE_ASSERT(m_TaggedEntities.find(tag) == m_TaggedEntities.end(), "Tag already exists");
+            m_TaggedEntities[tag] = entityID;
         }
 
         return entityID;
@@ -113,10 +123,27 @@ namespace ASEngine
         // remove entity datas
         for (auto entityID: m_DestroyQueue)
         {
+            // remove tag if exits
+            UniqueString tag = GetTag(entityID);
+            if (m_TaggedEntities.find(tag) != m_TaggedEntities.end())
+            {
+                m_TaggedEntities.erase(tag);
+            }
+
             m_Entities.Free(entityID);
         }
 
         m_DestroyQueue.clear();
+    }
+
+    EntityID EntityManager::GetEntityByTag(UniqueString tag) const
+    {
+        if (m_TaggedEntities.find(tag) != m_TaggedEntities.end())
+        {
+            return m_TaggedEntities.at(tag);
+        }
+
+        return CHUNK_NULL;
     }
 
 

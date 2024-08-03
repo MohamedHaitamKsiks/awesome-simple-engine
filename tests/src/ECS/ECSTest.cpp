@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <memory>
-#include <future>
 
 // define OOP alternative to test performance
 class GameObject
@@ -64,7 +63,7 @@ private:
     }
 };
 
-ASENGINE_EXPORT(Transform, Position, Angle);
+ASENGINE_SERIALIZE_STRUCT(Transform, Position, Angle);
 
 struct Body: public Component<Body>
 {
@@ -81,7 +80,7 @@ private:
     }
 };
 
-ASENGINE_EXPORT_EMPTY(Body);
+ASENGINE_SERIALIZE_STRUCT_EMPTY(Body);
 
 struct Player: public Component<Player>
 {
@@ -98,7 +97,7 @@ private:
     }
 };
 
-ASENGINE_EXPORT_EMPTY(Player);
+ASENGINE_SERIALIZE_STRUCT_EMPTY(Player);
 
 // physcis system
 class PhysicsSystem
@@ -115,7 +114,7 @@ public:
                 transforms[i].Position = Vector2{Random::Float(), Random::Float()};
             }
         });
-        
+
         EntityQuery<Transform, Body> query{};
         query.ForEachCollection([](ComponentCollection<Transform>& transforms, ComponentCollection<Body>& bodies, size_t count)
         {
@@ -125,7 +124,7 @@ public:
             }
         });
 
-    
+
         EntityQuery<Player> query3{};
         query3.ForEachCollection([](ComponentCollection<Player>& players, size_t count)
         {
@@ -150,7 +149,7 @@ void ECSTest::Describe()
         ASENGINE_EXPECT(Transform::GetName() == UniqueString("Transform"));
     });
 
-    
+
     Test("It can create entities", []()
     {
         EntityBuilder builder;
@@ -165,12 +164,43 @@ void ECSTest::Describe()
         builder.AddComponents(transform, body);
 
         EntityID entityID = EntityManager::GetInstance().Create(builder);
-        
+
         EntityManager::GetInstance().Destroy(entityID);
         EntityManager::GetInstance().CleanDestroyQueue();
     });
 
-        
+    Test("It can have a tag", [](){
+        EntityBuilder builder;
+        builder.SetTag("MyBody");
+
+        Transform transform{};
+        transform.Position = Vector2{50.0f, 50.0f};
+        transform.Angle = Math::PI / 4.0f;
+
+        Body body{};
+        body.Velocity = Vector2::ZERO();
+
+        builder.AddComponents(transform, body);
+
+        EntityID entityID = EntityManager::GetInstance().Create(builder);
+
+        // get entity from tag
+        EntityID entityFromTagID = EntityManager::GetInstance().GetEntityByTag("MyBody");
+        ASENGINE_EXPECT(entityID == entityFromTagID);
+
+        // get tag of entity
+        UniqueString tag = EntityManager::GetInstance().GetTag(entityID);
+        ASENGINE_EXPECT(tag == UniqueString("MyBody"));
+
+        EntityManager::GetInstance().Destroy(entityID);
+        EntityManager::GetInstance().CleanDestroyQueue();
+
+        // check entity doesn't exist
+        entityFromTagID = EntityManager::GetInstance().GetEntityByTag("MyBody");
+        ASENGINE_EXPECT(entityFromTagID == CHUNK_NULL);
+    });
+
+
     Test("It can get component", []()
     {
         EntityBuilder builder;
@@ -220,7 +250,7 @@ void ECSTest::Describe()
         for (int i = 0; i < transformCount; i++)
             EntityManager::GetInstance().Create(builderTrasnformOnly);
 
-        // transform body 
+        // transform body
         int entityCount = 0;
         EntityQuery<Transform, Body> query{};
         query.ForEach([&entityCount](Transform& transform, Body& body)
@@ -243,12 +273,12 @@ void ECSTest::Describe()
         EntityManager::GetInstance().DestroyAll();
         EntityManager::GetInstance().CleanDestroyQueue();
     });
-    
+
 
     Test("It is faster than OOP", []()
     {
         constexpr int entityCount = 500000;
-        
+
         // create game objects
         std::vector<std::unique_ptr<GameObject>>gameObjects = {};
         for (int i = 0; i < entityCount; i++)
@@ -295,7 +325,7 @@ void ECSTest::Describe()
         // create [Transform, Body]
         for (int i = 0; i < entityCount / 2; i++)
             EntityManager::GetInstance().Create(builder);
-        
+
         for (int i = 0; i < entityCount / 2; i++)
             EntityManager::GetInstance().Create(builder2);
 
