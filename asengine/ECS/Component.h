@@ -72,37 +72,4 @@ namespace ASEngine
     };
 }
 
-// export no field
-#define  ASENGINE_EXPORT_EMPTY(ComponentType) \
-    template <> \
-    Json  Serializer::Serialize(const ComponentType &value) \
-    { \
-        return Json({}); \
-    } \
-    template <> \
-    void  Serializer::Deserialize(const Json &object, ComponentType &dest) \
-    { \
-    }
-
-// export component field to be serialiazed/deserialized
-#define ASENGINE_EXPORT(ComponentType, ...) template <> \
-    Json  Serializer::Serialize(const ComponentType &value) { \
-        Json object = Json({}); \
-        FOREACH(SERIALIZE_FIELD,  __VA_ARGS__) \
-        return object; \
-    } \
-    template <> \
-    void  Serializer::Deserialize(const Json &object, ComponentType &dest) \
-    { \
-        ASENGINE_ASSERT(object.is_object(), ""); \
-        FOREACH(DESERIALIZE_FIELD,  __VA_ARGS__) \
-    }
-
-#define SERIALIZE_FIELD(field) \
-    object[#field] = Serializer::Serialize(value.field);
-
-#define DESERIALIZE_FIELD(field) \
-    Serializer::Deserialize(object.at(#field), dest.field);
-
-
 #endif

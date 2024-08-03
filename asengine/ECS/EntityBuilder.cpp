@@ -56,9 +56,27 @@ namespace ASEngine
     template <>
     void  Serializer::Deserialize(const Json &object, EntityBuilder &dest)
     {
-        for (auto &component : object.items())
+        // tag
+        const std::string tagString = "Tag";
+        if (object.find(tagString) != object.end())
         {
-            UniqueString componentName{ component.key() };
+            UniqueString tag (object.at(tagString).get<std::string>());
+            dest.SetTag(tag);
+        }
+
+        // persistent
+        const std::string isPeristentString = "IsPersistent";
+        if (object.find(isPeristentString) != object.end())
+        {
+            bool isPersistent = object.at(isPeristentString).get<bool>();
+            dest.SetPersistant(isPersistent);
+        }
+
+        // components
+        const auto& components = object.at("Components");
+        for (const auto &component : components.items())
+        {
+            UniqueString componentName(component.key());
             dest.AddComponent(componentName);
             dest.GetComponent(componentName).Deserialize(component.value());
         }

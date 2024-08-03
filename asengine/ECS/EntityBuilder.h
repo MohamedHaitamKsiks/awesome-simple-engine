@@ -5,10 +5,10 @@
 #include <unordered_map>
 
 #include "Core/String/UniqueString.h"
+#include "Core/String/UniqueStringManager.h"
 #include "Component.h"
 #include "Signature.h"
 #include "Archetype.h"
-
 
 
 namespace ASEngine
@@ -73,9 +73,27 @@ namespace ASEngine
                 m_Persistent = persistant;
             }
 
-            inline bool GetPersistant() const
+            inline bool IsPersistant() const
             {
                 return m_Persistent;
+            }
+
+            // set entity tag
+            inline void SetTag(UniqueString tag)
+            {
+                m_Tag = tag;
+            }
+
+            // get entity tag
+            inline UniqueString GetTag() const
+            {
+                return m_Tag;
+            }
+
+            // check if builder tag is defined
+            inline bool HasTag() const
+            {
+                return m_Tag.GetID() != UNIQUE_STRING_ID_NULL;
             }
 
         private:
@@ -84,6 +102,7 @@ namespace ASEngine
             // cache signatrue
             Signature m_Signature{};
             Archetype* m_Archetype = nullptr;
+            UniqueString m_Tag{};
 
             // is entity going to be kept when changing scene
             bool m_Persistent = false;

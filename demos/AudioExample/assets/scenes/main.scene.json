@@ -1,19 +1,21 @@
 {
   "Entities": [
     {
-      "Transform2D": {
-        "Position": {
-          "x": 0.0,
-          "y": 0.0
+      "Components": {
+        "Transform2D": {
+          "Position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "Scale": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "Rotation": 0.0
         },
-        "Scale": {
-          "x": 1.0,
-          "y": 1.0
-        },
-        "Rotation": 0.0
-      },
-      "Camera2D": {
-        "Layers": ["Default"]
+        "Camera2D": {
+          "Layers": ["Default"]
+        }
       }
     }
   ]
