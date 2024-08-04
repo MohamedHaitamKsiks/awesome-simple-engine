@@ -1,6 +1,10 @@
 #include "InterpolationExample.h"
 #include "Core/Math/Vector2.h"
 
+#define DRAW_INTERPOLATION(func) \
+defaultLayer.DrawFillRectangle(size, Matrix3x3::Translate(Interpolation::func(a, b, t)), Color::WHITE()); \
+incrementAB();
+
 void InterpolationExample::Init()
 {
     Renderer2D::GetInstance().GetOnRender2D().Connect([this](Renderer2D& renderer2D){
@@ -41,18 +45,9 @@ void InterpolationExample::OnRender2D(Renderer2D& renderer2D)
         b.y += 128.0f;
     };
 
-    defaultLayer.DrawFillRectangle(size, Matrix3x3::Translate(Interpolation::Linear(a, b, t)), Color::WHITE());
-    incrementAB();
-
-    defaultLayer.DrawFillRectangle(size, Matrix3x3::Translate(Interpolation::QuadEaseInOut(a, b, t)), Color::WHITE());
-    incrementAB();
-
-    defaultLayer.DrawFillRectangle(size, Matrix3x3::Translate(Interpolation::ExpEaseInOut(a, b, t)), Color::WHITE());
-    incrementAB();
-
-    defaultLayer.DrawFillRectangle(size, Matrix3x3::Translate(Interpolation::BackEaseInOut(a, b, t)), Color::WHITE());
-    incrementAB();
-
-    defaultLayer.DrawFillRectangle(size, Matrix3x3::Translate(Interpolation::ElasticEaseInOut(a, b, t)), Color::WHITE());
-    incrementAB();
+    DRAW_INTERPOLATION(Linear);
+    DRAW_INTERPOLATION(QuadEaseInOut);
+    DRAW_INTERPOLATION(ExpEaseInOut);
+    DRAW_INTERPOLATION(BackEaseInOut);
+    DRAW_INTERPOLATION(ElasticEaseInOut);
 }
