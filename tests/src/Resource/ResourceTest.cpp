@@ -123,13 +123,13 @@ void ResourceTest::Describe()
 
     Test("it can get resource", []()
     {
-        ResourceRef<TestResourceType> test = TestResourceType::GetResourceClass().Load("assets:://test_resource/test.resource.json");
+        ResourceRef<TestResourceType> test = TestResourceType::GetResourceClass().Load("assets://test_resource/test.resource.json");
         test->SetPersistent(true);
     });
 
     Test("it is serializable", []()
     {
-        Json testRefObject = Json("assets:://test_resource/test.resource.json");
+        Json testRefObject = Json("assets://test_resource/test.resource.json");
 
         ResourceRef<TestResourceType> test;
         Serializer::Deserialize(testRefObject, test);

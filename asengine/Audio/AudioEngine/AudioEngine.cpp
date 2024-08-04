@@ -90,7 +90,7 @@ namespace ASEngine
     {
         // load settings
         File settingsFile;
-        ASENGINE_ASSERT(settingsFile.Open("assets:://audio.settings.json", FileOpenMode::READ), "Cound't open audio.settings.json");
+        ASENGINE_ASSERT(settingsFile.Open("assets://audio.settings.json", FileOpenMode::READ), "Cound't open audio.settings.json");
 
         Json settingsObject = Json::parse(settingsFile.ReadText());
         Serializer::Deserialize(settingsObject, m_Settings);

@@ -1,6 +1,6 @@
 {
   "Application": {
-    "Name": "ASEgnine-Projet",
+    "Name": "Interpolation Example",
     "MainScene": "assets://scenes/main.scene.json"
   },
 

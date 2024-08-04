@@ -1,6 +1,6 @@
 {
-  "Vertex": "assets:://shaders/default.vert",
-  "Fragment": "assets:://shaders/default.frag",
+  "Vertex": "assets://shaders/default.vert",
+  "Fragment": "assets://shaders/default.frag",
   "VertexInputDescriptor": {
     "VertexInputLayouts": [
       {

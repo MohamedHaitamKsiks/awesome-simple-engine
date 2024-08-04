@@ -20,8 +20,8 @@ void ViewportExample::Init()
     // load materials
     auto& materialClass = Material::GetResourceClass();
 
-    m_DefaultMaterial = materialClass.Load("assets:://materials/default.material.json");
-    m_WavesMaterial = materialClass.Load("assets:://materials/waves.material.json");
+    m_DefaultMaterial = materialClass.Load("assets://materials/default.material.json");
+    m_WavesMaterial = materialClass.Load("assets://materials/waves.material.json");
 
     // create buffers
     auto& bufferClass = Buffer::GetResourceClass();

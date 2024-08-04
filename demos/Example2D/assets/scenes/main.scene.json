@@ -12,7 +12,7 @@
         "Camera2D": {
           "Layers": ["Default"],
           "PixelSnapping": true,
-          "Target": "assets:://viewports/pixel.viewport.json"
+          "Target": "assets://viewports/pixel.viewport.json"
         },
         "CameraController": {},
         "Transform2D": {

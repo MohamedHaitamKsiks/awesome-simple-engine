@@ -1,9 +1,9 @@
 {
-  "Shader": "assets:://shaders/waves.shader.json",
+  "Shader": "assets://shaders/waves.shader.json",
   "UniformBuffers": {},
   "Samplers": {
     "WavesTexture": {
-      "ImagePath": "assets:://materials/waves.png",
+      "ImagePath": "assets://materials/waves.png",
       "Filter": "LINEAR",
       "RepeatMode": "REPEAT"
     }

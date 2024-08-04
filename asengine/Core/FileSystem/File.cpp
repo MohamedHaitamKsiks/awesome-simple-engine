@@ -33,8 +33,8 @@ namespace ASEngine
     {
         pathInfo.Type = FileType::NONE;
 
-        const std::string assetsPath = "assets:://";
-        const std::string userdataPath = "user:://";
+        const std::string assetsPath = "assets://";
+        const std::string userdataPath = "user://";
 
         if (path.find(assetsPath) == 0)
         {
