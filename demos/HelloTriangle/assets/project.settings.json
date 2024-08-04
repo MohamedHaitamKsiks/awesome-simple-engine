@@ -1,28 +1,23 @@
 {
-	"Application":
-	{
-		"Name": "Hello Triangle",
-		"MainScene": "scenes/main.scene.json" 
-	},
+  "Application": {
+    "Name": "Hello Triangle",
+    "MainScene": "assets:://scenes/main.scene.json"
+  },
 
-	"Display":
-	{
-		"Window": 
-		{
-			"Width": 640,
-			"Height": 480,
-			"KeepAspectRatio": true,
-			"Fullscreen": false
-		},
+  "Display": {
+    "Window": {
+      "Width": 640,
+      "Height": 480,
+      "KeepAspectRatio": true,
+      "Fullscreen": false
+    },
 
-		"Rendering":
-		{
-			"Backend": "OPENGL"
-		}
-	},
+    "Rendering": {
+      "Backend": "OPENGL"
+    }
+  },
 
-	"Time":
-	{
-		"FixedTimeStep": 0.02
-	}
+  "Time": {
+    "FixedTimeStep": 0.02
+  }
 }

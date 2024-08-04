@@ -1,5 +1,4 @@
 {
   "Layers": ["Default", "PixelViewport"],
-  "DefaultMaterial": "materials/default2D.material.json",
-  "DefaultFont": "fonts/kongtext_16.font.json"
+  "DefaultMaterial": "assets:://materials/default2D.material.json"
 }

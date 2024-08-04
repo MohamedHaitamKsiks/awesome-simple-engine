@@ -2,7 +2,7 @@
 
 ShaderSourceTest::~ShaderSourceTest()
 {
-    
+
 }
 
 void ShaderSourceTest::Describe()
@@ -11,7 +11,7 @@ void ShaderSourceTest::Describe()
     Test("it loads shader source", [this]()
     {
         ASENGINE_REGISTER_RESOURCE_CLASS(ShaderSource);
-        m_Source = ShaderSource::GetResourceClass().Load("shaders/default3D.vert"); 
+        m_Source = ShaderSource::GetResourceClass().Load("assets:://shaders/default3D.vert");
     });
 
     // check fro uniform buffer
@@ -19,7 +19,7 @@ void ShaderSourceTest::Describe()
     {
         // check if uniform buffer exists
         UniqueString renderBufferName{"Render"};
-        const auto& uniformBuffers = m_Source->GetShaderParams().UniformBuffers; 
+        const auto& uniformBuffers = m_Source->GetShaderParams().UniformBuffers;
 
         ASENGINE_EXPECT(uniformBuffers.find(renderBufferName) != uniformBuffers.end());
 
@@ -43,10 +43,10 @@ void ShaderSourceTest::Describe()
         {
             // has field
             ASENGINE_EXPECT(identifiers.find(fieldNames[i]) != identifiers.end());
-            
+
             // check field type
             const auto& identifierInfo = identifiers.at(fieldNames[i]);
-            
+
             ASENGINE_EXPECT(identifierInfo.Type == ShaderIdentifierType::FLOAT);
             ASENGINE_EXPECT(identifierInfo.VectorSize == 3);
             ASENGINE_EXPECT(identifierInfo.Columns == 3);
@@ -54,10 +54,10 @@ void ShaderSourceTest::Describe()
         }
     });
 
-    // check for sampler 
+    // check for sampler
     Test("it has sampler named Texture", [this]()
     {
-        UniqueString samplerName{"Texture"};
+        UniqueString samplerName("Texture");
         ASENGINE_EXPECT(m_Source->GetShaderParams().Samplers.find(samplerName) != m_Source->GetShaderParams().Samplers.end());
 
         // clean up necessaray be cause we registered the shader source class after shader source test causing

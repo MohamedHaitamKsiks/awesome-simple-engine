@@ -24,8 +24,7 @@ namespace ASEngine
         // deserialize element
         Json resourceObject = Json::parse(resourceFile.ReadText());
         Deserialize(resourceObject);
-        
-        resourceFile.Close();
+
 
         m_IsLoaded = true;
         Debug::Log(Debug::Colorized(Debug::TextColor::GREEN_BG, path, ": Loaded"));

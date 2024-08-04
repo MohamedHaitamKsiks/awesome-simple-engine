@@ -1,28 +1,23 @@
 {
-	"Application":
-	{
-		"Name": "ASEgnine-UnitTests",
-		"MainScene": "scenes/main.scene.json" 
-	},
+  "Application": {
+    "Name": "ASEgnine-UnitTests",
+    "MainScene": "assets:://scenes/main.scene.json"
+  },
 
-	"Display":
-	{
-		"Window": 
-		{
-			"Width": 640,
-			"Height": 360,
-			"KeepAspectRatio": true,
-			"Fullscreen": false
-		},
+  "Display": {
+    "Window": {
+      "Width": 640,
+      "Height": 360,
+      "KeepAspectRatio": true,
+      "Fullscreen": false
+    },
 
-		"Rendering":
-		{
-			"Backend": "OpenGL"
-		}
-	},
+    "Rendering": {
+      "Backend": "OPENGL"
+    }
+  },
 
-	"Time":
-	{
-		"FixedTimeStep": 0.02
-	}
+  "Time": {
+    "FixedTimeStep": 0.02
+  }
 }

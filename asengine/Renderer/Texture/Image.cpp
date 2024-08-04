@@ -25,7 +25,6 @@ namespace ASEngine
         size_t fileLength = imageFile.GetSize();
         ByteBuffer fileBuffer{};
         imageFile.Read(fileBuffer);
-        imageFile.Close();
 
         // decode
         stbi_uc *pixels = stbi_load_from_memory(reinterpret_cast<const stbi_uc *>(fileBuffer.GetData()), static_cast<int>(fileLength), &m_Width, &m_Height, &m_Channels, STBI_rgb_alpha);
