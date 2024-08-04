@@ -1,7 +1,7 @@
 {
   "Application": {
     "Name": "AudioExample",
-    "MainScene": "scenes/main.scene.json"
+    "MainScene": "assets:://scenes/main.scene.json"
   },
 
   "Display": {

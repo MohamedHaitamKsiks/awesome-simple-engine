@@ -1,28 +1,23 @@
 {
-	"Application":
-	{
-		"Name": "ASEgnine-Projet",
-		"MainScene": "scenes/main.scene.json" 
-	},
+  "Application": {
+    "Name": "ASEgnine-Projet",
+    "MainScene": "assets:://scenes/main.scene.json"
+  },
 
-	"Display":
-	{
-		"Window": 
-		{
-			"Width": 1280,
-			"Height": 720,
-			"KeepAspectRatio": true,
-			"Fullscreen": false
-		},
+  "Display": {
+    "Window": {
+      "Width": 1280,
+      "Height": 720,
+      "KeepAspectRatio": true,
+      "Fullscreen": false
+    },
 
-		"Rendering":
-		{
-			"Backend": "OPENGL"
-		}
-	},
+    "Rendering": {
+      "Backend": "OPENGL"
+    }
+  },
 
-	"Time":
-	{
-		"FixedTimeStep": 0.02
-	}
+  "Time": {
+    "FixedTimeStep": 0.02
+  }
 }

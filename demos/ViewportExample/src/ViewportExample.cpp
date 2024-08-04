@@ -19,10 +19,10 @@ void ViewportExample::Init()
 
     // load materials
     auto& materialClass = Material::GetResourceClass();
-    
-    m_DefaultMaterial = materialClass.Load("materials/default.material.json");
-    m_WavesMaterial = materialClass.Load("materials/waves.material.json");
-    
+
+    m_DefaultMaterial = materialClass.Load("assets:://materials/default.material.json");
+    m_WavesMaterial = materialClass.Load("assets:://materials/waves.material.json");
+
     // create buffers
     auto& bufferClass = Buffer::GetResourceClass();
 
@@ -33,7 +33,7 @@ void ViewportExample::Init()
         Vertex{Vector2{-1.0f, -1.0f}, Vector2{1.0f, 0.0f}}
     };
     std::vector<uint32_t> triangleIndices = {0, 1, 2};
-    
+
     m_TriangleVertexBuffer = bufferClass.New();
     m_TriangleVertexBuffer->Create(BufferType::ARRAY);
     m_TriangleVertexBuffer->SetData(triangleVertexData.data(), triangleVertexData.size() * sizeof(Vertex));
@@ -58,7 +58,7 @@ void ViewportExample::Init()
     m_RectangleIndexBuffer = bufferClass.New();
     m_RectangleIndexBuffer->Create(BufferType::INDEX);
     m_RectangleIndexBuffer->SetData(rectangleIndices.data(), rectangleIndices.size() * sizeof(uint32_t));
-    
+
 }
 
 void ViewportExample::Update(float delta)
@@ -66,7 +66,7 @@ void ViewportExample::Update(float delta)
     m_Timer += delta;
 
     auto& renderer = Renderer::GetInstance();
-    
+
     // render to viewport
     renderer.Begin(m_Viewport);
     renderer.Clear();

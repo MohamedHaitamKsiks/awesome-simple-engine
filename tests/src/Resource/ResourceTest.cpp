@@ -21,7 +21,7 @@ public:
 private:
     friend Serializer;
     virtual void SetValue(int value) = 0;
-    
+
 };
 
 ASENGINE_SERIALIZE_RESOURCE_REF(TestResourceType);
@@ -61,7 +61,7 @@ private:
     {
         m_Value = value;
     }
-    
+
     int m_Value = 0;
 };
 
@@ -89,7 +89,7 @@ void ResourceTest::Describe()
     {
         ResourceRef<TestResourceType> test = TestResourceType::GetResourceClass().New();
         ResourceRef<Resource> test2 = test;
-        
+
         ASENGINE_EXPECT(test2->GetResourceID() == test->GetResourceID());
     });
 
@@ -105,7 +105,7 @@ void ResourceTest::Describe()
 
             ResourceRef<TestResourceType> test = testClass.New();
             ResourceRef<TestResourceType> test1 = test;
-            
+
             // replace resource by another one
             ResourceRef<TestResourceType> test2 = testClass.New();
             test = test2;
@@ -123,18 +123,18 @@ void ResourceTest::Describe()
 
     Test("it can get resource", []()
     {
-        ResourceRef<TestResourceType> test = TestResourceType::GetResourceClass().Load(UniqueString("test_resource/test.resource.json"));
+        ResourceRef<TestResourceType> test = TestResourceType::GetResourceClass().Load("assets:://test_resource/test.resource.json");
         test->SetPersistent(true);
     });
 
     Test("it is serializable", []()
     {
-        Json testRefObject = Json("test_resource/test.resource.json");
+        Json testRefObject = Json("assets:://test_resource/test.resource.json");
 
         ResourceRef<TestResourceType> test;
         Serializer::Deserialize(testRefObject, test);
 
-        ASENGINE_EXPECT(test->GetValue() == 27052001); 
+        ASENGINE_EXPECT(test->GetValue() == 27052001);
     });
 
     Test("it is inline-serializable", []()
@@ -145,6 +145,6 @@ void ResourceTest::Describe()
         ResourceRef<TestResourceType> test;
         Serializer::Deserialize(testRefObject, test);
 
-        ASENGINE_EXPECT(test->GetValue() == 123); 
+        ASENGINE_EXPECT(test->GetValue() == 123);
     });
 }

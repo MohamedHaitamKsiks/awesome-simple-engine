@@ -78,7 +78,6 @@ namespace ASEngine
 
         ByteBuffer fontBuffer;
         fontFile.Read(fontBuffer);
-        fontFile.Close();
 
         // create face
         FT_Face face;

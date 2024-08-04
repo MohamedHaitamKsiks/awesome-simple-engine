@@ -1,14 +1,11 @@
 {
-    "Shader": "shaders/default3D.shader.json",
-    "UniformBuffers": 
-    {
-        "Data":
-        {
-            "SomeNumber": 5
-        }
-    },
-    "Samplers": 
-    {
-        "Texture": "textures/example.texture.json"
+  "Shader": "assets:://shaders/default3D.shader.json",
+  "UniformBuffers": {
+    "Data": {
+      "SomeNumber": 5
     }
+  },
+  "Samplers": {
+    "Texture": "assets:://textures/example.texture.json"
+  }
 }

@@ -90,12 +90,11 @@ namespace ASEngine
     {
         // load settings
         File settingsFile;
-        ASENGINE_ASSERT(settingsFile.Open("audio.settings.json", FileOpenMode::READ), "Cound't open audio.settings.json");
+        ASENGINE_ASSERT(settingsFile.Open("assets:://audio.settings.json", FileOpenMode::READ), "Cound't open audio.settings.json");
 
         Json settingsObject = Json::parse(settingsFile.ReadText());
         Serializer::Deserialize(settingsObject, m_Settings);
 
-        settingsFile.Close();
 
         // mini audio device config
         ma_device_config config = ma_device_config_init(ma_device_type_playback);

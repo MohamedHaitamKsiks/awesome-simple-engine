@@ -42,8 +42,6 @@ namespace ASEngine
         ByteBuffer audioFileBuffer;
         audioFile.Read(audioFileBuffer);
 
-        audioFile.Close();
-
         // get audio settings
         uint32_t audioChannels = AudioEngine::GetInstance().GetChannels();
         uint32_t audioSampleRate = AudioEngine::GetInstance().GetSampleRate();

@@ -11,7 +11,6 @@ namespace ASEngine
         File importFile;
         ASENGINE_ASSERT(importFile.Open("import.json", FileOpenMode::READ), "Couldn't load import.json!");
         Json importObject = Json::parse(importFile.ReadText());
-        importFile.Close();
 
         // get resource name
         UniqueString className = GetClassName();

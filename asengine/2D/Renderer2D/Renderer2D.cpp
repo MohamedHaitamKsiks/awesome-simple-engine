@@ -24,14 +24,12 @@ namespace ASEngine
     {
         // load renderer 2d config
         File settingsFile;
-        ASENGINE_ASSERT(settingsFile.Open("renderer2d.settings.json", FileOpenMode::READ), "Cound't open renderer2d.settings.json");
+        ASENGINE_ASSERT(settingsFile.Open("assets:://renderer2d.settings.json", FileOpenMode::READ), "Cound't open renderer2d.settings.json");
 
         Json settingsJson = Json::parse(settingsFile.ReadText());
         Renderer2D::Settings settings;
 
         Serializer::Deserialize(settingsJson, settings);
-
-        settingsFile.Close();
 
         // create layers
         for (auto layerName: settings.Layers)
