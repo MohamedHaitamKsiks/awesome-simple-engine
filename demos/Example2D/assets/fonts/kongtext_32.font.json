@@ -1,5 +1,5 @@
 {
-  "FontPath": "assets:://fonts/kongtext.ttf",
+  "FontPath": "assets://fonts/kongtext.ttf",
   "Size": 32,
   "CharacterSeparation": 4,
   "LineSeparation": 4,

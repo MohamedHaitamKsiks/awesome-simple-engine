@@ -1,4 +1,4 @@
 {
   "Layers": ["Default", "PixelViewport"],
-  "DefaultMaterial": "assets:://materials/default2D.material.json"
+  "DefaultMaterial": "assets://materials/default2D.material.json"
 }

@@ -28,7 +28,7 @@ void HelloTriangle::Init()
     m_IndexBuffer->SetData(indices.data(), indices.size() * sizeof(uint32_t));
 
     // craete shader
-    m_Shader = Shader::GetResourceClass().Load("assets:://shaders/default.shader.json");
+    m_Shader = Shader::GetResourceClass().Load("assets://shaders/default.shader.json");
 
 }
 

@@ -11,7 +11,7 @@ void ShaderSourceTest::Describe()
     Test("it loads shader source", [this]()
     {
         ASENGINE_REGISTER_RESOURCE_CLASS(ShaderSource);
-        m_Source = ShaderSource::GetResourceClass().Load("assets:://shaders/default3D.vert");
+        m_Source = ShaderSource::GetResourceClass().Load("assets://shaders/default3D.vert");
     });
 
     // check fro uniform buffer

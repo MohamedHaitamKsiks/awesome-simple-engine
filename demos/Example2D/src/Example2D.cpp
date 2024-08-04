@@ -6,12 +6,12 @@
 
 void Example2D::Init()
 {
-    m_Sprite = Sprite::GetResourceClass().Load("assets:://sprites/spr_run.sprite.json");
-    m_Font = Font::GetResourceClass().Load("assets:://fonts/kongtext_32.font.json");
+    m_Sprite = Sprite::GetResourceClass().Load("assets://sprites/spr_run.sprite.json");
+    m_Font = Font::GetResourceClass().Load("assets://fonts/kongtext_32.font.json");
 
     m_ViewportMaterial = Renderer2D::GetInstance().GetDefaultMaterial()->Clone();
 
-    m_Viewport = Viewport::GetResourceClass().Load("assets:://viewports/pixel.viewport.json");
+    m_Viewport = Viewport::GetResourceClass().Load("assets://viewports/pixel.viewport.json");
     m_ViewportMaterial->SetShaderParam("Texture", m_Viewport->GetTexture(0));
 
     // add on render

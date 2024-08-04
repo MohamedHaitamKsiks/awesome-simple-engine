@@ -142,7 +142,7 @@ namespace ASEngine
     {
         // load settigs file
         File settingsFile;
-        settingsFile.Open("assets:://project.settings.json", FileOpenMode::READ);
+        settingsFile.Open("assets://project.settings.json", FileOpenMode::READ);
 
         // read settings as json
         std::string settingsString = settingsFile.ReadText();

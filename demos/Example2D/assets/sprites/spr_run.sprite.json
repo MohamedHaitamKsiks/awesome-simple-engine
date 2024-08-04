@@ -1,6 +1,6 @@
 {
   "Texture": {
-    "ImagePath": "assets:://textures/spr_run.png",
+    "ImagePath": "assets://textures/spr_run.png",
     "Filter": "NEAREST",
     "RepeatMode": "REPEAT"
   },

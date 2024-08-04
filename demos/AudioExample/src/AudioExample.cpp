@@ -3,7 +3,7 @@
 void AudioExample::Init()
 {
     // music comming from: https://opengameart.org/content/colossal-boss-battle-theme
-    m_BossMainSource = AudioSource::GetResourceClass().Load("assets:://audios/boss_main.audio.json");
+    m_BossMainSource = AudioSource::GetResourceClass().Load("assets://audios/boss_main.audio.json");
     m_Player = AudioEngine::GetInstance().Play("Default", m_BossMainSource, 1.0f, true);
 
     Renderer2D::GetInstance().GetOnRender2D().Connect([this](Renderer2D& renderer2D)

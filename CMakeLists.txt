@@ -169,6 +169,8 @@ set (SOURCE
     asengine/Audio/AudioOutput/AudioOutput.cpp
     asengine/Audio/AudioPlayer/AudioPlayer.cpp
     asengine/Audio/AudioModule.cpp
+    #animations
+    asengine/Animation/Interpolation.cpp
     #platform src
     ${PLATFORM_SPECIFIC_SOURCES}
 )
