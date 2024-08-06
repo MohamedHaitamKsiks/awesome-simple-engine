@@ -68,9 +68,6 @@ namespace ASEngine
         // queue entity to destroy
         data.IsDestroyed = true;
         m_DestroyQueue.push_back(entityID);
-
-        // destroy component
-        data.ArchetypeOwner->RemoveEntity(entityID);
     }
 
     AbstractComponent &EntityManager::GetComponent(UniqueString componentName, EntityID entityID)
@@ -111,6 +108,9 @@ namespace ASEngine
         std::unordered_set<Signature> archetypesToClean = {};
         for (auto entityID: m_DestroyQueue)
         {
+            EntityData& data = m_Entities.Get(entityID);
+            data.ArchetypeOwner->RemoveEntity(entityID);
+
             archetypesToClean.insert(m_Entities.Get(entityID).ArchetypeOwner->GetSignature());
         }
 

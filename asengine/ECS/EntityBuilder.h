@@ -98,6 +98,7 @@ namespace ASEngine
 
         private:
             std::map<UniqueString, std::unique_ptr<AbstractComponent>> m_Components{};
+            void Copy(const EntityBuilder& builder);
 
             // cache signatrue
             Signature m_Signature{};
