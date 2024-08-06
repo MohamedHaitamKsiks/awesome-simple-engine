@@ -8,20 +8,24 @@
 
 namespace ASEngine
 {
-    EntityBuilder::EntityBuilder(const EntityBuilder &builder)
+    void EntityBuilder::Copy(const EntityBuilder& builder)
     {
         for (auto& [componentName, component]: builder.m_Components)
         {
             AddComponent(componentName, *component);
         }
+        SetTag(builder.GetTag());
+        SetPersistant(builder.IsPersistant());
+    }
+
+    EntityBuilder::EntityBuilder(const EntityBuilder &builder)
+    {
+        Copy(builder);
     }
 
     EntityBuilder &EntityBuilder::operator=(const EntityBuilder &builder)
     {
-        for (auto &[componentName, component] : builder.m_Components)
-        {
-            AddComponent(componentName, *component);
-        }
+        Copy(builder);
         return *this;
     }
 

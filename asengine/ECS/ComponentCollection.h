@@ -65,7 +65,7 @@ namespace ASEngine
             {
                 if (index != currentIndex && index < m_Components.size())
                 {
-                    m_Components[index] = m_Components[currentIndex];
+                    m_Components[currentIndex] = m_Components[index];
                 }
 
                 currentIndex++;
