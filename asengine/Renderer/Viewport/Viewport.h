@@ -35,6 +35,12 @@ namespace ASEngine
             return m_Height;
         }
 
+        // get size
+        inline Vector2 GetSize() const
+        {
+            return Vector2(static_cast<float>(m_Width), static_cast<float>(m_Height));
+        }
+
         // texture
         inline ResourceRef<Texture> GetTexture(size_t textureIndex) const
         {

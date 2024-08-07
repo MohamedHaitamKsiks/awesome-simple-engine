@@ -1,6 +1,7 @@
 #ifndef __ASENGINE_TEXTURE_H
 #define __ASENGINE_TEXTURE_H
 
+#include "Core/Math/Vector2.h"
 #include "Image.h"
 
 #include "Resource/ResourceRef.h"
@@ -53,15 +54,21 @@ namespace ASEngine
         }
 
         // get width
-        uint32_t GetWidth() const
+        inline uint32_t GetWidth() const
         {
             return m_Width;
         }
 
         // get height
-        uint32_t GetHeight() const
+        inline uint32_t GetHeight() const
         {
             return m_Height;
+        }
+
+        // get size
+        inline Vector2 GetSize() const
+        {
+            return Vector2(static_cast<float>(m_Width), static_cast<float>(m_Height));
         }
     protected:
         // api implemetation for create from image
@@ -70,10 +77,10 @@ namespace ASEngine
     private:
         uint32_t m_Width = 0;
         uint32_t m_Height = 0;
-        
+
         TextureFilter m_Filter = TextureFilter::NONE;
         TextureRepeatMode m_RepeatMode = TextureRepeatMode::NONE;
-    }; 
+    };
 } // namespace ASEngine
 
 
