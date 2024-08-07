@@ -25,8 +25,8 @@ namespace ASEngine
 
         return Matrix3x3{
             DataType{
-                ColumnType{{ cosAngle * scale.x,           -sinAngle, 0.0f, 0.0f }},
-                ColumnType{{ sinAngle          ,  cosAngle * scale.y, 0.0f, 0.0f }},
+                ColumnType{{ cosAngle * scale.x, -sinAngle * scale.x, 0.0f, 0.0f }},
+                ColumnType{{ sinAngle * scale.y,  cosAngle * scale.y, 0.0f, 0.0f }},
                 ColumnType{{ position.x        ,          position.y, 1.0f, 0.0f }}
             }
         };
