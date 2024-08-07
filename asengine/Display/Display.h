@@ -37,7 +37,13 @@ namespace ASEngine
             return m_WindowHeight;
         }
 
-        // set fullscreen 
+        // get window size
+        inline Vector2 GetWindowSize() const
+        {
+            return Vector2(static_cast<float>(m_WindowWidth), static_cast<float>(m_WindowHeight));
+        }
+
+        // set fullscreen
         void SetFullscreen(bool fullscreen);
 
         // get current fullscreen state
@@ -106,7 +112,7 @@ namespace ASEngine
 
         // fullscreen
         bool m_Fullscreen = false;
-        
+
         // aspect ration
         float m_AspectRatio = 1.77f; // 16:9
         bool m_KeepAspectRatio = true;
