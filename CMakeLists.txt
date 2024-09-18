@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_compile_options(-Wall)
 add_compile_definitions(ASENINE_EXPORTS)
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -msse2")
 
 #generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
