@@ -7,8 +7,6 @@
 #include "Vector2.h"
 #include <array>
 
-
-
 namespace ASEngine
 {
 

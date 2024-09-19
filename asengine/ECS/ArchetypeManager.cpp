@@ -2,8 +2,6 @@
 
 namespace ASEngine
 {
-    ;
-
     Archetype& ArchetypeManager::GetArchetype(const Signature& signature)
     {
         // is archetype doesn't exist create it
@@ -17,14 +15,12 @@ namespace ASEngine
 
     void ArchetypeManager::CreateArchetype(const Signature& signature)
     {
-        Archetype archetype{};
+        Archetype& archetype = m_Archetypes[signature];
 
         for (auto& name: signature)
         {
             archetype.AddComponent(name);
         }
-
-        m_Archetypes[signature] = std::move(archetype);
     }
 
     bool ArchetypeManager::HasArchetype(const Signature& signature) const
