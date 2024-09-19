@@ -1,6 +1,7 @@
 #include "ASEngine.h"
 
 #include "Core/FileSystem/File.h"
+#include "Core/Math/Math.h"
 #include "Core/String/UniqueStringManager.h"
 #include "Core/Registry/Registry.h"
 #include "Core/Debug/Debug.h"
@@ -15,6 +16,7 @@
 #include "Scene/SceneManager.h"
 
 #include <chrono>
+#include <cstdint>
 #define SEC_TO_MICRO 1000000.0f
 
 namespace ASEngine
@@ -82,6 +84,8 @@ namespace ASEngine
 
     void ASEngine::Update(float delta)
     {
+        ComputeAverageFPS(delta);
+
         // get system manager
         SystemManager& systemManager = SystemManager::GetInstance();
 
@@ -150,6 +154,25 @@ namespace ASEngine
 
         // deserialize settings
         Serializer::Deserialize(settingsObject, m_Settings);
+    }
+
+    void ASEngine::ComputeAverageFPS(float delta)
+    {
+        // add fps to thge samples
+        m_FrameDeltaTimes[m_FrameIndex] = (delta > 0.0f)? 1.0f / delta: 0.0f;
+
+        // increment frame
+        const uint32_t frameSampleSize = static_cast<uint32_t>(m_FrameDeltaTimes.size());
+        m_FrameCount = Math::Min( m_FrameCount + 1,  frameSampleSize);
+        m_FrameIndex = (m_FrameIndex + 1) % frameSampleSize;
+
+        // compute average fps
+        m_AverageFPS = 0.0f;
+        for (uint32_t i = 0; i < m_FrameCount; i++)
+        {
+            m_AverageFPS += m_FrameDeltaTimes[i];
+        }
+        m_AverageFPS /= m_FrameCount;
     }
 
 

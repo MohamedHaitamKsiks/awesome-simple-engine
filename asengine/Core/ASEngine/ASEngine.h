@@ -23,10 +23,10 @@
 
 
 
-namespace ASEngine 
+namespace ASEngine
 {
 
-	// asengine context 
+	// asengine context
 	// defines the core of the engine
 	class  ASEngine
 	{
@@ -37,7 +37,7 @@ namespace ASEngine
 		// setup application before init and user registry
 		void Setup();
 
-		// setup application with args 
+		// setup application with args
 		void Setup(int argc, char* argv[]);
 
 		// init application systems ...
@@ -112,6 +112,12 @@ namespace ASEngine
 			return *data;
 		}
 
+		// get average fps
+		inline float GetAverageFPS() const
+        {
+            return m_AverageFPS;
+        }
+
 	private:
 		// console arguments
 		std::vector<std::string> m_Arguments{};
@@ -120,7 +126,7 @@ namespace ASEngine
 		struct GlobalAttribute
 		{
 			void* Data = nullptr;
-			
+
 			// destroy function
 			inline void Destroy()
 			{
@@ -158,11 +164,19 @@ namespace ASEngine
 		bool m_IsExit = false;
 		float m_ExitReturnCode = 0;
 
+		// average fps
+		float m_AverageFPS = 0.0f;
+		std::array<float, 100> m_FrameDeltaTimes{};
+		uint32_t m_FrameCount = 0;
+		uint32_t m_FrameIndex = 0;
+		void ComputeAverageFPS(float delta);
+
 		// register all builtin systems before any user system
 		void RegisterBuiltInSystems();
 
 		// get project setting
 		void LoadProjectSettings();
+
 	};
 
 
