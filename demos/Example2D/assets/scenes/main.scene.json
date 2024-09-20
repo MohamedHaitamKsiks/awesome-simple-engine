@@ -11,7 +11,7 @@
       "Components": {
         "Camera2D": {
           "Layers": ["Default"],
-          "PixelSnapping": true,
+          "PixelSnapping": false,
           "Target": "assets://viewports/pixel.viewport.json"
         },
         "CameraController": {},

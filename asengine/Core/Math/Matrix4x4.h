@@ -6,7 +6,7 @@
 #include "Vector3.h"
 
 
-namespace ASEngine 
+namespace ASEngine
 {
 
     //Matrix4x4
@@ -27,6 +27,9 @@ namespace ASEngine
         {
         }
 
+        // get inverse
+        Matrix4x4 Inverse() const;
+
         // scale
         static inline constexpr Matrix4x4 Scale(const Vector3& s)
         {
@@ -38,7 +41,7 @@ namespace ASEngine
                 ColumnType{{ 0.0f, 0.0f, 0.0f, 1.0f }}
             }};
         }
-        
+
         //translate
         static inline constexpr Matrix4x4 Translate(const Vector3& v)
         {
@@ -67,7 +70,7 @@ namespace ASEngine
 
         // get persperctive projection
         static Matrix4x4 PerspectiveProjection(float aspectRatio, float fov, float near, float far);
-  
+
         // matrix multiplication with vector
         friend inline constexpr Vector3 operator*(const Matrix4x4& m, const Vector3& v)
         {
@@ -77,7 +80,7 @@ namespace ASEngine
                 m[1][3] * v.x + m[2][3] * v.y + m[3][3] * v.z + m[4][3]
             };
         }
-        
+
     };
 
 } //ASEngine

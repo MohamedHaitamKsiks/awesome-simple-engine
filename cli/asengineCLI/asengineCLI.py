@@ -25,13 +25,13 @@ def executeCommand(command: str, args: list[str] = []) -> int:
             print(getProjectStatus("./"))
 
         case "run":
-            error |= buildProject(relativeTo(scriptPath, "./resources/.asengine.config.json"), ".", "linux")
+            error |= buildProject(relativeTo(scriptPath, "./resources/.asengine.config.json"), ".", "linux", False, args)
 
         case "build":
             assert(len(args) >= 1)
             isDebug = len(args) > 1 and args[1] == "debug"
 
-            error |= buildProject(relativeTo(scriptPath, "./resources/.asengine.config.json"), ".", args[0], isDebug)
+            error |= buildProject(relativeTo(scriptPath, "./resources/.asengine.config.json"), ".", args[0], isDebug, args[2:])
 
         case "generate-project":
             assert(len(args) == 1)

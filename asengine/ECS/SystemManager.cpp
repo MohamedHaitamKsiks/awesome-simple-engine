@@ -45,6 +45,14 @@ namespace ASEngine
         }
     }
 
+    void SystemManager::Render()
+    {
+        for (auto &system : m_Systems)
+        {
+            system->OnRender();
+        }
+    }
+
     void SystemManager::Terminate()
     {
         // terminate in the inverse orderer of init

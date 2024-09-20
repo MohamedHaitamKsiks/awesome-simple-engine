@@ -1,4 +1,5 @@
 #include "Matrix3x3.h"
+#include "Core/Error/Assertion.h"
 #include "Math.h"
 #include "MatrixSerialiazation.h"
 
@@ -45,6 +46,33 @@ namespace ASEngine
         matrix[2][1] = 1.0f;
 
         return matrix;
+    }
+
+    Matrix3x3 Matrix3x3::Inverse() const
+    {
+        auto& m = (*this);
+        Matrix3x3 inv{};
+
+        // computes the inverse of a matrix m
+        float det = m[0][0] * (m[1][1] * m[2][2] - m[2][1] * m[1][2]) -
+                    m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) +
+                    m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+
+        ASENGINE_ASSERT(det != 0.0, "Determinant is zero!");
+
+        float invdet = 1.0f / det;
+
+        inv[0][0] = (m[1][1] * m[2][2] - m[2][1] * m[1][2]) * invdet;
+        inv[0][1] = (m[0][2] * m[2][1] - m[0][1] * m[2][2]) * invdet;
+        inv[0][2] = (m[0][1] * m[1][2] - m[0][2] * m[1][1]) * invdet;
+        inv[1][0] = (m[1][2] * m[2][0] - m[1][0] * m[2][2]) * invdet;
+        inv[1][1] = (m[0][0] * m[2][2] - m[0][2] * m[2][0]) * invdet;
+        inv[1][2] = (m[1][0] * m[0][2] - m[0][0] * m[1][2]) * invdet;
+        inv[2][0] = (m[1][0] * m[2][1] - m[2][0] * m[1][1]) * invdet;
+        inv[2][1] = (m[2][0] * m[0][1] - m[0][0] * m[2][1]) * invdet;
+        inv[2][2] = (m[0][0] * m[1][1] - m[1][0] * m[0][1]) * invdet;
+
+        return inv;
     }
 
     ASENGINE_SERIALIAZE_MATRIX(Matrix3x3);

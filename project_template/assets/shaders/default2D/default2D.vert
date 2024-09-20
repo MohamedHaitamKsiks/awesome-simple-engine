@@ -13,6 +13,7 @@ layout(location = 1) out vec4 MODULATE;
 layout(binding = 0) uniform Renderer2D
 {
     mat3 CameraTransform;
+    mat3 InverseCameraTransform;
     mat3 ViewportTransform;
     int PixelSnapping;
 } renderer2D;
@@ -24,7 +25,7 @@ void main()
     MODULATE = v_Modulate;
 
     // get position relative to camera
-    vec3 cameraPosition = inverse(renderer2D.CameraTransform) * vec3(v_Position, 1.0);
+    vec3 cameraPosition = renderer2D.InverseCameraTransform * vec3(v_Position, 1.0);
     // snap vertices to pixel grid if pixel snapping is enabled
     if (renderer2D.PixelSnapping != 0)
     {

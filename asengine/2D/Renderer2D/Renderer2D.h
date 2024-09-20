@@ -91,7 +91,7 @@ namespace ASEngine
         Signal<Renderer2D&> m_OnRender2D;
 
         void Init() override;
-        void Update(float delta) override;
+        void OnRender() override;
     };
 } // namespace ASEngine
 
