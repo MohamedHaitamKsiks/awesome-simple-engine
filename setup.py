@@ -13,7 +13,7 @@ def createDirectory(dirPath: str):
 
 
 #setup
-def setup(configPath: str, debugSetup=False):
+def setup(configPath: str, debugSetup=False, args=[]):
     #compile engine
     #debug mode only build for linux in debug
     if debugSetup:
@@ -51,7 +51,7 @@ def setup(configPath: str, debugSetup=False):
 
     #run asengine's unit tests
     os.chdir("tests")
-    if subprocess.call(["asengine-cli", "build", "headless", "debug"]):
+    if subprocess.call(["asengine-cli", "build", "headless", "debug"] + args):
         return 1
 
     os.chdir("..")
@@ -60,4 +60,4 @@ def setup(configPath: str, debugSetup=False):
 
 if __name__ == "__main__":
     isDebug = len(sys.argv) >= 2 and sys.argv[1] == "debug"
-    sys.exit(setup("asengine.default.config.json", isDebug))
+    sys.exit(setup("asengine.default.config.json", isDebug, sys.argv[2:]))

@@ -50,9 +50,13 @@ namespace ASEngine
 
         // process input for all system
         void OnInputEvent(const InputEvent &event);
+        
+        // render system
+        void Render();
 
         // terminate system
         void Terminate();
+
 
     private:
         std::vector<std::unique_ptr<ISystem>> m_Systems = {};

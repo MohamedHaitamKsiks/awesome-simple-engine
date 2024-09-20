@@ -42,6 +42,7 @@ namespace ASEngine
         // cache names
         m_Renderer2DName = UniqueString("Renderer2D");
         m_CameraTransformName = UniqueString("CameraTransform");
+        m_InverseCameraTransformName = UniqueString("InverseCameraTransform");
         m_ViewportTransfromName = UniqueString("ViewportTransform");
         m_PixelSnappingName = UniqueString("PixelSnapping");
     }
@@ -169,7 +170,7 @@ namespace ASEngine
         DrawText(font, text, transform * Matrix3x3::Translate(alignOffset), color, material);
     }
 
-    void Layer2D::Draw(const Matrix3x3& cameraTranform, const Matrix3x3& viewportTransform, bool pixelSnapping)
+    void Layer2D::Draw(const Matrix3x3 &cameraTranform, const Matrix3x3 &inverseCameraTransform, const Matrix3x3 &viewportTransform, bool pixelSnapping)
     {
         auto& renderer = Renderer::GetInstance();
 
@@ -179,6 +180,7 @@ namespace ASEngine
             quad2DCommand.Mat->SetShaderParam(m_Renderer2DName, m_CameraTransformName, cameraTranform);
             quad2DCommand.Mat->SetShaderParam(m_Renderer2DName, m_ViewportTransfromName, viewportTransform);
             quad2DCommand.Mat->SetShaderParam(m_Renderer2DName, m_PixelSnappingName, static_cast<int>(pixelSnapping));
+            quad2DCommand.Mat->SetShaderParam(m_Renderer2DName, m_InverseCameraTransformName, inverseCameraTransform);
 
             renderer.BindMaterial(quad2DCommand.Mat);
 

@@ -29,6 +29,9 @@ namespace ASEngine
         {
         }
 
+        // get determinant of matrix
+        Matrix3x3 Inverse() const;
+
         // get translation * scale * rotation matrix
         static Matrix3x3 Transform(const Vector2& position, const Vector2& scale, float rotation);
 

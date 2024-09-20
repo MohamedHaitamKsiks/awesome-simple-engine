@@ -13,7 +13,7 @@ def removeIfExists(filePath: str):
     if os.path.exists(filePath):
         os.remove(filePath)
 
-def buildProject(configPath: str, projectPath: str, platform: str, debug: bool = False) -> int:
+def buildProject(configPath: str, projectPath: str, platform: str, debug: bool = False, args = []) -> int:
     #debug mode
     debugMode = "debug" if debug else "release"
 
@@ -134,16 +134,18 @@ def buildProject(configPath: str, projectPath: str, platform: str, debug: bool =
     #        shutil.copy2(lib, buildPath)
 
     # run output
+    runCommand = []
     if platformOS == "linux":
-        error |= os.system("./build")
+        runCommand = ["./build"] + args;
 
     elif platformOS == "windows":
-        error |= os.system(f"wine {relativeTo(buildPath, './build.exe')}")
+        runCommand = [f"wine {relativeTo(buildPath, './build.exe')}"] + args;
 
     elif platformOS == "web":
-        os.system("python3 -m http.server 8080")
+        runCommand = ["python3 -m http.server 8080"]
 
     #end
+    error |= os.system(' '.join(runCommand))
     os.chdir(projectPath)
 
     return error

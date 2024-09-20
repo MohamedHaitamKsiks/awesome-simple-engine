@@ -21,7 +21,7 @@ namespace ASEngine
         }
 
         // calculate transpose
-        constexpr SquareMatrix Transpose()
+        constexpr SquareMatrix Transpose() const
         {
             SquareMatrix result;
             for (int j = 0; j < N; j++)
@@ -33,6 +33,19 @@ namespace ASEngine
             }
 
             return result;
+        }
+        
+        // trace of matrix
+        constexpr float Trace() const
+        {
+            float trace = 0.0f;
+            
+            for (int i = 0; i < static_cast<int>(N); i++)
+            {
+                trace += (*this)[i][i];
+            }
+
+            return trace;
         }
 
         // create matrix from diags

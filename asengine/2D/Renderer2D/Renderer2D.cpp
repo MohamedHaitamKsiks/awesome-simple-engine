@@ -57,7 +57,7 @@ namespace ASEngine
         m_FillRectangleDefaulMaterial->SetShaderParam("Texture", m_FillRectangleTexture);
     }
 
-    void Renderer2D::Update(float delta)
+    void Renderer2D::OnRender()
     {
         // call on render signal
         m_OnRender2D.Emit(*this);
@@ -73,6 +73,7 @@ namespace ASEngine
         {
             // get matrices
             Matrix3x3 cameraTransform = transform2D.GetGlobalTransform();
+            Matrix3x3 inverseCameraTransform = cameraTransform.Inverse();
 
             uint32_t viewportWidth, viewportHeight;
             if (camera2D.Target == ResourceRef<Viewport>::NONE())
@@ -96,7 +97,7 @@ namespace ASEngine
                 if (camera2D.Layers.find(layerName) == camera2D.Layers.end())
                     continue;
 
-                m_Layers2D[layerName].Draw(cameraTransform, viewportTransform, camera2D.PixelSnapping);
+                m_Layers2D[layerName].Draw(cameraTransform, inverseCameraTransform, viewportTransform, camera2D.PixelSnapping);
             }
 
             renderer.End();

@@ -24,6 +24,9 @@ namespace ASEngine
         // on input event
         virtual void OnInputEvent(const InputEvent& event) {};
 
+        // on render
+        virtual void OnRender() {};
+
         // terminate system
         virtual void Terminate() {};
 
