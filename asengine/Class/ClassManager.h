@@ -14,21 +14,28 @@
 
 namespace ASEngine
 {
-    // manages classes    
+    // manages classes
     class  ClassManager
     {
     ASENGINE_DEFINE_SINGLETON(ClassManager);
-    
-    public:
 
+    public:
         template <typename T>
         void RegisterClass(UniqueString className)
         {
-            static_assert(std::is_base_of_v<Object, T>);
             ASENGINE_ASSERT(m_Classes.find(className) == m_Classes.end(), className.GetString() + ": Type aready registered!");
-            
+
             Class<T>::s_ClassName = className;
             m_Classes.insert(className);
+        }
+
+        template <typename T>
+        void RegisterClassIfNotRegisteredYet(UniqueString className)
+        {
+            if (m_Classes.find(className) != m_Classes.end())
+                return;
+
+            RegisterClass<T>(className);
         }
 
     private:

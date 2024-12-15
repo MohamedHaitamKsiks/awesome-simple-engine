@@ -3,7 +3,7 @@
 #include "ECS/SystemManager.h"
 #include "Renderer/Backend/RendererBackend.h"
 
-#include "Core/ASEngine/ASEngine.h"
+#include "Core/Runtime/Runtime.h"
 #include "Core/Settings/Settings.h"
 #include "Core/Serialization/Serializer.h"
 #include "Core/Debug/Debug.h"
@@ -15,7 +15,7 @@ namespace ASEngine
         // register display 
         ASENGINE_REGISTER_SYSTEM(WebDisplay);
 
-        const auto &renderingSettings = ASEngine::GetInstance().GetSettings().Display.Rendering;
+        const auto &renderingSettings = Runtime::GetInstance().GetSettings().Display.Rendering;
         // don't allow vulkan
         if (renderingSettings.Backend != Renderer::Backend::OPENGL)
         {

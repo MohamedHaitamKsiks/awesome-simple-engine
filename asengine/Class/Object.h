@@ -10,6 +10,7 @@ namespace ASEngine
     class  Object
     {
     public:
+        virtual ~Object() {}
         virtual UniqueString GetClassName() const = 0;
     };
 } // namespace ASEngine

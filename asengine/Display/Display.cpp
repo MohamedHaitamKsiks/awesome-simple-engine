@@ -1,6 +1,4 @@
 #include "Display.h"
-#include "Core/ASEngine/ASEngine.h"
-
 
 namespace ASEngine
 {
@@ -27,7 +25,7 @@ namespace ASEngine
     {
         if (fullscreen == m_Fullscreen)
             return;
-        
+
         m_Fullscreen = fullscreen;
         SetFullscreenImp(fullscreen);
     }

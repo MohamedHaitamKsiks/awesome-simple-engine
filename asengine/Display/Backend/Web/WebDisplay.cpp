@@ -1,5 +1,5 @@
 #include "WebDisplay.h"
-#include "Core/ASEngine/ASEngine.h"
+#include "Core/Runtime/Runtime.h"
 
 
 #define _ASENGINE_WEB_CANVAS_ID "#canvas"
@@ -9,9 +9,9 @@ namespace ASEngine
     void WebDisplay::InitImp()
     {
         // get settings
-        const auto& displaySettings = ASEngine::GetInstance().GetSettings().Display;
+        const auto& displaySettings = Runtime::GetInstance().GetSettings().Display;
         const auto& windowSettings = displaySettings.Window;
-        const auto& applicationSettings = ASEngine::GetInstance().GetSettings().Application;
+        const auto& applicationSettings = Runtime::GetInstance().GetSettings().Application;
 
         // create webgl attributes
         EmscriptenWebGLContextAttributes webGLAttributes{};
@@ -105,7 +105,7 @@ namespace ASEngine
         keyEvent.Pressed = keydown;
 
         InputEvent event{keyEvent};
-        ASEngine::GetInstance().QueueInputEvent(event);
+        Runtime::GetInstance().QueueInputEvent(event);
         return EM_FALSE;
     }
 
@@ -115,7 +115,7 @@ namespace ASEngine
         mouseMoveEvent.Position = Vector2{static_cast<float>(emMouseEvent->targetX), static_cast<float>(emMouseEvent->targetY)};
 
         InputEvent event{mouseMoveEvent};
-        ASEngine::GetInstance().QueueInputEvent(event);
+        Runtime::GetInstance().QueueInputEvent(event);
         return EM_FALSE;
     }
 
@@ -150,7 +150,7 @@ namespace ASEngine
 
         // push event
         InputEvent event{mouseButtonEvent};
-        ASEngine::GetInstance().QueueInputEvent(event);
+        Runtime::GetInstance().QueueInputEvent(event);
 
         return EM_FALSE;
     }

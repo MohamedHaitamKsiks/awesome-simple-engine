@@ -1,0 +1,23 @@
+{
+  "Application": {
+    "Name": "ASEngine Project",
+    "MainScene": "assets://scenes/main.scene.json"
+  },
+
+  "Display": {
+    "Window": {
+      "Width": 1280,
+      "Height": 720,
+      "KeepAspectRatio": true,
+      "Fullscreen": false
+    },
+
+    "Rendering": {
+      "Backend": "OPENGL"
+    }
+  },
+
+  "Time": {
+    "FixedTimeStep": 0.02
+  }
+}

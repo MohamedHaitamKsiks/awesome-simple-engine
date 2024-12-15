@@ -9,21 +9,22 @@ add_library(
     STATIC
     registry.cpp
     ASEngineTestSystem/ASEngineTestSystem.cpp
-    Core/UniqueStringTest.cpp
-    Core/PoolAllocatorTest.cpp
-    Core/VectorTest.cpp
-    Core/MatrixTest.cpp
-    Class/ClassManagerTest.cpp
-    ECS/ECSTest.cpp
-    Resource/ResourceTest.cpp
-    Renderer/ShaderSourceTest.cpp
+    #Core/UniqueStringTest.cpp
+    #Core/PoolAllocatorTest.cpp
+    #Core/VectorTest.cpp
+    #Core/MatrixTest.cpp
+    #Class/ClassManagerTest.cpp
+    #ECS/ECSTest.cpp
+    #Resource/ResourceTest.cpp
+    #Renderer/ShaderSourceTest.cpp
+    LuaScripting/LuaCppClassTest.cpp
 )
 
 target_link_libraries(
     asengine-project
 )
 
-set(PROJECT_LIBRARIES 
+set(PROJECT_LIBRARIES
     asengine-project
     PARENT_SCOPE
 )

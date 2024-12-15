@@ -5,21 +5,21 @@
 int main(int argc, char *argv[])
 {
     // setup engine
-    ASEngine::ASEngine m_ASEngine{};
-    m_ASEngine.Setup(argc, argv);
+    ASEngine::Runtime m_ASEngineRuntime{};
+    m_ASEngineRuntime.Setup(argc, argv);
 
     // init
     ASEngine::Registry();
-    m_ASEngine.Init();
+    m_ASEngineRuntime.Init();
 
     // run application
-    int returnCode = m_ASEngine.Run([&m_ASEngine](float delta)
+    int returnCode = m_ASEngineRuntime.Run([&m_ASEngineRuntime](float delta)
     {
-        m_ASEngine.Update(delta);
+        m_ASEngineRuntime.Update(delta);
     });
 
-    // cleanup 
-    m_ASEngine.Terminate();
-    
+    // cleanup
+    m_ASEngineRuntime.Terminate();
+
     return returnCode;
 }

@@ -1,11 +1,9 @@
 #include "Resource.h"
-#include "ResourceClass.h"
 #include "ResourceManager.h"
 
 #include "Core/Error/Assertion.h"
 #include "Core/FileSystem/File.h"
 #include "Core/Debug/Debug.h"
-#include "Core/Serialization/Serializer.h"
 
 namespace ASEngine
 {
@@ -25,10 +23,8 @@ namespace ASEngine
         Json resourceObject = Json::parse(resourceFile.ReadText());
         Deserialize(resourceObject);
 
-
         m_IsLoaded = true;
         Debug::Log(Debug::Colorized(Debug::TextColor::GREEN_BG, path, ": Loaded"));
-
 
         return true;
     }
@@ -54,7 +50,7 @@ namespace ASEngine
         IResourceClass& resourceClass = ResourceManager::GetInstance().GetResouceClass(resourceName);
         resourceClass.Destroy(*this);
     }
-    
+
     void Resource::DecrementReferenceCounter()
     {
         m_ReferenceCounter--;

@@ -32,7 +32,7 @@ namespace ASEngine
 
     protected:
         // only allow ASEngine class to call these functions
-        friend class ASEngine;
+        friend class Runtime;
         // call registry of every module
         void Registry();
 

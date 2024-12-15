@@ -1,6 +1,6 @@
 #include "SceneManager.h"
 #include "ECS/EntityManager.h"
-#include "Core/ASEngine/ASEngine.h"
+#include "Core/Runtime/Runtime.h"
 
 namespace ASEngine
 {
@@ -19,7 +19,7 @@ namespace ASEngine
 
     void SceneManager::Init()
     {
-        const auto& settings = ASEngine::GetInstance().GetSettings();
+        const auto& settings = Runtime::GetInstance().GetSettings();
         UniqueString mainScenePath = UniqueString(settings.Application.MainScene);
 
         ResourceRef<Scene> mainScene = Scene::GetResourceClass().Load(mainScenePath);

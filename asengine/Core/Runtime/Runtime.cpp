@@ -1,19 +1,17 @@
-#include "ASEngine.h"
+#include "Runtime.h"
 
 #include "Core/FileSystem/File.h"
 #include "Core/Math/Math.h"
-#include "Core/String/UniqueStringManager.h"
-#include "Core/Registry/Registry.h"
 #include "Core/Debug/Debug.h"
-
 #include "Core/Serialization/Json.h"
 
 #include "ECS/EntityManager.h"
 #include "ECS/ArchetypeManager.h"
-#include "ECS/ComponentManager.h"
+
 
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
+#include "LuaScript/LuaScriptModule.h"
 
 #include <chrono>
 #include <cstdint>
@@ -22,7 +20,7 @@
 namespace ASEngine
 {
 
-    void ASEngine::Init()
+    void Runtime::Init()
     {
         ModuleManager::GetInstance().Registry();
 
@@ -33,7 +31,7 @@ namespace ASEngine
         SystemManager::GetInstance().Init();
     }
 
-    void ASEngine::Setup()
+    void Runtime::Setup()
     {
         // load project settings
         LoadProjectSettings();
@@ -43,7 +41,7 @@ namespace ASEngine
         Debug::Log("ASEngine setup complete");
     }
 
-    void ASEngine::Setup(int argc, char *argv[])
+    void Runtime::Setup(int argc, char *argv[])
     {
         // add arguments to application
         for (int i = 0; i < argc; i++)
@@ -54,7 +52,7 @@ namespace ASEngine
         Setup();
     }
 
-    void ASEngine::DestroyGlobalAttribute(const std::string &name)
+    void Runtime::DestroyGlobalAttribute(const std::string &name)
     {
         if (m_GlobalAttributes.find(name) == m_GlobalAttributes.end())
             return;
@@ -63,13 +61,14 @@ namespace ASEngine
         attribute.Destroy();
     }
 
-    void ASEngine::RegisterBuiltInSystems()
+    void Runtime::RegisterBuiltInSystems()
     {
         ASENGINE_REGISTER_SYSTEM(ArchetypeManager);
         ASENGINE_REGISTER_RESOURCE_CLASS(Scene);
+        LuaScriptModule::Init();
     }
 
-    void ASEngine::Terminate()
+    void Runtime::Terminate()
     {
         SystemManager::GetInstance().Terminate();
 
@@ -82,7 +81,7 @@ namespace ASEngine
         m_GlobalAttributes.clear();
     }
 
-    void ASEngine::Update(float delta)
+    void Runtime::Update(float delta)
     {
         ComputeAverageFPS(delta);
 
@@ -116,7 +115,7 @@ namespace ASEngine
         EntityManager::GetInstance().CleanDestroyQueue();
     }
 
-    int ASEngine::Run(std::function<void(float)> updateFunction)
+    int Runtime::Run(std::function<void(float)> updateFunction)
     {
         float delta = 0.02f;
 
@@ -136,7 +135,7 @@ namespace ASEngine
         return m_ExitReturnCode;
     }
 
-    void ASEngine::Exit(int code)
+    void Runtime::Exit(int code)
     {
         if (m_IsExit)
             return;
@@ -145,7 +144,7 @@ namespace ASEngine
         m_ExitReturnCode = code;
     }
 
-    void ASEngine::LoadProjectSettings()
+    void Runtime::LoadProjectSettings()
     {
         // load settigs file
         File settingsFile;
@@ -159,7 +158,7 @@ namespace ASEngine
         Serializer::Deserialize(settingsObject, m_Settings);
     }
 
-    void ASEngine::ComputeAverageFPS(float delta)
+    void Runtime::ComputeAverageFPS(float delta)
     {
         // add fps to thge samples
         m_FrameDeltaTimes[m_FrameIndex] = (delta > 0.0f)? 1.0f / delta: 0.0f;

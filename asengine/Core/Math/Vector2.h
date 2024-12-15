@@ -197,7 +197,6 @@ namespace ASEngine
             };
         }
 
-
         //equal
         friend inline constexpr bool operator==(const Vector2 &a, const Vector2 &b)
         {

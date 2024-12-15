@@ -5,8 +5,8 @@
 int main(int argc, char *argv[])
 {
     // setup engine
-    ASEngine::ASEngine m_ASEngine{};
-    m_ASEngine.Setup(argc, argv);
+    ASEngine::Runtime m_ASEngineRuntime{};
+    m_ASEngineRuntime.Setup(argc, argv);
 
     // create display
     ASEngine::Display::Create();
@@ -14,21 +14,21 @@ int main(int argc, char *argv[])
 
     // init
     ASEngine::Registry();
-    m_ASEngine.Init();
+    m_ASEngineRuntime.Init();
 
     // run application
-    int returnCode = m_ASEngine.Run([&m_ASEngine, &display](float delta)
+    int returnCode = m_ASEngineRuntime.Run([&m_ASEngineRuntime, &display](float delta)
     {
         display.BeginFrame();
-        m_ASEngine.Update(delta);
+        m_ASEngineRuntime.Update(delta);
         display.EndFrame();
 
         if (display.IsWindowShouldClose())
-            m_ASEngine.Exit(0);
+            m_ASEngineRuntime.Exit(0);
     });
 
-    // cleanup 
-    m_ASEngine.Terminate();
-    
+    // cleanup
+    m_ASEngineRuntime.Terminate();
+
     return returnCode;
 }

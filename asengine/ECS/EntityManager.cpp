@@ -2,7 +2,6 @@
 #include "Archetype.h"
 #include "ArchetypeManager.h"
 
-#include "Core/Debug/Debug.h"
 #include "ECS/ArchetypeManager.h"
 #include "ECS/Signature.h"
 #include <unordered_set>

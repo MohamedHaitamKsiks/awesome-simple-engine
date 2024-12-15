@@ -1,11 +1,8 @@
 {
-    "include": 
-    [
-        "asengine"
-    ],
-    "exclude":
-    [
+    "include": ["asengine"],
+    "exclude": [
         "asengine/Renderer/Backend",
-        "asengine/Display/Backend"
+        "asengine/Display/Backend",
+        "asengine/LuaScript/Backend"
     ]
 }

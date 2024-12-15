@@ -2,7 +2,7 @@
 
 #include <cstdlib>
 #include "Core/Debug/Debug.h"
-#include "Core/ASEngine/ASEngine.h"
+#include "Core/Runtime/Runtime.h"
 
 namespace ASEngine
 {

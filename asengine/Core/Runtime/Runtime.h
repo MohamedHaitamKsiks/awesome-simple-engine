@@ -1,6 +1,6 @@
 
-#ifndef __ASENGINE_ASENGINE_H
-#define __ASENGINE_ASENGINE_H
+#ifndef __ASENGINE_RUNTIME_H
+#define __ASENGINE_RUNTIME_H
 
 #include <string>
 #include <vector>
@@ -21,18 +21,16 @@
 #include "Core/Memory/ByteBuffer.h"
 
 
-
-
 namespace ASEngine
 {
 
-	// asengine context
-	// defines the core of the engine
-	class  ASEngine
+	// asengine runtime
+	// defines the runtime of the engine
+	class  Runtime
 	{
-	ASENGINE_DEFINE_SINGLETON(ASEngine);
+	ASENGINE_DEFINE_SINGLETON(Runtime);
 	public:
-		~ASEngine() = default;
+		~Runtime() = default;
 
 		// setup application before init and user registry
 		void Setup();
@@ -182,4 +180,4 @@ namespace ASEngine
 
 } // ASEngine
 
-#endif // __ASENGINE_ASEngine_H
+#endif // __ASENGINE_RUNTIME_H

@@ -3,7 +3,7 @@
 #include <emscripten/emscripten.h>
 #define SEC_TO_MIL 1000.0f
 
-ASEngine::ASEngine* g_ASEngine = nullptr;
+ASEngine::Runtime *g_ASEngineRuntime = nullptr;
 float g_PreviousTime = 0.0f;
 
 
@@ -16,7 +16,7 @@ static void Update()
     g_PreviousTime = currentTime;
 
     ASEngine::Display::GetInstance().BeginFrame();
-    ASEngine::ASEngine::GetInstance().Update(deltaTime);
+    ASEngine::Runtime::GetInstance().Update(deltaTime);
     ASEngine::Display::GetInstance().EndFrame();
 }
 
@@ -24,15 +24,15 @@ static void Update()
 int main(int argc, char *argv[])
 {
     // setup engine
-    g_ASEngine = new ASEngine::ASEngine();
-    g_ASEngine->Setup(argc, argv);
+    g_ASEngineRuntime = new ASEngine::Runtime();
+    g_ASEngineRuntime->Setup(argc, argv);
 
     // create display
     ASEngine::Display::Create();
 
     // init
     ASEngine::Registry();
-    g_ASEngine->Init();
+    g_ASEngineRuntime->Init();
 
     g_PreviousTime = emscripten_get_now();
     emscripten_set_main_loop(Update, 0, false);

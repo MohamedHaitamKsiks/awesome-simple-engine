@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_compile_options(-Wall)
 add_compile_definitions(ASENINE_EXPORTS)
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -msse2")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 #generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -72,10 +72,16 @@ include_directories(${DEPENDENCIES_DIRECTOY}/stb_image)
 include_directories(${DEPENDENCIES_DIRECTOY}/freetype-2.10.0/include)
 add_subdirectory(${DEPENDENCIES_DIRECTOY}/freetype-2.10.0)
 
+# add lua
+include_directories(${DEPENDENCIES_DIRECTOY}/lua/src/)
+add_subdirectory(${DEPENDENCIES_DIRECTOY}/lua)
+
+
+
 #source
 set (SOURCE
     #Application
-    asengine/Core/ASEngine/ASEngine.cpp
+    asengine/Core/Runtime/Runtime.cpp
     #Settings
     asengine/Core/Settings/Settings.cpp
     #Debug
@@ -171,6 +177,14 @@ set (SOURCE
     asengine/Audio/AudioModule.cpp
     #animations
     asengine/Animation/Interpolation.cpp
+    #lua
+    asengine/LuaScript/LuaScriptModule.cpp
+    asengine/LuaScript/Backend/LuaStateImp.cpp
+    asengine/LuaScript/LuaScriptManager.cpp
+    asengine/LuaScript/LuaCppClassBuilder.cpp
+    asengine/LuaScript/LuaCppClassManager.cpp
+    asengine/LuaScript/LuaScript.cpp
+
     #platform src
     ${PLATFORM_SPECIFIC_SOURCES}
 )
@@ -192,6 +206,7 @@ set(ASENGINE_LIBRARIES
     spirv-cross-glsl
     spirv-cross-util
     freetype
+    lua
 )
 
 set (AENGINE_INTERFACE_CMAKE "cmake_minimum_required(VERSION 3.22.1)\n")
@@ -211,7 +226,7 @@ if(ASENGINE_DESKTOP)
         dependencies/glew/src/glew.c
     )
 
-    #link libraries for web
+    #link libraries for desktop
     target_link_libraries(
         asengine-core
         stb_image
@@ -220,6 +235,7 @@ if(ASENGINE_DESKTOP)
         glew
         spirv-cross-glsl
         freetype
+        lua
     )
 
     #create cmake list of libraries
@@ -247,6 +263,7 @@ if (ASENGINE_WEB)
         miniaudio
         spirv-cross-glsl
         freetype
+        lua
     )
 
     #create cmake list of libraries

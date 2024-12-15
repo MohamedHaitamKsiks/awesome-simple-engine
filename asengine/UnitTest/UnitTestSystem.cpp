@@ -1,5 +1,5 @@
 #include "UnitTestSystem.h"
-#include "Core/ASEngine/ASEngine.h"
+#include "Core/Runtime/Runtime.h"
 
 #include <cstdlib>
 
@@ -23,7 +23,7 @@ namespace ASEngine
         };
 
         // get arguments
-        const auto& arguments = ASEngine::GetInstance().GetArguments();
+        const auto& arguments = Runtime::GetInstance().GetArguments();
 
         // run specific test if arguments are set
         if (arguments.size() > 1)
@@ -54,7 +54,7 @@ namespace ASEngine
                 Debug::Error("   x", failedTestCase);
             }
         }
-        ASEngine::GetInstance().Exit(err);
+        Runtime::GetInstance().Exit(err);
     }
 
     void UnitTestSystem::Terminate()

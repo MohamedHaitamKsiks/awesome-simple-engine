@@ -2,6 +2,7 @@
 #define __ASENGINE_RESOURCE_REF_H
 
 #include "Resource.h"
+#include <type_traits>
 
 
 namespace ASEngine
@@ -12,6 +13,8 @@ namespace ASEngine
     class  ResourceRef
     {
     public:
+        using Type = T;
+
         constexpr ResourceRef()
         {
             m_Instance = nullptr;
@@ -130,6 +133,26 @@ namespace ASEngine
         friend class ResourceRef;
     };
 
+    template <typename T>
+    struct IsResourceRef: std::false_type {};
+
+    template <typename T>
+    struct IsResourceRef<ResourceRef<T>>: std::true_type {};
+
+    template <typename T>
+    struct RemoveResourceRef
+    {
+        using type = T;
+    };
+
+    template <typename T>
+    struct RemoveResourceRef<ResourceRef<T>>
+    {
+        using type = T;
+    };
+
+    template <typename T>
+    using RemoveResourceRefType = typename RemoveResourceRef<T>::type;
 
 } // namespace ASEngine
 

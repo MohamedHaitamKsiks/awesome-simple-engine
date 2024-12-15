@@ -1,5 +1,5 @@
 #include "DesktopDisplay.h"
-#include "Core/ASEngine/ASEngine.h"
+#include "Core/Runtime/Runtime.h"
 
 namespace ASEngine
 {
@@ -12,10 +12,10 @@ namespace ASEngine
         }
 
         // get settings
-        const auto& displaySettings = ASEngine::GetInstance().GetSettings().Display;
+        const auto& displaySettings = Runtime::GetInstance().GetSettings().Display;
         const auto& windowSettings = displaySettings.Window;
         const auto& renderingSettings = displaySettings.Rendering;
-        const auto& applicationSettings = ASEngine::GetInstance().GetSettings().Application;
+        const auto& applicationSettings = Runtime::GetInstance().GetSettings().Application;
 
         // create window with default values
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
@@ -127,7 +127,7 @@ namespace ASEngine
         keyEvent.Pressed = action == GLFW_PRESS;
 
         InputEvent event{keyEvent};
-        ASEngine::GetInstance().QueueInputEvent(event);
+        Runtime::GetInstance().QueueInputEvent(event);
     }
 
     void DesktopDisplay::GLFWCursorPosCallback(GLFWwindow *window, double xpos, double ypos)
@@ -136,7 +136,7 @@ namespace ASEngine
         mouseMoveEvent.Position = Vector2{static_cast<float>(xpos), static_cast<float>(ypos)};
 
         InputEvent event{mouseMoveEvent};
-        ASEngine::GetInstance().QueueInputEvent(event);
+        Runtime::GetInstance().QueueInputEvent(event);
     }
 
     void DesktopDisplay::GLFWMouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
@@ -179,7 +179,7 @@ namespace ASEngine
 
         // push event
         InputEvent event{mouseButtonEvent};
-        ASEngine::GetInstance().QueueInputEvent(event);
+        Runtime::GetInstance().QueueInputEvent(event);
     }
 
 } // namespace ASEngine
