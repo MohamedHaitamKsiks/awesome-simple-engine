@@ -1,12 +1,13 @@
 #include "LuaScript.h"
 #include "Core/FileSystem/File.h"
-#include "LuaScriptManager.h"
+
+#include "Lua/LuaRuntime/LuaRuntime.h"
 
 namespace ASEngine
 {
     void LuaScript::Create(const std::string& luaSource)
     {
-        auto& luaState = LuaScriptManager::GetInstance().GetState();
+        auto& luaState = LuaRuntime::GetInstance().GetState();
         luaState.Run(luaSource);
     }
 

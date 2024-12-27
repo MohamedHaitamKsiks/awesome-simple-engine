@@ -4,7 +4,7 @@
 #include "Core/String/UniqueString.h"
 
 #include "LuaCppFunction.h"
-#include "LuaPointer.h"
+#include "Lua/LuaTypes/LuaUserdata.h"
 
 #include <functional>
 #include <memory>
@@ -17,7 +17,7 @@ namespace ASEngine
 {
     // to build a c++ class binding to lua
     // just a data structure with no logic
-    class LuaCppClassBuilder
+    class LuaCppClassBase
     {
     public:
         struct MethodBinding
@@ -26,8 +26,8 @@ namespace ASEngine
             bool IsStatic = false;
         };
 
-        LuaCppClassBuilder(UniqueString className, UniqueString parentClassName);
-        virtual ~LuaCppClassBuilder() {};
+        LuaCppClassBase(UniqueString className, UniqueString parentClassName);
+        virtual ~LuaCppClassBase() {};
 
         void BindBaseMethod(UniqueString name, std::function<int()> method, bool isStatic);
 

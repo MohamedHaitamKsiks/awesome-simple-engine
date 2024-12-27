@@ -6,14 +6,18 @@
 #include "Core/Error/Assertion.h"
 #include "Core/String/UniqueString.h"
 
-#include "LuaScript/LuaCppClassBuilder.h"
-#include "LuaScript/LuaPointer.h"
-#include "LuaScript/LuaState.h"
-#include "LuaScriptManager.h"
-#include "LuaScript/LuaCppClassManager.h"
+#include "Lua/LuaRuntime/LuaRuntime.h"
+#include "Lua/LuaRuntime/LuaState.h"
+
+#include "Lua/LuaTypes/LuaUserdata.h"
+
+#include "LuaCppClassBase.h"
+#include "LuaCppClassManager.h"
+#include "LuaCppCleanupArgs.h"
 
 #include "Resource/Resource.h"
 #include "Resource/ResourceRef.h"
+
 #include <cctype>
 #include <type_traits>
 
@@ -39,50 +43,37 @@
 #define ASENGINE_BIND_METHOD(method) \
     __luaCppClass->BindMethod(#method, &__luaCppClassType::method)
 
+// bind method in binding area. camel cased
+#define ASENGINE_BIND_METHOD_EXT(method, ...) \
+    __luaCppClass->BindMethod<__VA_ARGS__>(#method, &__luaCppClassType::method)
+
 // bind static method in binding area. camel cased
 #define ASENGINE_BIND_STATIC_METHOD(method) \
     __luaCppClass->BindStaticMethod(#method, &__luaCppClassType::method)
 
+// bind static method in binding area. camel cased
+#define ASENGINE_BIND_STATIC_METHOD_EXT(method, ...) \
+    __luaCppClass->BindStaticMethod<__VA_ARGS__>(#method, &__luaCppClassType::method)
 
 namespace ASEngine
 {
     // works with normal classes, resource classes
     template <typename T>
-    class LuaCppClass: public LuaCppClassBuilder
+    class LuaCppClass: public LuaCppClassBase
     {
     public:
         LuaCppClass(UniqueString name): LuaCppClass(name, UniqueString{}) {}
 
-        LuaCppClass(UniqueString name, UniqueString parentName): LuaCppClassBuilder(name, parentName)
+        LuaCppClass(UniqueString name, UniqueString parentName): LuaCppClassBase(name, parentName)
         {
             ClassManager::GetInstance().RegisterClassIfNotRegisteredYet<T>(name);
-
-            // if is resource bind some default static methods
-            if constexpr (std::is_base_of_v<Resource, T>)
-            {
-                // bind constructor
-                BindStaticMethod("new", []() -> ResourceRef<T>
-                {
-                    return T::GetResourceClass().New();
-                });
-
-                // bind load
-                BindStaticMethod("load", []() -> ResourceRef<T>
-                {
-                    // return T::GetResourceClass()Load();
-                });
-            }
-
-            // bind default methods
-            // bind a cast method to anything
-            // BindMethod("castTo", [](T* self) -> )
 
             // bind destructor
             BindBaseMethod("__gc",  []() -> int
             {
                 using DestroyType = std::conditional_t<std::is_base_of_v<Resource, T>, ResourceRef<T>, T>;
 
-                auto& state = LuaScriptManager::GetInstance().GetState();
+                auto& state = LuaRuntime::GetInstance().GetState();
                 state.DeleteUserdata<DestroyType>(1);
 
                 return 0;
@@ -102,22 +93,32 @@ namespace ASEngine
         {
             BindBaseMethod("new", []() -> int
             {
-                auto& state = LuaScriptManager::GetInstance().GetState();
+                auto& state = LuaRuntime::GetInstance().GetState();
+                
+                // construct resource class
+                if constexpr (std::is_base_of_v<Resource, T>)
+                {
+                    state.Push<ResourceRef<T>>(T::GetResourceClass().New());
+                    return 1;
+                }
+
+                // construct normal class
                 auto createUserdata = [&state](Args... args)
                 {
                     state.CreateUserdata<T, Args...>(args...);
                 };
 
+                // construct with no argumnent
                 if constexpr(sizeof...(Args) == 0)
                 {
                     createUserdata();
-                }
-                else
-                {
-                    auto arguments = GetArguments<Args...>(state);
-                    std::apply(createUserdata, arguments);
+                    return 1;
                 }
 
+                // construct with many arguments
+                auto arguments = GetArguments<Args...>(state);
+                std::apply(createUserdata, arguments);
+            
                 return 1;
             }, true);
         }
@@ -136,6 +137,7 @@ namespace ASEngine
         }
 
     private:
+
         // get arguments
         template<typename... Args, std::size_t... Indices>
         static auto GetArugmentsImp(LuaState& state, std::index_sequence<Indices...>)
@@ -147,7 +149,7 @@ namespace ASEngine
         template<typename... Args>
         static auto GetArguments(LuaState& state)
         {
-            return GetArugmentsImp<Args...>(state, std::index_sequence_for<Args...>{});
+            return GetArugmentsImp<LuaCppCleanupArgT<Args>...>(state, std::index_sequence_for<Args...>{});
         }
 
         // bind mefuncthod
@@ -158,8 +160,8 @@ namespace ASEngine
 
             auto baseMethodLambda = [method]() -> int
             {
-                LuaState& state = LuaScriptManager::GetInstance().GetState();
-                constexpr bool hasArguments = sizeof...(Args);
+                LuaState& state = LuaRuntime::GetInstance().GetState();
+                constexpr bool hasArguments = sizeof...(Args) > 0;
 
                 if constexpr(std::is_void_v<ReturnType>)
                 {

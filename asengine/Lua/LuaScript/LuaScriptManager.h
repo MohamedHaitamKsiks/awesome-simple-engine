@@ -8,8 +8,6 @@
 #include "ECS/Entity.h"
 #include "ECS/System.h"
 
-#include "LuaScript/LuaCppClassBuilder.h"
-#include "LuaScript/LuaState.h"
 #include <unordered_map>
 
 namespace ASEngine
@@ -21,8 +19,6 @@ namespace ASEngine
         ~LuaScriptManager() {}
 
     private:
-        std::unique_ptr<LuaState> m_State = nullptr;
-
         void Init() override;
         void Update(float delta) override {};
         void FixedUpdate(float delta) override {};
@@ -31,19 +27,6 @@ namespace ASEngine
 
         void ScriptInstanceCreate(UniqueString className, EntityID entityID);
 
-        friend class LuaCppClassBuilder;
-        template<typename T> friend class LuaCppClass;
-
-        friend class LuaScript;
-        friend class LuaCppClassManager;
-
-        friend class LuaCppClassTest;
-        friend class LuaScriptTest;
-
-        inline LuaState& GetState()
-        {
-            return *m_State;
-        }
     };
 } // namespace ASEngine
 

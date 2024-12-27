@@ -11,7 +11,7 @@
 
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
-#include "LuaScript/LuaScriptModule.h"
+#include "Lua/LuaModule.h"
 
 #include <chrono>
 #include <cstdint>
@@ -65,7 +65,7 @@ namespace ASEngine
     {
         ASENGINE_REGISTER_SYSTEM(ArchetypeManager);
         ASENGINE_REGISTER_RESOURCE_CLASS(Scene);
-        LuaScriptModule::Init();
+        LuaModule::Init();
     }
 
     void Runtime::Terminate()

@@ -2,11 +2,15 @@
 #define __ASENGINE_LUA_VIRTUAL_MACHINE_H
 
 #include "Class/Class.h"
+
 #include "Core/Error/Assertion.h"
-#include "LuaScript/LuaCppClassManager.h"
-#include "LuaScript/LuaCppFunction.h"
-#include "LuaScript/LuaPointer.h"
+
+#include "Lua/LuaCpp/LuaCppClassManager.h"
+#include "Lua/LuaCpp/LuaCppFunction.h"
+#include "Lua/LuaTypes/LuaUserdata.h"
+
 #include "Resource/ResourceRef.h"
+
 #include <cstdint>
 #include <functional>
 #include <string>
@@ -37,11 +41,11 @@ namespace ASEngine
         template <typename T, typename... Args>
         void CreateUserdata(Args... args)
         {
-            LuaPointer newUserData{};
+            LuaUserdata newUserData{};
             newUserData.Pointer = reinterpret_cast<void*>(new T(args...));
             newUserData.Owned = true;
 
-            PushPointer(newUserData);
+            PushUserdata(newUserData);
 
             auto& luaCppClassManager = LuaCppClassManager::GetInstance();
 
@@ -55,8 +59,8 @@ namespace ASEngine
         template <typename T>
         void DeleteUserdata(int position)
         {
-            LuaPointer luaPointer{};
-            GetPointer(1, luaPointer);
+            LuaUserdata luaPointer{};
+            GetUserdata(1, luaPointer);
 
             if (!luaPointer.Owned)
                 return;
@@ -102,7 +106,7 @@ namespace ASEngine
             // user data case
             else
             {
-                LuaPointer p{};
+                LuaUserdata p{};
 
                 auto& luaCppClassManager = LuaCppClassManager::GetInstance();
                 using UserdataType = ClassType<T>;
@@ -129,7 +133,7 @@ namespace ASEngine
 
                 UniqueString metatableName = luaCppClassManager.GetMetatableName<MetatableType>();
 
-                PushPointer(p);
+                PushUserdata(p);
                 SetMetatable(metatableName.GetString());
             }
         }
@@ -141,25 +145,26 @@ namespace ASEngine
             using UserdataType = ClassType<T>;
 
             // push integer
-            if constexpr(std::is_integral_v<UserdataType>)
+            if constexpr (std::is_integral_v<UserdataType>)
             {
                 return GetInteger(position);
             }
             // push numbers
-            else if constexpr(std::is_floating_point_v<UserdataType>)
+            else if constexpr (std::is_floating_point_v<UserdataType>)
             {
                 return GetNumber(position);
             }
             // push string
-            else if constexpr(std::is_same_v<UserdataType, std::string>)
+            else if constexpr (std::is_same_v<UserdataType, std::string>)
             {
                 return GetString(position);
             }
             // user data case
             else
             {
-                LuaPointer p{};
-                GetPointer(position, p);
+                
+                LuaUserdata p{};
+                GetUserdata(position, p);
 
                 UserdataType* t = reinterpret_cast<UserdataType*>(p.Pointer);
 
@@ -199,9 +204,9 @@ namespace ASEngine
 
     protected:
         template <typename T>
-        using ClassType = std::remove_pointer_t<std::decay_t<T>>;
+        using ClassType = std::remove_cv_t <std::remove_pointer_t<std::decay_t<T>>>;
 
-        friend class LuaCppClassBuilder;
+        friend class LuaCppClassBase;
         template <typename T>friend class LuaCppClass;
 
         // push arguments
@@ -230,7 +235,7 @@ namespace ASEngine
         virtual void PushBoolean(bool value) = 0;
 
         // push a pointer to userdata
-        virtual void PushPointer(const LuaPointer& pointer) = 0;
+        virtual void PushUserdata(const LuaUserdata& pointer) = 0;
 
         // get integer from stack at index
         virtual int64_t GetInteger(int position) = 0;
@@ -245,7 +250,7 @@ namespace ASEngine
         virtual bool GetBoolean(int position) = 0;
 
         // get userdata
-        virtual void GetPointer(int position, LuaPointer& pointer) = 0;
+        virtual void GetUserdata(int position, LuaUserdata& pointer) = 0;
     };
 } // ASEngine
 

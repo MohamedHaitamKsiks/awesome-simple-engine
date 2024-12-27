@@ -5,7 +5,6 @@
 #include <unordered_map>
 
 #include "Core/Serialization/Serializer.h"
-
 #include "Core/String/UniqueString.h"
 
 #include "ECS/Entity.h"

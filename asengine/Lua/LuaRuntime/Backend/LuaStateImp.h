@@ -1,8 +1,8 @@
 #ifndef __ASENGINE_LUA_STATE_IMP_H
 #define __ASENGINE_LUA_STATE_IMP_H
 
-#include "LuaScript/LuaCppFunction.h"
-#include "LuaScript/LuaState.h"
+#include "Lua/LuaCpp/LuaCppFunction.h"
+#include "Lua/LuaRuntime/LuaState.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -46,7 +46,7 @@ namespace ASEngine
         void PushBoolean(bool value) override;
 
         // push a pointer to userdata
-        void PushPointer(const LuaPointer& pointer) override;
+        void PushUserdata(const LuaUserdata& pointer) override;
 
         // get integer from stack at index
         int64_t GetInteger(int position) override;
@@ -61,7 +61,7 @@ namespace ASEngine
         bool GetBoolean(int position) override;
 
         // get userdata
-        void GetPointer(int position, LuaPointer& pointer) override;
+        void GetUserdata(int position, LuaUserdata& pointer) override;
 
         // get error
         inline std::string GetError(int result)

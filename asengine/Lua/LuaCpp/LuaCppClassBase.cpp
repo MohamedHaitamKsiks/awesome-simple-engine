@@ -1,18 +1,19 @@
-#include "LuaCppClassBuilder.h"
-#include "Core/String/UniqueString.h"
+#include "LuaCppClassBase.h"
 
 #include "LuaCppFunction.h"
 
+#include "Core/String/UniqueString.h"
+
 namespace ASEngine
 {
-    LuaCppClassBuilder::LuaCppClassBuilder(UniqueString className, UniqueString parentClassName)
+    LuaCppClassBase::LuaCppClassBase(UniqueString className, UniqueString parentClassName)
     {
         m_ClassName = className;
         m_MetatableName = UniqueString("metatable__" + className.GetString());
         m_ParentClassName = parentClassName;
     }
 
-    void LuaCppClassBuilder::BindBaseMethod(UniqueString methodName, LuaCppFunction::FunctionType method, bool isStatic)
+    void LuaCppClassBase::BindBaseMethod(UniqueString methodName, LuaCppFunction::FunctionType method, bool isStatic)
     {
         MethodBinding& binding = m_MethodBindings[methodName];
 

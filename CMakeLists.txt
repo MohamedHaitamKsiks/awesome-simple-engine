@@ -178,12 +178,13 @@ set (SOURCE
     #animations
     asengine/Animation/Interpolation.cpp
     #lua
-    asengine/LuaScript/LuaScriptModule.cpp
-    asengine/LuaScript/Backend/LuaStateImp.cpp
-    asengine/LuaScript/LuaScriptManager.cpp
-    asengine/LuaScript/LuaCppClassBuilder.cpp
-    asengine/LuaScript/LuaCppClassManager.cpp
-    asengine/LuaScript/LuaScript.cpp
+    asengine/Lua/LuaModule.cpp
+    asengine/Lua/LuaRuntime/LuaRuntime.cpp
+    asengine/Lua/LuaRuntime/Backend/LuaStateImp.cpp
+    asengine/Lua/LuaScript/LuaScript.cpp
+    asengine/Lua/LuaScript/LuaScriptManager.cpp
+    asengine/Lua/LuaCpp/LuaCppClassBase.cpp
+    asengine/Lua/LuaCpp/LuaCppClassManager.cpp
 
     #platform src
     ${PLATFORM_SPECIFIC_SOURCES}

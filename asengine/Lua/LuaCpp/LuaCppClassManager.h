@@ -8,7 +8,7 @@
 
 #include "Class/Class.h"
 #include "ECS/System.h"
-#include "LuaScript/LuaCppClassBuilder.h"
+#include "Lua/LuaCpp/LuaCppClassBase.h"
 
 namespace ASEngine
 {
@@ -19,7 +19,7 @@ namespace ASEngine
         ~LuaCppClassManager() {}
 
         // owner ship is transfered to the manager
-        void RegisterLuaCppClass(std::unique_ptr<LuaCppClassBuilder> builder);
+        void RegisterLuaCppClass(std::unique_ptr<LuaCppClassBase> builder);
 
         // get metatable name for class
         template<typename T>
@@ -36,10 +36,10 @@ namespace ASEngine
 
     private:
         std::unordered_map<UniqueString, UniqueString> m_MetatableNames{};
-        std::unordered_map<UniqueString, std::unique_ptr<LuaCppClassBuilder>> m_CppClassBuilders = {};
+        std::unordered_map<UniqueString, std::unique_ptr<LuaCppClassBase>> m_CppClassBuilders = {};
 
         // build lua class from cpp class
-        void Build(const LuaCppClassBuilder& builder);
+        void Build(const LuaCppClassBase& builder);
 
         void Init() override;
     };

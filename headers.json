@@ -3,6 +3,6 @@
     "exclude": [
         "asengine/Renderer/Backend",
         "asengine/Display/Backend",
-        "asengine/LuaScript/Backend"
+        "asengine/Lua/LuaRuntime/Backend"
     ]
 }

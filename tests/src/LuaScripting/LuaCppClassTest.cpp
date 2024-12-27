@@ -7,15 +7,25 @@ namespace ASEngine
     public:
         Animal(const std::string& name): m_Name(name)
         {
-            Debug::Log("Constructing ", name);
         }
 
         virtual void SayHello() = 0;
         virtual ~Animal() {}
 
+        int NextAge(int offset)
+        {   
+            m_Age += offset;
+            return m_Age;
+        }
+
         int NextAge()
         {
-            return ++m_Age;
+            return NextAge(1);
+        }
+
+        int GetAge()
+        {
+            return m_Age;
         }
 
     protected:
@@ -45,25 +55,40 @@ namespace ASEngine
             ASENGINE_LUA_CPP_CLASS_BEGIN(Animal)
             {
                 ASENGINE_BIND_METHOD(SayHello);
-                ASENGINE_BIND_METHOD(NextAge);
+                ASENGINE_BIND_METHOD_EXT(NextAge, int, int);
+                ASENGINE_BIND_METHOD(GetAge);
             } ASENGINE_LUA_CPP_CLASS_END();
-
+ 
             // dog
             ASENGINE_LUA_CPP_CLASS_DERIVED_BEGIN(Dog, Animal)
             {
-                ASENGINE_BIND_CONSTRUCTOR(std::string);
+                ASENGINE_BIND_CONSTRUCTOR(const std::string&);
             } ASENGINE_LUA_CPP_CLASS_END();
 
             // run
-            auto& state = LuaScriptManager::GetInstance().GetState();
+            auto& state = LuaRuntime::GetInstance().GetState();
             state.Run(R"lua(
+                function nextAges(n, dog, step)
+                    for i=1,n do
+                        dog:nextAge(step)
+                    end
+                end
+
                 local dog = Dog.new('Ksiks')
                 dog:sayHello()
-                for i=1,10000 do
-                    print(dog:nextAge())
-                end
+
+                -- nextAges(5, dog, 2)
+                -- assert(dog:getAge() == 5 * 2)
             )lua");
         });
+
+        /*Test("It can register resource class", []() 
+        {
+            auto& state = LuaRuntime::GetInstance().GetState();
+            state.Run(R"lua(
+            
+            )lua");
+        });*/
     }
 
 }

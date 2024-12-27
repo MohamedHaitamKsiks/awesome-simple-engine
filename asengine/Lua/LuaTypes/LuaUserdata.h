@@ -3,9 +3,9 @@
 
 namespace ASEngine
 {
-    // lua pointer to cpp object
+    // lua userdata
     // pointer can or not own
-    struct LuaPointer
+    struct LuaUserdata
     {
         void* Pointer = nullptr;
         bool Owned = false;

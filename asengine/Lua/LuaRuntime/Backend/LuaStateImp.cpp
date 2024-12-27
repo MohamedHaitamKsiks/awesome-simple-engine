@@ -1,7 +1,10 @@
 #include "LuaStateImp.h"
+
 #include "Core/Error/Assertion.h"
-#include "LuaScript/LuaCppFunction.h"
-#include "LuaScript/LuaPointer.h"
+
+#include "Lua/LuaCpp/LuaCppFunction.h"
+#include "Lua/LuaTypes/LuaUserdata.h"
+
 #include "lauxlib.h"
 #include "lua.h"
 
@@ -81,9 +84,9 @@ namespace ASEngine
     }
 
     // push a pointer to userdata
-    void LuaStateImp::PushPointer(const LuaPointer& pointer)
+    void LuaStateImp::PushUserdata(const LuaUserdata& pointer)
     {
-        LuaPointer* p = reinterpret_cast<LuaPointer*>(lua_newuserdatauv(m_L, sizeof(LuaPointer), 0));
+        LuaUserdata* p = reinterpret_cast<LuaUserdata*>(lua_newuserdatauv(m_L, sizeof(LuaUserdata), 0));
         p->Pointer = pointer.Pointer;
         p->Owned = pointer.Owned;
     }
@@ -117,10 +120,10 @@ namespace ASEngine
     }
 
     // get userdata
-    void LuaStateImp::GetPointer(int position, LuaPointer& pointer)
+    void LuaStateImp::GetUserdata(int position, LuaUserdata& pointer)
     {
         ASENGINE_ASSERT(lua_isuserdata(m_L, position), "Type error");
-        LuaPointer* p = reinterpret_cast<LuaPointer*>(lua_touserdata(m_L, position));
+        LuaUserdata* p = reinterpret_cast<LuaUserdata*>(lua_touserdata(m_L, position));
 
         pointer.Pointer = p->Pointer;
         pointer.Owned = p->Owned;

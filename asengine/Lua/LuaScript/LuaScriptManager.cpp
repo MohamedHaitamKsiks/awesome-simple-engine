@@ -1,5 +1,4 @@
 #include "LuaScriptManager.h"
-#include "Backend/LuaStateImp.h"
 
 namespace ASEngine
 {
@@ -82,10 +81,6 @@ end
 
     void LuaScriptManager::Init()
     {
-        m_State = std::make_unique<LuaStateImp>();
-        m_State->Run(R"lua(
-            print('Lua is active!')
-        )lua");
     }
 
 } // ASEngine

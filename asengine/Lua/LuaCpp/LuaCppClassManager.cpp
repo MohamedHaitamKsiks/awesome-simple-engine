@@ -1,12 +1,12 @@
 #include "LuaCppClassManager.h"
 #include "Core/String/UniqueStringManager.h"
-#include "LuaScript/LuaScriptManager.h"
+#include "Lua/LuaRuntime/LuaRuntime.h"
 
 namespace ASEngine
 {
-    void LuaCppClassManager::Build(const LuaCppClassBuilder& builder)
+    void LuaCppClassManager::Build(const LuaCppClassBase& builder)
     {
-        auto& state = LuaScriptManager::GetInstance().GetState();
+        auto& state = LuaRuntime::GetInstance().GetState();
 
         std::vector<LuaCppFunction> staticMethods{};
         std::vector<LuaCppFunction> methods{};
@@ -28,7 +28,7 @@ namespace ASEngine
         state.CreateMetatable(builder.m_MetatableName.GetString(), parentMetatableName, methods);
     }
 
-    void LuaCppClassManager::RegisterLuaCppClass(std::unique_ptr<LuaCppClassBuilder> builder)
+    void LuaCppClassManager::RegisterLuaCppClass(std::unique_ptr<LuaCppClassBase> builder)
     {
         Build(*builder);
         m_MetatableNames[builder->m_ClassName] = builder->m_MetatableName;
