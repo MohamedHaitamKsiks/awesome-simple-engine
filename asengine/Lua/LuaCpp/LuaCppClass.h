@@ -98,7 +98,8 @@ namespace ASEngine
                 // construct resource class
                 if constexpr (std::is_base_of_v<Resource, T>)
                 {
-                    state.Push<ResourceRef<T>>(T::GetResourceClass().New());
+                    ResourceRef<T> rref = T::GetResourceClass().New();
+                    state.Push<ResourceRef<T>>(rref);
                     return 1;
                 }
 
@@ -130,7 +131,20 @@ namespace ASEngine
 
             std::function<ReturnType(SelfPointer, Args...)> methodLambda = [method](SelfPointer self, Args... args) -> ReturnType
             {
-                return (self ->* method)(args...);
+                return ((*self).* method)(args...);
+            };
+
+            BindAnyMethod(methodName, methodLambda, false);
+        }
+
+        template <typename ReturnType, typename... Args>
+        void BindMethod(const std::string &methodName, ReturnType (T::*method)(Args...) const)
+        {
+            using SelfPointer = std::conditional_t<std::is_base_of_v<Resource, T>, ResourceRef<T> &, T *>;
+
+            std::function<ReturnType(SelfPointer, Args...)> methodLambda = [method](SelfPointer self, Args... args) -> ReturnType
+            {
+                return ((*self).* method)(args...);
             };
 
             BindAnyMethod(methodName, methodLambda, false);
@@ -182,12 +196,12 @@ namespace ASEngine
                     {
                         auto arguments = GetArguments<Args...>(state);
                         ReturnType result = std::apply(method, arguments);
-                        state.Push(result);
+                        state.Push<ReturnType>(result);
                     }
                     else
                     {
                        ReturnType result = method();
-                       state.Push(result);
+                       state.Push<ReturnType>(result);
                     }
                     return 1;
                 }

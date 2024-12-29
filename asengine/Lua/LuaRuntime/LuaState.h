@@ -88,18 +88,20 @@ namespace ASEngine
         template <typename T>
         void Push(T t)
         {
+            using UserdataType = ClassType<T>;
+
             // push integer
-            if constexpr(std::is_integral_v<T>)
+            if constexpr (std::is_integral_v<UserdataType>)
             {
                 PushInteger(static_cast<int64_t>(t));
             }
             // push numbers
-            else if constexpr(std::is_floating_point_v<T>)
+            else if constexpr (std::is_floating_point_v<UserdataType>)
             {
                 PushNumber(static_cast<double>(t));
             }
             // push string
-            else if constexpr(std::is_same_v<std::decay_t<T>, std::string>)
+            else if constexpr (std::is_same_v<UserdataType, std::string>)
             {
                 PushString(t);
             }
@@ -109,8 +111,9 @@ namespace ASEngine
                 LuaUserdata p{};
 
                 auto& luaCppClassManager = LuaCppClassManager::GetInstance();
-                using UserdataType = ClassType<T>;
-                using MetatableType = std::conditional_t<IsResourceRef<UserdataType>::value, RemoveResourceRefType<UserdataType>, UserdataType>;
+                using MetatableType = std::conditional_t<IsResourceRef<UserdataType>::value, 
+                    RemoveResourceRefType<UserdataType>, 
+                    UserdataType>;
 
                 // push reference to user data
                 if constexpr(std::is_reference_v<T>)
@@ -213,7 +216,7 @@ namespace ASEngine
         template <typename T, typename... types>
         void PushArguments(T firstArgument, types... args)
         {
-            Push(firstArgument);
+            Push<T>(firstArgument);
 
             if constexpr(sizeof...(args) > 0)
                 PushArguments(args...);

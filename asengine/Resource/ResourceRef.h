@@ -125,12 +125,19 @@ namespace ASEngine
             static_assert(std::is_base_of_v<Resource, T>);
         }
 
+        T& operator*()
+        {
+            return *m_Instance;
+        }
 
         template<typename U>
         friend class ResourceClass;
 
         template<typename U>
         friend class ResourceRef;
+
+        template<typename U>
+        friend class LuaCppClass;
     };
 
     template <typename T>

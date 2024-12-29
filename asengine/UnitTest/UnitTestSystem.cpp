@@ -54,6 +54,7 @@ namespace ASEngine
                 Debug::Error("   x", failedTestCase);
             }
         }
+
         Runtime::GetInstance().Exit(err);
     }
 

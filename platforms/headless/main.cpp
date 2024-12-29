@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     ASEngine::Registry();
     m_ASEngineRuntime.Init();
 
+
     // run application
     int returnCode = m_ASEngineRuntime.Run([&m_ASEngineRuntime](float delta)
     {

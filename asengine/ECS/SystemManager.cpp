@@ -15,9 +15,9 @@ namespace ASEngine
 
     void SystemManager::Init()
     {
-        for (auto& system: m_Systems)
+        for (size_t i = 0; i < m_Systems.size(); i++)
         {
-            system->Init(); 
+            m_Systems[i]->Init(); 
         }
     }
 
@@ -59,8 +59,8 @@ namespace ASEngine
         while (m_Systems.size() > 0)
         {
             auto& system = m_Systems.back();
-            system->Terminate();
-            
+
+            system->Terminate();            
             m_Systems.pop_back();
         }
     }
