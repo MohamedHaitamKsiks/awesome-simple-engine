@@ -102,16 +102,26 @@ namespace ASEngine
         template<typename... Args>
         inline void BindConstructor()
         {
+            // resource class
+            if constexpr (std::is_base_of_v<Resource, T>)
+            {
+                // add constructor
+                BindFunction("new", std::function([]() -> ResourceRef<T>
+                {
+                    return T::GetResourceClass().New();
+                }), true);
+
+                // add load
+                BindFunction("load", std::function([](UniqueString path) -> ResourceRef<T>
+                {
+                    return T::GetResourceClass().Load(path);
+                }), true);
+
+                return;
+            }
+            
             BindCppFunction("new", [](LuaState& state) -> int
             {
-                // construct resource class
-                if constexpr (std::is_base_of_v<Resource, T>)
-                {
-                    ResourceRef<T> rref = T::GetResourceClass().New();
-                    state.Push<ResourceRef<T>>(rref);
-                    return 1;
-                }
-
                 // construct normal class
                 auto createUserdata = [&state](Args... args)
                 {

@@ -9,8 +9,8 @@
 #include "Class/Class.h"
 #include "ECS/System.h"
 
-#include "LuaCppType.h"
 #include "LuaCppClassBase.h"
+#include "LuaCppEnum.h"
 
 namespace ASEngine
 {
@@ -22,6 +22,8 @@ namespace ASEngine
 
         // owner ship is transfered to the manager
         void RegisterLuaCppClass(LuaCppClassBase& builder);
+
+        void RegisterLuaCppEnum(LuaCppEnum &builder);
 
         // get metatable name from classname
         inline int GetMetatableID(UniqueString className) const

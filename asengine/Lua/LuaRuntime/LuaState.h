@@ -89,6 +89,10 @@ namespace ASEngine
             {
                 PushInteger(static_cast<int64_t>(t));
             }
+            else if constexpr (std::is_enum_v<UserdataType>)
+            {
+                PushInteger(static_cast<int64_t>(t));
+            }
             // push numbers
             else if constexpr (std::is_floating_point_v<UserdataType>)
             {
@@ -144,17 +148,22 @@ namespace ASEngine
         {
             using UserdataType = ClassType<T>;
 
-            // push integer
+            // get integer
             if constexpr (std::is_integral_v<UserdataType>)
             {
                 return GetInteger(position);
             }
-            // push numbers
+            //get enum
+            else if constexpr (std::is_enum_v<UserdataType>)
+            {
+                return static_cast<T>(GetInteger(position));
+            }
+            // get  numbers
             else if constexpr (std::is_floating_point_v<UserdataType>)
             {
                 return GetNumber(position);
             }
-            // push string
+            // get string
             else if constexpr (std::is_same_v<UserdataType, std::string>)
             {
                 return GetString(position);

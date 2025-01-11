@@ -12,6 +12,11 @@ namespace ASEngine
         m_MetatableIDs[builder.GetName()] = metatableID;
     }
 
+    void LuaCppTypeManager::RegisterLuaCppEnum(LuaCppEnum &builder)
+    {
+        LuaState &state = LuaRuntime::GetInstance().GetState();
+        state.AddLuaCppEnum(builder);
+    }
 
     void LuaCppTypeManager::Init()
     {

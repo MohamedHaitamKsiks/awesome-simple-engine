@@ -137,6 +137,20 @@ namespace ASEngine
 
    void LuaStateImp::AddLuaCppEnum(const LuaCppEnum &luaCppEnum)
    {
+        const auto& values = luaCppEnum.GetValues();
+        const char* enumName = luaCppEnum.GetName().GetString().c_str();
+
+        // create table with keys as enum names
+        lua_createtable(m_L, 0, values.size());
+
+        for (auto& [name, value]: values)
+        {
+            lua_pushstring(m_L, name.c_str());
+            lua_pushinteger(m_L, value);
+            lua_settable(m_L, -3);
+        }
+
+        lua_setglobal(m_L, enumName);
    }
 
    // call function by name

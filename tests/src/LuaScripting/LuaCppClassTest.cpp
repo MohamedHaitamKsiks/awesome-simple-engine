@@ -36,6 +36,14 @@ protected:
     int m_Age = 0;
 };
 
+// enum example
+enum class AnimalType
+{
+    NONE = 0,
+    DOG,
+    CAT
+};
+
 class Dog: public Animal
 {
 public:
@@ -48,6 +56,21 @@ public:
     void SayHello() const override
     {
         Debug::Log("Ouf Ouf ", m_Name);
+    }
+};
+
+class Cat : public Animal
+{
+public:
+    Cat(const std::string &name) : Animal(name) {}
+
+    ~Cat()
+    {
+    }
+
+    void SayHello() const override
+    {
+        Debug::Log("Miao ", m_Name);
     }
 };
 
@@ -65,6 +88,20 @@ public:
         m_Animals[name] = std::move(animal);
     }
 
+    void AddCat(const std::string& name)
+    {
+        std::unique_ptr<Animal> animal = std::make_unique<Cat>(name);
+        m_Animals[name] = std::move(animal);
+    }
+
+    void AddAnimal(const std::string &name, AnimalType type)
+    {
+        if (type == AnimalType::DOG)
+            AddDog(name);
+        else
+            AddCat(name);
+    }
+
     inline Animal& GetAnimal(const std::string& name) const
     {
         return *m_Animals.at(name);
@@ -75,6 +112,14 @@ public:
         for (auto& [name, animal]: m_Animals)
         {
             animal->NextAge(offset);
+        }
+    }
+
+    void SayHello()
+    {
+        for (auto &[name, animal] : m_Animals)
+        {
+            animal->SayHello();
         }
     }
 
@@ -134,6 +179,13 @@ void LuaCppClassTest::Describe()
             BIND_CONSTRUCTOR(const std::string&);
         } ASENGINE_LUA_CPP_CLASS_END();
 
+        // cat
+        ASENGINE_LUA_CPP_CLASS_DERIVED_BEGIN(Cat, Animal)
+        {
+            BIND_CONSTRUCTOR(const std::string &);
+        }
+        ASENGINE_LUA_CPP_CLASS_END();
+
         // run
         auto &runtime = LuaRuntime::GetInstance();
         runtime.Run(R"lua(
@@ -165,8 +217,11 @@ void LuaCppClassTest::Describe()
         {
             BIND_CONSTRUCTOR();
             BIND_METHOD("add_dog", AddDog);
+            BIND_METHOD("add_cat", AddCat);
+            BIND_METHOD("add_animal", AddAnimal);
             BIND_METHOD("get_animal", GetAnimal);
             BIND_METHOD("next_age", NextAge);
+            BIND_METHOD("say_hello", SayHello);
         } ASENGINE_LUA_CPP_CLASS_END();
         
         auto& runtime = LuaRuntime::GetInstance();
@@ -215,5 +270,27 @@ void LuaCppClassTest::Describe()
             zoo:add_dog('Haitam');
         )lua");
     }); 
+
+
+    Test("It can register enum", []()
+    {
+        ASENGINE_LUA_CPP_ENUM(AnimalType,
+            NONE,
+            DOG,
+            CAT
+        );
+
+        auto &runtime = LuaRuntime::GetInstance();
+        runtime.Run(R"lua(
+            assert(AnimalType.DOG == 1)
+            assert(AnimalType.CAT == 2)
+
+            local zoo = ZooResource:new()
+            zoo:add_animal('Haitam', AnimalType.CAT)
+            zoo:add_animal('Ksiks', AnimalType.DOG)
+
+            zoo:say_hello()
+        )lua");
+    });
 }
 
