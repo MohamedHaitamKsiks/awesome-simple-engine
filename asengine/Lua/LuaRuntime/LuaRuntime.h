@@ -17,6 +17,13 @@ namespace ASEngine
     public:
         ~LuaRuntime();
 
+        // run lua script
+        // avoid using it unless for unit tests
+        inline void Run(const std::string& script)
+        {
+            m_State->Run(script);
+        }
+
     protected:
         friend class LuaCppClassBase;
 
@@ -24,10 +31,9 @@ namespace ASEngine
         friend class LuaCppClass;
 
         friend class LuaScript;
-        friend class LuaCppClassManager;
+        friend class LuaCppTypeManager;
 
-        friend class LuaCppClassTest;
-        friend class LuaScriptTest;
+        friend class LuaStateImp;
 
         inline LuaState &GetState()
         {

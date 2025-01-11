@@ -1,25 +1,44 @@
 #include "LuaCppClassBase.h"
 
-#include "LuaCppFunction.h"
-
-#include "Core/String/UniqueString.h"
-
 namespace ASEngine
 {
-    LuaCppClassBase::LuaCppClassBase(UniqueString className, UniqueString parentClassName)
+    LuaCppClassBase::LuaCppClassBase(UniqueString className, UniqueString parentClassName): LuaCppType(className)
     {
-        m_ClassName = className;
-        m_MetatableName = UniqueString("metatable__" + className.GetString());
         m_ParentClassName = parentClassName;
     }
 
-    void LuaCppClassBase::BindBaseMethod(UniqueString methodName, LuaCppFunction::FunctionType method, bool isStatic)
+    std::unordered_map<std::string, LuaCppFunction> LuaCppClassBase::GetMethods() const
     {
+        std::unordered_map<std::string, LuaCppFunction> methods{};
+        for (const auto& [name, methodBinding]: m_MethodBindings)
+        {
+            if (!methodBinding.IsStatic)
+                methods[name] = methodBinding.Method;   
+        }
+
+        return methods;
+    }
+
+    std::unordered_map<std::string, LuaCppFunction> LuaCppClassBase::GetStaticMethods() const
+    {
+        std::unordered_map<std::string, LuaCppFunction> staticMethods{};
+        for (const auto &[name, methodBinding] : m_MethodBindings)
+        {
+            if (methodBinding.IsStatic)
+                staticMethods[name] = methodBinding.Method;
+        }
+
+        return staticMethods;
+    }
+
+    void LuaCppClassBase::BindCppFunction(const std::string& methodName, LuaCppFunction method, bool isStatic)
+    {
+        ASENGINE_ASSERT(m_MethodBindings.find(methodName) == m_MethodBindings.end(), "method already bound");
+
         MethodBinding& binding = m_MethodBindings[methodName];
 
         binding.IsStatic = isStatic;
-        binding.Method.Name = methodName;
-        binding.Method.Function = std::make_shared<LuaCppFunction::FunctionType>(method);
+        binding.Method = method;
     }
 
 }

@@ -5,9 +5,12 @@
 
 #include "Core/Error/Assertion.h"
 
-#include "Lua/LuaCpp/LuaCppClassManager.h"
-#include "Lua/LuaCpp/LuaCppFunction.h"
 #include "Lua/LuaTypes/LuaUserdata.h"
+#include "Lua/LuaTypes/LuaTypes.h"
+
+#include "Lua/LuaCpp/LuaCppClassBase.h"
+#include "Lua/LuaCpp/LuaCppEnum.h"
+#include "Lua/LuaCpp/LuaCppCleanupArgs.h"
 
 #include "Resource/ResourceRef.h"
 
@@ -34,25 +37,21 @@ namespace ASEngine
         LuaState(const LuaState& luaState) = delete;
         LuaState& operator=(const LuaState& luaState) = delete;
 
-        // create lua metatable from functions
-        virtual void CreateMetatable(const std::string& name, const std::string& parentName, const std::vector<LuaCppFunction>& funcitons) = 0;
-
         // create userdata and push it to the stack
         template <typename T, typename... Args>
         void CreateUserdata(Args... args)
         {
+            using MetatableType = std::conditional_t<IsResourceRef<T>::value,
+                RemoveResourceRefType<T>,
+                T>;
+
             LuaUserdata newUserData{};
+
             newUserData.Pointer = reinterpret_cast<void*>(new T(args...));
             newUserData.Owned = true;
+            newUserData.Name = Class<MetatableType>::GetName();
 
             PushUserdata(newUserData);
-
-            auto& luaCppClassManager = LuaCppClassManager::GetInstance();
-
-            using MetatableType = std::conditional_t<IsResourceRef<T>::value, RemoveResourceRefType<T>, T>;
-            UniqueString metatableName = luaCppClassManager.GetMetatableName<MetatableType>();
-
-            SetMetatable(metatableName.GetString());
         }
 
         // destroy userdata from the stack
@@ -66,17 +65,12 @@ namespace ASEngine
                 return;
 
             T* p = reinterpret_cast<T*>(luaPointer.Pointer);
-            ASENGINE_ASSERT(p, "Destructor pointer invalid type");
+            ASENGINE_ASSERT(p, "Cannot destroy nullptr!");
 
             delete p;
             p = nullptr;
         }
 
-        // set metatable for the current top of the stack
-        virtual void SetMetatable(const std::string& name) = 0;
-
-        // create library
-        virtual void CreateLibrary(const std::string& libraryName, const std::vector<LuaCppFunction>& funcitons) = 0;
 
         // run string as lua script
         virtual void Run(const std::string& script) = 0;
@@ -105,15 +99,21 @@ namespace ASEngine
             {
                 PushString(t);
             }
+            // push unique string as string
+            else if constexpr (std::is_same_v<UserdataType, UniqueString>)
+            {
+                PushString(t.GetString());
+            }
             // user data case
             else
             {
                 LuaUserdata p{};
 
-                auto& luaCppClassManager = LuaCppClassManager::GetInstance();
                 using MetatableType = std::conditional_t<IsResourceRef<UserdataType>::value, 
                     RemoveResourceRefType<UserdataType>, 
                     UserdataType>;
+
+                p.Name = Class<MetatableType>::GetName();
 
                 // push reference to user data
                 if constexpr(std::is_reference_v<T>)
@@ -134,10 +134,7 @@ namespace ASEngine
                     p.Owned = true;
                 }
 
-                UniqueString metatableName = luaCppClassManager.GetMetatableName<MetatableType>();
-
                 PushUserdata(p);
-                SetMetatable(metatableName.GetString());
             }
         }
 
@@ -162,10 +159,14 @@ namespace ASEngine
             {
                 return GetString(position);
             }
+            // get unique string as string
+            else if constexpr (std::is_same_v<UserdataType, UniqueString>)
+            {
+                return UniqueString(GetString(position));
+            }
             // user data case
             else
-            {
-                
+            {   
                 LuaUserdata p{};
                 GetUserdata(position, p);
 
@@ -174,7 +175,8 @@ namespace ASEngine
                 // return reference to user data
                 if constexpr (std::is_reference_v<T>)
                 {
-                    return *t;
+                    UserdataType& ref= *t;
+                    return ref;
                 }
                 // return pointer
                 else if constexpr (std::is_pointer_v<T>)
@@ -192,18 +194,72 @@ namespace ASEngine
         // call function by name
         // only global functions with no returns since this is all we need
         template<typename ReturnType, typename... Args>
-        ReturnType Call(const std::string& functionName, Args... args)
+        ReturnType Call(int position, Args... args)
         {
             constexpr size_t argsCount = sizeof...(args);
             PushArguments(args...);
 
             constexpr bool doesReturn = !std::is_void_v<ReturnType>;
 
-            CallFunction(functionName, argsCount, doesReturn);
+            CallFunction(position, argsCount, doesReturn);
 
             if constexpr (doesReturn)
                 return Get<ReturnType>(-1);
         }
+
+        // create lua cpp function from any function
+        template <typename ReturnType, typename... Args>
+        static LuaCppFunction CreateLuaCppFunction(std::function<ReturnType(Args...)> func)
+        {
+            auto luaCppFunction = [func](LuaState& state) -> int
+            {
+                constexpr bool hasArguments = sizeof...(Args) > 0;
+
+                if constexpr (std::is_void_v<ReturnType>)
+                {
+                    if constexpr (hasArguments)
+                    {
+                        auto arguments = state.GetArguments<Args...>();
+                        std::apply(func, arguments);
+                    }
+                    else
+                    {
+                        func();
+                    }
+                    return 0;
+                }
+                else
+                {
+                    if constexpr (hasArguments)
+                    {
+                        auto arguments = state.GetArguments<Args...>();
+                        ReturnType result = std::apply(func, arguments);
+                        state.Push<ReturnType>(result);
+                    }
+                    else
+                    {
+                        ReturnType result = func();
+                        state.Push<ReturnType>(result);
+                    }
+                    return 1;
+                }
+            };
+
+            return LuaCppFunction(luaCppFunction);
+        }
+
+        template <typename... Args>
+        auto GetArguments()
+        {
+            return GetArugmentsImp<LuaCppCleanupArgT<Args>...>(std::index_sequence_for<Args...>{});
+        }
+
+        // add cpp class and return metatable
+        virtual LuaInteger AddLuaCppClass(const LuaCppClassBase& luaCppClass) = 0;
+
+        // add cpp enum 
+        virtual void AddLuaCppEnum(const LuaCppEnum& luaCppEnum) = 0;
+
 
     protected:
         template <typename T>
@@ -221,9 +277,17 @@ namespace ASEngine
             if constexpr(sizeof...(args) > 0)
                 PushArguments(args...);
         }
+        
+        // get arguments
+        template <typename... Args, std::size_t... Indices>
+        auto GetArugmentsImp(std::index_sequence<Indices...>)
+        {
+            auto argIndices = std::make_index_sequence<sizeof...(Args)>{};
+            return std::tuple<Args...>(Get<Args>(static_cast<int>(Indices) - static_cast<int>(sizeof...(Args)))...);
+        }
 
-        // call function by name
-        virtual void CallFunction(const std::string& functionName, int argumentsCount, bool doesReturn) = 0;
+        // call function in the stack
+        virtual void CallFunction(int position, int argumentsCount, bool doesReturn) = 0;
 
         // push integer to the stack
         virtual void PushInteger(int64_t integer) = 0;

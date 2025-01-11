@@ -2,17 +2,16 @@
 #define __ASENGINE_LUA_CPP_CLASS_TEST_H
 
 #include "ASEngine.h"
-namespace ASEngine
+using namespace ASEngine;
+
+class LuaCppClassTest: public UnitTest
 {
-    class LuaCppClassTest: public UnitTest
-    {
-    public:
-        ~LuaCppClassTest() {}
+public:
+    ~LuaCppClassTest() {}
 
-    private:
-        void Describe() override;
-    };
+private:
+    void Describe() override;
+};
 
-}
 
 #endif // __ASENGINE_LUA_CPP_CLASS_TEST_H

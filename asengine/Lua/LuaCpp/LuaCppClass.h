@@ -12,7 +12,7 @@
 #include "Lua/LuaTypes/LuaUserdata.h"
 
 #include "LuaCppClassBase.h"
-#include "LuaCppClassManager.h"
+#include "LuaCppTypeManager.h"
 #include "LuaCppCleanupArgs.h"
 
 #include "Resource/Resource.h"
@@ -24,36 +24,43 @@
 // begin binding area, you can NOT begin a binding area inside another binding area
 #define ASENGINE_LUA_CPP_CLASS_BEGIN(classToBind) { \
     using __luaCppClassType = classToBind; \
-    auto __luaCppClass = std::make_unique<ASEngine::LuaCppClass<classToBind>>(#classToBind);
+    ASEngine::LuaCppClass<classToBind> __luaCppClass(#classToBind);
 
 // begin binding area ofr derived class
 #define ASENGINE_LUA_CPP_CLASS_DERIVED_BEGIN(classToBind, parentClass) { \
-    auto __luaCppClass = std::make_unique<ASEngine::LuaCppClass<classToBind>>(#classToBind, #parentClass);
+    ASEngine::LuaCppClass<classToBind> __luaCppClass(#classToBind, #parentClass);
 
 // end binding area
 #define ASENGINE_LUA_CPP_CLASS_END() \
-    ASEngine::LuaCppClassManager::GetInstance().RegisterLuaCppClass(std::move(__luaCppClass)); }
+    ASEngine::LuaCppTypeManager::GetInstance().RegisterLuaCppClass(__luaCppClass); }
 
 // bind constructor as new
-#define ASENGINE_BIND_CONSTRUCTOR(...) \
-    __luaCppClass->BindConstructor<__VA_ARGS__>()
-
-
-// bind method in binding area. camel cased
-#define ASENGINE_BIND_METHOD(method) \
-    __luaCppClass->BindMethod(#method, &__luaCppClassType::method)
+#define BIND_CONSTRUCTOR(...) \
+    __luaCppClass.BindConstructor<__VA_ARGS__>()
 
 // bind method in binding area. camel cased
-#define ASENGINE_BIND_METHOD_EXT(method, ...) \
-    __luaCppClass->BindMethod<__VA_ARGS__>(#method, &__luaCppClassType::method)
+#define BIND_METHOD(methodName, method) \
+    __luaCppClass.BindMethod(methodName, &__luaCppClassType::method)
+
+// bind method in binding area. camel cased
+#define BIND_METHOD_EXT(methodName, method, ...) \
+    __luaCppClass.BindMethod<__VA_ARGS__>(methodName, &__luaCppClassType::method)
 
 // bind static method in binding area. camel cased
-#define ASENGINE_BIND_STATIC_METHOD(method) \
-    __luaCppClass->BindStaticMethod(#method, &__luaCppClassType::method)
+#define BIND_STATIC_METHOD(methodName, method) \
+    __luaCppClass.BindStaticMethod(methodName, &__luaCppClassType::method)
 
 // bind static method in binding area. camel cased
-#define ASENGINE_BIND_STATIC_METHOD_EXT(method, ...) \
-    __luaCppClass->BindStaticMethod<__VA_ARGS__>(#method, &__luaCppClassType::method)
+#define BIND_STATIC_METHOD_EXT(methodName, method, ...) \
+    __luaCppClass.BindStaticMethod<__VA_ARGS__>(methodName, &__luaCppClassType::method)
+
+// bind any function
+#define BIND_FUNCTION(functionName, func, isStatic) \
+    __luaCppClass.BindFunction(functionName, std::function(func), isStatic)
+
+// set singleton
+#define SET_SINGLETON() \
+    __luaCppClass.SetSingleton(__luaCppClassType::GetInstance())
 
 namespace ASEngine
 {
@@ -68,14 +75,18 @@ namespace ASEngine
         {
             ClassManager::GetInstance().RegisterClassIfNotRegisteredYet<T>(name);
 
+            // bind get class name
+            BindStaticMethod("get_class_name", [name]() -> UniqueString
+            {
+                return name;
+            });
+
             // bind destructor
-            BindBaseMethod("__gc",  []() -> int
+            BindCppFunction("__gc",  [](LuaState& state) -> int
             {
                 using DestroyType = std::conditional_t<std::is_base_of_v<Resource, T>, ResourceRef<T>, T>;
-
-                auto& state = LuaRuntime::GetInstance().GetState();
                 state.DeleteUserdata<DestroyType>(1);
-
+                
                 return 0;
             }, false);
         }
@@ -85,16 +96,14 @@ namespace ASEngine
         template<typename FunctionType>
         inline void BindStaticMethod(const std::string& methodName, FunctionType method)
         {
-            BindAnyMethod(methodName, std::function(method), true);
+            BindFunction(methodName, std::function(method), true);
         }
 
         template<typename... Args>
         inline void BindConstructor()
         {
-            BindBaseMethod("new", []() -> int
+            BindCppFunction("new", [](LuaState& state) -> int
             {
-                auto& state = LuaRuntime::GetInstance().GetState();
-                
                 // construct resource class
                 if constexpr (std::is_base_of_v<Resource, T>)
                 {
@@ -117,7 +126,7 @@ namespace ASEngine
                 }
 
                 // construct with many arguments
-                auto arguments = GetArguments<Args...>(state);
+                auto arguments = state.GetArguments<Args...>();
                 std::apply(createUserdata, arguments);
             
                 return 1;
@@ -125,91 +134,38 @@ namespace ASEngine
         }
 
         template<typename ReturnType, typename... Args>
-        void BindMethod(const std::string& methodName, ReturnType (T::*method)(Args...))
+        inline void BindMethod(const std::string& methodName, ReturnType (T::*method)(Args...))
         {
-            using SelfPointer = std::conditional_t<std::is_base_of_v<Resource, T>, ResourceRef<T>&, T*>;
-
-            std::function<ReturnType(SelfPointer, Args...)> methodLambda = [method](SelfPointer self, Args... args) -> ReturnType
-            {
-                return ((*self).* method)(args...);
-            };
-
-            BindAnyMethod(methodName, methodLambda, false);
+            BindTypedMethod<ReturnType, Args...>(methodName, method);
         }
 
         template <typename ReturnType, typename... Args>
-        void BindMethod(const std::string &methodName, ReturnType (T::*method)(Args...) const)
+        inline void BindMethod(const std::string &methodName, ReturnType (T::*method)(Args...) const)
         {
-            using SelfPointer = std::conditional_t<std::is_base_of_v<Resource, T>, ResourceRef<T> &, T *>;
+            BindTypedMethod<ReturnType, Args...>(methodName, method);
+        }
 
-            std::function<ReturnType(SelfPointer, Args...)> methodLambda = [method](SelfPointer self, Args... args) -> ReturnType
-            {
-                return ((*self).* method)(args...);
-            };
-
-            BindAnyMethod(methodName, methodLambda, false);
+        // bind functhod
+        template<typename ReturnType, typename... Args>
+        inline void BindFunction(std::string methodName, std::function<ReturnType(Args...)> method, bool isStatic)
+        {
+            auto baseMethodLambda = LuaState::CreateLuaCppFunction(method);
+            BindCppFunction(methodName, baseMethodLambda, isStatic);
         }
 
     private:
-
-        // get arguments
-        template<typename... Args, std::size_t... Indices>
-        static auto GetArugmentsImp(LuaState& state, std::index_sequence<Indices...>)
+        template <typename ReturnType, typename... Args, typename MethodType>
+        inline void BindTypedMethod(const std::string &methodName, MethodType method)
         {
-            auto argIndices = std::make_index_sequence<sizeof...(Args)>{};
-            return std::make_tuple(state.Get<Args>(Indices + 1)...);
-        }
+            using SelfPointer = std::conditional_t<std::is_base_of_v<Resource, T>, ResourceRef<T> &, T *>;
 
-        template<typename... Args>
-        static auto GetArguments(LuaState& state)
-        {
-            return GetArugmentsImp<LuaCppCleanupArgT<Args>...>(state, std::index_sequence_for<Args...>{});
-        }
-
-        // bind mefuncthod
-        template<typename ReturnType, typename... Args>
-        void BindAnyMethod(std::string methodName, std::function<ReturnType(Args...)> method, bool isStatic)
-        {
-            methodName[0] = std::tolower(methodName[0]); // force camel case
-
-            auto baseMethodLambda = [method]() -> int
+            auto methodLambda = [method](SelfPointer self, Args... args) -> ReturnType
             {
-                LuaState& state = LuaRuntime::GetInstance().GetState();
-                constexpr bool hasArguments = sizeof...(Args) > 0;
-
-                if constexpr(std::is_void_v<ReturnType>)
-                {
-                    if constexpr(hasArguments)
-                    {
-                        auto arguments = GetArguments<Args...>(state);
-                        std::apply(method, arguments);
-                    }
-                    else
-                    {
-                        method();
-                    }
-                    return 0;
-                }
-                else
-                {
-                    if constexpr(hasArguments)
-                    {
-                        auto arguments = GetArguments<Args...>(state);
-                        ReturnType result = std::apply(method, arguments);
-                        state.Push<ReturnType>(result);
-                    }
-                    else
-                    {
-                       ReturnType result = method();
-                       state.Push<ReturnType>(result);
-                    }
-                    return 1;
-                }
+                return ((*self).*method)(args...);
             };
 
-            BindBaseMethod(methodName, baseMethodLambda, isStatic);
+            BindFunction(methodName, std::function(methodLambda), false);
         }
-
     };
 } // namespace ASEngine
 

@@ -1,7 +1,7 @@
 #ifndef __ASENGINE_LUA_STATE_IMP_H
 #define __ASENGINE_LUA_STATE_IMP_H
 
-#include "Lua/LuaCpp/LuaCppFunction.h"
+#include "Lua/LuaRuntime/LuaRuntime.h"
 #include "Lua/LuaRuntime/LuaState.h"
 
 #ifdef __cplusplus
@@ -27,11 +27,17 @@ namespace ASEngine
     private:
         lua_State* m_L = nullptr;
 
+        // push function to the stack
+        void PushFunction(LuaCppFunction func);
+
+        // add function 
+        void AddFunction(const std::string& name, LuaCppFunction function);
+
         // run code
         void Run(const std::string& script) override;
 
         // call function by name
-        void CallFunction(const std::string& , int argumentsCount, bool doesReturn) override;
+        void CallFunction(int position, int argumentsCount, bool doesReturn) override;
 
         // push integer to the stack
         void PushInteger(int64_t integer) override;
@@ -70,17 +76,11 @@ namespace ASEngine
         }
 
         static int CallCppFunction(lua_State* L);
+        static int DestroyCppFunction(lua_State* L);
 
-        // add function to the table on the top of the stack
-        void AddFunction(const LuaCppFunction& function);
+        LuaInteger AddLuaCppClass(const LuaCppClassBase &luaCppClass) override;
 
-        void AddFunctions(const std::vector<LuaCppFunction>& funcitons);
-
-        void CreateLibrary(const std::string& libraryName, const std::vector<LuaCppFunction>& funcitons) override;
-
-        void CreateMetatable(const std::string& name, const std::string& parentName, const std::vector<LuaCppFunction>& funcitons) override;
-
-        void SetMetatable(const std::string& name) override;
+        void AddLuaCppEnum(const LuaCppEnum &luaCppEnum) override;
     };
 } // namespace ASEngine
 

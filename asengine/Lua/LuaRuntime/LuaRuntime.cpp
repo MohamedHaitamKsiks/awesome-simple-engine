@@ -12,7 +12,7 @@ namespace ASEngine
     {
         m_State = std::make_unique<LuaStateImp>();
         m_State->Run(R"lua(
-            print('Lua is active!')
+            print('[LUA] Hello World!')
         )lua");
     }
 

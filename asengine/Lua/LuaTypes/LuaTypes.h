@@ -2,14 +2,19 @@
 #define __ASENGINE_LUA_TYPES_H
 
 #include <cstdint>
+#include <string>
+#include <functional>
 
 namespace ASEngine
 {
+    using LuaBoolean = bool;
+
     using LuaInteger = int64_t;
     
     using LuaNumber = double;
 
-    using LuaFunction = std::function<int()>;
+    class LuaState;
+    using LuaCppFunction = std::function<int(LuaState&)>;
 
     using LuaString = std::string;
 } // namespace ASEngine

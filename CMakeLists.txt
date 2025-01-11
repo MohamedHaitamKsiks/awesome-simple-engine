@@ -184,7 +184,9 @@ set (SOURCE
     asengine/Lua/LuaScript/LuaScript.cpp
     asengine/Lua/LuaScript/LuaScriptManager.cpp
     asengine/Lua/LuaCpp/LuaCppClassBase.cpp
-    asengine/Lua/LuaCpp/LuaCppClassManager.cpp
+    asengine/Lua/LuaCpp/LuaCppTypeManager.cpp
+    asengine/Lua/LuaCpp/LuaCppEnum.cpp
+    asengine/Lua/LuaCpp/LuaCppType.cpp
 
     #platform src
     ${PLATFORM_SPECIFIC_SOURCES}

@@ -3,8 +3,8 @@
 
 #include "Core/String/UniqueString.h"
 
-#include "LuaCppFunction.h"
-#include "Lua/LuaTypes/LuaUserdata.h"
+#include "Lua/LuaTypes/LuaTypes.h"
+#include "LuaCppType.h"
 
 #include <functional>
 #include <memory>
@@ -17,7 +17,7 @@ namespace ASEngine
 {
     // to build a c++ class binding to lua
     // just a data structure with no logic
-    class LuaCppClassBase
+    class LuaCppClassBase: public LuaCppType
     {
     public:
         struct MethodBinding
@@ -29,16 +29,31 @@ namespace ASEngine
         LuaCppClassBase(UniqueString className, UniqueString parentClassName);
         virtual ~LuaCppClassBase() {};
 
-        void BindBaseMethod(UniqueString name, std::function<int()> method, bool isStatic);
+        void BindCppFunction(const std::string& name, LuaCppFunction method, bool isStatic);
+
+        inline UniqueString GetParentName() const
+        {
+            return m_ParentClassName;
+        }
+
+        template<typename T>
+        void SetSingleton(T& singleton)
+        {
+            m_Singleton = reinterpret_cast<void*>(&singleton);
+        }
+
+        inline void* GetSingleton() const
+        {
+            return m_Singleton;
+        }
+
+        std::unordered_map<std::string, LuaCppFunction> GetMethods() const;
+        std::unordered_map<std::string, LuaCppFunction> GetStaticMethods() const;
 
     private:
-        friend class LuaCppClassManager;
-
-        UniqueString m_ClassName;
-        UniqueString m_MetatableName; // unique and generated from the class name
         UniqueString m_ParentClassName;
-
-        std::unordered_map<UniqueString, MethodBinding> m_MethodBindings{};
+        void* m_Singleton = nullptr;
+        std::unordered_map<std::string, MethodBinding> m_MethodBindings{};
     };
 } // namespace ASEngine
 

@@ -13,14 +13,11 @@ namespace ASEngine
     public:
         virtual ~LuaScript() {}
 
-        // create class from lua source file
+        // create lua script from source 
         void Create(const std::string& luaSource);
 
         // load from file
         bool Load(const std::string& path) override;
-
-        // new instance for a owner
-        void New(EntityID entityID);
     private:
         UniqueString m_ClassName;
     };
