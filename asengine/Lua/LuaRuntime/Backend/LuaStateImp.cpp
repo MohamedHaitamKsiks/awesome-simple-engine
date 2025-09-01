@@ -143,7 +143,7 @@ namespace ASEngine
         // create table with keys as enum names
         lua_createtable(m_L, 0, values.size());
 
-        for (auto& [name, value]: values)
+        for (const auto& [name, value]: values)
         {
             lua_pushstring(m_L, name.c_str());
             lua_pushinteger(m_L, value);

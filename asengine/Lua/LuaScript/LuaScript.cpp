@@ -7,8 +7,8 @@ namespace ASEngine
 {
     void LuaScript::Create(const std::string& luaSource)
     {
-        auto& luaState = LuaRuntime::GetInstance().GetState();
-        luaState.Run(luaSource);
+        auto& luaRuntime = LuaRuntime::GetInstance();
+        luaRuntime.Run(luaSource);
     }
 
     bool LuaScript::Load(const std::string& path)

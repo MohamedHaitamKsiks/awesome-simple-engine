@@ -25,8 +25,6 @@ namespace ASEngine
         void OnInputEvent(const InputEvent &event) override {};
         void Terminate() override {};
 
-        void ScriptInstanceCreate(UniqueString className, EntityID entityID);
-
     };
 } // namespace ASEngine
 

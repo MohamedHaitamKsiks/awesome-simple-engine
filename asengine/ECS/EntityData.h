@@ -12,7 +12,7 @@
 namespace ASEngine
 {
     // entity data for look up ..
-    struct  EntityData
+    struct EntityData
     {
         Archetype* ArchetypeOwner = nullptr;
         ComponentIndex Index = 0;

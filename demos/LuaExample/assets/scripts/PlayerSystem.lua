@@ -1,4 +1,4 @@
-PlayerSystem = Component("PlayerSystem")
+PlayerSystem = System("PlayerSystem")
 
 function PlayerSystem:update(delta)
     local query = EntityQuery.new("Transform2D", "Player");

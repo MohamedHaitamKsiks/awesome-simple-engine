@@ -119,6 +119,7 @@ set (SOURCE
     asengine/ECS/ArchetypeManager.cpp
     asengine/ECS/EntityBuilder.cpp
     asengine/ECS/ComponentClass.cpp
+    asengine/ECS/EntityQueryBase.cpp
     #scene manager
     asengine/Scene/Scene.cpp
     asengine/Scene/SceneManager.cpp
@@ -179,10 +180,13 @@ set (SOURCE
     asengine/Animation/Interpolation.cpp
     #lua
     asengine/Lua/LuaModule.cpp
+    #lua runtime
     asengine/Lua/LuaRuntime/LuaRuntime.cpp
     asengine/Lua/LuaRuntime/Backend/LuaStateImp.cpp
+    #lua scripts
     asengine/Lua/LuaScript/LuaScript.cpp
     asengine/Lua/LuaScript/LuaScriptManager.cpp
+    #lua cpp binding
     asengine/Lua/LuaCpp/LuaCppClassBase.cpp
     asengine/Lua/LuaCpp/LuaCppTypeManager.cpp
     asengine/Lua/LuaCpp/LuaCppEnum.cpp
