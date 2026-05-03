@@ -9,6 +9,9 @@ void Example2D::Init()
     m_Sprite = Sprite::GetResourceClass().Load("assets://sprites/spr_run.sprite.json");
     m_Font = Font::GetResourceClass().Load("assets://fonts/kongtext_32.font.json");
 
+    m_SpriteFlashShader = Shader::GetResourceClass().Load("assets://shaders/fox/fox.shader.json");
+    m_SpriteFlashMaterial = m_Sprite->GetMaterial()->Clone(m_SpriteFlashShader);
+
     m_ViewportMaterial = Renderer2D::GetInstance().GetDefaultMaterial()->Clone();
 
     m_Viewport = Viewport::GetResourceClass().Load("assets://viewports/pixel.viewport.json");
@@ -41,26 +44,42 @@ void Example2D::Update(float delta)
             auto& transform = transforms[i];
             auto& fox = foxes[i];
 
+            // flash timer
+            if (fox.Flash)
+            {
+                fox.FlashTimer -= delta;
+                if (fox.FlashTimer <= 0.0f)
+                {
+                    fox.Flash = false;
+                    fox.FlashTimer = 0.1f;
+                }
+            }
+
+            // movements
             transform.Position += fox.Velocity * delta;
             if (transform.Position.x < 10.0f)
             {
                 transform.Position.x = 10.1f;
                 fox.Velocity.x *= -1.0f;
+                fox.Flash = true;
             }
             if (transform.Position.x > 300.1f)
             {
                 transform.Position.x = 300.0f;
                 fox.Velocity.x *= -1.0f;
+                fox.Flash = true;
             }
             if (transform.Position.y < 10.0f)
             {
                 transform.Position.y = 10.1f;
                 fox.Velocity.y *= -1.0f;
+                fox.Flash = true;
             }
             if (transform.Position.y > 150.1f)
             {
                 transform.Position.y = 150.0f;
                 fox.Velocity.y *= -1.0f;
+                fox.Flash = true;
             }
         }
     });
@@ -81,9 +100,11 @@ void Example2D::OnRender2D(Renderer2D& renderer2D)
 {
 
     int frame = static_cast<int>(m_Time * 8.0f) % 6;
+    int spriteCount = 0;
 
     // render to defualt layer
     auto& defaultLayer = renderer2D.GetLayer("Default");
+    auto &flashLayer = renderer2D.GetLayer("Flash");
 
     // draw background
     defaultLayer.DrawFillRectangle(Vector2(300.0f, 160.0f), Matrix3x3::Translate(Vector2::ONE() * 10.0f), Color(0.2f, 0.2f, 0.3f, 1.0f));
@@ -92,14 +113,18 @@ void Example2D::OnRender2D(Renderer2D& renderer2D)
 
     // draw sprites for boucing fox
     EntityQuery<Transform2D, BouncingFox> query{};
-    query.ForEachCollection([this, &defaultLayer, &frame](ComponentCollection<Transform2D>& transforms, ComponentCollection<BouncingFox>& foxes, size_t count)
+    query.ForEachCollection([this, &defaultLayer, &spriteCount, &flashLayer, &frame](ComponentCollection<Transform2D>& transforms, ComponentCollection<BouncingFox>& foxes, size_t count)
     {
         for (ComponentIndex i = 0; i < count; i++)
         {
             Matrix3x3 transform = transforms[i].GetGlobalTransform();
+            uint32_t hframe = (frame + i) % 6;
+            spriteCount++;
 
-            //defaultLayer.DrawSprite(m_Sprite, Matrix3x3::Translate(Vector2::DOWN() * 2.0f) * transform , frame, 0, Color::BLACK());
-            defaultLayer.DrawSprite(m_Sprite, transform, (frame + i) % 6, 0, Color::WHITE());
+            if (foxes[i].Flash)
+                flashLayer.DrawSprite(m_Sprite, transform, hframe, 0, Color::WHITE(), m_SpriteFlashMaterial);
+            else 
+                defaultLayer.DrawSprite(m_Sprite, transform, hframe, 0, Color::WHITE());//, material);
         }
     });
 
@@ -133,12 +158,13 @@ void Example2D::OnRender2D(Renderer2D& renderer2D)
     // draw hello wolrd in the middle of the screen
     Vector2 helloWolrdPosition = Vector2(windowWidth, windowHeight) * 0.5f + Vector2::RIGHT().Rotate(m_Time * 2.0f) * 13.0f;
     // shadow
-    pixelViewportLayer.DrawTextAlign(m_Font, "Hello World", Matrix3x3::Transform(helloWolrdPosition + Vector2::DOWN() * 4.0f, Vector2::ONE(), Math::Sin(m_Time) * 0.1f), TextHorizontalAlign::CENTER, TextVerticalAlign::MIDDLE, Color::BLACK());
-    pixelViewportLayer.DrawTextAlign(m_Font, "Hello World", Matrix3x3::Transform(helloWolrdPosition + Vector2::LEFT() * 4.0f, Vector2::ONE(), Math::Sin(m_Time) * 0.1f), TextHorizontalAlign::CENTER, TextVerticalAlign::MIDDLE, Color::BLACK());
-    pixelViewportLayer.DrawTextAlign(m_Font, "Hello World", Matrix3x3::Transform(helloWolrdPosition + Vector2::RIGHT() * 4.0f, Vector2::ONE(), Math::Sin(m_Time) * 0.1f), TextHorizontalAlign::CENTER, TextVerticalAlign::MIDDLE, Color::BLACK());
-    pixelViewportLayer.DrawTextAlign(m_Font, "Hello World", Matrix3x3::Transform(helloWolrdPosition + Vector2::UP() * 4.0f, Vector2::ONE(), Math::Sin(m_Time) * 0.1f), TextHorizontalAlign::CENTER, TextVerticalAlign::MIDDLE, Color::BLACK());
+    std::string helloText = std::format("Hello World!\nSpriteCount : {}", spriteCount);
 
-    pixelViewportLayer.DrawTextAlign(m_Font, "Hello World", Matrix3x3::Transform(helloWolrdPosition, Vector2::ONE(), Math::Sin(m_Time) * 0.1f), TextHorizontalAlign::CENTER, TextVerticalAlign::MIDDLE, Color::WHITE());
+    pixelViewportLayer.DrawTextAlign(m_Font, helloText, Matrix3x3::Transform(helloWolrdPosition + Vector2::DOWN() * 4.0f, Vector2::ONE(), Math::Sin(m_Time) * 0.1f), TextHorizontalAlign::CENTER, TextVerticalAlign::MIDDLE, Color::BLACK());
+    pixelViewportLayer.DrawTextAlign(m_Font, helloText, Matrix3x3::Transform(helloWolrdPosition + Vector2::LEFT() * 4.0f, Vector2::ONE(), Math::Sin(m_Time) * 0.1f), TextHorizontalAlign::CENTER, TextVerticalAlign::MIDDLE, Color::BLACK());
+    pixelViewportLayer.DrawTextAlign(m_Font, helloText, Matrix3x3::Transform(helloWolrdPosition + Vector2::RIGHT() * 4.0f, Vector2::ONE(), Math::Sin(m_Time) * 0.1f), TextHorizontalAlign::CENTER, TextVerticalAlign::MIDDLE, Color::BLACK());
+    pixelViewportLayer.DrawTextAlign(m_Font, helloText, Matrix3x3::Transform(helloWolrdPosition + Vector2::UP() * 4.0f, Vector2::ONE(), Math::Sin(m_Time) * 0.1f), TextHorizontalAlign::CENTER, TextVerticalAlign::MIDDLE, Color::BLACK());
+    pixelViewportLayer.DrawTextAlign(m_Font, helloText, Matrix3x3::Transform(helloWolrdPosition, Vector2::ONE(), Math::Sin(m_Time) * 0.1f), TextHorizontalAlign::CENTER, TextVerticalAlign::MIDDLE, Color::WHITE());
 }
 
 void Example2D::OnInputEvent(const InputEvent& event)
@@ -153,6 +179,6 @@ void Example2D::OnInputEvent(const InputEvent& event)
     EntityQuery<BouncingFoxSpawner> query{};
     query.ForEach([](BouncingFoxSpawner& spawner)
     {
-        spawner.Spawn(10);
+        spawner.Spawn(100);
     });
 }

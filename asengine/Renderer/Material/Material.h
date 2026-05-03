@@ -50,13 +50,13 @@ namespace ASEngine
         }
 
         // clone material
-        ResourceRef<Material> Clone();
+        ResourceRef<Material> Clone(ResourceRef<Shader> shader = ResourceRef<Shader>::NONE());
     private:
         friend class Renderer;
 
         ResourceRef<Shader> m_Shader = ResourceRef<Shader>::NONE();
-        std::unordered_map<UniqueString, ByteBuffer> m_UniformBuffers{};
-        std::unordered_map<UniqueString, ResourceRef<Texture>> m_Samplers{};
+        std::map<UniqueString, ByteBuffer> m_UniformBuffers{};
+        std::map<UniqueString, ResourceRef<Texture>> m_Samplers{};
 
         // supported types
         enum ParamType

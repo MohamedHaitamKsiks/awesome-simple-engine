@@ -164,10 +164,14 @@ namespace ASEngine
         m_Shader = shader;
     }
 
-    ResourceRef<Material> Material::Clone()
+    ResourceRef<Material> Material::Clone(ResourceRef<Shader> shader)
     {
         ResourceRef<Material> material = Material::GetResourceClass().New();
-        material->Create(m_Shader);
+
+        if (shader == ResourceRef<Shader>::NONE())
+            material->Create(m_Shader);
+        else 
+            material->Create(shader);
 
         // copy uniform buffers
         for (const auto &[uniformBufferName, uniformBuffer] : m_UniformBuffers)

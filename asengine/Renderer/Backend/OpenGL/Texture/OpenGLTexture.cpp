@@ -4,6 +4,7 @@ namespace ASEngine
 {
     OpenGLTexture::~OpenGLTexture()
     {
+        glDeleteTextures(1, &m_GLTextureID);
     }
 
     void OpenGLTexture::CreateImp(const Image &image, TextureFilter filter, TextureRepeatMode repeat)
@@ -30,7 +31,16 @@ namespace ASEngine
         m_GLTextureID = textureID;
     }
 
-    GLuint OpenGLTexture::GetGLTextureFilter(TextureFilter filter)
+    void OpenGLTexture::GenerateMipmapsImp()
+    {
+        glBindTexture(GL_TEXTURE_2D, m_GLTextureID);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        TextureFilter filter = GetFilter();
+        GLUpdateTextureFilter(filter);
+    }
+
+    GLuint OpenGLTexture::GetGLTextureFilter(TextureFilter filter, bool mipmaps)
     {
         ASENGINE_ASSERT(filter != TextureFilter::NONE, "texture filter is NONE?");
 
@@ -38,7 +48,7 @@ namespace ASEngine
         switch (filter)
         {
         case TextureFilter::LINEAR:
-            glFilter = GL_LINEAR;
+            glFilter = mipmaps? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR;
             break;
         
         case TextureFilter::NEAREST:
@@ -46,11 +56,18 @@ namespace ASEngine
             break;
         default:
             Debug::Warning("Unsupported TextureFilter");
-            glFilter = GL_NEAREST;
+            glFilter = mipmaps? GL_NEAREST_MIPMAP_NEAREST :  GL_NEAREST;
             break;
         }
 
         return glFilter;
+    }
+
+    void OpenGLTexture::GLUpdateTextureFilter(TextureFilter filter, bool mipmaps)
+    {
+        GLuint glFilter = GetGLTextureFilter(filter, mipmaps);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, glFilter);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, glFilter);
     }
 
     GLuint OpenGLTexture::GetGLTextureRepeatMode(TextureRepeatMode repeat)
@@ -83,9 +100,7 @@ namespace ASEngine
         glBindTexture(GL_TEXTURE_2D, textureID);
 
         // set filter
-        GLuint glFilter = GetGLTextureFilter(filter);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, glFilter);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, glFilter);
+        GLUpdateTextureFilter(filter);
 
         // repeat mode
         GLuint glRepeatMode = GetGLTextureRepeatMode(repeat);

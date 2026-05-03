@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_compile_options(-Wall)
 add_compile_definitions(ASENINE_EXPORTS)
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -msse2")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 #generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -69,6 +69,7 @@ add_subdirectory(${DEPENDENCIES_DIRECTOY}/stb_image)
 include_directories(${DEPENDENCIES_DIRECTOY}/stb_image)
 
 # add freetype
+set(DISABLE_FORCE_DEBUG_POSTFIX TRUE)
 include_directories(${DEPENDENCIES_DIRECTOY}/freetype-2.10.0/include)
 add_subdirectory(${DEPENDENCIES_DIRECTOY}/freetype-2.10.0)
 
@@ -200,6 +201,7 @@ if(ASENGINE_DESKTOP)
     message("Desktop Build")
 
     # add glfw
+    include_directories(${DEPENDENCIES_DIRECTOY}/glfw-3.4/include)
     add_subdirectory(${DEPENDENCIES_DIRECTOY}/glfw-3.4)
 
     # add glew
@@ -209,17 +211,6 @@ if(ASENGINE_DESKTOP)
         glew
         STATIC
         dependencies/glew/src/glew.c
-    )
-
-    #link libraries for web
-    target_link_libraries(
-        asengine-core
-        stb_image
-        miniaudio
-        glfw
-        glew
-        spirv-cross-glsl
-        freetype
     )
 
     #create cmake list of libraries

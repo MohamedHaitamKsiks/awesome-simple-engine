@@ -62,10 +62,19 @@ namespace ASEngine
         // save data
         m_Width = image.GetWidth();
         m_Height = image.GetHeight();
-        m_Filter = filter;
+        m_Filter = filter;                          
         m_RepeatMode = repeat;
 
         // call implementation
         CreateImp(image, filter, repeat);
+    }
+
+    void Texture::GenerateMipmaps()
+    {
+        if (m_HasMipmaps)
+            return;
+
+        GenerateMipmapsImp();
+        m_HasMipmaps = true;
     }
 } // namespace ASEngine

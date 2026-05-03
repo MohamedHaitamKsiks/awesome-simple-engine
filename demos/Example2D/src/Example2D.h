@@ -14,6 +14,8 @@ public:
 
 private:
     ResourceRef<Sprite> m_Sprite{};
+    ResourceRef<Shader> m_SpriteFlashShader{};
+    ResourceRef<Material> m_SpriteFlashMaterial{};
     ResourceRef<Font> m_Font{};
 
     ResourceRef<Material> m_ViewportMaterial{};

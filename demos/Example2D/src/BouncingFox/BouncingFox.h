@@ -8,6 +8,8 @@ using namespace ASEngine;
 struct BouncingFox: public Component<BouncingFox>
 {
     Vector2 Velocity = Vector2::ZERO();
+    bool    Flash = false;
+    float   FlashTimer = 0.0f;
 
     void OnCreate(EntityID entityID) override;
     void OnDestroy() override;

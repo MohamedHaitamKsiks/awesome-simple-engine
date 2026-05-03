@@ -21,13 +21,14 @@ namespace ASEngine
 
     private:
         GLuint m_GLTextureID;
-       
         
         void CreateImp(const Image &image, TextureFilter filter, TextureRepeatMode repeat) override;
         void CreateEmptyImp(uint32_t width, uint32_t height , TextureFilter filter, TextureRepeatMode repeat) override;
+        void GenerateMipmapsImp() override;
 
         // get corresponding GLuint for filter
-        static GLuint GetGLTextureFilter(TextureFilter filter);
+        static GLuint GetGLTextureFilter(TextureFilter filter, bool mipmaps = false);
+        static void GLUpdateTextureFilter(TextureFilter filter, bool mipmaps = false);
         
         // get corresponding GLuint for repeat mode
         static GLuint GetGLTextureRepeatMode(TextureRepeatMode repeat);
