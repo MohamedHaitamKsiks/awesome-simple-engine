@@ -7,37 +7,22 @@ namespace ASEngine
         glDeleteTextures(1, &m_GLTextureID);
     }
 
-    void OpenGLTexture::CreateImp(const Image &image, TextureFilter filter, TextureRepeatMode repeat)
-    {
-        // generate gl texture
-        GLuint textureID = GLGenerateTexture(filter, repeat);
-
-        // set data
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.GetWidth(), image.GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetPixels().GetData());
-
-        // done
-        m_GLTextureID = textureID;
-    }
-
-    void OpenGLTexture::CreateEmptyImp(uint32_t width, uint32_t height, TextureFilter filter, TextureRepeatMode repeat)
-    {
-        // generate gl texture
-        GLuint textureID = GLGenerateTexture(filter, repeat);
-
-        // allocate space
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-
-        // done
-        m_GLTextureID = textureID;
-    }
-
-    void OpenGLTexture::GenerateMipmapsImp()
+    void OpenGLTexture::GLBind()
     {
         glBindTexture(GL_TEXTURE_2D, m_GLTextureID);
-        glGenerateMipmap(GL_TEXTURE_2D);
+    }
 
-        TextureFilter filter = GetFilter();
-        GLUpdateTextureFilter(filter);
+    void OpenGLTexture::CreateImp(const TextureFromImageInfo &info)
+    {
+        // generate gl texture
+        const auto& image = info.ImageTexture;
+        GLGenerateTexture(image.GetWidth(), image.GetHeight(), image.GetPixels().GetData());
+    }
+
+    void OpenGLTexture::CreateEmptyImp(const TextureInfo& info)
+    {
+        // generate gl texture
+        GLGenerateTexture(info.Width, info.Height, nullptr);
     }
 
     GLuint OpenGLTexture::GetGLTextureFilter(TextureFilter filter, bool mipmaps)
@@ -63,12 +48,6 @@ namespace ASEngine
         return glFilter;
     }
 
-    void OpenGLTexture::GLUpdateTextureFilter(TextureFilter filter, bool mipmaps)
-    {
-        GLuint glFilter = GetGLTextureFilter(filter, mipmaps);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, glFilter);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, glFilter);
-    }
 
     GLuint OpenGLTexture::GetGLTextureRepeatMode(TextureRepeatMode repeat)
     {
@@ -92,22 +71,58 @@ namespace ASEngine
         return glRepeatMode;
     }
 
-    GLuint OpenGLTexture::GLGenerateTexture(TextureFilter filter, TextureRepeatMode repeat)
+    GLuint OpenGLTexture::GetGLTextureColorFormat(TextureColorFormat format)
+    {
+        ASENGINE_ASSERT(format != TextureColorFormat::NONE, "TextureColorFormat is NONE?");
+
+        GLuint glFormat = GL_RGBA;
+        switch (format)
+        {
+        case TextureColorFormat::RGBA :
+            glFormat = GL_RGBA;
+            break;
+        case TextureColorFormat::RGBA_32F:
+            glFormat = GL_RGBA32F;
+            break;
+        default:
+            break;
+        }
+
+        return glFormat;
+    }
+
+    void OpenGLTexture::GLGenerateTexture(uint32_t width, uint32_t height, const void *data)
     {
         // create opengl texture
-        GLuint textureID;
-        glGenTextures(1, &textureID);
-        glBindTexture(GL_TEXTURE_2D, textureID);
+        glGenTextures(1, &m_GLTextureID);
+        GLBind();
+
+        // get color format
+        TextureColorFormat format = GetColorFromat();
+        m_GLTextureInternalFormat = GetGLTextureColorFormat(format);
+
+        // allocate data
+        glTexImage2D(GL_TEXTURE_2D, 0, m_GLTextureInternalFormat, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+        // geneate mipmaps
+        if (HasMipmaps())
+        {
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
 
         // set filter
-        GLUpdateTextureFilter(filter);
+        TextureFilter filter = GetFilter();
+        bool mipmaps = HasMipmaps();
+        m_GLFilter = GetGLTextureFilter(filter, mipmaps);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_GLFilter);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, m_GLFilter);
 
         // repeat mode
-        GLuint glRepeatMode = GetGLTextureRepeatMode(repeat);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, glRepeatMode);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, glRepeatMode);
-
-        return textureID;
+        TextureRepeatMode repeatMode = GetRepeatMode();
+        m_GLRepeatMode = GetGLTextureRepeatMode(repeatMode);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_GLRepeatMode);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_GLRepeatMode);
     }
+
 
 } // namespace ASEngine

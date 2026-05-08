@@ -45,12 +45,16 @@ namespace ASEngine
         m_DefaultShader = m_DefaultMaterial->GetShader();
 
         // create fill rectangle texture
-        Image fillRectangleImage;
+        TextureFromImageInfo textureFromImage{};
+        textureFromImage.Filter = TextureFilter::NEAREST;
+        textureFromImage.RepeatMode = TextureRepeatMode::REPEAT;
+
+        Image& fillRectangleImage = textureFromImage.ImageTexture;
         fillRectangleImage.Create(1, 1);
         fillRectangleImage.SetPixelAt(0, 0, Color::WHITE());
 
         m_FillRectangleTexture = Texture::GetResourceClass().New();
-        m_FillRectangleTexture->Create(fillRectangleImage, TextureFilter::NEAREST, TextureRepeatMode::REPEAT);
+        m_FillRectangleTexture->Create(textureFromImage);
 
         // create fill rectangle material
         m_FillRectangleDefaulMaterial = m_DefaultMaterial->Clone();

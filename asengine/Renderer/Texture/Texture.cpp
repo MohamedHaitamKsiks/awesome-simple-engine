@@ -1,6 +1,7 @@
 #include "Texture.h"
 #include "Resource/ResourceRefSerialization.h"
 #include "Core/Serialization/SerializeEnum.h"
+#include "Core/Serialization/SerializeStruct.h"
 
 ASENGINE_SERIALIZE_RESOURCE_REF(Texture);
 
@@ -18,23 +19,32 @@ namespace ASEngine
         CLAMP
     )
 
+    ASENGINE_SERIALIZE_ENUM(TextureColorFormat,
+        NONE,
+        RGBA,
+        RGBA_32F
+    )
+
+    ASENGINE_SERIALIZE_STRUCT(TextureFromImageInfo,
+        Filter,
+        RepeatMode,
+        Mipmaps
+    )
+
     template <>
     void  Serializer::Deserialize(const Json &object, Texture &dest)
     {
+        TextureFromImageInfo info{};
+        
         // load png
         std::string imagePath = object.at("ImagePath").get<std::string>();
-        Image image{};
-        image.LoadPNG(imagePath);
+        info.ImageTexture.LoadPNG(imagePath);
+        
+        // deserialize other infos
+        Deserialize(object, info);
 
-        // get filter
-        TextureFilter filter = TextureFilter::NONE;
-        Serializer::Deserialize(object.at("Filter"), filter);
-
-        // get repeat mode
-        TextureRepeatMode repeat = TextureRepeatMode::NONE;
-        Serializer::Deserialize(object.at("RepeatMode"), repeat);
-
-        dest.Create(image, filter, repeat);
+        // create texture from image
+        dest.Create(info);
     }
 
     template <>
@@ -45,36 +55,26 @@ namespace ASEngine
 
     ASENGINE_SERIALIZE_RESOURCE_IMP(Texture);
 
-    void Texture::Create(uint32_t width, uint32_t height, TextureFilter filter, TextureRepeatMode repeat)
+
+    void Texture::Create(const TextureInfo &info)
+    {
+        m_Info = info;
+        CreateEmptyImp(info);
+    }
+
+    void Texture::Create(const TextureFromImageInfo &info)
     {
         // save data
-        m_Width = width;
-        m_Height = height;
-        m_Filter = filter;
-        m_RepeatMode = repeat;
+        m_Info.Width = info.ImageTexture.GetWidth();
+        m_Info.Height = info.ImageTexture.GetHeight();
 
-        // call implementation
-        CreateEmptyImp(width, height, filter, repeat);
+        m_Info.Mipmaps = info.Mipmaps;
+        m_Info.RepeatMode = info.RepeatMode;
+        m_Info.Filter = info.Filter;
+
+        m_Info.ColorFormat = TextureColorFormat::RGBA;
+
+        CreateImp(info);
     }
 
-    void Texture::Create(const Image &image, TextureFilter filter, TextureRepeatMode repeat)
-    {
-        // save data
-        m_Width = image.GetWidth();
-        m_Height = image.GetHeight();
-        m_Filter = filter;                          
-        m_RepeatMode = repeat;
-
-        // call implementation
-        CreateImp(image, filter, repeat);
-    }
-
-    void Texture::GenerateMipmaps()
-    {
-        if (m_HasMipmaps)
-            return;
-
-        GenerateMipmapsImp();
-        m_HasMipmaps = true;
-    }
 } // namespace ASEngine

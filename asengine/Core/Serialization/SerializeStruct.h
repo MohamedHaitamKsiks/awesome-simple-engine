@@ -10,7 +10,7 @@
     object[#field] = Serializer::Serialize(value.field);
 
 #define ASENGINE_DESERIALIZE_STRUCT_FIELD(dest, field) \
-    Serializer::Deserialize(object.at(#field), dest.field);
+    if (object.find(#field) != object.end()) { Serializer::Deserialize(object.at(#field), dest.field); }
 
 #define __SERIALIZE_STRUCT_FIELD(field) ASENGINE_SERIALIZE_STRUCT_FIELD(dest, field)
 #define __DESERIALIZE_STRUCT_FIELD(field) ASENGINE_DESERIALIZE_STRUCT_FIELD(dest, field)

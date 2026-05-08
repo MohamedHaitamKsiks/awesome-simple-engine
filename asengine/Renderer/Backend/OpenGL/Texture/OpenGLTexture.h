@@ -7,6 +7,7 @@
 namespace ASEngine
 {
 
+
     // opengl implementation of texture
     class OpenGLTexture: public Texture
     {
@@ -19,23 +20,33 @@ namespace ASEngine
             return m_GLTextureID;
         }
 
+        inline GLuint GetGLTextureType() const
+        {
+            return GL_TEXTURE_2D;
+        }
+
+        void GLBind();
+
     private:
         GLuint m_GLTextureID;
-        
-        void CreateImp(const Image &image, TextureFilter filter, TextureRepeatMode repeat) override;
-        void CreateEmptyImp(uint32_t width, uint32_t height , TextureFilter filter, TextureRepeatMode repeat) override;
-        void GenerateMipmapsImp() override;
+        GLuint m_GLTextureInternalFormat;
+        GLuint m_GLFilter;
+        GLuint m_GLRepeatMode;
+
+        void CreateImp(const TextureFromImageInfo &info) override;
+        void CreateEmptyImp(const TextureInfo &info) override;
 
         // get corresponding GLuint for filter
         static GLuint GetGLTextureFilter(TextureFilter filter, bool mipmaps = false);
-        static void GLUpdateTextureFilter(TextureFilter filter, bool mipmaps = false);
         
         // get corresponding GLuint for repeat mode
-        static GLuint GetGLTextureRepeatMode(TextureRepeatMode repeat);
-        
-        // generate opengl texture
-        static GLuint GLGenerateTexture(TextureFilter filter, TextureRepeatMode repeat);
+        static GLuint GetGLTextureRepeatMode(TextureRepeatMode repeatMode);
 
+        // get corresponding GLuint for color format
+        static GLuint GetGLTextureColorFormat(TextureColorFormat format);
+
+        // generate opengl texture
+        void GLGenerateTexture(uint32_t witdth, uint32_t height, const void* data);
     };
 } // namespace ASEngine
 

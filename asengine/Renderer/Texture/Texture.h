@@ -29,6 +29,33 @@ namespace ASEngine
         CLAMP
     };
 
+    enum class TextureColorFormat
+    {
+        NONE = 0,
+        RGBA,
+        RGBA_32F // HDR
+    };          
+
+    // texture info
+    struct TextureInfo
+    {
+        uint32_t            Width           = 0;
+        uint32_t            Height          = 0;
+        TextureFilter       Filter          = TextureFilter::NONE;
+        TextureRepeatMode   RepeatMode      = TextureRepeatMode::NONE;
+        TextureColorFormat  ColorFormat     = TextureColorFormat::NONE;
+        bool                Mipmaps         = false;
+    };
+
+    // texture from image info
+    struct TextureFromImageInfo
+    {
+        Image               ImageTexture{};
+        TextureFilter       Filter          = TextureFilter::NONE;
+        TextureRepeatMode   RepeatMode      = TextureRepeatMode::NONE;
+        bool                Mipmaps         = false;
+    };
+
     // abstract texture (needs to be implemented depending on api)
     class  Texture : public Resource
     {
@@ -36,60 +63,60 @@ namespace ASEngine
     ASENGINE_SERIALIZE_RESOURCE(Texture);
     public:
         // create texture memory but with no value
-        void Create(uint32_t width, uint32_t height, TextureFilter filter, TextureRepeatMode repeat);
+        void Create(const TextureInfo& info);
 
         // create texture from image
-        void Create(const Image& image, TextureFilter filter, TextureRepeatMode repeat);
+        void Create(const TextureFromImageInfo& info);
 
         // get texture filter
         inline TextureFilter GetFilter() const
         {
-            return m_Filter;
+            return m_Info.Filter;
         }
 
         // get texture repeat mode
         inline TextureRepeatMode GetRepeatMode() const
         {
-            return m_RepeatMode;
+            return m_Info.RepeatMode;
         }
+
+        // get texture intnal color forrmat
+        inline TextureColorFormat GetColorFromat() const
+        {
+            return m_Info.ColorFormat;
+        }
+
 
         // get width
         inline uint32_t GetWidth() const
         {
-            return m_Width;
+            return m_Info.Width;
         }
 
         // get height
         inline uint32_t GetHeight() const
         {
-            return m_Height;
+            return m_Info.Height;
         }
 
         // get size
         inline Vector2 GetSize() const
         {
-            return Vector2(static_cast<float>(m_Width), static_cast<float>(m_Height));
+            return Vector2(static_cast<float>(GetWidth()), static_cast<float>(GetHeight()));
         }
-
-        // generate mipmaps
-        void GenerateMipmaps();
 
         inline bool HasMipmaps() const
         {
-            return m_HasMipmaps;
+            return m_Info.Mipmaps;
         }
+
     protected:
         // api implemetation for create from image
-        virtual void CreateImp(const Image &image, TextureFilter filter, TextureRepeatMode repeat) = 0;
-        virtual void CreateEmptyImp(uint32_t width, uint32_t height , TextureFilter filter, TextureRepeatMode repeat) = 0;
-        virtual void GenerateMipmapsImp() = 0;
-    private:
-        uint32_t m_Width = 0;
-        uint32_t m_Height = 0;
-        bool     m_HasMipmaps = false;
+        virtual void CreateImp(const TextureFromImageInfo &info) = 0;
+        virtual void CreateEmptyImp(const TextureInfo &info) = 0;
 
-        TextureFilter m_Filter = TextureFilter::NONE;
-        TextureRepeatMode m_RepeatMode = TextureRepeatMode::NONE;
+    private:
+        TextureInfo m_Info{};
     };
 } // namespace ASEngine
 

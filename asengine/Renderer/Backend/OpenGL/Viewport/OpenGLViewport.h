@@ -14,20 +14,18 @@ namespace ASEngine
         OpenGLViewport() = default;
         ~OpenGLViewport();
 
-        // get gl frame buffer
-        inline GLuint GetGLFrameBufferID() const
-        {
-            return m_GLFrameBufferID;
-        }
+        void GLBind();
+        void GLResolve();
 
         // generate textures
         // void GLGenerateTextures();
         
     private:
-        void CreateImp(uint32_t width, uint32_t height, size_t textureCount);
+        void CreateImp(const ViewportInfo &info) override;
         GLuint m_GLFrameBufferID = 0;
-    
-    };
+        std::vector<GLuint> m_GLRenderBufferIDs{};
+        std::vector<GLuint> m_GLResolveBufferIDs{};
+        };
 } // namespace ASEngine
 
 

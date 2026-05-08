@@ -12,6 +12,14 @@
 
 namespace ASEngine
 {
+    struct ViewportInfo
+    {
+        uint32_t Width = 0;
+        uint32_t Height = 0;
+        size_t TextureCount = 1;
+        uint32_t Samples = 1;
+    };
+
     // viewport context to render to
     class  Viewport: public Resource
     {
@@ -23,22 +31,25 @@ namespace ASEngine
         // create viewport with size and number of output textures
         void Create(uint32_t width, uint32_t height, size_t textureCount = 1);
 
+        // create viewport using viewport info struct
+        void Create(const ViewportInfo& info);
+
         //  width
         inline uint32_t GetWidth() const
         {
-            return m_Width;
+            return m_Info.Width;
         }
 
         // height
         inline uint32_t GetHeight() const
         {
-            return m_Height;
+            return m_Info.Height;
         }
 
         // get size
         inline Vector2 GetSize() const
         {
-            return Vector2(static_cast<float>(m_Width), static_cast<float>(m_Height));
+            return Vector2(static_cast<float>(GetWidth()), static_cast<float>(GetHeight()));
         }
 
         // texture
@@ -53,14 +64,23 @@ namespace ASEngine
             return m_Textures;
         }
 
-    protected:
-        virtual void CreateImp(uint32_t width, uint32_t height, size_t textureCount) = 0;
+        // is multisampling enabled
+        inline bool IsMultisampled() const
+        {
+            return m_Info.Samples >= 1;
+        }
 
+        inline uint32_t GetSamples() const
+        {
+            return m_Info.Samples;
+        }
+
+    protected:
+        virtual void CreateImp(const ViewportInfo& info) = 0;
 
     private:
         std::vector<ResourceRef<Texture>> m_Textures{};
-        uint32_t m_Width = 0;
-        uint32_t m_Height = 0;
+        ViewportInfo m_Info{};
     };
 } // namespace ASEngine
 

@@ -68,6 +68,11 @@ namespace ASEngine
 
     void Font::Create(const std::string& fontPath, uint32_t size, uint32_t characterSeparation, uint32_t lineSeparation, uint32_t spaceSize, const ResourceRef<Material> material)
     {
+
+        TextureFromImageInfo fontTextureInfo{};
+        fontTextureInfo.Filter = TextureFilter::NEAREST;
+        fontTextureInfo.RepeatMode = TextureRepeatMode::CLAMP;
+
         // init ft library
         FT_Library ftLib;
         ASENGINE_ASSERT(FT_Init_FreeType(&ftLib) == 0, "Couldn't load FreeType Library");
@@ -86,7 +91,7 @@ namespace ASEngine
         FT_Set_Pixel_Sizes(face, 0, size);
 
         // font image
-        Image fontImage;
+        Image& fontImage = fontTextureInfo.ImageTexture;
         fontImage.Create(size * _ASENGINE_FONT_SPRITE_HFRAMES, size * _ASENGINE_FONT_SPRITE_VFRAMES);
 
         // init font to big black transparent image
@@ -143,7 +148,7 @@ namespace ASEngine
 
         // create texture
         ResourceRef<Texture> fontTexture = Texture::GetResourceClass().New();
-        fontTexture->Create(fontImage, TextureFilter::NEAREST, TextureRepeatMode::CLAMP);
+        fontTexture->Create(fontTextureInfo);
 
         // create font sprite
         m_Sprite = Sprite::GetResourceClass().New();

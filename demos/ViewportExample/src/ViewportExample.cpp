@@ -15,7 +15,12 @@ void ViewportExample::Init()
 {
     // create viewport
     m_Viewport = Viewport::GetResourceClass().New();
-    m_Viewport->Create(320, 180, 1);
+    ViewportInfo viewportInfo{
+        .Width = 320,
+        .Height = 180,
+        .Samples = 8
+    };
+    m_Viewport->Create(viewportInfo);
 
     // load materials
     auto& materialClass = Material::GetResourceClass();

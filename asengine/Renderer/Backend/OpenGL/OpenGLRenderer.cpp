@@ -26,6 +26,8 @@ namespace ASEngine
         // init opengl
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
+        glEnable(GL_TEXTURE_2D_MULTISAMPLE);
+        glEnable(GL_MULTISAMPLE);
 
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -67,7 +69,7 @@ namespace ASEngine
             ResourceRef<OpenGLTexture> glTexture = samplers.at(samplerName);
 
             glActiveTexture(GL_TEXTURE0 + glSamplerInfo.TextureIndex);
-            glBindTexture(GL_TEXTURE_2D, glTexture->GetGLTextureID());
+            glTexture->GLBind();
         }
 
 
@@ -174,24 +176,22 @@ namespace ASEngine
         if (viewport == ResourceRef<Viewport>::NONE())
         {
             auto &display = Display::GetInstance();
-            GLBindFramebuffer(0, display.GetWindowWidth(), display.GetWindowHeight());
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+            glViewport(0, 0, display.GetWindowWidth(), display.GetWindowHeight());
             return;
         }
 
         // bind viewport
-        GLuint frameBufferID = ResourceRef<OpenGLViewport>(viewport)->GetGLFrameBufferID();
-        GLBindFramebuffer(frameBufferID, viewport->GetWidth(), viewport->GetHeight());
+        ResourceRef<OpenGLViewport>(viewport)->GLBind();
     }
 
     void OpenGLRenderer::EndImp()
     {
+        ResourceRef<OpenGLViewport> glViewport = GetCurrentViewport();
+        if (glViewport != ResourceRef<OpenGLViewport>::NONE())
+            glViewport->GLResolve();
     }
 
-    void OpenGLRenderer::GLBindFramebuffer(GLuint frameBufferID, uint32_t width, uint32_t height)
-    {
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBufferID);
-        glViewport(0, 0, width, height);
-    }
 
 
 } // namespace ASEngine
